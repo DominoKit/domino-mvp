@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module rename-to='Logger'>
+
+	<inherits name="com.google.gwt.logging.Logging" />
+
+
+	<entry-point class='com.progressoft.brix.domino.logger.client.EngineLogger' />
+
+	<set-property name="gwt.logging.logLevel" value="INFO" />
+	<set-property name="gwt.logging.enabled" value="TRUE" />
+	<set-property name="gwt.logging.consoleHandler" value="ENABLED" />
+
+	<source path='client' />
+	<source path='shared' />
+
+	<add-linker name="xsiframe" />
+</module>

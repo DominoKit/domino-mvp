@@ -1,0 +1,16 @@
+package com.progressoft.brix.domino.gwt.client.events;
+
+import com.google.gwt.event.shared.GwtEvent;
+import com.google.web.bindery.event.shared.Event;
+import com.progressoft.brix.domino.api.client.events.EventProcessor;
+
+public abstract class ClientRequestGwtEvent extends Event<EventProcessor> {
+
+    static final GwtEvent.Type<EventProcessor> CLIENT_REQUEST_EVENT_TYPE = new GwtEvent.Type<>();
+
+    @Override
+    public Type<EventProcessor> getAssociatedType() {
+        return CLIENT_REQUEST_EVENT_TYPE;
+    }
+
+}

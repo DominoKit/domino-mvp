@@ -1,0 +1,26 @@
+#set($symbol_pound='#')
+#set($symbol_dollar='$')
+#set($symbol_escape='\' )
+#set( $groupId = "${groupId}" )
+#set( $path = $groupId.replace(".", "/") )
+FROM psbox:5000/xjava8
+
+EXPOSE  8080 8443
+EXPOSE  61616 5672 61613 1883 61614 8161
+ENV HOME_DIR        /use/local
+ENV PSBOX           ${rootArtifactId}
+ENV APP_VERSION		${version}
+ENV APP_ARTIFACTID	${rootArtifactId}-webapp
+#-------------------------------------------------------------------------------
+# Downloading JAR FILE
+#-------------------------------------------------------------------------------
+RUN case "$APP_VERSION" in\
+	*SNAPSHOT) wget https://u343:P%40ssw0rd@artifactory.psdevelop.com/artifactory/PS-NightlyBuilds/${path}/$APP_ARTIFACTID/$APP_VERSION/$APP_ARTIFACTID-$APP_VERSION-fat.jar ;;\
+	*) wget https://u343:P%40ssw0rd@artifactory.psdevelop.com/artifactory/PS-Releases/${path}/$APP_ARTIFACTID/$APP_VERSION/$APP_ARTIFACTID-$APP_VERSION-fat.jar;;\
+	esac
+#-------------------------------------------------------------------------------
+# RUNNING APPLICATION
+#-------------------------------------------------------------------------------
+COPY ./config.json $HOME_DIR/config.json
+RUN mv $APP_ARTIFACTID-$APP_VERSION-fat.jar $HOME_DIR/$APP_ARTIFACTID-$APP_VERSION-fat.jar
+CMD ["java","-jar","$HOME_DIR/$APP_ARTIFACTID-$APP_VERSION-fat.jar", "-conf", "$HOME_DIR/config.json"]

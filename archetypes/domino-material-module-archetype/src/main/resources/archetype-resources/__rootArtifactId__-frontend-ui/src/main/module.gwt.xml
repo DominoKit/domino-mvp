@@ -1,0 +1,20 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+  <inherits name="com.google.gwt.user.User" />
+  <inherits name="com.google.gwt.user.theme.clean.Clean" />
+  <inherits name="gwt.material.design.GwtMaterialWithJQuery" />
+  <inherits name="gwt.material.design.addins.GwtMaterialAddins" />
+
+
+  <source path="" />
+
+  <entry-point class="${package}.${subpackage}.client.${module}UIClientModule" />
+
+  <set-configuration-property name="CssResource.enableGss" value="true"/>
+
+  <!-- Only support recent browsers -->
+  <set-property name="user.agent" value="ie10,gecko1_8,safari" />
+</module>

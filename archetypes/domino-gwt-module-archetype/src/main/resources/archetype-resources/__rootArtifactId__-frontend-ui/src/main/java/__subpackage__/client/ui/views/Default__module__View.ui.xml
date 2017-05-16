@@ -1,0 +1,17 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+
+    <ui:with field="bundle" type="${package}.${subpackage}.client.ui.views.${module}Bundle"/>
+    <ui:style gss="true">
+        .sample-div{
+            background-color: #CECECE;
+        }
+    </ui:style>
+
+    <g:HTMLPanel>
+        <div ui:field="mainDiv" class="sample-div"></div>
+    </g:HTMLPanel>
+</ui:UiBinder>
