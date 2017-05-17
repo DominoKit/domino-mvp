@@ -12,6 +12,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <domino.version>1.0-SNAPSHOT</domino.version>
     </properties>
 
     <distributionManagement>
@@ -31,7 +32,7 @@
         <dependency>
             <groupId>com.progressoft.brix.domino.test</groupId>
             <artifactId>apt-test</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${domino.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -43,7 +44,7 @@
         <dependency>
             <groupId>com.progressoft.brix.domino.api</groupId>
             <artifactId>domino-api-client</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${domino.version}</version>
         </dependency>
         <dependency>
             <groupId>org.fusesource.restygwt</groupId>
@@ -63,7 +64,7 @@
         <dependency>
             <groupId>com.progressoft.brix.domino.logger</groupId>
             <artifactId>domino-logger</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${domino.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.auto.service</groupId>
