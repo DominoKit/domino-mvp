@@ -8,7 +8,7 @@ import com.progressoft.brix.domino.api.client.request.ClientServerRequest;
 import com.progressoft.brix.domino.api.client.request.Request;
 import com.progressoft.brix.domino.api.client.request.RequestRouter;
 import com.progressoft.brix.domino.api.server.ServerApp;
-import com.progressoft.brix.domino.api.server.ServerEntryPointContext;
+import com.progressoft.brix.domino.api.server.entrypoint.ServerEntryPointContext;
 import com.progressoft.brix.domino.api.shared.request.FailedServerResponse;
 import com.progressoft.brix.domino.api.shared.request.ServerResponse;
 import com.progressoft.brix.domino.logger.client.CoreLogger;

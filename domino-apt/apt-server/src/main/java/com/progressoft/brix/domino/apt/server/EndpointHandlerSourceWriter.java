@@ -1,10 +1,10 @@
 package com.progressoft.brix.domino.apt.server;
 
 
-import com.progressoft.brix.domino.api.server.CallbackRequestHandler;
-import com.progressoft.brix.domino.api.server.RequestHandler;
+import com.progressoft.brix.domino.api.server.handler.CallbackRequestHandler;
+import com.progressoft.brix.domino.api.server.handler.RequestHandler;
 import com.progressoft.brix.domino.api.server.ServerApp;
-import com.progressoft.brix.domino.api.server.VertxEntryPointContext;
+import com.progressoft.brix.domino.api.server.entrypoint.VertxEntryPointContext;
 import com.progressoft.brix.domino.apt.commons.*;
 import io.vertx.core.Handler;
 import io.vertx.core.json.Json;

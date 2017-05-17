@@ -1,5 +1,6 @@
 package com.progressoft.brix.domino.api.server;
 
+import com.progressoft.brix.domino.api.server.interceptor.GlobalRequestInterceptor;
 import com.progressoft.brix.domino.api.shared.request.ServerRequest;
 
 

@@ -1,5 +1,7 @@
 package com.progressoft.brix.domino.api.server;
 
+import com.progressoft.brix.domino.api.server.config.ServerConfiguration;
+
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;

@@ -1,6 +1,8 @@
 package com.progressoft.brix.domino.api.server;
 
-public class TestServerEntryPointContext implements ServerEntryPointContext{
+import com.progressoft.brix.domino.api.server.entrypoint.ServerEntryPointContext;
+
+public class TestServerEntryPointContext implements ServerEntryPointContext {
 
     private final String entryContextParameter="-entry-point-parameter";
 

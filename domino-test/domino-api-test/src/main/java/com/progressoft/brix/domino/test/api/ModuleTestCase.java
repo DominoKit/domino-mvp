@@ -1,6 +1,8 @@
 package com.progressoft.brix.domino.test.api;
 
-import com.progressoft.brix.domino.api.server.*;
+import com.progressoft.brix.domino.api.server.config.ServerConfiguration;
+import com.progressoft.brix.domino.api.server.config.ServerConfigurationLoader;
+import com.progressoft.brix.domino.api.server.entrypoint.VertxContext;
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.Router;

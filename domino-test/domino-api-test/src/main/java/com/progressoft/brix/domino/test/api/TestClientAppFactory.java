@@ -3,7 +3,7 @@ package com.progressoft.brix.domino.test.api;
 
 import com.progressoft.brix.domino.api.client.ClientApp;
 import com.progressoft.brix.domino.api.client.history.PathTokenConstructor;
-import com.progressoft.brix.domino.api.server.ServerEntryPointContext;
+import com.progressoft.brix.domino.api.server.entrypoint.ServerEntryPointContext;
 import com.progressoft.brix.domino.api.shared.extension.MainContext;
 import com.progressoft.brix.domino.gwt.client.events.RequestEventProcessor;
 import com.progressoft.brix.domino.gwt.client.history.InMemoryPathToRequestMappersRepository;

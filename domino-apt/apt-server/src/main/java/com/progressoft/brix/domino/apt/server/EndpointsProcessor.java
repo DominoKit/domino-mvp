@@ -1,9 +1,9 @@
 package com.progressoft.brix.domino.apt.server;
 
 import com.google.auto.service.AutoService;
-import com.progressoft.brix.domino.api.server.CallbackRequestHandler;
-import com.progressoft.brix.domino.api.server.Handler;
-import com.progressoft.brix.domino.api.server.RequestHandler;
+import com.progressoft.brix.domino.api.server.handler.CallbackRequestHandler;
+import com.progressoft.brix.domino.api.server.handler.Handler;
+import com.progressoft.brix.domino.api.server.handler.RequestHandler;
 import com.progressoft.brix.domino.apt.commons.BaseProcessor;
 import com.progressoft.brix.domino.apt.commons.ProcessorElement;
 

@@ -1,8 +1,8 @@
 package com.progressoft.brix.domino.apt.server.multiInterceptors;
 
 import com.google.auto.service.AutoService;
-import com.progressoft.brix.domino.api.server.ServerModuleConfiguration;
-import com.progressoft.brix.domino.api.server.InterceptorsRegistry;
+import com.progressoft.brix.domino.api.server.config.ServerModuleConfiguration;
+import com.progressoft.brix.domino.api.server.interceptor.InterceptorsRegistry;
 import com.progressoft.brix.domino.apt.server.multiInterceptors.FirstInterceptor;
 import com.progressoft.brix.domino.apt.server.multiInterceptors.FirstRequest;
 import com.progressoft.brix.domino.apt.server.multiInterceptors.TestServerEntryPointContext;

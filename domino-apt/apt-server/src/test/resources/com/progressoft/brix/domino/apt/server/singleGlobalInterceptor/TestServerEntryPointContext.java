@@ -1,6 +1,6 @@
 package com.progressoft.brix.domino.apt.server.singleGlobalInterceptor;
 
-import com.progressoft.brix.domino.api.server.ServerEntryPointContext;
+import com.progressoft.brix.domino.api.server.entrypoint.ServerEntryPointContext;
 
 public class TestServerEntryPointContext implements ServerEntryPointContext{
     @Override

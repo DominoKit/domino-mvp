@@ -1,7 +1,7 @@
 package com.progressoft.brix.domino.apt.server.singleInterceptor;
 
-import com.progressoft.brix.domino.api.server.Interceptor;
-import com.progressoft.brix.domino.api.server.RequestInterceptor;
+import com.progressoft.brix.domino.api.server.interceptor.Interceptor;
+import com.progressoft.brix.domino.api.server.interceptor.RequestInterceptor;
 
 @Interceptor
 public class FirstInterceptor implements RequestInterceptor<FirstRequest, TestServerEntryPointContext>{

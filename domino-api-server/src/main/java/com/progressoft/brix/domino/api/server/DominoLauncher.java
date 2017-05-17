@@ -1,5 +1,8 @@
 package com.progressoft.brix.domino.api.server;
 
+import com.progressoft.brix.domino.api.server.config.ServerConfigurationLoader;
+import com.progressoft.brix.domino.api.server.config.VertxConfiguration;
+import com.progressoft.brix.domino.api.server.entrypoint.VertxContext;
 import io.vertx.core.Launcher;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;

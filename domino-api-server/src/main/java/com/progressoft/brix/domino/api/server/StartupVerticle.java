@@ -1,5 +1,6 @@
 package com.progressoft.brix.domino.api.server;
 
+import com.progressoft.brix.domino.api.server.entrypoint.VertxContext;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.StaticHandler;

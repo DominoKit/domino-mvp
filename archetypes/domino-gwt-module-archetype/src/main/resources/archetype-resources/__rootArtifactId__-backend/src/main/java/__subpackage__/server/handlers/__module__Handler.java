@@ -3,8 +3,8 @@
 #set( $symbol_escape = '\' )
 package ${package}.${subpackage}.server.handlers;
 
-import com.progressoft.brix.domino.api.server.Handler;
-import com.progressoft.brix.domino.api.server.RequestHandler;
+import com.progressoft.brix.domino.api.server.handler.Handler;
+import com.progressoft.brix.domino.api.server.handler.RequestHandler;
 import ${package}.${subpackage}.shared.response.${module}Response;
 import ${package}.${subpackage}.shared.request.${module}Request;
 

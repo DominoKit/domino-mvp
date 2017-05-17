@@ -1,6 +1,6 @@
 package com.progressoft.brix.domino.test.api;
 
-import com.progressoft.brix.domino.api.server.ServerConfiguration;
+import com.progressoft.brix.domino.api.server.config.ServerConfiguration;
 
 import java.time.Instant;
 import java.util.HashMap;

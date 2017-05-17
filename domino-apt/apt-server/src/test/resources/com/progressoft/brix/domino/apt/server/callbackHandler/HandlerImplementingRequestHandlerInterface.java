@@ -2,8 +2,8 @@ package com.progressoft.brix.domino.apt.server.callbackHandler;
 
 import com.progressoft.brix.domino.api.shared.request.ServerRequest;
 import com.progressoft.brix.domino.api.shared.request.ServerResponse;
-import com.progressoft.brix.domino.api.server.Handler;
-import com.progressoft.brix.domino.api.server.CallbackRequestHandler;
+import com.progressoft.brix.domino.api.server.handler.Handler;
+import com.progressoft.brix.domino.api.server.handler.CallbackRequestHandler;
 
 @Handler("somePath")
 public class HandlerImplementingRequestHandlerInterface implements CallbackRequestHandler<ServerRequest, ServerResponse>{

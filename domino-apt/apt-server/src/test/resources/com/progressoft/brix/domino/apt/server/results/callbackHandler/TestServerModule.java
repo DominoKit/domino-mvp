@@ -1,11 +1,11 @@
 package com.progressoft.brix.domino.apt.server.callbackHandler;
 
 import com.google.auto.service.AutoService;
-import com.progressoft.brix.domino.api.server.ServerModuleConfiguration;
-import com.progressoft.brix.domino.api.server.HandlerRegistry;
+import com.progressoft.brix.domino.api.server.config.ServerModuleConfiguration;
+import com.progressoft.brix.domino.api.server.handler.HandlerRegistry;
 import com.progressoft.brix.domino.apt.server.callbackHandler.HandlerImplementingRequestHandlerInterface;
 import com.progressoft.brix.domino.api.shared.request.ServerRequest;
-import com.progressoft.brix.domino.api.server.EndpointsRegistry;
+import com.progressoft.brix.domino.api.server.endpoint.EndpointsRegistry;
 import com.progressoft.brix.domino.apt.server.callbackHandler.HandlerImplementingRequestHandlerInterfaceEndpointHandler;
 
 @AutoService(ServerModuleConfiguration.class)

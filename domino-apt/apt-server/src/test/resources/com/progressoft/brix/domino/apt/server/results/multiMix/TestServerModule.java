@@ -1,19 +1,19 @@
 package com.progressoft.brix.domino.apt.server.multiMix;
 
 import com.google.auto.service.AutoService;
-import com.progressoft.brix.domino.api.server.ServerModuleConfiguration;
-import com.progressoft.brix.domino.api.server.HandlerRegistry;
+import com.progressoft.brix.domino.api.server.config.ServerModuleConfiguration;
+import com.progressoft.brix.domino.api.server.handler.HandlerRegistry;
 import com.progressoft.brix.domino.apt.server.multiMix.FirstHandler;
 import com.progressoft.brix.domino.apt.server.multiMix.FirstRequest;
 import com.progressoft.brix.domino.apt.server.multiMix.SecondHandler;
 import com.progressoft.brix.domino.apt.server.multiMix.SecondRequest;
 import com.progressoft.brix.domino.apt.server.multiMix.ThirdHandler;
 import com.progressoft.brix.domino.apt.server.multiMix.ThirdRequest;
-import com.progressoft.brix.domino.api.server.EndpointsRegistry;
+import com.progressoft.brix.domino.api.server.endpoint.EndpointsRegistry;
 import com.progressoft.brix.domino.apt.server.multiMix.FirstHandlerEndpointHandler;
 import com.progressoft.brix.domino.apt.server.multiMix.SecondHandlerEndpointHandler;
 import com.progressoft.brix.domino.apt.server.multiMix.ThirdHandlerEndpointHandler;
-import com.progressoft.brix.domino.api.server.InterceptorsRegistry;
+import com.progressoft.brix.domino.api.server.interceptor.InterceptorsRegistry;
 import com.progressoft.brix.domino.apt.server.multiMix.FirstInterceptor;
 import com.progressoft.brix.domino.apt.server.multiMix.TestServerEntryPointContext;
 import com.progressoft.brix.domino.apt.server.multiMix.SecondInterceptor;

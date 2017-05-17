@@ -6,7 +6,7 @@ import io.vertx.ext.web.RoutingContext;
 import com.progressoft.brix.domino.api.server.ServerApp;
 import com.progressoft.brix.domino.api.shared.request.ServerResponse;
 import com.progressoft.brix.domino.api.shared.request.ServerRequest;
-import com.progressoft.brix.domino.api.server.VertxEntryPointContext;
+import com.progressoft.brix.domino.api.server.entrypoint.VertxEntryPointContext;
 
 public class HandlerImplementingRequestHandlerInterfaceEndpointHandler implements Handler<RoutingContext> {
 

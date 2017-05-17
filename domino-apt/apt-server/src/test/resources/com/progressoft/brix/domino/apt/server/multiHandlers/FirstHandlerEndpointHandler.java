@@ -5,7 +5,7 @@ import io.vertx.core.json.Json;
 import io.vertx.ext.web.RoutingContext;
 import com.progressoft.brix.domino.api.server.ServerApp;
 import com.progressoft.brix.domino.api.shared.request.ServerResponse;
-import com.progressoft.brix.domino.api.server.VertxEntryPointContext;
+import com.progressoft.brix.domino.api.server.entrypoint.VertxEntryPointContext;
 
 public class FirstHandlerEndpointHandler implements Handler<RoutingContext> {
 
