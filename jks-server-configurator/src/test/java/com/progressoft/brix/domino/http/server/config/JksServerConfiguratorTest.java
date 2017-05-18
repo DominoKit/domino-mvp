@@ -7,6 +7,7 @@ import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.net.JksOptions;
 import io.vertx.ext.web.Router;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,6 +21,8 @@ public class JksServerConfiguratorTest {
     private static final String SSL_JKS_SECRET = "ssl.jks.password";
     public static final String TEST_JKS_PATH = "/some/path/to/jks";
     public static final String TEST_JKS_SECRET = "some.jks.secret";
+    private static final String HTTPS_PORT = "https.port";
+    private static final int DEFAULT_HTTPS_PORT = 443;
     private Vertx vertx;
     private JsonObject config;
     private Router router;
@@ -36,8 +39,14 @@ public class JksServerConfiguratorTest {
         configuration.put(SSL_CONFIGURATION_KEY, FALSE);
         configuration.put(SSL_JKS_PATH, TEST_JKS_PATH);
         configuration.put(SSL_JKS_SECRET, TEST_JKS_SECRET);
+        configuration.put(HTTPS_PORT, DEFAULT_HTTPS_PORT);
         options = new HttpServerOptions();
         context = new VertxContext(vertx, router, configuration);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        vertx.close();
     }
 
     @Test
@@ -64,6 +73,24 @@ public class JksServerConfiguratorTest {
         configuration.put(SSL_CONFIGURATION_KEY, TRUE);
         configuration.put(SSL_JKS_SECRET, "");
         configureServer();
+    }
+
+    @Test
+    public void givenSslEnabledInConfiguration_whenHttpsPortIsMissingInConfiguration_thenShouldUseDefaultHttpsPort()
+            throws Exception {
+        configuration.put(SSL_CONFIGURATION_KEY, TRUE);
+        configuration.remove(HTTPS_PORT);
+        configureServer();
+        assertThat(options.getPort()).isEqualTo(DEFAULT_HTTPS_PORT);
+    }
+
+    @Test
+    public void givenSslEnabledInConfiguration_whenHttpsPortIsSetInConfiguration_thenShouldUsePortFromConfiguration()
+            throws Exception {
+        configuration.put(SSL_CONFIGURATION_KEY, TRUE);
+        configuration.put(HTTPS_PORT, 2443);
+        configureServer();
+        assertThat(options.getPort()).isEqualTo(2443);
     }
 
     @Test

@@ -16,6 +16,8 @@ public class JksServerConfigurator implements HttpServerConfigurator {
     private static final String SSL_JKS_PATH = "ssl.jks.path";
     private static final String SSL_JKS_SECRET = "ssl.jks.password";
     public static final String DEFAULT_EMPTY = "";
+    private static final String HTTPS_PORT = "https.port";
+    public static final int DEFAULT_HTTPS_PORT = 443;
 
     @Override
     public void configureHttpServer(VertxContext context, HttpServerOptions options) {
@@ -29,19 +31,24 @@ public class JksServerConfigurator implements HttpServerConfigurator {
         }
     }
 
-    private void enableSsl(ServerConfiguration configuration,HttpServerOptions options) {
+    private void enableSsl(ServerConfiguration configuration, HttpServerOptions options) {
         options.setSsl(TRUE);
         options.setKeyStoreOptions(new JksOptions()
                 .setPath(getPath(configuration))
-                .setPassword(getSecret(configuration)));
+                .setPassword(getSecret(configuration)))
+                .setPort(getPort(configuration));
+    }
+
+    private String getPath(ServerConfiguration configuration) {
+        return configuration.getString(SSL_JKS_PATH);
     }
 
     private String getSecret(ServerConfiguration configuration) {
         return configuration.getString(SSL_JKS_SECRET);
     }
 
-    private String getPath(ServerConfiguration configuration) {
-        return configuration.getString(SSL_JKS_PATH);
+    private int getPort(ServerConfiguration configuration) {
+        return configuration.getInteger(HTTPS_PORT, DEFAULT_HTTPS_PORT);
     }
 
     private void validateConfiguration(ServerConfiguration configuration) {
@@ -68,9 +75,9 @@ public class JksServerConfigurator implements HttpServerConfigurator {
         return configuration.getString(SSL_JKS_SECRET, DEFAULT_EMPTY).isEmpty();
     }
 
-    public class MissingJksPathInConfigurationException extends RuntimeException {
+    class MissingJksPathInConfigurationException extends RuntimeException {
     }
 
-    public class MissingJksPasswordInConfigurationException extends RuntimeException {
+    class MissingJksPasswordInConfigurationException extends RuntimeException {
     }
 }
