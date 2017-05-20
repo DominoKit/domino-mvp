@@ -23,6 +23,7 @@ public class JksServerConfiguratorTest {
     public static final String TEST_JKS_SECRET = "some.jks.secret";
     private static final String HTTPS_PORT = "https.port";
     private static final int DEFAULT_HTTPS_PORT = 443;
+    public static final int DEFAULT_TEST_SSL_PORT = 2443;
     private Vertx vertx;
     private JsonObject config;
     private Router router;
@@ -88,9 +89,9 @@ public class JksServerConfiguratorTest {
     public void givenSslEnabledInConfiguration_whenHttpsPortIsSetInConfiguration_thenShouldUsePortFromConfiguration()
             throws Exception {
         configuration.put(SSL_CONFIGURATION_KEY, TRUE);
-        configuration.put(HTTPS_PORT, 2443);
+        configuration.put(HTTPS_PORT, DEFAULT_TEST_SSL_PORT);
         configureServer();
-        assertThat(options.getPort()).isEqualTo(2443);
+        assertThat(options.getPort()).isEqualTo(DEFAULT_TEST_SSL_PORT);
     }
 
     @Test

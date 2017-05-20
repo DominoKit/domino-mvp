@@ -10,7 +10,7 @@ EXPOSE  61616 5672 61613 1883 61614 8161
 ENV HOME_DIR        /use/local
 ENV PSBOX           ${rootArtifactId}
 ENV APP_VERSION		${version}
-ENV APP_ARTIFACTID	${rootArtifactId}-webapp
+ENV APP_ARTIFACTID	${rootArtifactId}-backend
 #-------------------------------------------------------------------------------
 # Downloading JAR FILE
 #-------------------------------------------------------------------------------

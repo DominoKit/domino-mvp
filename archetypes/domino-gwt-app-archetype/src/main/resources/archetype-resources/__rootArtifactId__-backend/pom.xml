@@ -9,7 +9,7 @@
         <version>${version}</version>
     </parent>
 
-    <artifactId>${rootArtifactId}-webapp</artifactId>
+    <artifactId>${rootArtifactId}-backend</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
