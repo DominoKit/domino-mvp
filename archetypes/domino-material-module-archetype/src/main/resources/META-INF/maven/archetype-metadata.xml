@@ -35,12 +35,6 @@
             <include>**/*.java</include>
           </includes>
         </fileSet>
-        <fileSet filtered="true" packaged="true" encoding="UTF-8">
-          <directory>src/main/resources</directory>
-          <includes>
-            <include>**/*</include>
-          </includes>
-        </fileSet>
       </fileSets>
     </module>
     <module id="${rootArtifactId}-frontend-ui" dir="__rootArtifactId__-frontend-ui" name="${rootArtifactId}-frontend-ui">
