@@ -85,12 +85,6 @@
             <artifactId>${rootArtifactId}-frontend</artifactId>
             <version>${version}</version>
         </dependency>
-        <dependency>
-            <groupId>${groupId}</groupId>
-            <artifactId>${rootArtifactId}-backend</artifactId>
-            <version>${version}</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>
