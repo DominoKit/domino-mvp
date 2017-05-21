@@ -36,13 +36,12 @@ public class ${module}ClientModuleTest extends ModuleTestCase{
     }
 
     @Test
-    public void given${module}Module_whenContributingToMainExtensionPoint_thenShouldReceiveMainContext() throws Exception {
+    public void given${module}Module_whenContributingToMainExtensionPoint_thenShouldReceiveMainContext() {
         assertNotNull(presenterSpy.getMainContext());
     }
 
     @Test
-    public void given${module}ClientModule_when${module}ServerRequestIsSent_thenServerMessageShouldBeRecieved()
-            throws Exception {
+    public void given${module}ClientModule_when${module}ServerRequestIsSent_thenServerMessageShouldBeRecieved() {
 
         new ${module}ServerRequest(){
             @Override
