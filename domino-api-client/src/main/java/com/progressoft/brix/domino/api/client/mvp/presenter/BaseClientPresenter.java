@@ -1,7 +1,9 @@
 package com.progressoft.brix.domino.api.client.mvp.presenter;
 
 import com.progressoft.brix.domino.api.client.ClientApp;
+import com.progressoft.brix.domino.api.client.extension.Contributions;
 import com.progressoft.brix.domino.api.client.mvp.view.View;
+import com.progressoft.brix.domino.api.shared.extension.ExtensionPoint;
 import com.progressoft.brix.domino.logger.client.CoreLogger;
 import com.progressoft.brix.domino.logger.client.CoreLoggerFactory;
 
@@ -40,6 +42,9 @@ public abstract class BaseClientPresenter<V extends View> implements ClientPrese
 
     protected String getConcrete(){
         return this.getClass().getCanonicalName();
+    }
+    protected void applyContributions(Class<? extends ExtensionPoint> extensionPointInterface, ExtensionPoint extensionPoint){
+        Contributions.apply(extensionPointInterface, extensionPoint);
     }
 
     private String getName(){
