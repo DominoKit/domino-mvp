@@ -1,4 +1,4 @@
-<p align="center"><font size="20">Welcome to <img alt="domino"src="https://avatars2.githubusercontent.com/u/28739752?v=3&s=200" width="50"/> Domino! </font></p>
+<p align="center"><font size="30">Welcome to <img alt="domino"src="https://avatars2.githubusercontent.com/u/28739752?v=3&s=200" width="50"/> Domino! </font></p>
 <p align="center">
   <a title="Gitter" href=""><img src="https://badges.gitter.im/Join%20Chat.svg"></a>
 </p>
@@ -9,7 +9,7 @@ Domino is a small, simple, and  light weighted framework for building applicatio
 
 There is still a lot of things to learn about domino please follow the below step by step tutorial that explains and shows the simplicity of domino and how to use it.
 
-####**Table of Contents**
+#### **Table of Contents**
 * [Task 1 : Create your first domino application](#Task1)
 * [Task 2: Run the application](#Task2)
 
