@@ -9,9 +9,10 @@ Domino is a small, simple, and  light weighted framework for building applicatio
 
 There is still a lot of things to learn about domino please follow the below step by step tutorial that explains and shows the simplicity of domino and how to use it.
 
-#### **Table of Contents**
+####**Table of Contents**
 * [Task 1 : Create your first domino application](#Task1)
 * [Task 2: Run the application](#Task2)
+* [Task 3: Creating a new domino module](#Task3)
 
 ##### **Task 1 : Create your first domino application** <a name="Task1"></a>
 *For this tutorial we are going to use [Intellij](https://www.jetbrains.com/idea/) IDE and make sure your JDK is 1.8*
@@ -71,8 +72,6 @@ Same as the back-end module we don't add any source code directly to this module
 
 > The idea of separating client side **Front-end** code and server side **Back-end** code each in a separate module was from `Thomas Broyer` [GWT archetype](https://github.com/tbroyer/gwt-maven-archetypes)
 
-
-
 ##### **Task 2 : Run the application** <a name="Task2"></a>
 Note that before starting we need to build the application first, open a terminal in Intellij and type `mvn clean install` goal, this goal will trigger the GWT compiler,  after building the application successfully you will notice a new folder created inside `webroot` folder in the back-end module this new folder is the result of GWT compilation, also you will notice new jars, as domino produces jars not wars, in the target folder of the back-end module focus on the fat jar as it represents the final output.
 
@@ -87,18 +86,18 @@ Note that before starting we need to build the application first, open a termina
 ![image12](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/021.png)
 
 - Another window will pop up fill it as below;
-    - Fill a name for the configuration.
-    - Fill the Main class with : `com.progressoft.brix.domino.api.server.DominoLauncher`
-    - Fill the program arguments with : `run com.progressoft.brix.domino.api.server.StartupVerticle -conf target/classes/config.json`
-    - Select the Working directory as `demo-backend` module folder.
-    - Select the Use class path of module as `demo-backend`
-    - Make sure the JRE is 1.8.
-    - Click **Apply and OK **.
+ - Fill a name for the configuration.
+ - Fill the Main class with : `com.progressoft.brix.domino.api.server.DominoLauncher`
+ - Fill the program arguments with : `run com.progressoft.brix.domino.api.server.StartupVerticle -conf target/classes/config.json`
+ - Select the Working directory as `demo-backend` module folder.
+ - Select the Use class path of module as `demo-backend`
+ - Make sure the JRE is 1.8.
+ - Click **Apply and OK **.
 
 ![image13](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/022.png)
 
-We are all set and ready to run the application, click the green run or debug button on the top left of the tools bar.![image14](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/023.png)
-
+We are all set and ready to run the application, click the green run button on the top left of the tools bar.
+![image14](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/023.png)
 When the application is ready you should see the below message on the run console
 **`INFO: Succeeded in deploying verticle`**
 this means that the application is now up and running,  open any browser and visit **`http://localhost:8080`**
@@ -108,4 +107,7 @@ The browser page will be a blank page which is normal since we had only created 
 INFO: Initialize domino module...
 Sun May 21 01:23:58 GMT+300 2017 domino.tutorial.AppClientModule
 INFO: Application frontend have been initialized.
+
+##### **Task 3 : Creating a new domino module** <a name="Task1"></a>
+
 
