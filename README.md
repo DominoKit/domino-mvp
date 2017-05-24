@@ -72,14 +72,18 @@ Same as the back-end module we don't add any source code directly to this module
 > The idea of separating client side **Front-end** code and server side **Back-end** code each in a separate module was from `Thomas Broyer` [GWT archetype](https://github.com/tbroyer/gwt-maven-archetypes)
 
 
+
 ##### **Task 2 : Run the application** <a name="Task2"></a>
 Note that before starting we need to build the application first, open a terminal in Intellij and type `mvn clean install` goal, this goal will trigger the GWT compiler,  after building the application successfully you will notice a new folder created inside `webroot` folder in the back-end module this new folder is the result of GWT compilation, also you will notice new jars, as domino produces jars not wars, in the target folder of the back-end module focus on the fat jar as it represents the final output.
 
 *File `how-to.txt` lists full instructions of how to run a domino application but we will go through them quickly below.*
 
 - Go to your intellij menu and select Run -> Edit configuration.
+
 ![image11](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/020.png)
+
 - A window will pop up click on the green add button  and select `Application` from the list.
+
 ![image12](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/021.png)
 
 - Another window will pop up fill it as below;
@@ -92,3 +96,4 @@ Note that before starting we need to build the application first, open a termina
  - Click **Apply and OK **.
 
 ![image13](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/022.png)
+
