@@ -61,8 +61,8 @@
 
   <scm>
     <url>https://github.com//GwtDomino/domino</url>
-    <connection>scm:git:https://github.com/GwtDomino/domino.git</connection>
-    <developerConnection>scm:git:git@github.com:GwtDomino/domino.git</developerConnection>
+    <connection>scm:git:ssh://github.com/GwtDomino/domino.git</connection>
+    <developerConnection>scm:git:ssh://github.com:GwtDomino/domino.git</developerConnection>
   </scm>
 
   <distributionManagement>
