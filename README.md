@@ -97,7 +97,7 @@ Note that before starting we need to build the application first, open a termina
 
 ![image13](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/022.png)
 
-We are all set and ready to run the application, click the green run button on the top left of the tools bar.![image14](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/023.png)
+We are all set and ready to run the application, click the green run or debug button on the top left of the tools bar.![image14](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/023.png)
 
 When the application is ready you should see the below message on the run console
 **`INFO: Succeeded in deploying verticle`**
