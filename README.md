@@ -89,8 +89,8 @@ Note that before starting we need to build the application first, open a termina
     - Fill a name for the configuration.
     - Fill the Main class with : `com.progressoft.brix.domino.api.server.DominoLauncher`
     - Fill the program arguments with : `run com.progressoft.brix.domino.api.server.StartupVerticle -conf target/classes/config.json`
-    - Select the Working directory as `demo-backend` module folder.
-    - Select the Use class path of module as `demo-backend`
+    - Select the Working directory as `domino-demo-backend` module folder.
+    - Select the Use class path of module as `domino-demo-backend`
     - Make sure the JRE is 1.8.
     - Click **Apply and OK **.
 
