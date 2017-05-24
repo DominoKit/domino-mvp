@@ -37,6 +37,17 @@
         </developer>
     </developers>
 
+    <issueManagement>
+        <url>https://github.com/GwtDomino/domino/issues</url>
+        <system>GitHub Issues</system>
+    </issueManagement>
+
+    <scm>
+        <url>https://github.com//GwtDomino/domino</url>
+        <connection>scm:git:git://github.com/GwtDomino/domino.git</connection>
+        <developerConnection>scm:git:git@github.com:GwtDomino/domino.git</developerConnection>
+    </scm>
+
     <distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
@@ -52,7 +63,7 @@
         <dependency>
             <groupId>com.progressoft.brix.domino.test</groupId>
             <artifactId>apt-test</artifactId>
-            <version>${domino.version}</version>
+            <version>1.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -64,7 +75,7 @@
         <dependency>
             <groupId>com.progressoft.brix.domino.api</groupId>
             <artifactId>domino-api-client</artifactId>
-            <version>${domino.version}</version>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.fusesource.restygwt</groupId>
@@ -84,7 +95,7 @@
         <dependency>
             <groupId>com.progressoft.brix.domino.logger</groupId>
             <artifactId>domino-logger</artifactId>
-            <version>${domino.version}</version>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.google.auto.service</groupId>

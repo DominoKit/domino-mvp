@@ -54,6 +54,17 @@
     </developer>
   </developers>
 
+  <issueManagement>
+    <url>https://github.com/GwtDomino/domino/issues</url>
+    <system>GitHub Issues</system>
+  </issueManagement>
+
+  <scm>
+    <url>https://github.com//GwtDomino/domino</url>
+    <connection>scm:git:git://github.com/GwtDomino/domino.git</connection>
+    <developerConnection>scm:git:git@github.com:GwtDomino/domino.git</developerConnection>
+  </scm>
+
   <distributionManagement>
     <snapshotRepository>
       <id>ossrh</id>
