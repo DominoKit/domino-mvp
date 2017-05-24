@@ -97,3 +97,15 @@ Note that before starting we need to build the application first, open a termina
 
 ![image13](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/022.png)
 
+We are all set and ready to run the application, click the green run button on the top left of the tools bar.
+![image14](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/023.png)
+When the application is ready you should see the below message on the run console
+**`INFO: Succeeded in deploying verticle`**
+this means that the application is now up and running,  open any browser and visit **`http://localhost:8080`**
+The browser page will be a blank page which is normal since we had only created an empty application we didn't add any module yet, hit **`F12`**  and look at the console the below logs will appear :
+
+> Sun May 21 01:23:58 GMT+300 2017 com.progressoft.brix.domino.gwt.client.Core
+INFO: Initialize domino module...
+Sun May 21 01:23:58 GMT+300 2017 domino.tutorial.AppClientModule
+INFO: Application frontend have been initialized.
+
