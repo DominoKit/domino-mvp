@@ -9,7 +9,7 @@ Domino is a small, simple, and  light weighted framework for building applicatio
 
 There is still a lot of things to learn about domino please follow the below step by step tutorial that explains and shows the simplicity of domino and how to use it.
 
-####**Table of Contents**
+#### **Table of Contents**
 * [Task 1 : Create your first domino application](#Task1)
 * [Task 2: Run the application](#Task2)
 * [Task 3: Creating a new domino module](#Task3)
@@ -86,13 +86,13 @@ Note that before starting we need to build the application first, open a termina
 ![image12](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/021.png)
 
 - Another window will pop up fill it as below;
- - Fill a name for the configuration.
- - Fill the Main class with : `com.progressoft.brix.domino.api.server.DominoLauncher`
- - Fill the program arguments with : `run com.progressoft.brix.domino.api.server.StartupVerticle -conf target/classes/config.json`
- - Select the Working directory as `demo-backend` module folder.
- - Select the Use class path of module as `demo-backend`
- - Make sure the JRE is 1.8.
- - Click **Apply and OK **.
+    - Fill a name for the configuration.
+    - Fill the Main class with : `com.progressoft.brix.domino.api.server.DominoLauncher`
+    - Fill the program arguments with : `run com.progressoft.brix.domino.api.server.StartupVerticle -conf target/classes/config.json`
+    - Select the Working directory as `demo-backend` module folder.
+    - Select the Use class path of module as `demo-backend`
+    - Make sure the JRE is 1.8.
+    - Click **Apply and OK **.
 
 ![image13](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/022.png)
 
