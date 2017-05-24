@@ -18,7 +18,6 @@ import ${package}.${subpackage}.shared.response.${module}Response;
 
 import com.progressoft.brix.domino.test.api.ModuleTestCase;
 
-@RunWith(GwtMockitoTestRunner.class)
 @ClientModule(name="Test${module}")
 public class ${module}ClientModuleTest extends ModuleTestCase{
 

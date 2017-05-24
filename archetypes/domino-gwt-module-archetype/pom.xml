@@ -3,9 +3,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.progressoft.brix.domino.archetypes</groupId>
+    <parent>
+        <groupId>com.progressoft.brix.domino.archetypes</groupId>
+        <artifactId>archetypes</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
     <artifactId>domino-gwt-module-archetype</artifactId>
-    <version>1.0-SNAPSHOT</version>
     <packaging>maven-archetype</packaging>
 
     <name>domino-gwt-module-archetype</name>
@@ -29,18 +33,36 @@
         </pluginManagement>
     </build>
 
-    <url>http://maven.apache.org</url>
+    <licenses>
+        <license>
+            <name>Apache 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Ahmad K. Bawaneh</name>
+            <email>akabme@gmail.com</email>
+        </developer>
+        <developer>
+            <name>Rafat J. Al-Barouki</name>
+            <email>rafat.albarouki@gmail.com</email>
+        </developer>
+        <developer>
+            <name>Farah M. Soudani</name>
+            <email>fsoudanii93@gmail.com</email>
+        </developer>
+    </developers>
 
     <distributionManagement>
-        <repository>
-            <id>RELEASES</id>
-            <name>ps-artifactory-releases</name>
-            <url>https://artifactory.psdevelop.com/artifactory/PS-Releases</url>
-        </repository>
         <snapshotRepository>
-            <id>SNAPSHOTS</id>
-            <name>ps-artifactory-snapshots</name>
-            <url>https://artifactory.psdevelop.com/artifactory/PS-NightlyBuilds</url>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
     </distributionManagement>
 </project>

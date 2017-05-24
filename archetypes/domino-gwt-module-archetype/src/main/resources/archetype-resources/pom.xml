@@ -20,17 +20,37 @@
         <maven>${mavenVersion}</maven>
     </prerequisites>
 
+    <licenses>
+        <license>
+            <name>Apache 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Ahmad K. Bawaneh</name>
+            <email>akabme@gmail.com</email>
+        </developer>
+        <developer>
+            <name>Rafat J. Al-Barouki</name>
+            <email>rafat.albarouki@gmail.com</email>
+        </developer>
+        <developer>
+            <name>Farah M. Soudani</name>
+            <email>fsoudanii93@gmail.com</email>
+        </developer>
+    </developers>
+
     <distributionManagement>
-        <repository>
-            <id>RELEASES</id>
-            <name>ps-artifactory-releases</name>
-            <url>https://artifactory.psdevelop.com/artifactory/PS-Releases</url>
-        </repository>
         <snapshotRepository>
-            <id>SNAPSHOTS</id>
-            <name>ps-artifactory-snapshots</name>
-            <url>https://artifactory.psdevelop.com/artifactory/PS-NightlyBuilds</url>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
     </distributionManagement>
 
     <properties>

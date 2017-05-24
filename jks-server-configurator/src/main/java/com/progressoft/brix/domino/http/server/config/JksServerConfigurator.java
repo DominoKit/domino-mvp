@@ -33,6 +33,7 @@ public class JksServerConfigurator implements HttpServerConfigurator {
 
     private void enableSsl(ServerConfiguration configuration, HttpServerOptions options) {
         options.setSsl(TRUE);
+        options.setHost("localhost");
         options.setKeyStoreOptions(new JksOptions()
                 .setPath(getPath(configuration))
                 .setPassword(getSecret(configuration)))

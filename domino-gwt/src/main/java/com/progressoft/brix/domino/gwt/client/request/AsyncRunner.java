@@ -18,6 +18,7 @@ public class AsyncRunner {
     public AsyncRunner(ServerRequestEventFactory requestEventFactory) {
         this.requestEventFactory = requestEventFactory;
         Defaults.setServiceRoot(GWT.getHostPageBaseURL() + "service");
+        Defaults.setDispatcher(new DominoRequestDispatcher());
     }
 
     public final void run(final ClientServerRequest request) {

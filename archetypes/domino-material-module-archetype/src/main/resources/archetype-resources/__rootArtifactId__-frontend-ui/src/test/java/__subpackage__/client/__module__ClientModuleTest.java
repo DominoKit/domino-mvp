@@ -6,6 +6,7 @@ package ${package}.${subpackage}.client;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwtmockito.GwtMockitoTestRunner;
+import com.google.gwtmockito.WithClassesToStub;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +17,7 @@ import ${package}.${subpackage}.client.presenters.${module}Presenter;
 import com.progressoft.brix.domino.test.api.ModuleTestCase;
 
 @RunWith(GwtMockitoTestRunner.class)
+@WithClassesToStub(RootPanel.class)
 public class ${module}ClientModuleTest extends ModuleTestCase{
 
     private ${module}PresenterSpy presenterSpy;

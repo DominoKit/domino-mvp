@@ -67,6 +67,7 @@ public abstract class ClientServerRequest<P extends Presentable, R extends Serve
 
     public R arguments() {
         this.serverArgs = buildArguments();
+        this.serverArgs.setRequestKey(getKey());
         return this.serverArgs;
     }
 }

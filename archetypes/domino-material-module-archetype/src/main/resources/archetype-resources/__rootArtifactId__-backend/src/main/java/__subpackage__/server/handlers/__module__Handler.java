@@ -10,6 +10,9 @@ import ${package}.${subpackage}.shared.request.${module}Request;
 
 import java.util.logging.Logger;
 
+/**
+ * Sample request class
+ */
 @Handler("${module}Request")
 public class ${module}Handler implements RequestHandler<${module}Request, ${module}Response> {
     private static final Logger LOGGER= Logger.getLogger(${module}Handler.class.getName());
