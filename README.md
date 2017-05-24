@@ -58,7 +58,7 @@ There is still a lot of things to learn about domino please follow the below ste
 When Maven completes the tasks a new project will be created and thats it we now have a domino application ready to run and can add new modules to it.
 
 but before adding any new module lets take a look at the project structure as shown below image:
-![image10](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/020.png)
+![image10](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/)
 If you had noticed your project is a multi module maven project that contains two modules a back-end module and a front-end module both modules are described below,
 
 ##### Back-end module
@@ -87,13 +87,13 @@ Note that before starting we need to build the application first, open a termina
 ![image12](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/021.png)
 
 - Another window will pop up fill it as below;
- - Fill a name for the configuration.
- - Fill the Main class with : `com.progressoft.brix.domino.api.server.DominoLauncher`
- - Fill the program arguments with : `run com.progressoft.brix.domino.api.server.StartupVerticle -conf target/classes/config.json`
- - Select the Working directory as `demo-backend` module folder.
- - Select the Use class path of module as `demo-backend`
- - Make sure the JRE is 1.8.
- - Click **Apply and OK **.
+    - Fill a name for the configuration.
+    - Fill the Main class with : `com.progressoft.brix.domino.api.server.DominoLauncher`
+    - Fill the program arguments with : `run com.progressoft.brix.domino.api.server.StartupVerticle -conf target/classes/config.json`
+    - Select the Working directory as `demo-backend` module folder.
+    - Select the Use class path of module as `demo-backend`
+    - Make sure the JRE is 1.8.
+    - Click **Apply and OK **.
 
 ![image13](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/022.png)
 
