@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.progressoft.brix.domino.apt</groupId>
         <artifactId>domino-apt</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0-rc.1</version>
     </parent>
     <packaging>jar</packaging>
     <artifactId>apt-server</artifactId>
@@ -15,7 +15,7 @@
         <dependency>
             <groupId>com.progressoft.brix.domino.api</groupId>
             <artifactId>domino-api-shared</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0-rc.1</version>
         </dependency>
         <dependency>
             <groupId>io.vertx</groupId>
@@ -25,12 +25,12 @@
         <dependency>
             <groupId>com.progressoft.brix.domino.api</groupId>
             <artifactId>domino-api-server</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0-rc.1</version>
         </dependency>
         <dependency>
             <groupId>com.progressoft.brix.domino.apt</groupId>
             <artifactId>apt-commons</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0-rc.1</version>
         </dependency>
     </dependencies>
 </project>

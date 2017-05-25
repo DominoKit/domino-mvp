@@ -32,7 +32,7 @@ There is still a lot of things to learn about domino please follow the below ste
 - After clicking on add archetype button, another window will pop up fill it with the following values: 
   - GroupId: com.progressoft.brix.domino.archetypes
   - ArtifactId: domino-gwt-app-archetype
-  - Version: 1.0-SNAPSHOT
+  - Version: 1.0-rc.1
   
   ![image3](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/014.png)
 *After filling up the pop up click on the **OK** button.*

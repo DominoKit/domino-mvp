@@ -16,7 +16,7 @@
         <gwtVersion>2.8.1</gwtVersion>
         <material.version>2.0-rc4</material.version>
         <vertx.version>3.4.1</vertx.version>
-        <domino.version>1.0-SNAPSHOT</domino.version>
+        <domino.version>1.0-rc.1</domino.version>
     </properties>
 
     <licenses>

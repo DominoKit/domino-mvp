@@ -5,8 +5,9 @@
 
     <groupId>com.progressoft.brix.domino</groupId>
     <artifactId>domino</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0-rc.1</version>
     <packaging>pom</packaging>
+    <name>domino</name>
 
     <prerequisites>
         <maven>${mavenVersion}</maven>
@@ -17,8 +18,11 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <mavenVersion>3.0</mavenVersion>
-        <domino.version>1.0-SNAPSHOT</domino.version>
+        <domino.version>1.0-rc.1</domino.version>
     </properties>
+
+    <url>https://github.com/GwtDomino/domino</url>
+    <description>GWT Domino</description>
 
     <licenses>
         <license>
@@ -52,7 +56,6 @@
         <developerConnection>scm:git:git@github.com:GwtDomino/domino.git</developerConnection>
         <url>https://github.com/GwtDomino/domino</url>
     </scm>
-
 
     <distributionManagement>
         <snapshotRepository>
@@ -142,7 +145,7 @@
                 <configuration>
                     <serverId>ossrh</serverId>
                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                    <autoReleaseAfterClose>false</autoReleaseAfterClose>
                 </configuration>
             </plugin>
         </plugins>
