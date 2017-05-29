@@ -115,7 +115,9 @@ Below steps will help you to add a new domino module with a simple layout,
 
 - Right click on the **`domino-demo`** that is the main project the root level of the application, and select **New -> Module**.
 
-![image15](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/024.png)  ![image16](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/025.png)
+![image15](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/024.png)
+
+![image16](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/025.png)
 
 - We are adding a new archetype as explained above, click on add a archetype.
 *Note: make sure you have picked maven module and the create from archetype checkbox is checked as described above task.*
@@ -125,10 +127,12 @@ Below steps will help you to add a new domino module with a simple layout,
   - Version: 1.0-SNAPSHOT
 - Choose the created archetype and click **Next**.
 - In the Artifact Id set the value to `layout` and click **Next**.
+
 ![image17](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/026.png)
+
 - Click on the green add button ![enter image description here](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/007_add_button.png) and add the following values : 
-      -  Name : module, Value : Layout - notice he uppercase L -.
-      - Name : subpackage, Value : layout  - notice the lowercase l-
+   -  Name : module, Value : Layout - notice he uppercase L -.
+   - Name : subpackage, Value : layout  - notice the lowercase l-
       
 ![image18](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/027.png)
 ![image19](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/028.png)
