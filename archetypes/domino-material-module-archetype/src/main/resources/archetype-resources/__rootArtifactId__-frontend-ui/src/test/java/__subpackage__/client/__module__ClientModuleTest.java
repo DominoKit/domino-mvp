@@ -3,8 +3,7 @@
 #set( $symbol_escape = '\' )
 package ${package}.${subpackage}.client;
 
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import com.google.gwtmockito.WithClassesToStub;
 
