@@ -6,7 +6,7 @@
 
     <groupId>com.progressoft.brix.domino.logger</groupId>
     <artifactId>domino-logger</artifactId>
-    <version>1.0-rc.1</version>
+    <version>1.0-rc.2-SNAPSHOT</version>
     <packaging>gwt-lib</packaging>
     <name>domino-logger</name>
 

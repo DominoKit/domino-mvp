@@ -21,52 +21,12 @@
         <maven>${mavenVersion}</maven>
     </prerequisites>
 
-    <licenses>
-        <license>
-            <name>Apache 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
-        </license>
-    </licenses>
-
-    <developers>
-        <developer>
-            <name>Ahmad K. Bawaneh</name>
-            <email>akabme@gmail.com</email>
-        </developer>
-        <developer>
-            <name>Rafat J. Al-Barouki</name>
-            <email>rafat.albarouki@gmail.com</email>
-        </developer>
-        <developer>
-            <name>Farah M. Soudani</name>
-            <email>fsoudanii93@gmail.com</email>
-        </developer>
-    </developers>
-
-    <issueManagement>
-        <url>https://github.com/GwtDomino/domino/issues</url>
-        <system>GitHub Issues</system>
-    </issueManagement>
-
-    <scm>
-        <connection>scm:git:https://github.com/GwtDomino/domino.git</connection>
-        <developerConnection>scm:git:git@github.com:GwtDomino/domino.git</developerConnection>
-        <url>https://github.com/GwtDomino/domino</url>
-    </scm>
-
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <mavenVersion>3.0</mavenVersion>
-        <domino.version>1.0-rc.1</domino.version>
+        <domino.version>1.0-rc.2-SNAPSHOT</domino.version>
     </properties>
 
     <build>

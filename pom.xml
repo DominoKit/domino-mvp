@@ -5,7 +5,7 @@
 
     <groupId>com.progressoft.brix.domino</groupId>
     <artifactId>domino</artifactId>
-    <version>1.0-rc.1</version>
+    <version>1.0-rc.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>domino</name>
 
@@ -18,7 +18,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <mavenVersion>3.0</mavenVersion>
-        <domino.version>1.0-rc.1</domino.version>
+        <domino.version>1.0-rc.2-SNAPSHOT</domino.version>
     </properties>
 
     <url>https://github.com/GwtDomino/domino</url>
