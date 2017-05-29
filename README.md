@@ -108,7 +108,7 @@ INFO: Initialize domino module...
 Sun May 21 01:23:58 GMT+300 2017 domino.tutorial.AppClientModule
 INFO: Application frontend have been initialized.
 
-##### **Task 3 : Creating a new domino module** <a name="Task1"></a>
+##### **Task 3 : Creating a new domino module** <a name="Task3"></a>
 *As mentioned before we don't add any code to the back-end or front-end modules, in order for us to add a simple layout to the home page we need to add a new domino module.*
 
 Below steps will help you to add a new domino module with a simple layout,
