@@ -109,5 +109,32 @@ Sun May 21 01:23:58 GMT+300 2017 domino.tutorial.AppClientModule
 INFO: Application frontend have been initialized.
 
 ##### **Task 3 : Creating a new domino module** <a name="Task1"></a>
+*As mentioned before we don't add any code to the back-end or front-end modules, in order for us to add a simple layout to the home page we need to add a new domino module.*
 
+Below steps will help you to add a new domino module with a simple layout,
 
+- Right click on the **`domino-demo`** that is the main project the root level of the application, and select **New -> Module**.
+
+![image15](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/024.png)  ![image16](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/025.png)
+
+- We are adding a new archetype as explained above, click on add a archetype.
+*Note: make sure you have picked maven module and the create from archetype checkbox is checked as described above task.*
+- A window will pop up fill it with the following values: 
+  - GroupId: com.progressoft.brix.domino.archetypes
+  - ArtifactId: domino-material-module-archetype
+  - Version: 1.0-SNAPSHOT
+- Choose the created archetype and click **Next**.
+- In the Artifact Id set the value to `layout` and click **Next**.
+![image17](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/026.png)
+- Click on the green add button ![enter image description here](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/007_add_button.png) and add the following values : 
+      -  Name : module, Value : Layout - notice he uppercase L -.
+      - Name : subpackage, Value : layout  - notice the lowercase l-
+      
+![image18](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/027.png)
+![image19](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/028.png)
+
+- Click **Next** until you finish the wizard.
+- Wait until the maven task is completed then the new module should be created.
+- Take a look at the project structure after the creation of the new module as shown below image:
+
+![image20](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/029.png)
