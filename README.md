@@ -10,11 +10,11 @@ Domino is a small, simple, and  light weighted framework for building applicatio
 ## Domino Archetypes:
 
 #### Domino application
-Gruop Id : `com.progressoft.brix.domino.archetypes`
-
-Artifact Id  : `domino-gwt-app-archetype`
-
-Version      : `1.0-rc.1`
+> Gruop Id : `com.progressoft.brix.domino.archetypes`
+> 
+> Artifact Id  : `domino-gwt-app-archetype`
+> 
+> Version      : `1.0-rc.1`
 
 #### Domino module
 Gruop Id : `com.progressoft.brix.domino.archetypes`
