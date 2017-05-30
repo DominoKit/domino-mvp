@@ -7,22 +7,28 @@ Domino is a small, simple, and  light weighted framework for building applicatio
 
 **We are still not done yet!** Domino comes with ready to use archetypes, one is for creating a domino application, and the other two creates the modules within a domino application the difference between the last two archetypes is that one of these archetypes comes with GMD [GWT Material Design](https://github.com/GwtMaterialDesign) set-up and ready.
 
-##Domino Archetypes:
+## Domino Archetypes:
 
-####Domino application
-> Gruop Id : `com.progressoft.brix.domino.archetypes`
-> Artifact Id  : `domino-gwt-app-archetype`
-> Version      : `1.0-rc.1`
+#### Domino application
+Gruop Id : `com.progressoft.brix.domino.archetypes`
 
-####Domino module
-> Gruop Id : `com.progressoft.brix.domino.archetypes`
-> Artifact Id  : `domino-gwt-module-archetype`
-> Version      : `1.0-rc.1`
+Artifact Id  : `domino-gwt-app-archetype`
 
-####Domino module with GMD
-> Gruop Id : `com.progressoft.brix.domino.archetypes`
-> Artifact Id  : `domino-material-module-archetype`
-> Version      : `1.0-rc.1`
+Version      : `1.0-rc.1`
+
+#### Domino module
+Gruop Id : `com.progressoft.brix.domino.archetypes`
+
+Artifact Id  : `domino-gwt-module-archetype`
+
+Version      : `1.0-rc.1`
+
+#### Domino module with GMD
+Gruop Id : `com.progressoft.brix.domino.archetypes`
+
+Artifact Id  : `domino-material-module-archetype`
+
+Version      : `1.0-rc.1`
 
 There is still a lot of things to learn about domino please follow the below step by step tutorial that explains and shows the simplicity of domino and how to use it.
 
