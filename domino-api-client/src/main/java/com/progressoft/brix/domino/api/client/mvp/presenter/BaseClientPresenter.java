@@ -4,12 +4,13 @@ import com.progressoft.brix.domino.api.client.ClientApp;
 import com.progressoft.brix.domino.api.client.extension.Contributions;
 import com.progressoft.brix.domino.api.client.mvp.view.View;
 import com.progressoft.brix.domino.api.shared.extension.ExtensionPoint;
-import com.progressoft.brix.domino.logger.client.CoreLogger;
-import com.progressoft.brix.domino.logger.client.CoreLoggerFactory;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class BaseClientPresenter<V extends View> implements ClientPresenter<V>{
 
-    private static final CoreLogger LOGGER= CoreLoggerFactory.getLogger(BaseClientPresenter.class);
+    private static final Logger LOGGER= LoggerFactory.getLogger(BaseClientPresenter.class);
 
     private final PresenterState initialized = () ->
         LOGGER.info("Presenter "+BaseClientPresenter.this.getClass()+" Have already initialized.");

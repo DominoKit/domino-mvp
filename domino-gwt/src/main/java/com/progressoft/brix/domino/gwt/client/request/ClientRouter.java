@@ -5,12 +5,13 @@ import com.google.gwt.core.client.RunAsyncCallback;
 import com.progressoft.brix.domino.api.client.events.ClientRequestEventFactory;
 import com.progressoft.brix.domino.api.client.request.ClientRequest;
 import com.progressoft.brix.domino.api.client.request.RequestRouter;
-import com.progressoft.brix.domino.logger.client.CoreLogger;
-import com.progressoft.brix.domino.logger.client.CoreLoggerFactory;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ClientRouter implements RequestRouter<ClientRequest> {
 
-    private static final CoreLogger LOGGER = CoreLoggerFactory.getLogger(ClientRouter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ClientRouter.class);
 
     private final ClientRequestEventFactory requestEventFactory;
 

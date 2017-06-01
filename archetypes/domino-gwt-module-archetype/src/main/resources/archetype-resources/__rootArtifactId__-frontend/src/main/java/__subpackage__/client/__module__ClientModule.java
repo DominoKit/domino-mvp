@@ -7,14 +7,13 @@ import com.google.gwt.core.client.EntryPoint;
 import com.progressoft.brix.domino.api.client.ModuleConfigurator;
 import com.progressoft.brix.domino.api.client.annotations.ClientModule;
 
-import com.progressoft.brix.domino.logger.client.CoreLogger;
-import com.progressoft.brix.domino.logger.client.CoreLoggerFactory;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @ClientModule(name="${module}")
 public class ${module}ClientModule implements EntryPoint {
 
-	private static final CoreLogger LOGGER = CoreLoggerFactory.getLogger(${module}ClientModule.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(${module}ClientModule.class);
 
 	public void onModuleLoad() {
 		LOGGER.info("Initializing ${module} client module ...");

@@ -4,11 +4,11 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.web.bindery.event.shared.Event;
 import com.progressoft.brix.domino.api.client.events.EventsBus;
-import com.progressoft.brix.domino.logger.client.CoreLogger;
-import com.progressoft.brix.domino.logger.client.CoreLoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SimpleEventsBus implements EventsBus<Event<GwtEventProcessor>> {
-    private static final CoreLogger LOGGER = CoreLoggerFactory.getLogger(SimpleEventsBus.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleEventsBus.class);
 
     private static final EventBus simpleGwtEventsBus = new SimpleEventBus();
 

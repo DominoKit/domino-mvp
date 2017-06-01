@@ -2,12 +2,12 @@ package com.progressoft.brix.domino.gwt.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.progressoft.brix.domino.gwt.client.app.CoreModule;
-import com.progressoft.brix.domino.logger.client.CoreLogger;
-import com.progressoft.brix.domino.logger.client.CoreLoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Core implements EntryPoint {
 
-    private static final CoreLogger LOGGER = CoreLoggerFactory.getLogger(Core.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Core.class);
 
     @Override
     public void onModuleLoad() {

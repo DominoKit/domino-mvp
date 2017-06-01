@@ -4,15 +4,16 @@ import com.progressoft.brix.domino.api.client.mvp.presenter.Presentable;
 import com.progressoft.brix.domino.api.shared.request.FailedServerResponse;
 import com.progressoft.brix.domino.api.shared.request.ServerRequest;
 import com.progressoft.brix.domino.api.shared.request.ServerResponse;
-import com.progressoft.brix.domino.logger.client.CoreLogger;
-import com.progressoft.brix.domino.logger.client.CoreLoggerFactory;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
 public abstract class ClientServerRequest<P extends Presentable, R extends ServerRequest, S extends ServerResponse>
         extends BaseRequest implements ServerFailedHandler<P, R> {
 
-    private static final CoreLogger LOGGER = CoreLoggerFactory.getLogger(ClientServerRequest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ClientServerRequest.class);
 
     private R serverArgs;
 

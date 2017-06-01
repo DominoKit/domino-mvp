@@ -37,15 +37,9 @@
             <classifier>sources</classifier>
         </dependency>
         <dependency>
-            <groupId>com.progressoft.brix.domino.logger</groupId>
-            <artifactId>domino-logger</artifactId>
-            <version>${domino.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.progressoft.brix.domino.logger</groupId>
-            <artifactId>domino-logger</artifactId>
-            <version>${domino.version}</version>
-            <classifier>sources</classifier>
+            <groupId>ru.finam</groupId>
+            <artifactId>slf4j-gwt</artifactId>
+            <version>1.7.7.1</version>
         </dependency>
         <dependency>
             <groupId>com.progressoft.brix.domino.apt</groupId>

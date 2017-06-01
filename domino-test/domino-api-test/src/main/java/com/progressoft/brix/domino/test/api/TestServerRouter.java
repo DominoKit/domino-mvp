@@ -11,12 +11,13 @@ import com.progressoft.brix.domino.api.server.ServerApp;
 import com.progressoft.brix.domino.api.server.entrypoint.ServerEntryPointContext;
 import com.progressoft.brix.domino.api.shared.request.FailedServerResponse;
 import com.progressoft.brix.domino.api.shared.request.ServerResponse;
-import com.progressoft.brix.domino.logger.client.CoreLogger;
-import com.progressoft.brix.domino.logger.client.CoreLoggerFactory;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TestServerRouter implements RequestRouter<ClientServerRequest> {
 
-    private static final CoreLogger LOGGER = CoreLoggerFactory.getLogger(TestServerRouter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TestServerRouter.class);
 
     private final ServerRequestEventFactory eventFactory = new ServerRequestEventFactory() {
         @Override

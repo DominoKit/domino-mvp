@@ -7,12 +7,13 @@ import com.progressoft.brix.domino.api.client.events.ServerRequestEventFactory;
 import com.progressoft.brix.domino.api.client.request.ClientServerRequest;
 import com.progressoft.brix.domino.api.client.request.ServerRequestCallBack;
 import com.progressoft.brix.domino.api.shared.request.ServerResponse;
-import com.progressoft.brix.domino.logger.client.CoreLogger;
-import com.progressoft.brix.domino.logger.client.CoreLoggerFactory;
 import org.fusesource.restygwt.client.Defaults;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class AsyncRunner {
-    private static final CoreLogger LOGGER = CoreLoggerFactory.getLogger(AsyncRunner.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AsyncRunner.class);
     private final ServerRequestEventFactory requestEventFactory;
 
     public AsyncRunner(ServerRequestEventFactory requestEventFactory) {

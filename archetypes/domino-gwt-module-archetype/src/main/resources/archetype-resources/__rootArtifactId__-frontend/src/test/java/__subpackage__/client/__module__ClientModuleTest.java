@@ -4,6 +4,8 @@
 package ${package}.${subpackage}.client;
 
 import org.junit.Test;
+import com.google.gwtmockito.GwtMockitoTestRunner;
+import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
 
