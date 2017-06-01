@@ -35,6 +35,12 @@
                 <include>**/*.txt</include>
             </includes>
         </fileSet>
+        <fileSet filtered="true" packaged="false" encoding="UTF-8">
+            <directory>runConfigurations</directory>
+            <includes>
+                <include>**/*.*</include>
+            </includes>
+        </fileSet>
     </fileSets>
     <modules>
         <module id="${rootArtifactId}-frontend" dir="__rootArtifactId__-frontend" name="${rootArtifactId}-frontend">
