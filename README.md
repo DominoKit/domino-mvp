@@ -10,7 +10,7 @@ Domino is a small, simple, and  light weighted framework for building applicatio
 
 ## **Table of Contents**
 * [Domino Archetypes](#Task0)
-* [Task 1 : Create your first domino application](#Task1)
+* [Task 1: Create your first domino application](#Task1)
 * [Task 2: Run the application](#Task2)
 * [Task 3: Creating a new domino module](#Task3)
 * [Task 4: Implementing UI layout](#Task4)
