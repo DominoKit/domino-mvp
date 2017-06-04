@@ -81,8 +81,6 @@ We are going to start by creating a new project.
 
 - Continue by clicking **Next**.		
 
-![image7](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/017.png)
-
 - Fill the dialog as shown below image and click **Finish**.	
 
 ![image8](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/018.png)
