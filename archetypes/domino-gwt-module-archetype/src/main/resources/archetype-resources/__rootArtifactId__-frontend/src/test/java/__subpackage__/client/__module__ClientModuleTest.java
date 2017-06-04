@@ -22,7 +22,7 @@ import com.progressoft.brix.domino.test.api.ModuleTestCase;
 public class ${module}ClientModuleTest extends ModuleTestCase{
 
     private ${module}PresenterSpy presenterSpy;
-    private ${module}ViewSpy viewSpy;
+    private Fake${module}View fakeView;
 
     @Override
     public void setUp() {
@@ -35,7 +35,7 @@ public class ${module}ClientModuleTest extends ModuleTestCase{
             return presenterSpy;
         });
 
-        viewSpy=testModule.getView(${module}Presenter.class.getCanonicalName());
+        fakeView=testModule.getView(${module}Presenter.class.getCanonicalName());
     }
 
     @Test

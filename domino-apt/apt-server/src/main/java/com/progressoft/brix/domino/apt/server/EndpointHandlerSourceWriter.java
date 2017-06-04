@@ -77,7 +77,7 @@ public class EndpointHandlerSourceWriter extends JavaSourceWriter {
 
     private void completeHandler(MethodBuilder methodBuilder) {
         methodBuilder.line(response.asSimpleName() + " response=(" + response.asSimpleName() +
-                ")serverApp.executeRequest(requestBody, new VertxEntryPointContext(routingContext, serverApp.serverContext().config()))")
+                ")serverApp.executeRequest(requestBody, new VertxEntryPointContext(routingContext, serverApp.serverContext().config(), routingContext.vertx()))")
                 .line("routingContext.response()\n" +
                         "                .putHeader(\"content-type\", \"application/json\")\n" +
                         "                .end(Json.encode(response));")
@@ -85,7 +85,7 @@ public class EndpointHandlerSourceWriter extends JavaSourceWriter {
     }
 
     private void completeHandlerCallback(MethodBuilder methodBuilder) {
-        methodBuilder.line("serverApp.executeCallbackRequest(requestBody, new VertxEntryPointContext(routingContext, serverApp.serverContext().config()), response -> {", false)
+        methodBuilder.line("serverApp.executeCallbackRequest(requestBody, new VertxEntryPointContext(routingContext, serverApp.serverContext().config(), routingContext.vertx()), response -> {", false)
                 .line("routingContext.response()\n" +
                         "                .putHeader(\"content-type\", \"application/json\")\n" +
                         "                .end(Json.encode(("+response.asSimpleName()+")response));")

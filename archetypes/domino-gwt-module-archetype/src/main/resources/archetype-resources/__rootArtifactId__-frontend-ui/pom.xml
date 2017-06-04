@@ -88,6 +88,11 @@
                 <includes>
                     <include>**/*.java</include>
                     <include>**/*.gwt.xml</include>
+                    <include>**/*.ui.xml</include>
+                    <include>**/*.css</include>
+                    <include>**/*.gss</include>
+                    <include>**/*.txt</include>
+                    <include>**/*.html</include>
                 </includes>
             </resource>
             <resource>

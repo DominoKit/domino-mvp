@@ -15,7 +15,7 @@ public class AppClientModule implements EntryPoint {
 
     public void onModuleLoad() {
         ClientApp.make().run();
-        LOGGER.info("Application frontend have been initialized.");
+        LOGGER.info("${rootArtifactId} Application frontend have been initialized.");
         History.fireCurrentHistoryState();
     }
 }
