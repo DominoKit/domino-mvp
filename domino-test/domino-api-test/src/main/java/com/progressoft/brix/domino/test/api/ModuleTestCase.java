@@ -27,7 +27,8 @@ public abstract class ModuleTestCase {
     public void moduleSetup() {
         testModule = new TestModule();
         ServerConfiguration testServerConfiguration=new VertxConfiguration(new JsonObject());
-        testEntryPointContext = new VertxEntryPointContext(createMock(RoutingContext.class), testServerConfiguration);
+        testEntryPointContext = new VertxEntryPointContext(createMock(RoutingContext.class), testServerConfiguration,
+                vertx);
         testModule.init(testEntryPointContext);
         attributes.clear();
         setUp();

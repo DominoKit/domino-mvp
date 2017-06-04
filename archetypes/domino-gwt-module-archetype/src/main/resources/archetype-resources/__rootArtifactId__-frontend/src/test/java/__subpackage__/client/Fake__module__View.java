@@ -9,7 +9,7 @@ import ${package}.${subpackage}.client.presenters.${module}Presenter;
 import com.progressoft.brix.domino.api.client.annotations.UiView;
 
 @UiView(presentable=${module}Presenter.class)
-public class ${module}ViewSpy implements ${module}View {
+public class Fake${module}View implements ${module}View {
 
     @Override
     public IsWidget get() {

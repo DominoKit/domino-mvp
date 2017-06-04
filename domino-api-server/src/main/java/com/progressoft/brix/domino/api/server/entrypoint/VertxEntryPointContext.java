@@ -1,17 +1,20 @@
 package com.progressoft.brix.domino.api.server.entrypoint;
 
 import com.progressoft.brix.domino.api.server.config.ServerConfiguration;
+import io.vertx.core.Vertx;
 import io.vertx.ext.web.RoutingContext;
 
 public class VertxEntryPointContext implements ServerEntryPointContext {
 
     private final RoutingContext routingContext;
     private final ServerConfiguration serverConfiguration;
+    private final Vertx vertx;
 
     public VertxEntryPointContext(RoutingContext routingContext,
-                                  ServerConfiguration serverConfiguration) {
+                                  ServerConfiguration serverConfiguration, Vertx vertx) {
         this.routingContext = routingContext;
         this.serverConfiguration = serverConfiguration;
+        this.vertx = vertx;
     }
 
     public RoutingContext getRoutingContext() {
@@ -22,8 +25,12 @@ public class VertxEntryPointContext implements ServerEntryPointContext {
         return serverConfiguration;
     }
 
+    public Vertx vertx(){
+        return vertx;
+    }
+
     @Override
     public String getName() {
-        return "VERTX";
+        return VertxEntryPointContext.class.getCanonicalName();
     }
 }

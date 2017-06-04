@@ -15,7 +15,8 @@ public class FirstHandlerEndpointHandler implements Handler<RoutingContext> {
         ServerApp serverApp=ServerApp.make();
         FirstRequest requestBody = Json.decodeValue(routingContext.getBodyAsString(), FirstRequest.class);
         ServerResponse response = (ServerResponse) serverApp
-                .executeRequest(requestBody, new VertxEntryPointContext(routingContext, serverApp.serverContext().config()));
+                .executeRequest(requestBody, new VertxEntryPointContext(routingContext, serverApp.serverContext().config(),
+                        routingContext.vertx()));
         routingContext.response()
                 .putHeader("content-type", "application/json")
                 .end(Json.encode(response));

@@ -14,7 +14,8 @@ public class ThirdHandlerEndpointHandler implements Handler<RoutingContext> {
         ServerApp serverApp=ServerApp.make();
         ThirdRequest requestBody = Json.decodeValue(routingContext.getBodyAsString(), ThirdRequest.class);
         ServerResponse response = (ServerResponse) serverApp
-                .executeRequest(requestBody, new VertxEntryPointContext(routingContext, serverApp.serverContext().config()));
+                .executeRequest(requestBody, new VertxEntryPointContext(routingContext, serverApp.serverContext().config(),
+                        routingContext.vertx()));
         routingContext.response()
                 .putHeader("content-type", "application/json")
                 .end(Json.encode(response));
