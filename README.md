@@ -40,11 +40,11 @@ There is still a lot of things to learn about domino please follow the below ste
 
 
 ## **Task 1 : Create your first domino application** <a name="Task1"></a>
-*For this tutorial we are going to implement a very simple domino application in which will end up with a simple layout and a simple form that lookup someones email  from the server, just like the gif below :
+For this tutorial we are going to implement a very simple domino application in which will end up with a simple layout and a simple form that lookup someones email  from the server, just like the gif below :
 
 ![enter image description here](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/050_contact_ui.gif)
 
-we will use [Intellij](https://www.jetbrains.com/idea/) IDE and make sure your JDK is 1.8 or higher*		
+we will use [Intellij](https://www.jetbrains.com/idea/) IDE and make sure your JDK is 1.8 or higher	
 			
 We are going to start by creating a new project.
 
@@ -166,7 +166,7 @@ Below steps will help you to add a new domino module with a simple layout,
 ![image17](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/026.png)
 
 - Click on the green add button ![enter image description here](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/007_add_button.png) and add the following values : 
-      -  Name : module, Value : Layout - notice he uppercase L -.
+      - Name : module, Value : Layout - notice he uppercase L -.
       - Name : subpackage, Value : layout  - notice the lowercase l-
       
 ![image18](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/027.png)
@@ -220,10 +220,10 @@ Open the module you will notice few classes already created, in some cases this 
 ``` 
         
 Notice other compilation errors this might be because of the exclusion of the target folder, generated sources are normally excluded from the source path we need to add them as list below,
-	- Rebuild the project.
-	- Exclude the target folder.
-	- Include the generated-sources/annotations and test-generated-sources/annotations folders as sources directories.
-     
+  - Rebuild the project.
+  - Exclude the target folder.
+  - Include the generated-sources/annotations and test-generated-sources/annotations folders as sources directories.
+   
 - **layout-frontend-ui** : this is where all the UI rendering stuff goes in, Views, UIBinders and CSS all goes into this module, the views in this module should implement interfaces defined within the frontend module and in this module we are going to implement our actual layout we will be using GMD for that.
 - **layout-shared** : this is where the classes that are shared between the frontend modules and backend module goes in, interfaces and data structures are in the shared module, the classes that are in this module should follow the rules of a shared GWT package, the actual role of this module is to decouple the frontend from the backend and what's more important is to decouple the front-end and the back-end of this module from other modules. In our current demonstration this is more than what we need, lets clean it up a bit, follow the points below,
 	- Open the `layout-shared` module and navigate through the source until you find the **request and response** packages as shown below image, 
