@@ -31,7 +31,7 @@ Domino is a small, simple, and  light weighted framework for building applicatio
 > 
 > Version      : `1.0-rc.1`
 
-#####**Domino module with GMD**
+##### **Domino module with GMD**
 > Gruop Id : `com.progressoft.brix.domino.archetypes`
 > 
 > Artifact Id  : `domino-material-module-archetype`
