@@ -206,7 +206,7 @@ Open the module you will notice few classes already created, in some cases this 
 	
 	![image22](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/031.png)
 	
-       - Also remove the import com.progressoft.domino.sample.layout.client.requests.LayoutServerRequest;
+      - Also remove the import com.progressoft.domino.sample.layout.client.requests.LayoutServerRequest;
 
 	- Open the layout-frontend `pom.xml` file and remove the dependency on the layout-backend with the test scope.
 ```
