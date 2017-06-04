@@ -197,7 +197,6 @@ layout-backend module is not needed for this module, can be deleted easily as li
 - **layout-frontend** : this is where all the client side flow goes in, in this module we use APT to generate a client module configuration, also the interaction with other modules, contributions to extension points, sending requests, and add all client side logic starts from here. Never ass any UI rendering code, we don't force you but in this module you should never have buttons, text fields, check boxes etc ... 
 We encourage that your flow should be independent from any UI presentation and terms we are going to demonstrate it as we go further with this task.
 Open the module you will notice few classes already created, in some cases this might be all what we need but in our current demonstration this is more than what we need, lets clean it up a bit, follow the points below,
-
 	- Open the `layout-frontend` module and navigate through the source until you find the **requests** package as shown below image,
 	
 	![image21](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/030.png)
@@ -207,7 +206,7 @@ Open the module you will notice few classes already created, in some cases this 
 	
 	![image22](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/031.png)
 	
-       - Also remove the import com.progressoft.domino.sample.layout.client.requests.LayoutServerRequest;
+    - Also remove the import com.progressoft.domino.sample.layout.client.requests.LayoutServerRequest;
 
 	- Open the layout-frontend `pom.xml` file and remove the dependency on the layout-backend with the test scope.
 ```
@@ -221,9 +220,9 @@ Open the module you will notice few classes already created, in some cases this 
 ``` 
         
 Notice other compilation errors this might be because of the exclusion of the target folder, generated sources are normally excluded from the source path we need to add them as list below,
-       - Rebuild the project.
-       - Exclude the target folder.
-       - Include the generated-sources/annotations and test-generated-sources/annotations folders as sources directories.
+        - Rebuild the project.
+        - Exclude the target folder.
+        - Include the generated-sources/annotations and test-generated-sources/annotations folders as sources directories.
      
 - **layout-frontend-ui** : this is where all the UI rendering stuff goes in, Views, UIBinders and CSS all goes into this module, the views in this module should implement interfaces defined within the frontend module and in this module we are going to implement our actual layout we will be using GMD for that.
 - **layout-shared** : this is where the classes that are shared between the frontend modules and backend module goes in, interfaces and data structures are in the shared module, the classes that are in this module should follow the rules of a shared GWT package, the actual role of this module is to decouple the frontend from the backend and what's more important is to decouple the front-end and the back-end of this module from other modules. In our current demonstration this is more than what we need, lets clean it up a bit, follow the points below,
