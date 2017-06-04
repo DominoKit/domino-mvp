@@ -15,7 +15,7 @@ Domino is a small, simple, and  light weighted framework for building applicatio
 * [Task 3: Creating a new domino module](#Task3)
 * [Task 4: Implementing UI layout](#Task4)
 
-####**Domino Archetypes**<a name="Task0"></a>:		
+#### **Domino Archetypes**<a name="Task0"></a>:		
 
 ##### **Domino application**
 > Gruop Id : `com.progressoft.brix.domino.archetypes`
