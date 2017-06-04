@@ -53,7 +53,7 @@ We are going to start by creating a new project.
 
 - Open intellij and press on Create New Project.
 
-![image1](https://raw.githubusercontent.com/GwtDomino/domino/0d80397597737c14f08032856adc6cba36b188a7/documents/012.png)
+![image1](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/012.png)
 
 - We are going to create a new Maven project using the domino application archetype, a window will pop up make sure of the below values:
   - step 1: maven.
