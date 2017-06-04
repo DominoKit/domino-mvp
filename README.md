@@ -220,7 +220,7 @@ Open the module you will notice few classes already created, in some cases this 
 ``` 
         
 
-    - Notice other compilation errors this might be because of the exclusion of the target folder, generated sources are normally excluded from the source path we need to add them as list below,
+     - Notice other compilation errors this might be because of the exclusion of the target folder, generated sources are normally excluded from the source path we need to add them as list below,
      -  Rebuild the project.
      - Exclude the target folder.
      - Include the generated-sources/annotations and test-generated-sources/annotations folders as sources directories.
