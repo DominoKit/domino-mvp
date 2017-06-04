@@ -220,9 +220,9 @@ Open the module you will notice few classes already created, in some cases this 
 ``` 
         
 Notice other compilation errors this might be because of the exclusion of the target folder, generated sources are normally excluded from the source path we need to add them as list below,
-        - Rebuild the project.
-        - Exclude the target folder.
-        - Include the generated-sources/annotations and test-generated-sources/annotations folders as sources directories.
+	- Rebuild the project.
+	- Exclude the target folder.
+	- Include the generated-sources/annotations and test-generated-sources/annotations folders as sources directories.
      
 - **layout-frontend-ui** : this is where all the UI rendering stuff goes in, Views, UIBinders and CSS all goes into this module, the views in this module should implement interfaces defined within the frontend module and in this module we are going to implement our actual layout we will be using GMD for that.
 - **layout-shared** : this is where the classes that are shared between the frontend modules and backend module goes in, interfaces and data structures are in the shared module, the classes that are in this module should follow the rules of a shared GWT package, the actual role of this module is to decouple the frontend from the backend and what's more important is to decouple the front-end and the back-end of this module from other modules. In our current demonstration this is more than what we need, lets clean it up a bit, follow the points below,
