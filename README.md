@@ -2,34 +2,35 @@
 <p align="center">
 <a title="Gitter" href=""><img src="https://badges.gitter.im/Join%20Chat.svg"></a>
 </p>
-Domino is a small, simple, and  light weighted framework for building applications using  [GWT](http://www.gwtproject.org/)  and [Vertx](http://vertx.io/).  Domino introduces the concept of extension points and contributions allowing developers to write a modular application with shared component with any other domino application. With vertx as a back-end engine domino gives the ability and choice to build one monolithic but yet modular application, but also provides extensions in which a large application is built as a suite of micro-services, moreover allows building the application using TDD approach with practices offering an easy and fast way to debug for both client and service side.
+Domino is a small, simple, and  light weighted framework for building applications using [GWT] (http://www.gwtproject.org/)and [Vertx] (http://vertx.io/). Domino introduces the concept of extension points and contributions allowing developers to write a modular application with shared component with any other domino application. With vertx as a back-end engine domino gives the ability and choice to build one monolithic but yet modular application, but also provides extensions in which a large application is built as a suite of micro-services, moreover allows building the application using TDD approach with practices offering an easy and fast way to debug for both client and service side.
+
 
 **We are still not done yet!** Domino comes with ready to use archetypes, one is for creating a domino application, and the other two creates the modules within a domino application the difference between the last two archetypes is that one of these archetypes comes with GMD [GWT Material Design](https://github.com/GwtMaterialDesign) set-up and ready.
 
-## Domino Archetypes:		
-			
-	#### Domino application		
-	> Gruop Id : `com.progressoft.brix.domino.archetypes`		
-	> 		
-	> Artifact Id  : `domino-gwt-app-archetype`		
-	> 		
-	> Version      : `1.0-rc.1`		
-			
-	#### Domino module		
-	> Gruop Id : `com.progressoft.brix.domino.archetypes`		
-	> 		
-	> Artifact Id  : `domino-gwt-module-archetype`		
-	> 		
-	> Version      : `1.0-rc.1`		
-			
-	#### Domino module with GMD		
-	> Gruop Id : `com.progressoft.brix.domino.archetypes`		
-	> 		
-	> Artifact Id  : `domino-material-module-archetype`		
-	> 		
-	> Version      : `1.0-rc.1`		
-	
+### Domino Archetypes:		
 
+#### Domino application
+> Gruop Id : `com.progressoft.brix.domino.archetypes`
+> 
+> Artifact Id  : `domino-gwt-app-archetype`
+> 
+> Version      : `1.0-rc.1`
+
+#### Domino module
+> Gruop Id : `com.progressoft.brix.domino.archetypes`
+> 
+> Artifact Id  : `domino-gwt-module-archetype`
+> 
+> Version      : `1.0-rc.1`
+
+#### Domino module with GMD
+> Gruop Id : `com.progressoft.brix.domino.archetypes`
+> 
+> Artifact Id  : `domino-material-module-archetype`
+> 
+> Version      : `1.0-rc.1`
+	
+	
 There is still a lot of things to learn about domino please follow the below step by step tutorial that explains and shows the simplicity of domino and how to use it.
 
 # **Table of Contents**
@@ -161,7 +162,9 @@ Below steps will help you to add a new domino module with a simple layout,
   - Version: 1.0-SNAPSHOT
 - Choose the created archetype and click **Next**.
 - In the Artifact Id set the value to `layout` and click **Next**.
+
 ![image17](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/026.png)
+
 - Click on the green add button ![enter image description here](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/007_add_button.png) and add the following values : 
       -  Name : module, Value : Layout - notice he uppercase L -.
       - Name : subpackage, Value : layout  - notice the lowercase l-
@@ -182,14 +185,15 @@ layout-backend module is not needed for this module, can be deleted easily as li
 	- Right click on the `layout-backend` module and select **Remove module**.
 	- Right click on the `layout-backend` module and select **Delete**.
 	- Open the `layout` module `pom.xml` file and remove the `layout-backend` module from the modules list.
+
 		 ``` 
 			<modules>
 		        <module>layout-frontend</module>
 		        <module>layout-frontend-ui</module>
 		        <module>layout-shared</module>
 		        <module>layout-backend</module> <!-- remove this line -->
-		    </modules>
-    ```
+		    </modules> ```
+
 - **layout-frontend** : this is where all the client side flow goes in, in this module we use APT to generate a client module configuration, also the interaction with other modules, contributions to extension points, sending requests, and add all client side logic starts from here. Never ass any UI rendering code, we don't force you but in this module you should never have buttons, text fields, check boxes etc ... 
 We encourage that your flow should be independent from any UI presentation and terms we are going to demonstrate it as we go further with this task.
 Open the module you will notice few classes already created, in some cases this might be all what we need but in our current demonstration this is more than what we need, lets clean it up a bit, follow the points below,
@@ -205,14 +209,15 @@ Open the module you will notice few classes already created, in some cases this 
     - Also remove the import com.progressoft.domino.sample.layout.client.requests.LayoutServerRequest;
 
 	- Open the layout-frontend `pom.xml` file and remove the dependency on the layout-backend with the test scope.
-> ```<!-- remove this -->
+ ```
+<!-- remove this -->
  <dependency>
             <groupId>domino.tutorial</groupId>
             <artifactId>layout-backend</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>test</scope>
-        </dependency>
-        ``` 
+        </dependency> 
+``` 
         
     - Notice other compilation errors this might be because of the exclusion of the target folder, generated sources are normally excluded from the source path we need to add them as list below,
      -  Rebuild the project.
@@ -229,7 +234,8 @@ Open the module you will notice few classes already created, in some cases this 
 	
 We created a new module but we didn't add it to our application, in order to add it we need to add the `layout-frontend`, `layout-frontend-ui` and `layout-shared` to the `demo-frontend` module dependencies, and since we are dealing with GWT modules we will need to include the source dependencies too.
 - Open the `demo-frontend` pom.xml file and paste the following dependencies into the dependencies section :
-	```
+	
+```
 		    <!-- layout-frontend -->
             <dependency>
                 <groupId>domino.tutorial</groupId>
@@ -265,10 +271,10 @@ We created a new module but we didn't add it to our application, in order to add
                 <artifactId>layout-shared</artifactId>
                 <version>1.0-SNAPSHOT</version>
                 <classifier>sources</classifier>
-            </dependency>
+            </dependency> 
 ```
 
-we are done, now we can test our application and see if the module is working so lets build and run the application again, follow the list below,
+We are done, now we can test our application and see if the module is working so lets build and run the application again, follow the list below,
 
  - Open an a  intellij terminal and and execute `mvn clean install`.
  - When the maven task is completed, Click on the **Run** button.
