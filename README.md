@@ -2,28 +2,36 @@
 <p align="center">
 <a title="Gitter" href=""><img src="https://badges.gitter.im/Join%20Chat.svg"></a>
 </p>
-Domino is a small, simple, and  light weighted framework for building applications using [GWT] (http://www.gwtproject.org/)and [Vertx] (http://vertx.io/). Domino introduces the concept of extension points and contributions allowing developers to write a modular application with shared component with any other domino application. With vertx as a back-end engine domino gives the ability and choice to build one monolithic but yet modular application, but also provides extensions in which a large application is built as a suite of micro-services, moreover allows building the application using TDD approach with practices offering an easy and fast way to debug for both client and service side.
+
+Domino is a small, simple, and  light weighted framework for building applications using [GWT](http://www.gwtproject.org/) and [Vertx](http://vertx.io/). Domino introduces the concept of extension points and contributions allowing developers to write a modular application with shared component with any other domino application. With vertx as a back-end engine domino gives the ability and choice to build one monolithic but yet modular application, but also provides extensions in which a large application is built as a suite of micro-services, moreover allows building the application using TDD approach with practices offering an easy and fast way to debug for both client and service side.
 
 
 **We are still not done yet!** Domino comes with ready to use archetypes, one is for creating a domino application, and the other two creates the modules within a domino application the difference between the last two archetypes is that one of these archetypes comes with GMD [GWT Material Design](https://github.com/GwtMaterialDesign) set-up and ready.
 
-### Domino Archetypes:		
+## **Table of Contents**
+* [Domino Archetypes](#Task0)
+* [Task 1 : Create your first domino application](#Task1)
+* [Task 2: Run the application](#Task2)
+* [Task 3: Creating a new domino module](#Task3)
+* [Task 4: Implementing UI layout](#Task4)
 
-#### Domino application
+####**Domino Archetypes**<a name="Task0"></a>:		
+
+##### **Domino application**
 > Gruop Id : `com.progressoft.brix.domino.archetypes`
 > 
 > Artifact Id  : `domino-gwt-app-archetype`
 > 
 > Version      : `1.0-rc.1`
 
-#### Domino module
+##### **Domino module**
 > Gruop Id : `com.progressoft.brix.domino.archetypes`
 > 
 > Artifact Id  : `domino-gwt-module-archetype`
 > 
 > Version      : `1.0-rc.1`
 
-#### Domino module with GMD
+#####**Domino module with GMD**
 > Gruop Id : `com.progressoft.brix.domino.archetypes`
 > 
 > Artifact Id  : `domino-material-module-archetype`
@@ -31,20 +39,15 @@ Domino is a small, simple, and  light weighted framework for building applicatio
 > Version      : `1.0-rc.1`
 	
 	
-There is still a lot of things to learn about domino please follow the below step by step tutorial that explains and shows the simplicity of domino and how to use it.
-
-# **Table of Contents**
-* [Task 1 : Create your first domino application](#Task1)
-* [Task 2: Run the application](#Task2)
-* [Task 3: Creating a new domino module](#Task3)
+There is a lot of things to learn about domino please follow the below step by step tutorial that explains and show the simplicity of domino and how to use it.
 
 
-## **Task 1 : Create your first domino application** <a name="Task1"></a>
-For this tutorial we are going to implement a very simple domino application in which will end up with a simple layout and a simple form that lookup someones email  from the server, just like the gif below :
+### **Task 1 : Create your first domino application** <a name="Task1"></a>
+For this tutorial we are going to implement a very simple domino application that will allow looking up someones email from a server, just like the image below :
 
 ![enter image description here](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/050_contact_ui.gif)
 
-we will use [Intellij](https://www.jetbrains.com/idea/) IDE and make sure your JDK is 1.8 or higher	
+*We will use [Intellij](https://www.jetbrains.com/idea/) IDE and make sure your JDK is 1.8 or higher*
 			
 We are going to start by creating a new project.
 
@@ -107,7 +110,7 @@ Same as the back-end module we don't add any source code directly to this module
 > The idea of separating client side -Front-end- code and the server side -Back-end- code each on its own module was actually inspired from `Thomas Broyer` [GWT archetype](https://github.com/tbroyer/gwt-maven-archetypes)
 > I would really like to thank him for the great archetype.
 
-## **Task 2 : Run the application** <a name="Task2"></a>
+### **Task 2 : Run the application** <a name="Task2"></a>
 Note that before starting we need to build the application first, open a terminal in Intellij and type `mvn clean install` goal, this goal will trigger the GWT compiler,  after building the application successfully you will notice a new folder created inside `webroot` folder in the back-end module this new folder is the result of GWT compilation, also you will notice new jars, as domino produces jars not wars, in the target folder of the back-end module focus on the fat jar as it represents the final output.
 
 *The file `how-to.txt` lists full instructions of how to run a domino application but we will go through them quickly below.*
@@ -143,7 +146,7 @@ INFO: Initialize domino module...
 Sun May 21 01:23:58 GMT+300 2017 domino.tutorial.AppClientModule
 INFO: Application frontend have been initialized.
 
-## **Task 3 : Creating a new domino module** <a name="Task3"></a>
+### **Task 3 : Creating a new domino module** <a name="Task3"></a>
 *As mentioned before we don't add any code to the back-end or front-end modules, in order for us to add a simple layout to the home page we need to add a new domino module.*
 
 Below steps will help you to add a new domino module with a simple layout,	
@@ -218,11 +221,12 @@ Open the module you will notice few classes already created, in some cases this 
             <scope>test</scope>
         </dependency> 
 ``` 
-        
 Notice other compilation errors this might be because of the exclusion of the target folder, generated sources are normally excluded from the source path we need to add them as list below,
-      - Rebuild the project.
-      - Exclude the target folder.
-      - Include the generated-sources/annotations and test-generated-sources/annotations folders as sources directories.
+
+     - Rebuild the project.    
+     - Exclude the target folder.    
+     - Include the generated-sources/annotations and test-generated-sources/annotations folders as sources directories.
+
    
 - **layout-frontend-ui** : this is where all the UI rendering stuff goes in, Views, UIBinders and CSS all goes into this module, the views in this module should implement interfaces defined within the frontend module and in this module we are going to implement our actual layout we will be using GMD for that.
 - **layout-shared** : this is where the classes that are shared between the frontend modules and backend module goes in, interfaces and data structures are in the shared module, the classes that are in this module should follow the rules of a shared GWT package, the actual role of this module is to decouple the frontend from the backend and what's more important is to decouple the front-end and the back-end of this module from other modules. In our current demonstration this is more than what we need, lets clean it up a bit, follow the points below,
@@ -304,4 +308,51 @@ INFO: Main context received at presenter DefaultLayoutPresenter
 
 Above lines tells us two things, the first thing is that the layout-frontend and layout-frontend-ui modules were initialized, and once the application completed the initialization a  context is received at a presenter.
 
+#### What is this?
+When running an empty domino application and the result would be a blank page, it doesn't mean that the application is completely empty, any domino application starts with one and only one extension point, which is the **Main Extension Point** and this extension point provides a context, this context is surprisingly empty, it does nothing , it's just an empty interface but an important one, you start building your application by adding modules that contributes to this extension point and these modules might also provide additional extension points allowing more modules to make more contributions, receiving the main context when contributing to the main extension point also means that all other modules in the application have already been initialized and configured.
+
+#### What is Extension point and Extension point context?
+The extension point by itself is nothing but a simple interface and it's only job is to provide a context to the contributors, it is simply a type that represent a point at the application that can be extended. The important part is the extension point context, both the extension point and the extension point context interfaces lives inside the ***-shared module** in our case **layout-shared**, the implementation of these interfaces goes into the  ***-frontend module** in our case **layout-frontend** and it's the frontend module responsibility to deliver the context implementation to the contributing modules within an API in the right time, this API is specifically made for this action , will see these details later on in this tutorial.
+
+#### What is a Contribution?
+Contribution is the process of obtaining extension point context, as simple as it seems, when a module wants to obtain a context of an extension point it will only register it self as a contribution then it will get a context instance,  lets see how we obtained the MainContext of the MainExtensionPoint in our layout-frontend module :
+
+- Locate and open the interface **LayoutPresenter**, you are going to find as shown below,
+
+```java
+    @InjectContext(extensionPoint=MainExtensionPoint.class)
+    void contributeToMainModule(MainContext context);
+```
+The above method needs a MainContext from the MainExtensionPoint in order to inject it, and thats it that's all what we need, and now this method should be implemented within our presenter, we will receive the context at the write time, in our case the context will be provided when all modules finish initialization, this is defined by the domino core.
+
+- Locate and open the **DefaultLayoutPresenter** class and check the implementation of this method, it should be as shown below :
+
+```java
+@Override
+    public void contributeToMainModule(MainContext context){
+        LOGGER.info("Main context received at presenter "+DefaultLayoutPresenter.class.getSimpleName());
+    }
+```
+
+Well! by default we do nothing, we only log that we had received the context, but this is where we start to add our logic.
+
+By now you might be wondering if we have any test cases to verify that our code is tested and working in the right way, yes we do we have a test for this contribution, as long as this test passes you should know that this code is right and will work on the browser too, have a look at the below test,
+
+- Locate and open the **LayoutClientModuleTest** class.
+
+```java
+@Test
+public void givenLayoutModule_whenContributingToMainExtensionPoint_thenShouldReceiveMainContext() {
+     assertNotNull(presenterSpy.getMainContext());
+}
+```
+The above test case verify that if we contribute to the MainExtensionPoint we are going to receive a MainContext, but the interesting part is not the test case, it's the setup method, notice that the test class extends from the **ModuleTestCase** class and the setup method prepares a complete client application with all the required classes, also fakes and introduce hook methods to be implemented by the extending test class, which concludes that our setup method is nothing but a hook to configure the module under testing, we also replace the configured presenter and view with Spy's to verify that our calls are happening in the right order, please run the test case and see what happens,
+
+You should get a green bar indicating the success of the test case, what's more interesting is that  this test class is a normal test class, not a GWT specific type of test classes, and there is no special runners to run it, the test cases runs very fast, we write our client side and test it as if it is any normal java code, and that means we can also debug the code as if it is any normal java code from IDE instead of the browser.  
+
+*The browser debugging is still an available option with GWT code server.*
+
+In our next task we are going to start implementing an actual UI layout, we will start to see a real UI rather than the usual blank page.
+
+### **Task 4 : Implementing UI layout** <a name="Task4"></a>
 
