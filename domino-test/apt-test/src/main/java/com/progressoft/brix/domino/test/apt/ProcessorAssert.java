@@ -4,7 +4,6 @@ package com.progressoft.brix.domino.test.apt;
 public class ProcessorAssert {
 
     private ProcessorAssert(){
-
     }
 
     public static InputSource assertProcessing(String inputClassName) {
