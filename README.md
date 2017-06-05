@@ -15,7 +15,7 @@ Domino is a small, simple, and  light weighted framework for building applicatio
 * [Task 3: Creating a new domino module](#Task3)
 * [Task 4: Implementing UI layout](#Task4)
 
-####**Domino Archetypes**<a name="Task0"></a>:		
+#### **Domino Archetypes**<a name="Task0"></a>:		
 
 ##### **Domino application**
 > Gruop Id : `com.progressoft.brix.domino.archetypes`
@@ -31,7 +31,7 @@ Domino is a small, simple, and  light weighted framework for building applicatio
 > 
 > Version      : `1.0-rc.1`
 
-#####**Domino module with GMD**
+##### **Domino module with GMD**
 > Gruop Id : `com.progressoft.brix.domino.archetypes`
 > 
 > Artifact Id  : `domino-material-module-archetype`
@@ -80,8 +80,6 @@ We are going to start by creating a new project.
 ![image6](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/016.png)
 
 - Continue by clicking **Next**.		
-
-![image7](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/017.png)
 
 - Fill the dialog as shown below image and click **Finish**.	
 
