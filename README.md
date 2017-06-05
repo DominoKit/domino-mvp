@@ -10,12 +10,12 @@ Domino is a small, simple, and  light weighted framework for building applicatio
 
 ## **Table of Contents**
 * [Domino Archetypes](#Task0)
-* [Task 1: Create your first domino application](#Task1)
+* [Task 1 : Create your first domino application](#Task1)
 * [Task 2: Run the application](#Task2)
 * [Task 3: Creating a new domino module](#Task3)
 * [Task 4: Implementing UI layout](#Task4)
 
-#### **Domino Archetypes**<a name="Task0"></a>:		
+####**Domino Archetypes**<a name="Task0"></a>:		
 
 ##### **Domino application**
 > Gruop Id : `com.progressoft.brix.domino.archetypes`
@@ -31,14 +31,14 @@ Domino is a small, simple, and  light weighted framework for building applicatio
 > 
 > Version      : `1.0-rc.1`
 
-##### **Domino module with GMD**
+#####**Domino module with GMD**
 > Gruop Id : `com.progressoft.brix.domino.archetypes`
 > 
 > Artifact Id  : `domino-material-module-archetype`
 > 
 > Version      : `1.0-rc.1`
 	
-</br></br>	
+	
 There is a lot of things to learn about domino please follow the below step by step tutorial that explains and show the simplicity of domino and how to use it.
 
 
@@ -53,7 +53,7 @@ We are going to start by creating a new project.
 
 - Open intellij and press on Create New Project.
 
-![image1](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/012.png)
+![image1](https://raw.githubusercontent.com/GwtDomino/domino/0d80397597737c14f08032856adc6cba36b188a7/documents/012.png)
 
 - We are going to create a new Maven project using the domino application archetype, a window will pop up make sure of the below values:
   - step 1: maven.
@@ -80,6 +80,8 @@ We are going to start by creating a new project.
 ![image6](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/016.png)
 
 - Continue by clicking **Next**.		
+
+![image7](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/017.png)
 
 - Fill the dialog as shown below image and click **Finish**.	
 
@@ -353,4 +355,127 @@ You should get a green bar indicating the success of the test case, what's more 
 In our next task we are going to start implementing an actual UI layout, we will start to see a real UI rather than the usual blank page.
 
 ### **Task 4 : Implementing UI layout** <a name="Task4"></a>
+
+In this task we are going to implement the actual UI, we will learn how to start and use the GWT super dev mode in order to reduce the time required for the GWT compilation when changing some code in the **frontend** and **frontend-ui** modules.
+
+What we are going to do now is to call our view show() method directly after receiving a main context from the main extension point,  we encourage to use the TDD approach thats why we will start with a test case to ensure that the show method is being called when receiving the main context, but remember we already have a test case that ensures we had received a context, we are not going to test that again.
+
+> Domino does not reference to any GWT UI framework, actually you are free to use any, it's up to you to decide how you want to build your UI, it even encourage and allow the use of any and many UI frameworks, what we had came up to is an archetype with default GMD setup it's easy to start with.
+
+Please follow the below steps add something,
+
+- Open the `LayoutClientModuleTest` class found under the **front-end** module and add the below test case,
+
+```java
+@Test
+public void givenMainContextReceived_thenLayoutViewShouldBecomeVisible() {
+   assertTrue(viewSpy.isVisible());
+}
+```
+When adding the above code you will get a compilation error, you can resolve the assertTrue error by importing the required class, but notice that the isVisible method of the viewSpy is not implemented, let us implement it as a getter for the visible field in the viewSpy class called `LayoutViewSpy` found under the **front-end** module as shown below,
+```java
+@UiView(presentable=LayoutPresenter.class)
+public class LayoutViewSpy implements LayoutView {
+
+    private boolean visible;
+
+    @Override
+    public IsWidget get() {
+        return null;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+}
+```
+Our test case will definitely fail to make sure lets run it, notice the red bar indicating the test failure, what we can do in order to pass this test case is to call a method in our view and we spy on the method, if it's called we change the visible flag in the viewspy to true as shown below,
+
+- Locate and open the `DefaultLayoutPresenter` class found under the **front-end** module and change the `onMainContextReceived` method implementation to the below implementation,
+
+```java
+@Override
+public void contributeToMainModule(MainContext context){
+	view.show();
+}
+```
+
+the show() method is not in the view interface, we have to add it in the `LayoutView`interface found under the **front-end** module as shown below,
+
+```java
+public interface LayoutView extends View<IsWidget>{
+    void show();
+}
+```
+After we add the show() method to the interface we need to implement it in all our view implementations as explained below,
+
+- Open the `DefaultLayoutView` class found under the **front-end-ui** module and implement the show method, but you don't need to add any body. 
+- Open the `LayoutViewSpy` class found under the **front-end** module and implement the show method, set in the body of the method the visible flag to true as shown below,
+
+```java
+@UiView(presentable=LayoutPresenter.class)
+public class LayoutViewSpy implements LayoutView {
+
+    private boolean visible;
+
+    @Override
+    public IsWidget get() {
+        return null;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    @Override
+    public void show() {
+        this.visible=true;
+    }
+}
+```
+
+Lets go back and run the test again, this time we should see a green bar indicating the success of our test case, this means that our flow is working as intended, but notice that we test if the show method is being called we don't test if it is actually attached to the DOM or how it is being added to the page, this part is up to the actual view implementation to decide.
+
+Next we are going to add a simple layout to our page with a header and body as explained below,
+
+- Open the `DefaultLayoutView.ui.xml`found under the **front-end-ui**, remove the `div` tag and replace it with the following :
+
+```xml
+<m:MaterialHeader depth="996" layoutPosition="FIXED" width="100%">
+    <m:MaterialNavBar ui:field="appNav" backgroundColor="BLUE_LIGHTEN_1">
+	    <m:MaterialNavBrand marginLeft="20" text="Demo"/>
+	</m:MaterialNavBar>
+</m:MaterialHeader>
+<m:MaterialPanel ui:field="mainPanel">
+</m:MaterialPanel>
+```
+
+- Open the `DefaultLayoutView` class found under **front-end-ui** module.
+- Remove the `mainDiv` field.
+- In the show method body set add the view  class to the RootPanel, the final result will be like this, 
+```java
+@UiView(presentable = LayoutPresenter.class)
+public class DefaultLayoutView extends Composite implements LayoutView{
+
+    interface DefaultLayoutViewUiBinder extends UiBinder<HTMLPanel, DefaultLayoutView> {
+    }
+
+    private static DefaultLayoutViewUiBinder ourUiBinder = GWT.create(DefaultLayoutViewUiBinder.class);
+
+    public DefaultLayoutView() {
+        initWidget(ourUiBinder.createAndBindUi(this));
+    }
+
+    @Override
+    public IsWidget get() {
+        return this;
+    }
+
+    @Override
+    public void show() {
+        RootPanel.get().add(this);
+    }
+}
+```
+
 
