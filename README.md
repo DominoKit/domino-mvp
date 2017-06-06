@@ -13,7 +13,8 @@ Domino is a small, simple, and  light weighted framework for building applicatio
 * [Task 1 : Create your first domino application](#Task1)
 * [Task 2: Run the application](#Task2)
 * [Task 3: Creating a new domino module](#Task3)
-* [Task 4: Implementing UI layout](#Task4)
+* [Task 4: Implementing UI layout](#Task4) 
+* [Task 5: Introducing new extension points](#Task5)
 
 #### **Domino Archetypes**<a name="Task0"></a>:		
 
@@ -475,5 +476,38 @@ public class DefaultLayoutView extends Composite implements LayoutView{
     }
 }
 ```
+
+##### **What about testing here?**
+We already have a test class ready to start testing, this one uses GWTMokito to run the tests, we didn't want to go through how to fake and test the UI we also don't force it.
+
+Now we are done, the layout is added to our blank page which means that our page is not blank anymore. Execute **mvn clean install** then run the application, open any browser and visit **http://localhost:8080**
+
+> In case the page is still blank press `CTRL+F5`.
+
+The page would look like the below image,
+
+![enter image description here](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/010_demo_layout_first_run.png)
+
+
+Things are going extremely well, but do we need to build the application each and every time we change something in the UI?! **No** we have GWT super dev mode!
+
+follow the below steps in order to configure GWT super dev mode in your application,
+
+- Open the how-to.txt file and copy the below command from the second step.
+```shell
+mvn gwt:codeserver -pl *-frontend -am
+```
+- Paste the command in any intellij terminal and execute it.
+- Open the folder `.vertx` found under the domino-demo-backend module and delete it.
+- Wait until the code server is ready, then go back to the browser and hit **CTRL+F5**.
+- A compilation will be triggered in the browser, we have to wait until the compilation is done and then we are ready to go.
+
+Now lets change something and see what happens
+
+- Open **DefaultLaoutView.ui.xml** and change the Material navigation bar `MaterialNavBar` background color from `BLUE_LIGHTEN_1` to `RED_LIGHTEN_1`, and hit CTRL+F5 on the browser.
+- A quick compilation will be triggered and we should see a red header instead of a blue one.
+
+### **Task 5 : Introducing new extension points** <a name="Task5"></a>
+
 
 
