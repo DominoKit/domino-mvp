@@ -3,6 +3,7 @@ package com.progressoft.brix.domino.gwt.client.app;
 import com.google.gwt.user.client.History;
 import com.progressoft.brix.domino.api.client.ClientApp;
 import com.progressoft.brix.domino.api.client.history.PathTokenConstructor;
+import com.progressoft.brix.domino.gwt.client.async.GwtAsyncRunner;
 import com.progressoft.brix.domino.gwt.client.events.ClientEventFactory;
 import com.progressoft.brix.domino.gwt.client.events.RequestEventProcessor;
 import com.progressoft.brix.domino.gwt.client.events.ServerEventFactory;
@@ -44,6 +45,7 @@ public class CoreModule {
                 .requestSendersRepository(new InMemoryRequestRestSendersRepository())
                 .tokenConstruct(new PathTokenConstructor())
                 .urlHistory(new GwtUrlHistory())
+                .asyncRunner(new GwtAsyncRunner())
                 .mainExtensionPoint(new CoreMainExtensionPoint())
                 .build();
 

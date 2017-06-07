@@ -1,6 +1,7 @@
 package com.progressoft.brix.domino.api.client.mvp.presenter;
 
 import com.progressoft.brix.domino.api.client.ClientApp;
+import com.progressoft.brix.domino.api.client.async.AsyncRunner;
 import com.progressoft.brix.domino.api.client.extension.Contributions;
 import com.progressoft.brix.domino.api.client.mvp.view.View;
 import com.progressoft.brix.domino.api.shared.extension.ExtensionPoint;
@@ -44,8 +45,13 @@ public abstract class BaseClientPresenter<V extends View> implements ClientPrese
     protected String getConcrete(){
         return this.getClass().getCanonicalName();
     }
+
     protected void applyContributions(Class<? extends ExtensionPoint> extensionPointInterface, ExtensionPoint extensionPoint){
         Contributions.apply(extensionPointInterface, extensionPoint);
+    }
+
+    protected void runAsync(AsyncRunner.AsyncTask asyncTask){
+        ClientApp.make().asyncRunner().runAsync(asyncTask);
     }
 
     private String getName(){

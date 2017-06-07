@@ -6,6 +6,8 @@ package ${package}.${subpackage}.client;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import com.google.gwtmockito.WithClassesToStub;
+import ${package}.${subpackage}.client.presenters.${module}PresenterSpy;
+import ${package}.${subpackage}.client.views.${module}ViewSpy;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

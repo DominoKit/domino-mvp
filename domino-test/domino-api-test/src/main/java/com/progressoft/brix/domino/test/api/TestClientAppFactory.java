@@ -45,6 +45,7 @@ public class TestClientAppFactory {
                 .requestSendersRepository(new InMemoryRequestRestSendersRepository())
                 .tokenConstruct(new PathTokenConstructor())
                 .urlHistory(new TestUrlHistory())
+                .asyncRunner(new TestAsyncRunner())
                 .mainExtensionPoint(TestMainContext::new)
                 .build();
     }

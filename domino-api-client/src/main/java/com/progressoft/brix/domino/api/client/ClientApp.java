@@ -1,5 +1,6 @@
 package com.progressoft.brix.domino.api.client;
 
+import com.progressoft.brix.domino.api.client.async.AsyncRunner;
 import com.progressoft.brix.domino.api.client.events.EventsBus;
 import com.progressoft.brix.domino.api.client.extension.Contributions;
 import com.progressoft.brix.domino.api.client.extension.ContributionsRegistry;
@@ -36,6 +37,7 @@ public class ClientApp
     private static final AttributeHolder<MainExtensionPoint> MAIN_EXTENSION_POINT_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<UrlHistory> URL_HISTORY_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<List<InitializeTask>> INITIAL_TASKS_HOLDER = new AttributeHolder<>();
+    private static final AttributeHolder<AsyncRunner> ASYNC_RUNNER = new AttributeHolder<>();
 
     private ClientApp() {
     }
@@ -113,6 +115,10 @@ public class ClientApp
 
     public TokenConstruct getTokenConstruct() {
         return TOKEN_CONSTRUCT_HOLDER.attribute;
+    }
+
+    public AsyncRunner asyncRunner(){
+        return ASYNC_RUNNER.attribute;
     }
 
     public void configureModule(ModuleConfiguration configuration) {
@@ -194,6 +200,11 @@ public class ClientApp
 
     @FunctionalInterface
     public interface HasUrlHistory {
+        HasAsyncRunner asyncRunner(AsyncRunner asyncRunner);
+    }
+
+    @FunctionalInterface
+    public interface HasAsyncRunner {
         CanBuildClientApp mainExtensionPoint(MainExtensionPoint mainExtensionPoint);
     }
 
@@ -202,7 +213,7 @@ public class ClientApp
         ClientApp build();
     }
 
-    public static class ClientAppBuilder implements HasClientRouter, HasServerRouter, HasEventBus, HasRequestRepository, HasPresentersRepository, HasViewRepository, HasContributionsRepository, HasPathToRequestMappersRepository, HasRequestRestSendersRepository, HasTokenConstruct, HasUrlHistory, CanBuildClientApp {
+    public static class ClientAppBuilder implements HasClientRouter, HasServerRouter, HasEventBus, HasRequestRepository, HasPresentersRepository, HasViewRepository, HasContributionsRepository, HasPathToRequestMappersRepository, HasRequestRestSendersRepository, HasTokenConstruct, HasUrlHistory,HasAsyncRunner, CanBuildClientApp {
 
         private RequestRouter<ClientRequest> clientRouter;
         private RequestRouter<ClientServerRequest> serverRouter;
@@ -216,6 +227,7 @@ public class ClientApp
         private TokenConstruct tokenConstruct;
         private MainExtensionPoint mainExtensionPoint;
         private UrlHistory urlHistory;
+        private AsyncRunner asyncRunner;
 
         private ClientAppBuilder(RequestRouter<ClientRequest> clientRouter) {
             this.clientRouter = clientRouter;
@@ -286,6 +298,12 @@ public class ClientApp
         }
 
         @Override
+        public HasAsyncRunner asyncRunner(AsyncRunner asyncRunner) {
+            this.asyncRunner=asyncRunner;
+            return this;
+        }
+
+        @Override
         public CanBuildClientApp mainExtensionPoint(MainExtensionPoint mainExtensionPoint) {
             this.mainExtensionPoint = mainExtensionPoint;
             return this;
@@ -311,6 +329,7 @@ public class ClientApp
             ClientApp.MAIN_EXTENSION_POINT_HOLDER.hold(mainExtensionPoint);
             ClientApp.URL_HISTORY_HOLDER.hold(urlHistory);
             ClientApp.INITIAL_TASKS_HOLDER.hold(new LinkedList<>());
+            ClientApp.ASYNC_RUNNER.hold(asyncRunner);
         }
     }
 

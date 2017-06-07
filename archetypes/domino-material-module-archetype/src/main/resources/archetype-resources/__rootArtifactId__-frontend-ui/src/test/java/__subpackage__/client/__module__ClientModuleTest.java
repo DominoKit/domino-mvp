@@ -13,6 +13,9 @@ import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
 
 import ${package}.${subpackage}.client.presenters.${module}Presenter;
+import ${package}.${subpackage}.client.presnters.${module}PresenterSpy;
+import ${package}.${subpackage}.client.views.${module}ViewSpy;
+
 import com.progressoft.brix.domino.test.api.ModuleTestCase;
 
 @RunWith(GwtMockitoTestRunner.class)

@@ -7,14 +7,14 @@ import com.progressoft.brix.domino.api.client.request.RequestRouter;
 
 public class ServerRouter implements RequestRouter<ClientServerRequest> {
 
-    private final AsyncRunner asyncRunner;
+    private final RequestAsyncRunner requestAsyncRunner;
 
     public ServerRouter(ServerRequestEventFactory requestEventFactory) {
-        asyncRunner = new AsyncRunner(requestEventFactory);
+        requestAsyncRunner = new RequestAsyncRunner(requestEventFactory);
     }
 
     @Override
     public void routeRequest(final ClientServerRequest request) {
-        asyncRunner.run(request);
+        requestAsyncRunner.run(request);
     }
 }

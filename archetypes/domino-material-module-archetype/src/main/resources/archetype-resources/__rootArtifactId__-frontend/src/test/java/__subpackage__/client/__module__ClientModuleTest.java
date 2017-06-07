@@ -15,6 +15,8 @@ import ${package}.${subpackage}.client.presenters.${module}Presenter;
 import ${package}.${subpackage}.client.requests.${module}ServerRequest;
 import ${package}.${subpackage}.shared.request.${module}Request;
 import ${package}.${subpackage}.shared.response.${module}Response;
+import ${package}.${subpackage}.client.presnters.${module}PresenterSpy;
+import ${package}.${subpackage}.client.views.Fake${module}View;
 
 import com.progressoft.brix.domino.test.api.ModuleTestCase;
 

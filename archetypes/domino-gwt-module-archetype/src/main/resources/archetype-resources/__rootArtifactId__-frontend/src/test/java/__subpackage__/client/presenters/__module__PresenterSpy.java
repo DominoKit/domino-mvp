@@ -1,7 +1,7 @@
 #set( $symbol_pound = '#' )
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
-package ${package}.${subpackage}.client;
+package ${package}.${subpackage}.client.presnters;
 
 import ${package}.${subpackage}.client.presenters.Default${module}Presenter;
 import com.progressoft.brix.domino.api.shared.extension.MainContext;
