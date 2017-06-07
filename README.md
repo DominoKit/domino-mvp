@@ -509,5 +509,183 @@ Now lets change something and see what happens
 
 ### **Task 5 : Introducing new extension points** <a name="Task5"></a>
 
+The layout is ready, but we need to make a use of it by showing more components at the main panel of the layout, we do this in a clean way, which means we never depend on a concrete implementation of the layout and we don't add any on the **layout-forntend** module or **layout-frontend-ui** module, we want to add these components without changing the implementation of the layout module.   
+
+When we don't depend on the actual implementation of the **layout-frontend** module it allows us to change our layout implementation anytime, without worrying about breaking other modules that uses the layout, this happens by introducing new extension points we make the module that use the layout depend on the **layout-shared** module which contains interfaces and data-structures only, the **layout-shared** module contains an extension point interface and a context interface ready to use, keep in mind that the context is still empty other modules will fill in the context in order to show content at the main panel of the layout.
+
+We will start by adding the API in the `LayoutContext` , but at first we will do a test case for it as described below steps,
+
+- Open the `LayoutClientModuleTest` test class found under the **layout-frontend** module and add the below test case,
+
+```java
+@Test
+public void givenLayoutModule_whenContributingToLayoutExtensionPoint_shouldObtainLayoutContext(){
+    assertNotNull(fakeContribution.getLayoutContext());
+}
+```
+The fakeContribution is to confirm that there is a contribution from a module to the layout extension point in which it will receive a layout context,  notice that the fakeContribution does not compile because we didn't create a fake contribution yet, below steps will guide you through creating a fake contributor, 
+
+- Create a new class in the test source folder that implements `Contribution` interface under the **layout-frontend** module as shown below,
+```java
+@Contribute
+public class FakeLayoutContribution implements Contribution<LayoutExtensionPoint> {
+
+    private LayoutContext layoutContext;
+
+    @Override
+    public void contribute(LayoutExtensionPoint extensionPoint) {
+        this.layoutContext=extensionPoint.context();
+    }
+
+    public LayoutContext getLayoutContext() {
+        return layoutContext;
+    }
+}
+```
+*In this way we obtain a context from an extension point, if you are wondering about the `InjectContext` annotation we had used before, we used it to generate a class like the one you see above, and then we deliver the context to the presenter, check the generated classes and look at the `target/generated-sources/annotation` folder of the `layout-frontend` module.*
+
+**let's continue!** The test case is still not compiling, we still need to create the fakeContribution instance, or to be more specific we need to obtain that instance, since we annotated the class with `@Contribute` and the instance will be automatically created and configured as part of our test module, below steps will guide you through it,
+
+- In the `LayoutClientModuleTest`  class found under the **layout-frontend** module, create a new field as shown below,
+
+```java
+private FakeLayoutContribution fakeContribution;
+```
+- In the setup method add the below line at the end of the method :
+
+```java
+fakeContribution=testModule.getContribution(FakeLayoutContribution.class);
+```
+**Now the code compiles but yet a failing test case!**
+
+> If you run the test case and end up with an exception of a view not found this means you need to rebuild your project to make the APT generate the required code, from intellij  menu select Build -> rebuild project, then run the test case again.
+
+We need to pass our test case, we need to deliver a LayoutContext implementation to the contributions, but before that we need to decide when to do it before how to do it.
+
+**When to do it?** 
+The right time is after we add the layout when it's ready to hold the content and to display them on the page, and that is exactly after we call the show method in our presenter.
+
+**How to do it?**
+
+- Open the `DefaultLayoutPresenter` class found under the  **layout-frontend** module, and add the below code right after the **view.show()** line,
+
+```java
+applyContributions(LayoutExtensionPoint.class, (LayoutExtensionPoint) () -> new LayoutContext() {});
+```
+
+Run the test case again, you should get a green bar indicating the success of the test case, this means that we made sure if any module contributes to our extension point will receive a context.
+
+Now we need to show the content in the main panel, follow the below steps,
+
+- Open the `LayoutClientModuleTest` class found under the **layout-frontend** module and add the below test case :
+
+```java
+@Test
+    public void givenContributionToLayoutExtensionPoint_whenContextShowContentIsCalled_theContentShouldShowTheContent(){
+        LayoutContext.Content content= () -> null;
+        fakeContribution.getLayoutContext().showContent(content);
+        assertEquals(viewSpy.getContent(), content);
+    }
+```
+Again the test case won't compile, we have to add the code that compiles it, code shown below,
+
+- Open the `LayoutContext` interface found under the **layout-shared** module and change it as shown below,
+
+```java
+public interface LayoutContext extends Context {
+    interface Content extends IsWidget {}
+    void showContent(Content content);
+}
+```
+
+- Open the `LayoutViewSpy` class found under the **layout-frontend** module, add  the `content` field with  a getter method.
+
+```java
+@UiView(presentable=LayoutPresenter.class)
+public class LayoutViewSpy implements LayoutView {
+
+    private boolean visible;
+    private LayoutContext.Content content;
+
+    @Override
+    public IsWidget get() {
+        return null;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    @Override
+    public void show() {
+        this.visible=true;
+    }
+
+    public LayoutContext.Content getContent() {
+        return content;
+    }
+}
+```
+- Open the `DefaultLayoutPresenter` class found under the **layout-frontend** module, and fill the **contributeToMainModule** method with the below code in order to reflect the changes in the LayoutContext interface,
+
+```java
+applyContributions(LayoutExtensionPoint.class, (LayoutExtensionPoint) () -> (LayoutContext) content -> {});
+```
+
+**The test case compiles but fails with a null pointer exception since we didn't set the content in the spy.**
+
+- Open the default presenter class called `DefaultLayoutPresenter` found under the **layout-frontend** module and update it as shown below,
+```java
+@Presenter
+public class DefaultLayoutPresenter extends BaseClientPresenter<LayoutView> implements LayoutPresenter {
+
+    @Override
+    public void contributeToMainModule(MainContext context){
+        view.show();
+        applyContributions(LayoutExtensionPoint.class, (LayoutExtensionPoint) () ->(LayoutContext) content -> {
+            view.showContent(content);
+        });
+    }
+}
+```
+The code won't compile, add the **showContent** method to the view interface called `LayoutView` found under the **layout-frontend** module as shown below,
+
+```java
+public interface LayoutView extends View<IsWidget>{
+    void show();
+    void showContent(LayoutContext.Content content);
+}
+```
+- Open the `LayoutViewSpy` class found under the **layout-frontend** module and implement the method as shown below :
+
+```java
+@Override
+public void showContent(LayoutContext.Content content) {
+    this.content=content;
+}
+```
+- Open the `DefaultLayoutView` class found under the  **layout-frontend-ui** module and add an empty implementation of the showContent method.
+
+**Rebuild** the project and run the test case again, see a green bar indicating the success of the test case.
+
+>A good practice is to run all the test cases in the test class when we change the code to make sure we don't break any tests.
+
+One thing left, is to implement the actual **showContent** in the actual layout view, as shown below steps,
+
+- Open the `DefaultLayoutView` class found under the **layout-frontend-ui** module and add the below field,
+```java
+@UiField
+MaterialPanel mainPanel;
+```
+
+- Fill the **showContent** method body with the below code,
+
+```java
+mainPanel.clear();
+mainPanel.add(content);
+```
+
+We are done, if you still have the code server and the application running just hit the browser, there is no changes on the UI, but to only make sure that the application is working correctly.
+
 
 
