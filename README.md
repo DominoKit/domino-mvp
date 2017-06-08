@@ -6,7 +6,7 @@
 
 [![Build Status](https://travis-ci.org/GwtDomino/domino.svg?branch=master)](https://travis-ci.org/GwtDomino/domino)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/5df3ae073cad41bfad99df6537bc17b6)](https://www.codacy.com/app/akabme/domino?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=GwtDomino/domino&amp;utm_campaign=Badge_Grade)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.progressoft.brix.domino/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.progressoft.brix.domino)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.progressoft.brix.domino/domino/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.progressoft.brix.domino/domino)
 
 Domino is a small, simple, and  light weighted framework for building applications using [GWT](http://www.gwtproject.org/) and [Vertx](http://vertx.io/). Domino introduces the concept of extension points and contributions allowing developers to write a modular application with shared component with any other domino application. With vertx as a back-end engine domino gives the ability and choice to build one monolithic but yet modular application, but also provides extensions in which a large application is built as a suite of micro-services, moreover allows building the application using TDD approach with practices offering an easy and fast way to debug for both client and service side.
 
