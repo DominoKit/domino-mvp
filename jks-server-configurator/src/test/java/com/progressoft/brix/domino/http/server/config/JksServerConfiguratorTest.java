@@ -50,12 +50,6 @@ public class JksServerConfiguratorTest {
         vertx.close();
     }
 
-    @Test
-    public void givenVertxContextAndHttpOptions_shouldBeAbleToCallConfigureMethod() throws Exception {
-        configureServer();
-        assertThat(true).isTrue();
-    }
-
     private void configureServer() {
         new JksServerConfigurator().configureHttpServer(context,
                 options);
