@@ -199,7 +199,8 @@ layout-backend module is not needed for this module, can be deleted easily as li
 		        <module>layout-frontend-ui</module>
 		        <module>layout-shared</module>
 		        <module>layout-backend</module> <!-- remove this line -->
-		    </modules> ```
+		    </modules> 
+		 ```
 
 - **layout-frontend** : this is where all the client side flow goes in, in this module we use APT to generate a client module configuration, also the interaction with other modules, contributions to extension points, sending requests, and add all client side logic starts from here. Never ass any UI rendering code, we don't force you but in this module you should never have buttons, text fields, check boxes etc ... 
 We encourage that your flow should be independent from any UI presentation and terms we are going to demonstrate it as we go further with this task.
