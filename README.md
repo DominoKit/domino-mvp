@@ -194,12 +194,12 @@ layout-backend module is not needed for this module, can be deleted easily as li
 	- Open the `layout` module `pom.xml` file and remove the `layout-backend` module from the modules list.
 
 		 ``` 
-			<modules>
-		        <module>layout-frontend</module>
-		        <module>layout-frontend-ui</module>
-		        <module>layout-shared</module>
-		        <module>layout-backend</module> <!-- remove this line -->
-		    </modules> 
+		<modules>
+		     <module>layout-frontend</module>
+		     <module>layout-frontend-ui</module>
+		     <module>layout-shared</module>
+		     <module>layout-backend</module> <!-- remove this line -->
+		</modules> 
 		 ```
 
 - **layout-frontend** : this is where all the client side flow goes in, in this module we use APT to generate a client module configuration, also the interaction with other modules, contributions to extension points, sending requests, and add all client side logic starts from here. Never ass any UI rendering code, we don't force you but in this module you should never have buttons, text fields, check boxes etc ... 
