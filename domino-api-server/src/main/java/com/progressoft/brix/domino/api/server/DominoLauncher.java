@@ -17,13 +17,12 @@ import io.vertx.ext.web.sstore.SessionStore;
 
 public class DominoLauncher extends Launcher {
 
+    private static final ConfigHolder configHolder=new ConfigHolder();
     static final long MB = 1048576L;
 
     private static class ConfigHolder{
         private JsonObject config;
     }
-
-    private static final ConfigHolder configHolder=new ConfigHolder();
 
     public static void main(String[] args) {
         new DominoLauncher().dispatch(args);

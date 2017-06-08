@@ -27,10 +27,6 @@ public abstract class BaseClientPresenter<V extends View> implements ClientPrese
 
     protected V view;
 
-    public BaseClientPresenter() {
-
-    }
-
     @Override
     public Presentable init() {
         this.state = uninitialized;

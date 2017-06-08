@@ -37,7 +37,7 @@ public abstract class BaseRequest implements Request {
 
     @Override
     public void send() {
-        if(state!=ready)
+        if(!state.equals(ready))
             throw new InvalidRequestState(REQUEST_HAVE_ALREADY_BEEN_SENT);
         this.state.execute(new DefaultRequestStateContext());
     }

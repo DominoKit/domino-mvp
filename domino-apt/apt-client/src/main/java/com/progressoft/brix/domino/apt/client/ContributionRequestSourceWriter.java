@@ -11,8 +11,6 @@ public class ContributionRequestSourceWriter extends JavaSourceWriter {
     private final String targetPackage;
     private final String generatedClassName;
     private final String presenter;
-    private final String contributionName;
-    private final FullClassName fullClassName;
     private final String contextName;
     private final String presenterMethod;
 
@@ -25,9 +23,7 @@ public class ContributionRequestSourceWriter extends JavaSourceWriter {
         this.generatedClassName = generatedClassName;
         this.sourceBuilder = new JavaSourceBuilder(generatedClassName);
 
-        this.contributionName = processorElement.getInterfaceFullQualifiedGenericName(Contribution.class);
-        this.fullClassName = new FullClassName(contributionName);
-        this.contextName = fullClassName.allImports().get(1);
+        this.contextName = new FullClassName(processorElement.getInterfaceFullQualifiedGenericName(Contribution.class)).allImports().get(1);
         this.presenterMethod = presenterMethod;
     }
 

@@ -25,17 +25,17 @@ public class JksServerConfiguratorTest {
     private static final int DEFAULT_HTTPS_PORT = 443;
     public static final int DEFAULT_TEST_SSL_PORT = 2443;
     private Vertx vertx;
-    private JsonObject config;
-    private Router router;
+
     private VertxConfiguration configuration;
     private HttpServerOptions options;
     private VertxContext context;
 
     @Before
     public void setUp() throws Exception {
+
         vertx = Vertx.vertx();
-        config = vertx.getOrCreateContext().config();
-        router = Router.router(vertx);
+        JsonObject config = vertx.getOrCreateContext().config();
+        Router router = Router.router(vertx);
         configuration = new VertxConfiguration(config);
         configuration.put(SSL_CONFIGURATION_KEY, FALSE);
         configuration.put(SSL_JKS_PATH, TEST_JKS_PATH);
