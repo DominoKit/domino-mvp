@@ -4,6 +4,7 @@
 </p>
 
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/5df3ae073cad41bfad99df6537bc17b6)](https://www.codacy.com/app/akabme/domino?utm_source=github.com&utm_medium=referral&utm_content=GwtDomino/domino&utm_campaign=badger)
 [![Build Status](https://travis-ci.org/GwtDomino/domino.svg?branch=master)](https://travis-ci.org/GwtDomino/domino)
 
 
