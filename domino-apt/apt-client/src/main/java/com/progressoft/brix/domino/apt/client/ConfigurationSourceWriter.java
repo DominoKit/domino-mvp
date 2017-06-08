@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
 
 class ConfigurationSourceWriter {
 
-    static final String MODEL_CONFIGURATION = "ModuleConfiguration";
-    public static final String CLOSING_PARNTHIES = "}";
+    protected static final String MODEL_CONFIGURATION = "ModuleConfiguration";
+    protected static final String CLOSING_PARNTHIES = "}";
 
     private ProcessorElement element;
     private List<ElementRegistration> elementRegistrations;
@@ -52,12 +52,12 @@ class ConfigurationSourceWriter {
         private List<ElementRegistration> registrations = new ArrayList<>();
         private ProcessorElement element;
 
-        Builder withProcessorElement(ProcessorElement element) {
+        protected Builder withProcessorElement(ProcessorElement element) {
             this.element = element;
             return this;
         }
 
-        Builder withElementRegistration(ElementRegistration registration) {
+        protected Builder withElementRegistration(ElementRegistration registration) {
             this.registrations.add(registration);
             return this;
         }

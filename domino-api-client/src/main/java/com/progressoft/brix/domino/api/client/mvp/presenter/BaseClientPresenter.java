@@ -9,12 +9,12 @@ import com.progressoft.brix.domino.api.shared.extension.ExtensionPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class BaseClientPresenter<V extends View> implements ClientPresenter<V>{
+public abstract class BaseClientPresenter<V extends View> implements ClientPresenter<V>, Presentable{
 
     private static final Logger LOGGER= LoggerFactory.getLogger(BaseClientPresenter.class);
 
     private final PresenterState initialized = () ->
-        LOGGER.info("Presenter "+BaseClientPresenter.this.getClass()+" Have already initialized.");
+        LOGGER.info("Presenter "+BaseClientPresenter.this.getClass()+" Have already been initialized.");
 
 
     private final PresenterState uninitialized = ()-> {
@@ -28,8 +28,14 @@ public abstract class BaseClientPresenter<V extends View> implements ClientPrese
     protected V view;
 
     public BaseClientPresenter() {
+
+    }
+
+    @Override
+    public Presentable init() {
         this.state = uninitialized;
         process();
+        return this;
     }
 
     @Override

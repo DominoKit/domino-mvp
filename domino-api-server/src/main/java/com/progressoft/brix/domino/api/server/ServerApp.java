@@ -18,6 +18,7 @@ import com.progressoft.brix.domino.api.shared.request.ServerResponse;
 
 import java.util.Objects;
 
+import static java.util.Objects.*;
 import static java.util.Objects.isNull;
 
 public class ServerApp implements HandlerRegistry, InterceptorsRegistry, EndpointsRegistry {
@@ -114,11 +115,11 @@ public class ServerApp implements HandlerRegistry, InterceptorsRegistry, Endpoin
         }
 
         public ServerApp build(){
-            if(Objects.isNull(requestExecutor))
+            if(isNull(requestExecutor))
                 throw new RequestExecutorIsRequired();
-            if(Objects.isNull(handlersRepository))
+            if(isNull(handlersRepository))
                 throw new HandlersRepositoryIsRequired();
-            if(Objects.isNull(interceptorsRepository))
+            if(isNull(interceptorsRepository))
                 throw new InterceptorsRepositoryIsRequired();
             if(isNull(serverContext))
                 throw new ServerContextIsRequired();
@@ -147,7 +148,7 @@ public class ServerApp implements HandlerRegistry, InterceptorsRegistry, Endpoin
     private static final class AttributeHolder<T>{
         private T attribute;
 
-        public void hold(T attribute){
+        void hold(T attribute){
             this.attribute=attribute;
         }
     }

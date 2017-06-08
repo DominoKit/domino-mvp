@@ -35,7 +35,7 @@ public class ${module}ClientModuleTest extends ModuleTestCase{
 
         testModule.replacePresenter(${module}Presenter.class.getCanonicalName(), () -> {
             presenterSpy=new ${module}PresenterSpy();
-            return presenterSpy;
+            return presenterSpy.init();
         });
 
         fakeView=testModule.getView(${module}Presenter.class.getCanonicalName());

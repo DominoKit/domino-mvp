@@ -19,7 +19,7 @@ public interface Request {
 
     class ServerSuccessRequestStateContext implements RequestStateContext{
 
-        final ServerResponse serverResponse;
+        protected final ServerResponse serverResponse;
 
         public ServerSuccessRequestStateContext(ServerResponse serverResponse) {
             this.serverResponse = serverResponse;

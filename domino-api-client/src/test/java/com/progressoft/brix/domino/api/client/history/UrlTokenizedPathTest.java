@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -35,13 +36,10 @@ public class UrlTokenizedPathTest {
 
     @Test
     public void createdUrlTokenizedPathWithParameters_shouldProvideItsParameters() {
-        TokenizedPath tokenizedPath=new UrlTokenizedPath(SOME_PATH, new HashMap<String, String>(){
-            private static final long serialVersionUID = -2238998960564497658L;
-
-            {
-            put("parameter1","value1");
-            put("parameter2", "value2");
-        }});
+        Map<String, String> parametersMap= new HashMap<>();
+        parametersMap.put("parameter1","value1");
+        parametersMap.put("parameter2", "value2");
+        TokenizedPath tokenizedPath=new UrlTokenizedPath(SOME_PATH, parametersMap);
         assertTrue(tokenizedPath.containsParameter("parameter1"));
         assertEquals("value1", tokenizedPath.getParameter("parameter1"));
         assertEquals("value2", tokenizedPath.getParameter("parameter2"));

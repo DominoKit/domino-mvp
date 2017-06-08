@@ -18,17 +18,14 @@ import static org.junit.Assert.assertNotNull;
 public class ServerAppTest {
 
     private ServerApp serverApp;
-    private RequestExecutor requestExecutor;
-    private HandlersRepository handlersRepository;
-    private InterceptorsRepository interceptorsRepository;
     private TestRequest request;
     private ServerConfiguration testConfiguration;
 
     @Before
     public void setUp() throws Exception {
-        handlersRepository = new InMemoryHandlersRepository();
-        interceptorsRepository = new InMemoryInterceptorsRepository();
-        requestExecutor = new DefaultRequestExecutor(handlersRepository, interceptorsRepository);
+        HandlersRepository handlersRepository = new InMemoryHandlersRepository();
+        InterceptorsRepository interceptorsRepository = new InMemoryInterceptorsRepository();
+        RequestExecutor requestExecutor = new DefaultRequestExecutor(handlersRepository, interceptorsRepository);
         testConfiguration=new TestConfiguration();
         serverApp = new ServerApp.ServerAppBuilder().executor(requestExecutor).handlersRepository(handlersRepository).serverContext(
                 new ServerContext() {
@@ -77,7 +74,7 @@ public class ServerAppTest {
     @Test
     public void givenServerApp_whenExecutingARequest_theRequestHandlerShouldBeInvoked() throws Exception {
         serverApp.registerHandler(TestRequest.class.getCanonicalName(), new TestRequestHandler());
-        TestResponse response = (TestResponse) serverApp.executeRequest(request,
+        serverApp.executeRequest(request,
                 new TestServerEntryPointContext());
         assertEquals("-handled", request.getTestWord());
     }
@@ -95,7 +92,7 @@ public class ServerAppTest {
         serverApp.registerHandler(TestRequest.class.getCanonicalName(), new TestRequestHandler());
         serverApp.registerInterceptor(TestRequest.class.getCanonicalName(), TestServerEntryPointContext.class.getCanonicalName(), new TestInterceptor());
         serverApp.registerGlobalInterceptor(TestServerEntryPointContext.class.getCanonicalName(), new TestGlobalRequestInterceptor());
-        TestResponse response = (TestResponse) serverApp.executeRequest(request, new TestServerEntryPointContext());
+        serverApp.executeRequest(request, new TestServerEntryPointContext());
         assertEquals("-intercepted-entry-point-parameter-globally-intercepted-entry-point-parameter-handled", request.getTestWord());
     }
 }
