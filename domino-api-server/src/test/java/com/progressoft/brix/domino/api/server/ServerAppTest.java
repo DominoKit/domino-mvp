@@ -83,7 +83,7 @@ public class ServerAppTest {
     public void givenServerApp_whenExecutingARequest_thenTheRequestShouldBeInterceptedBeforeCallingTheHandler() throws Exception {
         serverApp.registerHandler(TestRequest.class.getCanonicalName(), new TestRequestHandler());
         serverApp.registerInterceptor(TestRequest.class.getCanonicalName(), TestServerEntryPointContext.class.getCanonicalName(), new TestInterceptor());
-        TestResponse response = (TestResponse) serverApp.executeRequest(request, new TestServerEntryPointContext());
+        serverApp.executeRequest(request, new TestServerEntryPointContext());
         assertEquals("-intercepted-entry-point-parameter-handled", request.getTestWord());
     }
 

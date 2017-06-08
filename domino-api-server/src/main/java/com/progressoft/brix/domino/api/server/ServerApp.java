@@ -16,10 +16,7 @@ import com.progressoft.brix.domino.api.server.request.RequestExecutor;
 import com.progressoft.brix.domino.api.shared.request.ServerRequest;
 import com.progressoft.brix.domino.api.shared.request.ServerResponse;
 
-import java.util.Objects;
-
 import static java.util.Objects.*;
-import static java.util.Objects.isNull;
 
 public class ServerApp implements HandlerRegistry, InterceptorsRegistry, EndpointsRegistry {
 
