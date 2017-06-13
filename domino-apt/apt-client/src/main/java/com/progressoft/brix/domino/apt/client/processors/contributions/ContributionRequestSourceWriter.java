@@ -1,4 +1,4 @@
-package com.progressoft.brix.domino.apt.client;
+package com.progressoft.brix.domino.apt.client.processors.contributions;
 
 import com.progressoft.brix.domino.api.client.annotations.Request;
 import com.progressoft.brix.domino.api.client.request.ClientRequest;

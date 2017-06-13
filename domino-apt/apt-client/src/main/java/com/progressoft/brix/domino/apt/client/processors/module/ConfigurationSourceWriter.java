@@ -1,14 +1,15 @@
-package com.progressoft.brix.domino.apt.client;
+package com.progressoft.brix.domino.apt.client.processors.module;
 
 import com.progressoft.brix.domino.api.client.ModuleConfiguration;
 import com.progressoft.brix.domino.api.client.annotations.ClientModule;
+import com.progressoft.brix.domino.apt.client.ElementRegistration;
 import com.progressoft.brix.domino.apt.commons.ProcessorElement;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class ConfigurationSourceWriter {
+public class ConfigurationSourceWriter {
 
     protected static final String MODEL_CONFIGURATION = "ModuleConfiguration";
     protected static final String CLOSING_PARNTHIES = "}";
@@ -48,7 +49,7 @@ class ConfigurationSourceWriter {
     }
 
 
-    static class Builder {
+    public static class Builder {
         private List<ElementRegistration> registrations = new ArrayList<>();
         private ProcessorElement element;
 

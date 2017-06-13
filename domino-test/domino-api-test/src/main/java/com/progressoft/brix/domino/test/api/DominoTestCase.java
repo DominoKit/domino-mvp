@@ -16,7 +16,7 @@ import java.util.Map;
 
 import static org.easymock.EasyMock.createMock;
 
-public abstract class ModuleTestCase {
+public abstract class DominoTestCase {
 
     protected TestModule testModule;
     protected VertxEntryPointContext testEntryPointContext;

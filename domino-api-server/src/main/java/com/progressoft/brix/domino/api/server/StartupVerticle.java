@@ -64,6 +64,7 @@ public class StartupVerticle extends AbstractVerticle {
         httpServerOptions.setPort(vertxContext.config().getInteger(HTTP_PORT_KEY, DEFAULT_PORT));
         ServiceLoader<HttpServerConfigurator> configurators=ServiceLoader.load(HttpServerConfigurator.class);
         configurators.forEach(c -> c.configureHttpServer(vertxContext, httpServerOptions));
+        httpServerOptions.setCompressionSupported(true);
 
         future.complete(httpServerOptions);
     }

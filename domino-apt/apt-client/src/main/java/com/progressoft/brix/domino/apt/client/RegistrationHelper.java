@@ -13,7 +13,7 @@ public class RegistrationHelper {
     private ProcessorElement processorElement;
     private Map<String, List<Element>> elements;
 
-    RegistrationHelper(Map<String, List<Element>> elements, ProcessorElement processorElement) {
+    public RegistrationHelper(Map<String, List<Element>> elements, ProcessorElement processorElement) {
         this.processorElement = processorElement;
         this.elements=elements;
     }

@@ -140,7 +140,10 @@ public class ClientApp
     public void applyContributions(Class<? extends ExtensionPoint> extensionPointInterface,
                                    ExtensionPoint extensionPoint) {
         CONTRIBUTIONS_REPOSITORY_HOLDER.attribute.findExtensionPointContributions(extensionPointInterface)
-                .forEach(c -> c.contribute(extensionPoint));
+                .forEach(c -> {
+
+                    c.contribute(extensionPoint);
+                });
     }
 
     public void applyUrlHistory() {
