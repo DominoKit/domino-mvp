@@ -85,7 +85,7 @@
         <dependency>
             <groupId>com.progressoft.brix.domino</groupId>
             <artifactId>domino-service-discovery</artifactId>
-            <version>${domino.version}</version>
+            <version>1.0-rc.2-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
