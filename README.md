@@ -5,7 +5,8 @@
 
 
 [![Build Status](https://travis-ci.org/GwtDomino/domino.svg?branch=master)](https://travis-ci.org/GwtDomino/domino)
-
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/5df3ae073cad41bfad99df6537bc17b6)](https://www.codacy.com/app/akabme/domino?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=GwtDomino/domino&amp;utm_campaign=Badge_Grade)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.progressoft.brix.domino/domino/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.progressoft.brix.domino/domino)
 
 Domino is a small, simple, and  light weighted framework for building applications using [GWT](http://www.gwtproject.org/) and [Vertx](http://vertx.io/). Domino introduces the concept of extension points and contributions allowing developers to write a modular application with shared component with any other domino application. With vertx as a back-end engine domino gives the ability and choice to build one monolithic but yet modular application, but also provides extensions in which a large application is built as a suite of micro-services, moreover allows building the application using TDD approach with practices offering an easy and fast way to debug for both client and service side.
 
@@ -193,12 +194,13 @@ layout-backend module is not needed for this module, can be deleted easily as li
 	- Open the `layout` module `pom.xml` file and remove the `layout-backend` module from the modules list.
 
 		 ``` 
-			<modules>
-		        <module>layout-frontend</module>
-		        <module>layout-frontend-ui</module>
-		        <module>layout-shared</module>
-		        <module>layout-backend</module> <!-- remove this line -->
-		    </modules> ```
+		<modules>
+		     <module>layout-frontend</module>
+		     <module>layout-frontend-ui</module>
+		     <module>layout-shared</module>
+		     <module>layout-backend</module> <!-- remove this line -->
+		</modules> 
+		 ```
 
 - **layout-frontend** : this is where all the client side flow goes in, in this module we use APT to generate a client module configuration, also the interaction with other modules, contributions to extension points, sending requests, and add all client side logic starts from here. Never ass any UI rendering code, we don't force you but in this module you should never have buttons, text fields, check boxes etc ... 
 We encourage that your flow should be independent from any UI presentation and terms we are going to demonstrate it as we go further with this task.
