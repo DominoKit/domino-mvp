@@ -1,8 +1,8 @@
 package com.progressoft.brix.domino.api.server.config;
 
 import com.progressoft.brix.domino.api.server.ServerApp;
-import com.progressoft.brix.domino.api.server.entrypoint.ServerContext;
 import com.progressoft.brix.domino.api.server.entrypoint.ServerEntryPointsLoader;
+import com.progressoft.brix.domino.api.server.entrypoint.VertxContext;
 import com.progressoft.brix.domino.api.server.handler.HandlersRepository;
 import com.progressoft.brix.domino.api.server.handler.InMemoryHandlersRepository;
 import com.progressoft.brix.domino.api.server.interceptor.InMemoryInterceptorsRepository;
@@ -13,10 +13,10 @@ import java.util.ServiceLoader;
 
 public class ServerConfigurationLoader {
 
-    private final ServerContext serverContext;
+    private final VertxContext serverContext;
 
-    public ServerConfigurationLoader(ServerContext serverContext) {
-        this.serverContext = serverContext;
+    public ServerConfigurationLoader(VertxContext vertxContext) {
+        this.serverContext = vertxContext;
     }
 
     public void loadModules(){
@@ -25,8 +25,8 @@ public class ServerConfigurationLoader {
         ServerApp serverApp= makeServerApp(handlersRepository, interceptorsRepository);
 
         ServiceLoader.load(ServerModuleConfiguration.class).forEach(serverApp::configureModule);
-
         ServerEntryPointsLoader.runEntryPoints(serverContext);
+
     }
 
     private ServerApp makeServerApp(HandlersRepository handlersRepository,

@@ -12,12 +12,15 @@ public class VertxContext implements ServerContext {
     private final ServerConfiguration config;
     private final Vertx vertx;
     private final VertxServiceDiscovery serviceDiscovery;
+    private final DominoHttpServerOptions httpServerOptions;
 
-    private VertxContext(Vertx vertx, Router router, ServerConfiguration config, VertxServiceDiscovery serviceDiscovery) {
+    private VertxContext(Vertx vertx, Router router, ServerConfiguration config, VertxServiceDiscovery serviceDiscovery,
+                         DominoHttpServerOptions httpServerOptions) {
         this.router = router;
         this.config = config;
         this.vertx = vertx;
         this.serviceDiscovery = serviceDiscovery;
+        this.httpServerOptions = httpServerOptions;
     }
 
     @Override
@@ -54,11 +57,17 @@ public class VertxContext implements ServerContext {
         return this.serviceDiscovery;
     }
 
+    public DominoHttpServerOptions httpServerOptions(){
+        return this.httpServerOptions;
+    }
+
     public static class VertxContextBuilder {
         private Router router;
         private ServerConfiguration config;
         private Vertx vertx;
         private VertxServiceDiscovery serviceDiscovery;
+        private DominoHttpServerOptions httpServerOptions;
+
 
         private VertxContextBuilder(Vertx vertx) {
             this.vertx = vertx;
@@ -83,8 +92,14 @@ public class VertxContext implements ServerContext {
             return this;
         }
 
+        public VertxContextBuilder httpServerOptions(DominoHttpServerOptions DominoHttpServerOptions) {
+            this.httpServerOptions = DominoHttpServerOptions;
+            return this;
+        }
+
+
         public VertxContext build() {
-            return new VertxContext(vertx, router, config, serviceDiscovery);
+            return new VertxContext(vertx, router, config, serviceDiscovery, httpServerOptions);
         }
     }
 }

@@ -8,21 +8,23 @@ import io.vertx.core.Launcher;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
-import io.vertx.ext.web.handler.BodyHandler;
-import io.vertx.ext.web.handler.CSRFHandler;
-import io.vertx.ext.web.handler.CookieHandler;
-import io.vertx.ext.web.handler.SessionHandler;
+import io.vertx.ext.web.handler.*;
 import io.vertx.ext.web.sstore.ClusteredSessionStore;
 import io.vertx.ext.web.sstore.LocalSessionStore;
 import io.vertx.ext.web.sstore.SessionStore;
 
 public class DominoLauncher extends Launcher {
 
-    private static final ConfigHolder configHolder = new ConfigHolder();
+    static final ConfigHolder configHolder = new ConfigHolder();
+    static final RouterHolder routerHolder = new RouterHolder();
     static final long MB = 1048576L;
 
-    private static class ConfigHolder {
-        private JsonObject config;
+    protected static class ConfigHolder {
+        JsonObject config;
+    }
+
+    protected static class RouterHolder {
+        Router router;
     }
 
     public static void main(String[] args) {
@@ -31,16 +33,9 @@ public class DominoLauncher extends Launcher {
 
     @Override
     public void afterStartingVertx(Vertx vertx) {
-
         System.setProperty("vertx.disableFileCaching", "true");
-        Router router = makeRouterWithPredefinedHandlers(vertx);
+        routerHolder.router=makeRouterWithPredefinedHandlers(vertx);
 
-        VertxContext vertxContext =
-                VertxContext.VertxContextBuilder.vertx(vertx)
-                        .router(router)
-                        .serverConfiguration(new VertxConfiguration(configHolder.config))
-                        .vertxServiceDiscovery(new VertxServiceDiscovery(vertx)).build();
-        new ServerConfigurationLoader(vertxContext).loadModules();
     }
 
     private Router makeRouterWithPredefinedHandlers(Vertx vertx) {
