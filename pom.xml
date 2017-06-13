@@ -177,5 +177,6 @@
         <module>domino-apt</module>
         <module>archetypes</module>
         <module>jks-server-configurator</module>
+        <module>domino-service-discovery</module>
     </modules>
 </project>

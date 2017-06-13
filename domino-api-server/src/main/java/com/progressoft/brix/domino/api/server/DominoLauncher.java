@@ -3,6 +3,7 @@ package com.progressoft.brix.domino.api.server;
 import com.progressoft.brix.domino.api.server.config.ServerConfigurationLoader;
 import com.progressoft.brix.domino.api.server.config.VertxConfiguration;
 import com.progressoft.brix.domino.api.server.entrypoint.VertxContext;
+import com.progressoft.brix.domino.service.discovery.VertxServiceDiscovery;
 import io.vertx.core.Launcher;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
@@ -17,10 +18,10 @@ import io.vertx.ext.web.sstore.SessionStore;
 
 public class DominoLauncher extends Launcher {
 
-    private static final ConfigHolder configHolder=new ConfigHolder();
+    private static final ConfigHolder configHolder = new ConfigHolder();
     static final long MB = 1048576L;
 
-    private static class ConfigHolder{
+    private static class ConfigHolder {
         private JsonObject config;
     }
 
@@ -35,7 +36,10 @@ public class DominoLauncher extends Launcher {
         Router router = makeRouterWithPredefinedHandlers(vertx);
 
         VertxContext vertxContext =
-                new VertxContext(vertx, router, new VertxConfiguration(configHolder.config));
+                VertxContext.VertxContextBuilder.vertx(vertx)
+                        .router(router)
+                        .serverConfiguration(new VertxConfiguration(configHolder.config))
+                        .vertxServiceDiscovery(new VertxServiceDiscovery(vertx)).build();
         new ServerConfigurationLoader(vertxContext).loadModules();
     }
 
@@ -61,7 +65,7 @@ public class DominoLauncher extends Launcher {
 
     private void addSessionHandler(Vertx vertx, Router router) {
         SessionStore
-                sessionStore=PROCESS_ARGS.contains("-cluster")? ClusteredSessionStore.create(vertx): LocalSessionStore.create(vertx);
+                sessionStore = PROCESS_ARGS.contains("-cluster") ? ClusteredSessionStore.create(vertx) : LocalSessionStore.create(vertx);
         router.route().handler(CookieHandler.create());
         router.route().handler(SessionHandler
                 .create(sessionStore)
@@ -72,6 +76,6 @@ public class DominoLauncher extends Launcher {
 
     @Override
     public void afterConfigParsed(JsonObject config) {
-        configHolder.config=config;
+        configHolder.config = config;
     }
 }
