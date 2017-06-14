@@ -56,7 +56,7 @@ public class TestInMemoryPresenterRepository extends InMemoryPresentersRepositor
         public Presentable getPresenter() {
             if (Objects.isNull(presenter))
                 presenter = presenterFactory.make();
-            return presenter;
+            return presenter.init();
         }
 
         @Override

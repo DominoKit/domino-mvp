@@ -1,4 +1,4 @@
-package com.progressoft.brix.domino.apt.client;
+package com.progressoft.brix.domino.apt.client.processors.contributions;
 
 import com.google.auto.common.MoreElements;
 import com.google.auto.service.AutoService;

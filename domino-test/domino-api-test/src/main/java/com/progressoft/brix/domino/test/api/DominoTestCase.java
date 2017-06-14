@@ -5,10 +5,11 @@ import com.progressoft.brix.domino.api.server.config.ServerConfigurationLoader;
 import com.progressoft.brix.domino.api.server.config.VertxConfiguration;
 import com.progressoft.brix.domino.api.server.entrypoint.VertxContext;
 import com.progressoft.brix.domino.api.server.entrypoint.VertxEntryPointContext;
+import com.progressoft.brix.domino.service.discovery.VertxServiceDiscovery;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
-import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.Router;
+import io.vertx.ext.web.RoutingContext;
 import org.junit.Before;
 
 import java.util.HashMap;
@@ -16,23 +17,27 @@ import java.util.Map;
 
 import static org.easymock.EasyMock.createMock;
 
-public abstract class ModuleTestCase {
+public abstract class DominoTestCase {
 
     protected TestModule testModule;
     protected VertxEntryPointContext testEntryPointContext;
     protected Map<String, Object> attributes = new HashMap<>();
-    protected Vertx vertx=Vertx.vertx();
+    protected Vertx vertx = Vertx.vertx();
 
     @Before
     public void moduleSetup() {
         testModule = new TestModule();
-        ServerConfiguration testServerConfiguration=new VertxConfiguration(new JsonObject());
+        ServerConfiguration testServerConfiguration = new VertxConfiguration(new JsonObject());
         testEntryPointContext = new VertxEntryPointContext(createMock(RoutingContext.class), testServerConfiguration,
                 vertx);
         testModule.init(testEntryPointContext);
         attributes.clear();
         setUp();
-        new ServerConfigurationLoader(new VertxContext(vertx, Router.router(vertx),testServerConfiguration )).loadModules();
+        VertxContext vertxContext = VertxContext.VertxContextBuilder.vertx(vertx)
+                .router(Router.router(vertx))
+                .serverConfiguration(testServerConfiguration)
+                .vertxServiceDiscovery(new VertxServiceDiscovery(vertx)).build();
+        new ServerConfigurationLoader(vertxContext).loadModules();
         testModule.run();
         onConfigurationCompleted();
     }

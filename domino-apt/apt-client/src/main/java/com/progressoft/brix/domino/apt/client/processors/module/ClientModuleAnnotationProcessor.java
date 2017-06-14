@@ -1,7 +1,9 @@
-package com.progressoft.brix.domino.apt.client;
+package com.progressoft.brix.domino.apt.client.processors.module;
 
 import com.google.auto.service.AutoService;
 import com.progressoft.brix.domino.api.client.annotations.*;
+import com.progressoft.brix.domino.apt.client.RegistrationFactory;
+import com.progressoft.brix.domino.apt.client.RegistrationHelper;
 import com.progressoft.brix.domino.apt.client.registration.*;
 import com.progressoft.brix.domino.apt.commons.BaseProcessor;
 import com.progressoft.brix.domino.apt.commons.ProcessorElement;
@@ -98,17 +100,17 @@ public class ClientModuleAnnotationProcessor extends BaseProcessor {
     @Override
     public Set<String> getSupportedAnnotationTypes() {
         Set<String> annotations = new HashSet<>();
-        annotations.add(ClientModule.class.getCanonicalName());
-        annotations.add(Presenter.class.getCanonicalName());
-        annotations.add(UiView.class.getCanonicalName());
-        annotations.add(Request.class.getCanonicalName());
-        annotations.add(InitialTask.class.getCanonicalName());
-        annotations.add(Contribute.class.getCanonicalName());
+        annotations.add(ClientModule.class.getCanonicalName());//
+        annotations.add(Presenter.class.getCanonicalName());//
+        annotations.add(UiView.class.getCanonicalName());//
+        annotations.add(Request.class.getCanonicalName());//
+        annotations.add(InitialTask.class.getCanonicalName());//
+        annotations.add(Contribute.class.getCanonicalName());//
         annotations.add(Path.class.getCanonicalName());
         annotations.add(PathParameter.class.getCanonicalName());
-        annotations.add(AutoRequest.class.getCanonicalName());
-        annotations.add(InjectContext.class.getCanonicalName());
-        annotations.add(RequestSender.class.getCanonicalName());
+        annotations.add(AutoRequest.class.getCanonicalName());//
+        annotations.add(InjectContext.class.getCanonicalName());//
+        annotations.add(RequestSender.class.getCanonicalName());//
         return annotations;
     }
 

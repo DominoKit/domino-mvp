@@ -2,6 +2,7 @@ package com.progressoft.brix.domino.http.server.config;
 
 import com.progressoft.brix.domino.api.server.config.VertxConfiguration;
 import com.progressoft.brix.domino.api.server.entrypoint.VertxContext;
+import com.progressoft.brix.domino.service.discovery.VertxServiceDiscovery;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.JsonObject;
@@ -11,7 +12,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static java.lang.Boolean.*;
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 public class JksServerConfiguratorTest {
@@ -42,7 +44,10 @@ public class JksServerConfiguratorTest {
         configuration.put(SSL_JKS_SECRET, TEST_JKS_SECRET);
         configuration.put(HTTPS_PORT, DEFAULT_HTTPS_PORT);
         options = new HttpServerOptions();
-        context = new VertxContext(vertx, router, configuration);
+        context = VertxContext.VertxContextBuilder.vertx(vertx)
+                .router(router)
+                .serverConfiguration(configuration)
+                .vertxServiceDiscovery(new VertxServiceDiscovery(vertx)).build();
     }
 
     @After

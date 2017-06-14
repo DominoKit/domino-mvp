@@ -33,7 +33,7 @@ public class ${module}ClientModuleTest extends ModuleTestCase{
 
         testModule.replacePresenter(${module}Presenter.class.getCanonicalName(), () -> {
             presenterSpy=new ${module}PresenterSpy();
-            return presenterSpy.init();
+            return presenterSpy;
         });
 
         testModule.replaceView(${module}Presenter.class.getCanonicalName(), () -> {

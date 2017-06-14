@@ -1,4 +1,4 @@
-package com.progressoft.brix.domino.apt.client;
+package com.progressoft.brix.domino.apt.client.processors.handlers;
 
 
 import com.progressoft.brix.domino.api.client.annotations.HandlerPath;

@@ -4,7 +4,7 @@
 
     <inherits name="com.google.gwt.logging.Logging"/>
     <inherits name="org.fusesource.restygwt.RestyGWT"/>
-
+    <inherits name="ru.finam.slf4jgwt.logging.gwt.Logging"/>
 
     <entry-point class='com.progressoft.brix.domino.gwt.client.Core'/>
 

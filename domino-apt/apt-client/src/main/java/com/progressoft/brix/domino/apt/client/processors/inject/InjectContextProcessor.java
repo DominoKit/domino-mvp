@@ -1,8 +1,9 @@
-package com.progressoft.brix.domino.apt.client;
+package com.progressoft.brix.domino.apt.client.processors.inject;
 
 import com.google.auto.common.MoreElements;
 import com.google.auto.service.AutoService;
 import com.progressoft.brix.domino.api.client.annotations.InjectContext;
+import com.progressoft.brix.domino.apt.client.processors.contributions.ContributionClientRequestProcessor;
 import com.progressoft.brix.domino.apt.commons.BaseProcessor;
 import com.progressoft.brix.domino.apt.commons.FullClassName;
 

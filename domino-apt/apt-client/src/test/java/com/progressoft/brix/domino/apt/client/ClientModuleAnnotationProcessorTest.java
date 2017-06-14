@@ -1,6 +1,11 @@
 package com.progressoft.brix.domino.apt.client;
 
+import com.progressoft.brix.domino.apt.client.processors.contributions.ContributionClientRequestProcessor;
+import com.progressoft.brix.domino.apt.client.processors.handlers.HandlerPathProcessor;
+import com.progressoft.brix.domino.apt.client.processors.inject.InjectContextProcessor;
+import com.progressoft.brix.domino.apt.client.processors.module.ClientModuleAnnotationProcessor;
 import org.apache.commons.io.IOUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -8,6 +13,7 @@ import java.io.InputStream;
 
 import static com.progressoft.brix.domino.test.apt.ProcessorAssert.assertProcessing;
 
+@Ignore
 public class ClientModuleAnnotationProcessorTest {
 
     private static final String BASE_PACKAGE = "com/progressoft/brix/domino/apt/client/";
