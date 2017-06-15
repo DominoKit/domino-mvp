@@ -2,10 +2,10 @@ package com.progressoft.brix.domino.apt.client;
 
 import com.progressoft.brix.domino.api.client.ModuleConfiguration;
 import com.progressoft.brix.domino.api.client.request.RequestRestSendersRegistry;
-import com.progressoft.brix.domino.apt.client.AnnotatedClassWithHandlerPath;
 import com.progressoft.brix.domino.api.client.request.LazyRequestRestSenderLoader;
-import com.progressoft.brix.domino.apt.client.AnnotatedClassWithRequestSender;
 import com.progressoft.brix.domino.api.client.request.RequestRestSender;
+import com.progressoft.brix.domino.apt.client.AnnotatedClassWithHandlerPath;
+import com.progressoft.brix.domino.apt.client.AnnotatedClassWithRequestSender;
 
 public class RequestSendersRegistrationsModuleConfiguration implements ModuleConfiguration {
 

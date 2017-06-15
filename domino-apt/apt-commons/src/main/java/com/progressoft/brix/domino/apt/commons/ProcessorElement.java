@@ -177,4 +177,14 @@ public class ProcessorElement {
         return typeUtils.capture(element.asType()).toString();
     }
 
+    public boolean validateElementKind(ElementKind kind) {
+        if (element.getKind() != kind)
+            throw new ProcessingException(element, "Only "+kind+" can be annotated with @%s");
+        return true;
+    }
+
+
+    public Element getElement() {
+        return element;
+    }
 }

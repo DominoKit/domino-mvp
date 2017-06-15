@@ -20,7 +20,7 @@ public @interface PathParameter {
 
     final class DefaultParameterConverter implements ParameterConverter {
         @Override
-        public Object convert(String value) {
+        public String convert(String value) {
             return value;
         }
     }

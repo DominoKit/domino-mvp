@@ -20,6 +20,7 @@ public abstract class BaseProcessor extends AbstractProcessor {
     protected Elements elementUtils;
     protected Filer filer;
     protected Messager messager;
+    protected ElementFactory elementFactory;
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
@@ -28,6 +29,7 @@ public abstract class BaseProcessor extends AbstractProcessor {
         this.elementUtils=processingEnv.getElementUtils();
         this.filer=processingEnv.getFiler();
         this.messager=processingEnv.getMessager();
+        this.elementFactory=new ElementFactory(elementUtils, typeUtils);
     }
 
     protected Writer obtainSourceWriter(String targetPackage,String className) throws IOException {
@@ -54,6 +56,21 @@ public abstract class BaseProcessor extends AbstractProcessor {
 
     protected ProcessorElement newProcessorElement(Element element){
         return new ProcessorElement(element, elementUtils, typeUtils);
+    }
+
+    public class ElementFactory{
+
+        private final Elements elementUtils;
+        private final Types typeUtils;
+
+        public ElementFactory(Elements elementUtils, Types typeUtils) {
+            this.elementUtils = elementUtils;
+            this.typeUtils = typeUtils;
+        }
+
+        public ProcessorElement make(Element element){
+            return new ProcessorElement(element, this.elementUtils, this.typeUtils);
+        }
     }
 }
 
