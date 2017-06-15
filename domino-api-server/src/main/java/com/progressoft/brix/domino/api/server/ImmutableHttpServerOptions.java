@@ -103,4 +103,14 @@ class ImmutableHttpServerOptions implements DominoHttpServerOptions {
     public boolean isDecompressionSupported() {
         return options.isDecompressionSupported();
     }
+
+    @Override
+    public int getAcceptBacklog() {
+        return options.getAcceptBacklog();
+    }
+
+    @Override
+    public boolean isSsl() {
+        return options.isSsl();
+    }
 }
