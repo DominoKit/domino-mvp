@@ -29,8 +29,8 @@ public class HttpEndpointConfiguration extends BaseServiceConfiguration {
         return this;
     }
 
-    public HttpEndpointConfiguration sslEnabled() {
-        this.ssl = true;
+    public HttpEndpointConfiguration ssl(boolean ssl) {
+        this.ssl = ssl;
         return this;
     }
 

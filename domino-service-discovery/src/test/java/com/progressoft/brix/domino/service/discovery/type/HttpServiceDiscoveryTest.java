@@ -128,7 +128,7 @@ public class HttpServiceDiscoveryTest extends BaseVertxServiceDiscoveryTest {
         publishHttpEndpoint(httpEndpointConfiguration
                 .root(SERVICE_ROOT)
                 .port(SERVICE_PORT)
-                .sslEnabled()
+                .ssl(true)
                 .metadata(metadata));
 
         serviceDiscovery.getRecord(jsonFilter, context.asyncAssertSuccess(record -> {
@@ -144,7 +144,7 @@ public class HttpServiceDiscoveryTest extends BaseVertxServiceDiscoveryTest {
         publishHttpEndpoint(httpEndpointConfiguration
                 .root(SERVICE_ROOT)
                 .port(SERVICE_PORT)
-                .sslEnabled()
+                .ssl(true)
                 .metadata(metadata), context.asyncAssertSuccess(record -> {
 
             context.assertEquals("/" + SERVICE_ROOT, record.getLocation().getString(ROOT));
