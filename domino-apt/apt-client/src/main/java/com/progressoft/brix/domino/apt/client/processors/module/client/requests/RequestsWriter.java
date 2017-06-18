@@ -37,7 +37,7 @@ public class RequestsWriter {
         FullClassName request=new FullClassName(e.request);
         FullClassName presenter=new FullClassName(e.presenter);
 
-        methodBuilder.line("registry.registerRequest("+request.asSimpleName()+".class.getCanonicalName(), "+presenter.asSimpleName()+".class.getCanonicalName());");
+        methodBuilder.block("registry.registerRequest("+request.asSimpleName()+".class.getCanonicalName(), "+presenter.asSimpleName()+".class.getCanonicalName());");
 
     }
 

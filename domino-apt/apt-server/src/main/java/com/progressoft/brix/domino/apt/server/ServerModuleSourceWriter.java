@@ -70,7 +70,7 @@ public class ServerModuleSourceWriter extends JavaSourceWriter {
                     .takes(EndpointsRegistry.class.getCanonicalName(), REGISTRY);
 
             handlers.forEach(e ->
-                    method.line(getEndpointRegistrationLine(e)));
+                    method.block(getEndpointRegistrationLine(e)));
             method.end();
         }
     }
@@ -97,7 +97,7 @@ public class ServerModuleSourceWriter extends JavaSourceWriter {
                     .takes(HandlerRegistry.class.getCanonicalName(), REGISTRY);
 
             handlers.forEach(h ->
-                   method.line(getHandlerRegistrationLine(h)));
+                   method.block(getHandlerRegistrationLine(h)));
             method.end();
         }
     }
@@ -107,12 +107,12 @@ public class ServerModuleSourceWriter extends JavaSourceWriter {
             sourceBuilder.imports(new FullClassName(handler.getFullQualifiedGenericName()));
             FullClassName request = new FullClassName(new FullClassName(handler.getInterfaceFullQualifiedGenericName(RequestHandler.class)).allImports().get(1));
             sourceBuilder.imports(request);
-            return "registry.registerHandler("+request.asSimpleGenericName()+ CLASS_GET_CANONICAL_NAME +","+ NEW_KEYWORD +handler.simpleName()+"())";
+            return "registry.registerHandler("+request.asSimpleGenericName()+ CLASS_GET_CANONICAL_NAME +","+ NEW_KEYWORD +handler.simpleName()+"());";
         }else{
             sourceBuilder.imports(new FullClassName(handler.getFullQualifiedGenericName()));
             FullClassName request = new FullClassName(new FullClassName(handler.getInterfaceFullQualifiedGenericName(CallbackRequestHandler.class)).allImports().get(1));
             sourceBuilder.imports(request);
-            return "registry.registerCallbackHandler("+request.asSimpleGenericName()+ CLASS_GET_CANONICAL_NAME +","+ NEW_KEYWORD +handler.simpleName()+"())";
+            return "registry.registerCallbackHandler("+request.asSimpleGenericName()+ CLASS_GET_CANONICAL_NAME +","+ NEW_KEYWORD +handler.simpleName()+"());";
         }
 
 
@@ -127,7 +127,7 @@ public class ServerModuleSourceWriter extends JavaSourceWriter {
                     .takes(InterceptorsRegistry.class.getCanonicalName(), REGISTRY);
 
             interceptors.forEach(i ->
-                    method.line(getInterceptorRegistrationLine(i)));
+                    method.block(getInterceptorRegistrationLine(i)));
             method.end();
         }
     }
@@ -140,7 +140,7 @@ public class ServerModuleSourceWriter extends JavaSourceWriter {
         sourceBuilder.imports(entryPoint);
 
         return "registry.registerInterceptor("+request.asSimpleGenericName()+".class.getCanonicalName(), "+entryPoint.asSimpleGenericName()+
-                CLASS_GET_CANONICAL_NAME +","+ NEW_KEYWORD +interceptor.simpleName()+"())";
+                CLASS_GET_CANONICAL_NAME +","+ NEW_KEYWORD +interceptor.simpleName()+"());";
     }
 
     private void writeGlobalInterceptorsRegisterMethod() {
@@ -152,7 +152,7 @@ public class ServerModuleSourceWriter extends JavaSourceWriter {
                     .takes(InterceptorsRegistry.class.getCanonicalName(), REGISTRY);
 
             globalInterceptors.forEach(g ->
-                    method.line(getGlobalInterceptorRegistrationLine(g)));
+                    method.block(getGlobalInterceptorRegistrationLine(g)));
             method.end();
         }
     }
@@ -163,6 +163,6 @@ public class ServerModuleSourceWriter extends JavaSourceWriter {
         sourceBuilder.imports(entryPoint);
 
         return "registry.registerGlobalInterceptor("+entryPoint.asSimpleGenericName()+ CLASS_GET_CANONICAL_NAME +","+
-                NEW_KEYWORD +interceptor.simpleName()+"())";
+                NEW_KEYWORD +interceptor.simpleName()+"());";
     }
 }

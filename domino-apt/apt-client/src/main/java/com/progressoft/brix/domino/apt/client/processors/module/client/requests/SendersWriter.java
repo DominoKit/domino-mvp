@@ -41,7 +41,7 @@ public class SendersWriter {
         FullClassName request=new FullClassName(e.request);
         FullClassName sender=new FullClassName(e.sender);
 
-        methodBuilder.line("registry.registerRequestRestSender("+request.asSimpleName()+".class.getCanonicalName(),\n" +
+        methodBuilder.block("registry.registerRequestRestSender("+request.asSimpleName()+".class.getCanonicalName(),\n" +
                 "\t\t\t\tnew LazyRequestRestSenderLoader() {\n" +
                 "\t\t\t\t\t@Override\n" +
                 "\t\t\t\t\tprotected RequestRestSender make() {\n" +

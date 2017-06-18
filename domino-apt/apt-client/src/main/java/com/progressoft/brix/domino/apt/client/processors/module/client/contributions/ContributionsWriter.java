@@ -36,7 +36,7 @@ public class ContributionsWriter {
         FullClassName contribution=new FullClassName(e.contribution);
         FullClassName extensionPoint=new FullClassName(e.extensionPoint);
 
-        methodBuilder.line("registry.registerContribution("+extensionPoint.asSimpleName()+".class, new "+contribution.asSimpleName()+"());");
+        methodBuilder.block("registry.registerContribution("+extensionPoint.asSimpleName()+".class, new "+contribution.asSimpleName()+"());");
 
     }
 

@@ -72,7 +72,9 @@ public class MethodBuilder {
         return this;
     }
 
-    public MethodBuilder line(String codeLine, boolean semiColon) {
+
+
+    public MethodBuilder block(String codeLine, boolean semiColon) {
         codeWriter.append("\n\t\t")
                 .append(codeLine);
         if (!codeLine.endsWith(";") && semiColon)
@@ -80,7 +82,7 @@ public class MethodBuilder {
         return this;
     }
 
-    public MethodBuilder line(String codeLine) {
-        return line(codeLine, true);
+    public MethodBuilder block(String codeLine) {
+        return block(codeLine, false);
     }
 }

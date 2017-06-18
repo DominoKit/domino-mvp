@@ -40,7 +40,7 @@ public class PresentersWriter {
         FullClassName presenter=new FullClassName(e.name);
         FullClassName presenterImpl=new FullClassName(e.impl);
 
-        methodBuilder.line("registry.registerPresenter(new LazyPresenterLoader("+presenter.asSimpleName()+".class.getCanonicalName(), "+presenterImpl.asSimpleName()+".class.getCanonicalName()) {\n" +
+        methodBuilder.block("registry.registerPresenter(new LazyPresenterLoader("+presenter.asSimpleName()+".class.getCanonicalName(), "+presenterImpl.asSimpleName()+".class.getCanonicalName()) {\n" +
                 "\t\t\t@Override\n" +
                 "\t\t\tprotected Presentable make() {\n" +
                 "\t\t\t\treturn new "+presenterImpl.asSimpleName()+"();\n" +

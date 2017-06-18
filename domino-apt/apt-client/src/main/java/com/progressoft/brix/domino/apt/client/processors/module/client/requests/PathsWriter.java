@@ -51,7 +51,7 @@ public class PathsWriter {
     }
 
     private void writeDefaultMapper(PathEntry e, MethodBuilder methodBuilder, FullClassName request) {
-        methodBuilder.line("registry.registerMapper(\""+e.path+"\", new RequestFromPath() {\n" +
+        methodBuilder.block("registry.registerMapper(\""+e.path+"\", new RequestFromPath() {\n" +
                 "                @Override\n" +
                 "                public Request buildRequest(TokenizedPath path) {\n" +
                 "                    return new "+request.asSimpleName()+"("+appendParameters(e.parameters)+");\n" +
@@ -76,7 +76,7 @@ public class PathsWriter {
     private void writeCustomMapper(PathEntry e, MethodBuilder methodBuilder) {
         sourceBuilder.imports(e.mapper);
         FullClassName mapper=new FullClassName(e.mapper);
-        methodBuilder.line("registry.registerMapper(\"somePath\", new "+mapper.asSimpleName()+"());");
+        methodBuilder.block("registry.registerMapper(\"somePath\", new "+mapper.asSimpleName()+"());");
     }
 
     private void importPath(PathEntry e) {

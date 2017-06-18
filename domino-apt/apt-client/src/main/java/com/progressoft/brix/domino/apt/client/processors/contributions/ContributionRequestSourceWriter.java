@@ -48,7 +48,7 @@ public class ContributionRequestSourceWriter extends JavaSourceWriter {
         ConstructorBuilder constructorBuilder = this.sourceBuilder.constructor(generatedClassName);
         constructorBuilder.withModifier(new ModifierBuilder().asPublic())
                 .takes(contextName, "extensionPoint")
-                .line("this.extensionPoint=extensionPoint;")
+                .block("this.extensionPoint=extensionPoint;")
                 .end();
 
         MethodBuilder methodBuilder = this.sourceBuilder.method("process");
@@ -56,7 +56,7 @@ public class ContributionRequestSourceWriter extends JavaSourceWriter {
                 .withModifier(new ModifierBuilder().asProtected())
                 .returnsVoid()
                 .takes(presenter, "presenter")
-                .line("\tpresenter." + presenterMethod + "(extensionPoint.context());")
+                .block("\tpresenter." + presenterMethod + "(extensionPoint.context());")
                 .end();
 
     }

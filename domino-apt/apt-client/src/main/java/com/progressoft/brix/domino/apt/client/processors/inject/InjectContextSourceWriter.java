@@ -50,7 +50,7 @@ public class InjectContextSourceWriter extends JavaSourceWriter {
                 .withModifier(new ModifierBuilder().asPublic())
                 .returnsVoid()
                 .takes(extensionPoint, "extensionPoint")
-                .line("\tnew " + new FullClassName(makeRequestClassName()).asSimpleName() + "(extensionPoint).send();")
+                .block("\tnew " + new FullClassName(makeRequestClassName()).asSimpleName() + "(extensionPoint).send();")
                 .end();
     }
 

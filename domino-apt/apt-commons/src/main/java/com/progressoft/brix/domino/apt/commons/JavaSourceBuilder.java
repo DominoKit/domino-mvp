@@ -146,7 +146,7 @@ public class JavaSourceBuilder {
     }
 
 
-    public JavaSourceBuilder withBlock(String block) {
+    public JavaSourceBuilder codeBlock(String block) {
         blocksWriter.append(block);
         return this;
     }

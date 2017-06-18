@@ -1,6 +1,5 @@
 package com.progressoft.brix.domino.api.server.config;
 
-import com.progressoft.brix.domino.api.server.config.ServerConfiguration;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 

@@ -1,54 +1,51 @@
 package com.progressoft.brix.domino.api.server;
 
 import com.progressoft.brix.domino.api.server.config.ServerConfiguration;
+import com.progressoft.brix.domino.api.server.config.VertxConfiguration;
 import com.progressoft.brix.domino.api.server.endpoint.EndpointsRegistry;
 import com.progressoft.brix.domino.api.server.entrypoint.ServerContext;
+import com.progressoft.brix.domino.api.server.entrypoint.VertxContext;
 import com.progressoft.brix.domino.api.server.handler.HandlersRepository;
 import com.progressoft.brix.domino.api.server.handler.InMemoryHandlersRepository;
 import com.progressoft.brix.domino.api.server.interceptor.InMemoryInterceptorsRepository;
 import com.progressoft.brix.domino.api.server.interceptor.InterceptorsRepository;
 import com.progressoft.brix.domino.api.server.request.DefaultRequestExecutor;
 import com.progressoft.brix.domino.api.server.request.RequestExecutor;
+import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonObject;
+import io.vertx.ext.unit.junit.RunTestOnContext;
+import io.vertx.ext.unit.junit.VertxUnitRunner;
+import io.vertx.ext.web.Router;
+import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+@RunWith(VertxUnitRunner.class)
 public class ServerAppTest {
+
+    @Rule
+    public RunTestOnContext rule= new RunTestOnContext();
 
     private ServerApp serverApp;
     private TestRequest request;
-    private ServerConfiguration testConfiguration;
+    private Vertx vertx;
 
     @Before
     public void setUp() throws Exception {
-        HandlersRepository handlersRepository = new InMemoryHandlersRepository();
-        InterceptorsRepository interceptorsRepository = new InMemoryInterceptorsRepository();
-        RequestExecutor requestExecutor = new DefaultRequestExecutor(handlersRepository, interceptorsRepository);
-        testConfiguration=new TestConfiguration();
-        serverApp = new ServerApp.ServerAppBuilder().executor(requestExecutor).handlersRepository(handlersRepository).serverContext(
-                new ServerContext() {
-                    @Override
-                    public ServerConfiguration config() {
-                        return testConfiguration;
-                    }
 
-                    @Override
-                    public void publishEndPoint(String path, EndpointsRegistry.EndpointHandlerFactory factory) {
-                        //in test we do nothing
-                    }
-
-                    @Override
-                    public void publishService(String path, EndpointsRegistry.EndpointHandlerFactory factory) {
-
-                    }
-
-                    @Override
-                    public <T> T cast(Class<T> klass) throws InvalidContextTypeException {
-                        return null;
-                    }
-                }).interceptorsRepository(interceptorsRepository).build().run();
+        vertx= rule.vertx();
+        JsonObject config=new JsonObject();
+        RouterConfigurator configurator=new RouterConfigurator(vertx);
+        DominoLauncher.routerHolder.router=configurator.configuredRouter();;
+        DominoLauncher.configHolder.config=config;
+        config.put("http.port",0);
+        new DominoLoader(vertx, DominoLauncher.routerHolder.router, DominoLauncher.configHolder.config).start();
+        serverApp=ServerApp.make();
         request = new TestRequest();
     }
 
@@ -94,5 +91,10 @@ public class ServerAppTest {
         serverApp.registerGlobalInterceptor(TestServerEntryPointContext.class.getCanonicalName(), new TestGlobalRequestInterceptor());
         serverApp.executeRequest(request, new TestServerEntryPointContext());
         assertEquals("-intercepted-entry-point-parameter-globally-intercepted-entry-point-parameter-handled", request.getTestWord());
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        vertx.close();
     }
 }
