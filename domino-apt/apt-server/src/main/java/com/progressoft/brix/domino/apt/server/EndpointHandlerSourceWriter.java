@@ -68,7 +68,7 @@ public class EndpointHandlerSourceWriter extends JavaSourceWriter {
                 .takes("RoutingContext", "routingContext")
                 .block("ServerApp serverApp = ServerApp.make();")
                 .block(request.asSimpleName() + " requestBody = Json.decodeValue(routingContext.getBodyAsString(), " +
-                        request.asSimpleName() + ".class)");
+                        request.asSimpleName() + ".class);");
         if (processorElement.isImplementsGenericInterface(RequestHandler.class))
             completeHandler(methodBuilder);
         else
@@ -77,7 +77,7 @@ public class EndpointHandlerSourceWriter extends JavaSourceWriter {
 
     private void completeHandler(MethodBuilder methodBuilder) {
         methodBuilder.block(response.asSimpleName() + " response=(" + response.asSimpleName() +
-                ")serverApp.executeRequest(requestBody, new VertxEntryPointContext(routingContext, serverApp.serverContext().config(), routingContext.vertx()))")
+                ")serverApp.executeRequest(requestBody, new VertxEntryPointContext(routingContext, serverApp.serverContext().config(), routingContext.vertx()));")
                 .block("routingContext.response()\n" +
                         "                .putHeader(\"content-type\", \"application/json\")\n" +
                         "                .end(Json.encode(response));")
