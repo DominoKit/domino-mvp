@@ -409,8 +409,8 @@ public class JavaSourceBuilderTest {
                         .withModifier(new ModifierBuilder().asPublic())
                         .takes("String", "someParameter")
                         .takes("ggg.hhh.iii.C", "objectParameter")
-                        .line("SomeReturnType<A,B> value=new SomeReturnType<A,B>()")
-                        .line("return value")
+                        .block("SomeReturnType<A,B> value=new SomeReturnType<A,B>();")
+                        .block("return value;")
                         .returns("aaa.bbb.ccc.SomeReturnType<aaa.bbb.ccc.A,ddd.eee.fff.B>")
                         .end()
                         .build());

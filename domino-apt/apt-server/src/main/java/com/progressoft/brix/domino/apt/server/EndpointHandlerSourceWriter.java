@@ -66,9 +66,9 @@ public class EndpointHandlerSourceWriter extends JavaSourceWriter {
                 .withModifier(new ModifierBuilder().asPublic())
                 .returns("void")
                 .takes("RoutingContext", "routingContext")
-                .line("ServerApp serverApp = ServerApp.make()")
-                .line(request.asSimpleName() + " requestBody = Json.decodeValue(routingContext.getBodyAsString(), " +
-                        request.asSimpleName() + ".class)");
+                .block("ServerApp serverApp = ServerApp.make();")
+                .block(request.asSimpleName() + " requestBody = Json.decodeValue(routingContext.getBodyAsString(), " +
+                        request.asSimpleName() + ".class);");
         if (processorElement.isImplementsGenericInterface(RequestHandler.class))
             completeHandler(methodBuilder);
         else
@@ -76,20 +76,20 @@ public class EndpointHandlerSourceWriter extends JavaSourceWriter {
     }
 
     private void completeHandler(MethodBuilder methodBuilder) {
-        methodBuilder.line(response.asSimpleName() + " response=(" + response.asSimpleName() +
-                ")serverApp.executeRequest(requestBody, new VertxEntryPointContext(routingContext, serverApp.serverContext().config(), routingContext.vertx()))")
-                .line("routingContext.response()\n" +
+        methodBuilder.block(response.asSimpleName() + " response=(" + response.asSimpleName() +
+                ")serverApp.executeRequest(requestBody, new VertxEntryPointContext(routingContext, serverApp.serverContext().config(), routingContext.vertx()));")
+                .block("routingContext.response()\n" +
                         "                .putHeader(\"content-type\", \"application/json\")\n" +
                         "                .end(Json.encode(response));")
                 .end();
     }
 
     private void completeHandlerCallback(MethodBuilder methodBuilder) {
-        methodBuilder.line("serverApp.executeCallbackRequest(requestBody, new VertxEntryPointContext(routingContext, serverApp.serverContext().config(), routingContext.vertx()), response -> {", false)
-                .line("routingContext.response()\n" +
+        methodBuilder.block("serverApp.executeCallbackRequest(requestBody, new VertxEntryPointContext(routingContext, serverApp.serverContext().config(), routingContext.vertx()), response -> {", false)
+                .block("routingContext.response()\n" +
                         "                .putHeader(\"content-type\", \"application/json\")\n" +
                         "                .end(Json.encode(("+response.asSimpleName()+")response));")
-                .line("});")
+                .block("});")
                 .end();
     }
 }

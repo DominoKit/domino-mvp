@@ -1,7 +1,6 @@
 package com.progressoft.brix.domino.apt.client.processors.module.client.initialtasks;
 
 import com.progressoft.brix.domino.api.client.InitialTaskRegistry;
-import com.progressoft.brix.domino.api.client.request.RequestRegistry;
 import com.progressoft.brix.domino.apt.commons.FullClassName;
 import com.progressoft.brix.domino.apt.commons.JavaSourceBuilder;
 import com.progressoft.brix.domino.apt.commons.MethodBuilder;
@@ -35,7 +34,7 @@ public class InitialTasksWriter {
 
     private void registerInitialTask(String initialTask, MethodBuilder methodBuilder) {
         sourceBuilder.imports(initialTask);
-        methodBuilder.line("registry.registerInitialTask(new "+new FullClassName(initialTask).asSimpleName()+"());");
+        methodBuilder.block("registry.registerInitialTask(new "+new FullClassName(initialTask).asSimpleName()+"());");
     }
 
 }

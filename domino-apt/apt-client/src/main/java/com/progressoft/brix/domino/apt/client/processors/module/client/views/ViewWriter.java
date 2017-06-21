@@ -41,7 +41,7 @@ public class ViewWriter {
         FullClassName view=new FullClassName(e.view);
         FullClassName presenter=new FullClassName(e.presenter);
 
-        methodBuilder.line("registry.registerView(new LazyViewLoader("+presenter.asSimpleName()+".class.getCanonicalName()) {\n" +
+        methodBuilder.block("registry.registerView(new LazyViewLoader("+presenter.asSimpleName()+".class.getCanonicalName()) {\n" +
                 "\t\t\t@Override\n" +
                 "\t\t\tprotected View make() {\n" +
                 "\t\t\t\treturn new "+view.asSimpleName()+"();\n" +
