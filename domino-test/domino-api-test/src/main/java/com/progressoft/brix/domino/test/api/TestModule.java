@@ -6,6 +6,7 @@ import com.progressoft.brix.domino.api.client.ModuleConfigurator;
 import com.progressoft.brix.domino.api.client.mvp.view.View;
 import com.progressoft.brix.domino.api.server.entrypoint.ServerEntryPointContext;
 import com.progressoft.brix.domino.api.shared.extension.Contribution;
+import com.progressoft.brix.domino.api.shared.history.AppHistory;
 
 
 public class TestModule {
@@ -33,6 +34,10 @@ public class TestModule {
 
     public void run() {
         ClientApp.make().run();
+    }
+
+    public TestDominoHistory history(){
+        return (TestDominoHistory) ClientApp.make().getHistory();
     }
 
     public <C extends Contribution> C getContribution(Class<C> contributionClass) {

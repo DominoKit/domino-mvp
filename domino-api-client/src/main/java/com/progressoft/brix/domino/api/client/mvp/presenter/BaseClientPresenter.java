@@ -30,12 +30,12 @@ public abstract class BaseClientPresenter<V extends View> implements ClientPrese
     @Override
     public Presentable init() {
         this.state = uninitialized;
-        process();
+        prepare();
         return this;
     }
 
     @Override
-    public ClientPresenter<V> process() {
+    public ClientPresenter<V> prepare() {
         state.process();
         return this;
     }
@@ -53,7 +53,7 @@ public abstract class BaseClientPresenter<V extends View> implements ClientPrese
     }
 
     protected void runAsync(AsyncRunner.AsyncTask asyncTask){
-        ClientApp.make().asyncRunner().runAsync(asyncTask);
+        ClientApp.make().getAsyncRunner().runAsync(asyncTask);
     }
 
     private String getName(){

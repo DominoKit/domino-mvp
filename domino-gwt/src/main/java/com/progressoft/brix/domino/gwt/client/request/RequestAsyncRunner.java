@@ -1,5 +1,6 @@
 package com.progressoft.brix.domino.gwt.client.request;
 
+import com.google.gwt.user.client.Window;
 import com.progressoft.brix.domino.api.client.async.AsyncRunner.AsyncTask;
 import com.progressoft.brix.domino.api.client.ClientApp;
 import com.progressoft.brix.domino.api.client.events.ServerRequestEventFactory;
@@ -19,12 +20,14 @@ public class RequestAsyncRunner {
 
     public RequestAsyncRunner(ServerRequestEventFactory requestEventFactory) {
         this.requestEventFactory = requestEventFactory;
-        Defaults.setServiceRoot(getHostPageBaseURL() + "service");
+
+        Defaults.setServiceRoot(getModuleBaseURL()
+                .replace("static/"+getModuleName()+"/", "") + "service");
         Defaults.setDispatcher(new DominoRequestDispatcher());
     }
 
     public final void run(final ClientServerRequest request) {
-        ClientApp.make().asyncRunner().runAsync(new RequestAsyncTask(request));
+        ClientApp.make().getAsyncRunner().runAsync(new RequestAsyncTask(request));
     }
 
     private class RequestAsyncTask implements AsyncTask {

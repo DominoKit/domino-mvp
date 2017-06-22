@@ -11,17 +11,19 @@ import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
+import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
+import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.StaticHandler;
 
 import java.util.ServiceLoader;
 
 public class DominoLoader {
 
-    private static final Logger LOGGER= LoggerFactory.getLogger(DominoLoader.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DominoLoader.class);
 
     public static final int DEFAULT_PORT = 8080;
     public static final String HTTP_PORT_KEY = "http.port";
@@ -37,20 +39,22 @@ public class DominoLoader {
         this.config = config;
     }
 
-    public void start(Handler<AsyncResult<HttpServer>> serverStartupHandler){
-        ImmutableHttpServerOptions immutableHttpServerOptions=new ImmutableHttpServerOptions();
+    public void start(Handler<AsyncResult<HttpServer>> serverStartupHandler) {
+        ImmutableHttpServerOptions immutableHttpServerOptions = new ImmutableHttpServerOptions();
         VertxContext vertxContext = initializeContext(immutableHttpServerOptions);
 
         Future<HttpServerOptions> future = Future.future();
-        future.setHandler(options -> onHttpServerConfigurationCompleted(immutableHttpServerOptions, vertxContext, options, serverStartupHandler));
+        future.setHandler(
+                options -> onHttpServerConfigurationCompleted(immutableHttpServerOptions, vertxContext, options,
+                        serverStartupHandler));
 
         configureHttpServer(vertxContext, future);
     }
 
-    public void start(){
+    public void start() {
         start(event -> {
-            if(event.succeeded())
-                LOGGER.info("Server started on port : "+event.result().actualPort());
+            if (event.succeeded())
+                LOGGER.info("Server started on port : " + event.result().actualPort());
             else
                 LOGGER.error("Failed to start server", event.cause());
         });
@@ -65,14 +69,24 @@ public class DominoLoader {
     }
 
     private void onHttpServerConfigurationCompleted(ImmutableHttpServerOptions immutableHttpServerOptions,
-                                                    VertxContext vertxContext, AsyncResult<HttpServerOptions> options, Handler<AsyncResult<HttpServer>> serverStartupHandler) {
+                                                    VertxContext vertxContext, AsyncResult<HttpServerOptions> options,
+                                                    Handler<AsyncResult<HttpServer>> serverStartupHandler) {
         immutableHttpServerOptions.init(options.result(), options.result().getPort(), options.result().getHost());
         new ServerConfigurationLoader(vertxContext).loadModules();
-        router.route().handler(StaticHandler.create());
+
+        router.route("/static/*").handler(StaticHandler.create())
+                .failureHandler(this::serveIndexPage);
+
+        router.route("/*").handler(this::serveIndexPage);
+
         if (options.result().isSsl())
             addSecurityHeadersHandler(router);
         vertx.createHttpServer(options.result()).requestHandler(router::accept)
                 .listen(options.result().getPort(), serverStartupHandler);
+    }
+
+    private HttpServerResponse serveIndexPage(RoutingContext event) {
+        return event.response().putHeader("Content-type", "text/html").sendFile("webroot/index.html");
     }
 
     private void addSecurityHeadersHandler(Router router) {
