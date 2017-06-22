@@ -22,6 +22,7 @@ public class HttpServiceDiscoveryTest extends BaseVertxServiceDiscoveryTest {
     private static final String ROOT = "root";
     private static final String PORT = "port";
     private static final String SSL = "ssl";
+    private static final int PORT_80 = 80;
 
     private HttpEndpointConfiguration httpEndpointConfiguration;
 
@@ -118,7 +119,7 @@ public class HttpServiceDiscoveryTest extends BaseVertxServiceDiscoveryTest {
 
         serviceDiscovery.getRecord(jsonFilter, context.asyncAssertSuccess(record -> {
             context.assertEquals("/", record.getLocation().getString(ROOT));
-            context.assertEquals(80, record.getLocation().getInteger(PORT));
+            context.assertEquals(PORT_80, record.getLocation().getInteger(PORT));
             context.assertFalse(record.getLocation().getBoolean(SSL));
         }));
     }

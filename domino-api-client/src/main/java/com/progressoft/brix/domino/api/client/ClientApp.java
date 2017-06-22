@@ -13,10 +13,10 @@ import com.progressoft.brix.domino.api.client.mvp.view.LazyViewLoader;
 import com.progressoft.brix.domino.api.client.mvp.view.ViewsRepository;
 import com.progressoft.brix.domino.api.client.request.*;
 import com.progressoft.brix.domino.api.shared.extension.Contribution;
-import com.progressoft.brix.domino.api.shared.history.AppHistory;
-import com.progressoft.brix.domino.api.shared.history.DominoHistory;
 import com.progressoft.brix.domino.api.shared.extension.ExtensionPoint;
 import com.progressoft.brix.domino.api.shared.extension.MainExtensionPoint;
+import com.progressoft.brix.domino.api.shared.history.AppHistory;
+import com.progressoft.brix.domino.api.shared.history.DominoHistory;
 
 import java.util.LinkedList;
 import java.util.List;

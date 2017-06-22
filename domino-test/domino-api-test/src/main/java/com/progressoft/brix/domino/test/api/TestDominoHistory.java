@@ -4,7 +4,10 @@ import com.progressoft.brix.domino.api.shared.history.AppHistory;
 import com.progressoft.brix.domino.api.shared.history.StateToken;
 import com.progressoft.brix.domino.api.shared.history.TokenFilter;
 
-import java.util.*;
+import java.util.Deque;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Set;
 
 public class TestDominoHistory implements AppHistory {
 

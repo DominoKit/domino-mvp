@@ -1,18 +1,17 @@
 package com.progressoft.brix.domino.gwt.client.request;
 
-import com.google.gwt.user.client.Window;
-import com.progressoft.brix.domino.api.client.async.AsyncRunner.AsyncTask;
 import com.progressoft.brix.domino.api.client.ClientApp;
+import com.progressoft.brix.domino.api.client.async.AsyncRunner.AsyncTask;
 import com.progressoft.brix.domino.api.client.events.ServerRequestEventFactory;
 import com.progressoft.brix.domino.api.client.request.ClientServerRequest;
 import com.progressoft.brix.domino.api.client.request.ServerRequestCallBack;
 import com.progressoft.brix.domino.api.shared.request.ServerResponse;
 import org.fusesource.restygwt.client.Defaults;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.google.gwt.core.client.GWT.*;
+import static com.google.gwt.core.client.GWT.getModuleBaseURL;
+import static com.google.gwt.core.client.GWT.getModuleName;
 
 public class RequestAsyncRunner {
     private static final Logger LOGGER = LoggerFactory.getLogger(RequestAsyncRunner.class);

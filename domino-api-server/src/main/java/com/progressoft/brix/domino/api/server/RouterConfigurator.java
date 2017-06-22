@@ -12,9 +12,11 @@ import io.vertx.ext.web.sstore.SessionStore;
 
 public class RouterConfigurator {
 
+    static final int DEFAULT_BODY_LIMIT = 50;
+    static final long MB = 1048576L;
+
     private final Vertx vertx;
     private boolean clustered;
-    static final long MB = 1048576L;
 
     public RouterConfigurator(Vertx vertx) {
         this.vertx = vertx;
@@ -42,7 +44,7 @@ public class RouterConfigurator {
     }
 
     private void addBodyHandler(Router router) {
-        router.route().handler(BodyHandler.create().setBodyLimit(50 * MB));
+        router.route().handler(BodyHandler.create().setBodyLimit(DEFAULT_BODY_LIMIT * MB));
     }
 
     private void addCSRFHandler(Router router) {

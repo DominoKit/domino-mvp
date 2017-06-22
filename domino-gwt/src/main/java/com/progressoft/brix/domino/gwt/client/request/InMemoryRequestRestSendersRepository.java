@@ -4,6 +4,7 @@ package com.progressoft.brix.domino.gwt.client.request;
 import com.progressoft.brix.domino.api.client.request.LazyRequestRestSenderLoader;
 import com.progressoft.brix.domino.api.client.request.RequestRestSender;
 import com.progressoft.brix.domino.api.client.request.RequestRestSendersRepository;
+
 import java.util.HashMap;
 import java.util.Map;
 

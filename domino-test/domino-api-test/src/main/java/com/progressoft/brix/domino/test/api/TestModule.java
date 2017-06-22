@@ -6,7 +6,6 @@ import com.progressoft.brix.domino.api.client.ModuleConfigurator;
 import com.progressoft.brix.domino.api.client.mvp.view.View;
 import com.progressoft.brix.domino.api.server.entrypoint.ServerEntryPointContext;
 import com.progressoft.brix.domino.api.shared.extension.Contribution;
-import com.progressoft.brix.domino.api.shared.history.AppHistory;
 
 
 public class TestModule {

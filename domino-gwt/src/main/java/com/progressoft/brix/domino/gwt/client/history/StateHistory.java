@@ -5,28 +5,12 @@ import com.progressoft.brix.domino.api.shared.history.AppHistory;
 import com.progressoft.brix.domino.api.shared.history.StateToken;
 import com.progressoft.brix.domino.api.shared.history.TokenFilter;
 import com.progressoft.brix.domino.gwt.client.history.History.PopStateEventListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.TreeSet;
 
 public class StateHistory implements AppHistory {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(StateHistory.class);
-
-    private class HistoryListener {
-        private final StateListener listener;
-        private final TokenFilter tokenFilter;
-
-        private HistoryListener(StateListener listener,
-                                TokenFilter tokenFilter) {
-            this.listener = listener;
-            this.tokenFilter = tokenFilter;
-        }
-    }
 
     private Set<HistoryListener> listeners = new HashSet<>();
 
@@ -91,5 +75,16 @@ public class StateHistory implements AppHistory {
 
     private String stateData(History.State state) {
         return Objects.isNull(state) ? "" : state.data;
+    }
+
+    private class HistoryListener {
+        private final StateListener listener;
+
+        private final TokenFilter tokenFilter;
+        private HistoryListener(StateListener listener,
+                                TokenFilter tokenFilter) {
+            this.listener = listener;
+            this.tokenFilter = tokenFilter;
+        }
     }
 }

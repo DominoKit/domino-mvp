@@ -5,7 +5,6 @@ import com.progressoft.brix.domino.api.client.async.AsyncRunner;
 import com.progressoft.brix.domino.api.client.extension.Contributions;
 import com.progressoft.brix.domino.api.client.mvp.view.View;
 import com.progressoft.brix.domino.api.shared.extension.ExtensionPoint;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
