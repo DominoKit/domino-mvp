@@ -4,9 +4,7 @@ import com.progressoft.brix.domino.apt.client.processors.contributions.Contribut
 import com.progressoft.brix.domino.apt.client.processors.handlers.HandlerPathProcessor;
 import com.progressoft.brix.domino.apt.client.processors.inject.InjectContextProcessor;
 import com.progressoft.brix.domino.apt.client.processors.module.client.ClientModuleAnnotationProcessor;
-import com.progressoft.brix.domino.apt.client.processors.module.client.contributions.ContributionsCollector;
 import org.apache.commons.io.IOUtils;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;

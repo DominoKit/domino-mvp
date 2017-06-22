@@ -8,7 +8,6 @@ import com.progressoft.brix.domino.apt.commons.BaseProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.*;
 import javax.lang.model.type.DeclaredType;
-import javax.lang.model.util.Types;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;

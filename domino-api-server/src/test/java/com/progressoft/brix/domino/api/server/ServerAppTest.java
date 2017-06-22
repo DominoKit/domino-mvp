@@ -1,21 +1,10 @@
 package com.progressoft.brix.domino.api.server;
 
-import com.progressoft.brix.domino.api.server.config.ServerConfiguration;
-import com.progressoft.brix.domino.api.server.config.VertxConfiguration;
-import com.progressoft.brix.domino.api.server.endpoint.EndpointsRegistry;
-import com.progressoft.brix.domino.api.server.entrypoint.ServerContext;
-import com.progressoft.brix.domino.api.server.entrypoint.VertxContext;
 import com.progressoft.brix.domino.api.server.handler.HandlersRepository;
-import com.progressoft.brix.domino.api.server.handler.InMemoryHandlersRepository;
-import com.progressoft.brix.domino.api.server.interceptor.InMemoryInterceptorsRepository;
-import com.progressoft.brix.domino.api.server.interceptor.InterceptorsRepository;
-import com.progressoft.brix.domino.api.server.request.DefaultRequestExecutor;
-import com.progressoft.brix.domino.api.server.request.RequestExecutor;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.junit.RunTestOnContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
-import io.vertx.ext.web.Router;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
