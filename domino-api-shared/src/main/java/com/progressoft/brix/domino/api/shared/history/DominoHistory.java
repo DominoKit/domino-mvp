@@ -14,9 +14,15 @@ public interface DominoHistory {
 
     void replaceState(String token, String title, String data);
 
-    StateToken currentState();
+    HistoryToken currentToken();
 
     interface StateListener {
-        void onPopState(String token, String stateJosn);
+        void onPopState(State state);
+    }
+
+    interface State{
+        HistoryToken token();
+        String data();
+        String title();
     }
 }

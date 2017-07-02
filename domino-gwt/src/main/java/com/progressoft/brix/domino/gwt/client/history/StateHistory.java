@@ -2,7 +2,7 @@ package com.progressoft.brix.domino.gwt.client.history;
 
 import com.progressoft.brix.domino.api.client.ClientApp;
 import com.progressoft.brix.domino.api.shared.history.AppHistory;
-import com.progressoft.brix.domino.api.shared.history.StateToken;
+import com.progressoft.brix.domino.api.shared.history.HistoryToken;
 import com.progressoft.brix.domino.api.shared.history.TokenFilter;
 import com.progressoft.brix.domino.gwt.client.history.History.PopStateEventListener;
 
@@ -16,15 +16,14 @@ public class StateHistory implements AppHistory {
 
     public StateHistory() {
         PopStateEventListener listener =
-                event -> inform(event.getState().historyToken, event.getState().data);
+                event -> inform(event.getState().historyToken, event.getState().title, event.getState().data);
         Window.getSelf().addEventListener("popstate", listener::onPopState);
     }
 
-    private void inform(String token, String stateJson) {
-        listeners.stream().filter(l -> l.tokenFilter.filter(token)).forEach(l -> {
-            ClientApp.make().getAsyncRunner().runAsync(() ->
-                    l.listener.onPopState(token, stateJson));
-        });
+    private void inform(String token, String title, String stateJson) {
+        listeners.stream().filter(l -> l.tokenFilter.filter(token))
+                .forEach(l -> ClientApp.make().getAsyncRunner().runAsync(() ->
+                        l.listener.onPopState(new DominoHistoryState(token, title, stateJson))));
     }
 
     @Override
@@ -59,7 +58,7 @@ public class StateHistory implements AppHistory {
     }
 
     @Override
-    public StateToken currentState() {
+    public StateHistoryToken currentToken() {
         return null;
     }
 
@@ -70,7 +69,7 @@ public class StateHistory implements AppHistory {
         History.State state = Window.getSelf().getHistory().getState();
         replaceState(token, Window.getSelf().getDocument().getTitle(),
                 stateData(state));
-        inform(token, stateData(state));
+        inform(token, Window.getSelf().getDocument().getTitle(), stateData(state));
     }
 
     private String stateData(History.State state) {
@@ -81,10 +80,39 @@ public class StateHistory implements AppHistory {
         private final StateListener listener;
 
         private final TokenFilter tokenFilter;
+
         private HistoryListener(StateListener listener,
                                 TokenFilter tokenFilter) {
             this.listener = listener;
             this.tokenFilter = tokenFilter;
+        }
+    }
+
+    private class DominoHistoryState implements State {
+
+        private final HistoryToken token;
+        private final String data;
+        private final String title;
+
+        public DominoHistoryState(String token, String title, String data) {
+            this.token = new StateHistoryToken(token);
+            this.data = data;
+            this.title = title;
+        }
+
+        @Override
+        public HistoryToken token() {
+            return this.token;
+        }
+
+        @Override
+        public String data() {
+            return this.data;
+        }
+
+        @Override
+        public String title() {
+            return this.title;
         }
     }
 }
