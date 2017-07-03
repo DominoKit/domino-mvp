@@ -13,11 +13,11 @@ public interface HistoryToken {
     String query();
     boolean hasQueryParameter(String name);
     Map<String, String> queryParameters();
-    String queryParam(String name);
+    String parameterValue(String name);
     HistoryToken appendPath(String path);
     HistoryToken appendParameter(String name, String value);
     HistoryToken replacePath(String path, String replacement);
-    HistoryToken replaceParam(String name, String replacementName, String replacementValue);
+    HistoryToken replaceParameter(String name, String replacementName, String replacementValue);
     HistoryToken replaceLastPath(String replacement);
     HistoryToken replaceLastParam(String name, String replacementName, String replacementValue);
     HistoryToken replaceAllPath(String newPath);
