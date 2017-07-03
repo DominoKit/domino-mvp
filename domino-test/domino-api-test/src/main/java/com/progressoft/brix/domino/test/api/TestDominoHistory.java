@@ -1,8 +1,9 @@
 package com.progressoft.brix.domino.test.api;
 
 import com.progressoft.brix.domino.api.shared.history.AppHistory;
-import com.progressoft.brix.domino.api.shared.history.StateToken;
+import com.progressoft.brix.domino.api.shared.history.HistoryToken;
 import com.progressoft.brix.domino.api.shared.history.TokenFilter;
+import com.progressoft.brix.domino.gwt.client.history.StateHistoryToken;
 
 import java.util.Deque;
 import java.util.HashSet;
@@ -27,7 +28,7 @@ public class TestDominoHistory implements AppHistory {
 
     private void inform(HistoryState state) {
         listeners.stream().filter(l -> l.tokenFilter.filter(state.token))
-                .forEach(l -> l.listener.onPopState(state.token, state.data));
+                .forEach(l -> l.listener.onPopState(new TestState(state)));
     }
 
     @Override
@@ -60,7 +61,7 @@ public class TestDominoHistory implements AppHistory {
     }
 
     @Override
-    public StateToken currentState() {
+    public HistoryToken currentToken() {
         return null;
     }
 
@@ -97,6 +98,30 @@ public class TestDominoHistory implements AppHistory {
 
     public Deque<HistoryState> getBackwards() {
         return backwards;
+    }
+
+    private class TestState implements State {
+
+        private final HistoryState historyState;
+
+        private TestState(HistoryState historyState) {
+            this.historyState = historyState;
+        }
+
+        @Override
+        public HistoryToken token() {
+            return new StateHistoryToken(historyState.token);
+        }
+
+        @Override
+        public String data() {
+            return historyState.data;
+        }
+
+        @Override
+        public String title() {
+            return "test title";
+        }
     }
 
     private class HistoryState {
