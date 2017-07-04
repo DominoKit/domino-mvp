@@ -43,4 +43,11 @@ public class TestModule {
         return TestClientAppFactory.contributionsRepository.getContribution(contributionClass);
     }
 
+    public void setRoutingListener(TestServerRouter.RoutingListener routingListener){
+        TestClientAppFactory.serverRouter.setRoutingListener(routingListener);
+    }
+
+    public void removeRoutingListener(){
+        TestClientAppFactory.serverRouter.removeRoutingListener();
+    }
 }

@@ -17,6 +17,10 @@ import org.slf4j.LoggerFactory;
 public class TestServerRouter implements RequestRouter<ClientServerRequest> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TestServerRouter.class);
+    private RoutingListener defaultListener =
+            (request, response) -> LOGGER.info(
+                    "on routing request " + request + " with response " + response);
+    private RoutingListener listener = defaultListener;
 
     private final ServerRequestEventFactory eventFactory = new ServerRequestEventFactory() {
         @Override
@@ -38,11 +42,20 @@ public class TestServerRouter implements RequestRouter<ClientServerRequest> {
         this.entryPointContext = entryPointContext;
     }
 
+    public void setRoutingListener(RoutingListener listener) {
+        this.listener = listener;
+    }
+
+    public void removeRoutingListener() {
+        this.listener = defaultListener;
+    }
+
     @Override
     public void routeRequest(ClientServerRequest request) {
         ServerResponse response;
         try {
             response = service.executeRequest(request.arguments());
+            listener.onRouteRequest(request, response);
         } catch (Exception ex) {
             LOGGER.error("could not execute request : ", ex);
             eventFactory.makeFailed(request, ex).fire();
@@ -127,5 +140,10 @@ public class TestServerRouter implements RequestRouter<ClientServerRequest> {
         public TestServerFailedEvent asEvent() {
             return event;
         }
+    }
+
+    public interface RoutingListener {
+        void onRouteRequest(ClientServerRequest request,
+                            ServerResponse response);
     }
 }

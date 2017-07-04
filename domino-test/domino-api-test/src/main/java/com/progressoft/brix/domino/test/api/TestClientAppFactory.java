@@ -14,6 +14,7 @@ public class TestClientAppFactory {
     static TestInMemoryPresenterRepository presentersRepository;
     static InMemoryRequestsRepository requestRepository;
     static TestInMemoryViewRepository viewsRepository;
+    static TestServerRouter serverRouter;
     static TestInMemoryContributionsRepository contributionsRepository;
 
     private TestClientAppFactory() {
@@ -22,7 +23,7 @@ public class TestClientAppFactory {
     public static ClientApp make(ServerEntryPointContext entryPointContext) {
 
         TestClientRouter clientRouter = new TestClientRouter();
-        TestServerRouter serverRouter = new TestServerRouter(entryPointContext);
+        serverRouter = new TestServerRouter(entryPointContext);
         RequestEventProcessor requestEventProcessor = new RequestEventProcessor();
         TestEventBus eventBus = new TestEventBus(requestEventProcessor);
 
