@@ -85,14 +85,14 @@
                         </goals>
                         <configuration>
                             <filters>
-                                <filter>
+                                <tokenFilter>
                                     <artifact>*:*</artifact>
                                     <excludes>
                                         <exclude>**/vagrant/*</exclude>
                                         <exclude>**/vagrant/deploy/*</exclude>
                                         <exclude>**/docker/*</exclude>
                                     </excludes>
-                                </filter>
+                                </tokenFilter>
                             </filters>
                             <transformers>
                                 <transformer

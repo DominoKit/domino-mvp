@@ -6,10 +6,11 @@ import com.progressoft.brix.domino.api.client.mvp.view.View;
 import com.progressoft.brix.domino.apt.commons.BaseProcessor;
 import com.progressoft.brix.domino.apt.commons.ProcessorElement;
 
+import javax.annotation.processing.Messager;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.*;
 import javax.lang.model.type.DeclaredType;
-import javax.lang.model.util.Types;
+import javax.tools.Diagnostic;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -18,8 +19,10 @@ public class ViewsCollector {
 
     private final BaseProcessor.ElementFactory elementFactory;
     private final Set<String> views;
+    private final Messager messager;
 
-    public ViewsCollector(BaseProcessor.ElementFactory elementFactory, Set<String> views) {
+    public ViewsCollector(Messager messager, BaseProcessor.ElementFactory elementFactory, Set<String> views) {
+        this.messager = messager;
         this.elementFactory = elementFactory;
         this.views = views;
     }
@@ -28,14 +31,20 @@ public class ViewsCollector {
         roundEnv.getElementsAnnotatedWith(UiView.class).stream()
                 .map(elementFactory::make)
                 .filter(e -> e.validateElementKind(ElementKind.CLASS))
-                .filter(this::isView)
                 .collect(Collectors.toSet())
-                .forEach(v -> views.add(v.fullQualifiedNoneGenericName() + ":" +
-                        getViewPresenter(v.asTypeElement())));
+                .forEach(v -> addView(v));
     }
 
-    private boolean isView(ProcessorElement element) {
-        return element.isImplementsGenericInterface(View.class);
+    private boolean addView(ProcessorElement v) {
+        isView(v);
+        return views.add(v.fullQualifiedNoneGenericName() + ":" +
+                getViewPresenter(v.asTypeElement()));
+    }
+
+    private void isView(ProcessorElement element) {
+        if(element.isImplementsGenericInterface(View.class))
+            messager.printMessage(Diagnostic.Kind.WARNING, "Class is annotated as View while it is not implementing view interface.!");
+
     }
 
     private Element getViewPresenter(Element e) {

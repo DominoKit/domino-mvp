@@ -27,7 +27,7 @@ public class DominoLauncher extends Launcher {
     public void afterStartingVertx(Vertx vertx) {
         System.setProperty("vertx.disableFileCaching", "true");
         RouterConfigurator routerConfigurator=new RouterConfigurator(vertx);
-        routerHolder.router= PROCESS_ARGS.contains("-cluster")?routerConfigurator.configuredClusteredRouter():routerConfigurator.configuredClusteredRouter();
+        routerHolder.router= PROCESS_ARGS.contains("-cluster")?routerConfigurator.configuredClusteredRouter():routerConfigurator.configuredRouter();
     }
 
     @Override

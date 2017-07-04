@@ -35,6 +35,10 @@ public class TestModule {
         ClientApp.make().run();
     }
 
+    public TestDominoHistory history(){
+        return (TestDominoHistory) ClientApp.make().getHistory();
+    }
+
     public <C extends Contribution> C getContribution(Class<C> contributionClass) {
         return TestClientAppFactory.contributionsRepository.getContribution(contributionClass);
     }

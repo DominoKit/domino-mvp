@@ -5,7 +5,6 @@ import com.progressoft.brix.domino.api.client.events.EventsBus;
 import com.progressoft.brix.domino.api.client.extension.Contributions;
 import com.progressoft.brix.domino.api.client.extension.ContributionsRegistry;
 import com.progressoft.brix.domino.api.client.extension.ContributionsRepository;
-import com.progressoft.brix.domino.api.client.history.*;
 import com.progressoft.brix.domino.api.client.mvp.PresenterRegistry;
 import com.progressoft.brix.domino.api.client.mvp.ViewRegistry;
 import com.progressoft.brix.domino.api.client.mvp.presenter.LazyPresenterLoader;
@@ -16,26 +15,29 @@ import com.progressoft.brix.domino.api.client.request.*;
 import com.progressoft.brix.domino.api.shared.extension.Contribution;
 import com.progressoft.brix.domino.api.shared.extension.ExtensionPoint;
 import com.progressoft.brix.domino.api.shared.extension.MainExtensionPoint;
+import com.progressoft.brix.domino.api.shared.history.AppHistory;
+import com.progressoft.brix.domino.api.shared.history.DominoHistory;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class ClientApp
         implements PresenterRegistry, RequestRegistry, ViewRegistry, InitialTaskRegistry, ContributionsRegistry,
-        PathToRequestMapperRegistry, RequestRestSendersRegistry {
+        RequestRestSendersRegistry {
 
     private static final AttributeHolder<RequestRouter<ClientRequest>> CLIENT_ROUTER_HOLDER = new AttributeHolder<>();
-    private static final AttributeHolder<RequestRouter<ClientServerRequest>> SERVER_ROUTER_HOLDER = new AttributeHolder<>();
+    private static final AttributeHolder<RequestRouter<ClientServerRequest>> SERVER_ROUTER_HOLDER =
+            new AttributeHolder<>();
     private static final AttributeHolder<EventsBus> EVENTS_BUS_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<RequestsRepository> REQUEST_REPOSITORY_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<PresentersRepository> PRESENTERS_REPOSITORY_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<ViewsRepository> VIEWS_REPOSITORY_HOLDER = new AttributeHolder<>();
-    private static final AttributeHolder<ContributionsRepository> CONTRIBUTIONS_REPOSITORY_HOLDER = new AttributeHolder<>();
-    private static final AttributeHolder<PathToRequestMappersRepository> PATH_TO_REQUEST_MAPPERS_REPOSITORY_HOLDER = new AttributeHolder<>();
-    private static final AttributeHolder<RequestRestSendersRepository> REQUEST_REST_SENDERS_REPOSITORY_HOLDER = new AttributeHolder<>();
-    private static final AttributeHolder<TokenConstruct> TOKEN_CONSTRUCT_HOLDER = new AttributeHolder<>();
+    private static final AttributeHolder<ContributionsRepository> CONTRIBUTIONS_REPOSITORY_HOLDER =
+            new AttributeHolder<>();
+    private static final AttributeHolder<RequestRestSendersRepository> REQUEST_REST_SENDERS_REPOSITORY_HOLDER =
+            new AttributeHolder<>();
     private static final AttributeHolder<MainExtensionPoint> MAIN_EXTENSION_POINT_HOLDER = new AttributeHolder<>();
-    private static final AttributeHolder<UrlHistory> URL_HISTORY_HOLDER = new AttributeHolder<>();
+    private static final AttributeHolder<AppHistory> HISTORY_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<List<InitializeTask>> INITIAL_TASKS_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<AsyncRunner> ASYNC_RUNNER = new AttributeHolder<>();
 
@@ -63,8 +65,8 @@ public class ClientApp
     }
 
     @Override
-    public void registerMapper(String path, RequestFromPath mapper) {
-        PATH_TO_REQUEST_MAPPERS_REPOSITORY_HOLDER.attribute.registerMapper(path, mapper);
+    public void registerRequestRestSender(String requestName, LazyRequestRestSenderLoader loader) {
+        REQUEST_REST_SENDERS_REPOSITORY_HOLDER.attribute.registerSender(requestName, loader);
     }
 
     @Override
@@ -100,25 +102,16 @@ public class ClientApp
         return VIEWS_REPOSITORY_HOLDER.attribute;
     }
 
-    public PathToRequestMappersRepository getPathToRequestMappersRepository() {
-        return PATH_TO_REQUEST_MAPPERS_REPOSITORY_HOLDER.attribute;
-    }
-
     public RequestRestSendersRepository getRequestRestSendersRepository() {
         return REQUEST_REST_SENDERS_REPOSITORY_HOLDER.attribute;
     }
 
-    @Override
-    public void registerRequestRestSender(String requestName, LazyRequestRestSenderLoader loader) {
-        REQUEST_REST_SENDERS_REPOSITORY_HOLDER.attribute.registerSender(requestName, loader);
-    }
-
-    public TokenConstruct getTokenConstruct() {
-        return TOKEN_CONSTRUCT_HOLDER.attribute;
-    }
-
-    public AsyncRunner asyncRunner(){
+    public AsyncRunner getAsyncRunner() {
         return ASYNC_RUNNER.attribute;
+    }
+
+    public DominoHistory getHistory() {
+        return HISTORY_HOLDER.attribute;
     }
 
     public void configureModule(ModuleConfiguration configuration) {
@@ -127,7 +120,6 @@ public class ClientApp
         configuration.registerViews(this);
         configuration.registerContributions(this);
         configuration.registerInitialTasks(this);
-        configuration.registerPathMappers(this);
         configuration.registerRequestRestSenders(this);
     }
 
@@ -135,21 +127,14 @@ public class ClientApp
     public void run() {
         INITIAL_TASKS_HOLDER.attribute.forEach(InitializeTask::execute);
         Contributions.apply(MainExtensionPoint.class, MAIN_EXTENSION_POINT_HOLDER.attribute);
+        HISTORY_HOLDER.attribute.fireCurrentStateHistory();
     }
 
     public void applyContributions(Class<? extends ExtensionPoint> extensionPointInterface,
                                    ExtensionPoint extensionPoint) {
         CONTRIBUTIONS_REPOSITORY_HOLDER.attribute.findExtensionPointContributions(extensionPointInterface)
-                .forEach(c -> {
-
-                    c.contribute(extensionPoint);
-                });
+                .forEach(c -> c.contribute(extensionPoint));
     }
-
-    public void applyUrlHistory() {
-        URL_HISTORY_HOLDER.attribute.apply(getTokenConstruct().toUrl());
-    }
-
 
     @FunctionalInterface
     public interface HasClientRouter {
@@ -183,26 +168,17 @@ public class ClientApp
 
     @FunctionalInterface
     public interface HasContributionsRepository {
-        HasPathToRequestMappersRepository pathToRequestMapperRepository(PathToRequestMappersRepository pathToRequestMappersRepository);
-    }
-
-    @FunctionalInterface
-    public interface HasPathToRequestMappersRepository {
-        HasRequestRestSendersRepository requestSendersRepository(RequestRestSendersRepository requestRestSendersRepository);
+        HasRequestRestSendersRepository requestSendersRepository(
+                RequestRestSendersRepository requestRestSendersRepository);
     }
 
     @FunctionalInterface
     public interface HasRequestRestSendersRepository {
-        HasTokenConstruct tokenConstruct(TokenConstruct tokenConstruct);
+        HasHistory history(AppHistory history);
     }
 
     @FunctionalInterface
-    public interface HasTokenConstruct {
-        HasUrlHistory urlHistory(UrlHistory urlHistory);
-    }
-
-    @FunctionalInterface
-    public interface HasUrlHistory {
+    public interface HasHistory {
         HasAsyncRunner asyncRunner(AsyncRunner asyncRunner);
     }
 
@@ -216,7 +192,10 @@ public class ClientApp
         ClientApp build();
     }
 
-    public static class ClientAppBuilder implements HasClientRouter, HasServerRouter, HasEventBus, HasRequestRepository, HasPresentersRepository, HasViewRepository, HasContributionsRepository, HasPathToRequestMappersRepository, HasRequestRestSendersRepository, HasTokenConstruct, HasUrlHistory,HasAsyncRunner, CanBuildClientApp {
+    public static class ClientAppBuilder
+            implements HasClientRouter, HasServerRouter, HasEventBus, HasRequestRepository, HasPresentersRepository,
+            HasViewRepository, HasContributionsRepository, HasRequestRestSendersRepository,
+            HasHistory, HasAsyncRunner, CanBuildClientApp {
 
         private RequestRouter<ClientRequest> clientRouter;
         private RequestRouter<ClientServerRequest> serverRouter;
@@ -225,11 +204,9 @@ public class ClientApp
         private PresentersRepository presentersRepository;
         private ViewsRepository viewsRepository;
         private ContributionsRepository contributionsRepository;
-        private PathToRequestMappersRepository pathToRequestMappersRepository;
         private RequestRestSendersRepository requestRestSendersRepository;
-        private TokenConstruct tokenConstruct;
         private MainExtensionPoint mainExtensionPoint;
-        private UrlHistory urlHistory;
+        private AppHistory history;
         private AsyncRunner asyncRunner;
 
         private ClientAppBuilder(RequestRouter<ClientRequest> clientRouter) {
@@ -277,32 +254,21 @@ public class ClientApp
         }
 
         @Override
-        public HasPathToRequestMappersRepository pathToRequestMapperRepository(PathToRequestMappersRepository pathToRequestMappersRepository) {
-            this.pathToRequestMappersRepository = pathToRequestMappersRepository;
-            return this;
-        }
-
-        @Override
-        public HasRequestRestSendersRepository requestSendersRepository(RequestRestSendersRepository requestRestSendersRepository) {
+        public HasRequestRestSendersRepository requestSendersRepository(
+                RequestRestSendersRepository requestRestSendersRepository) {
             this.requestRestSendersRepository = requestRestSendersRepository;
             return this;
         }
 
         @Override
-        public HasTokenConstruct tokenConstruct(TokenConstruct tokenConstruct) {
-            this.tokenConstruct = tokenConstruct;
-            return this;
-        }
-
-        @Override
-        public HasUrlHistory urlHistory(UrlHistory urlHistory) {
-            this.urlHistory = urlHistory;
+        public HasHistory history(AppHistory history) {
+            this.history = history;
             return this;
         }
 
         @Override
         public HasAsyncRunner asyncRunner(AsyncRunner asyncRunner) {
-            this.asyncRunner=asyncRunner;
+            this.asyncRunner = asyncRunner;
             return this;
         }
 
@@ -326,11 +292,9 @@ public class ClientApp
             ClientApp.PRESENTERS_REPOSITORY_HOLDER.hold(presentersRepository);
             ClientApp.VIEWS_REPOSITORY_HOLDER.hold(viewsRepository);
             ClientApp.CONTRIBUTIONS_REPOSITORY_HOLDER.hold(contributionsRepository);
-            ClientApp.PATH_TO_REQUEST_MAPPERS_REPOSITORY_HOLDER.hold(pathToRequestMappersRepository);
             ClientApp.REQUEST_REST_SENDERS_REPOSITORY_HOLDER.hold(requestRestSendersRepository);
-            ClientApp.TOKEN_CONSTRUCT_HOLDER.hold(tokenConstruct);
             ClientApp.MAIN_EXTENSION_POINT_HOLDER.hold(mainExtensionPoint);
-            ClientApp.URL_HISTORY_HOLDER.hold(urlHistory);
+            ClientApp.HISTORY_HOLDER.hold(history);
             ClientApp.INITIAL_TASKS_HOLDER.hold(new LinkedList<>());
             ClientApp.ASYNC_RUNNER.hold(asyncRunner);
         }

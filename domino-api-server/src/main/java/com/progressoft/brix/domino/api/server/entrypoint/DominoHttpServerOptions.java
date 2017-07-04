@@ -1,6 +1,5 @@
 package com.progressoft.brix.domino.api.server.entrypoint;
 
-import io.vertx.core.http.ClientAuth;
 import io.vertx.core.http.Http2Settings;
 import io.vertx.core.http.HttpVersion;
 import io.vertx.core.json.JsonObject;

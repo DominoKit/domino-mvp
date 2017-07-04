@@ -9,7 +9,6 @@ public abstract class ClientRequest<P extends Presentable> extends BaseRequest {
     private final RequestState<Request.DefaultRequestStateContext> sent =
             context -> {
                 process((P) getRequestPresenter());
-                applyHistory();
                 state = completed;
                 if(Objects.nonNull(chainedRequest))
                     chainedRequest.send();

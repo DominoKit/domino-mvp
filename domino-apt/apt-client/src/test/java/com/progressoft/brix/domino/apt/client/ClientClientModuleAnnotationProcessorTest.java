@@ -4,9 +4,7 @@ import com.progressoft.brix.domino.apt.client.processors.contributions.Contribut
 import com.progressoft.brix.domino.apt.client.processors.handlers.HandlerPathProcessor;
 import com.progressoft.brix.domino.apt.client.processors.inject.InjectContextProcessor;
 import com.progressoft.brix.domino.apt.client.processors.module.client.ClientModuleAnnotationProcessor;
-import com.progressoft.brix.domino.apt.client.processors.module.client.contributions.ContributionsCollector;
 import org.apache.commons.io.IOUtils;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -138,53 +136,6 @@ public class ClientClientModuleAnnotationProcessorTest {
         assertProcessing(BASE_PACKAGE + "AnnotatedClassWithClientModuleWithContributionRegistrations.java",
                 BASE_PACKAGE + "InvalidContributionClass.java")
                 .withProcessor(processor()).failsToCompile();
-    }
-
-    @Test
-    public void givenClassAnnotatedWithPathAndNoParameters_WhenProcess_ShouldAddRegistrationLineToModuleConfiguration() throws Exception {
-        assertProcessing(BASE_PACKAGE + "AnnotatedClassWithPathAndNoParamters.java",
-                BASE_PACKAGE + "AnnotatedClassWithClientModuleWithPathRegistrations.java",
-                BASE_PACKAGE + "PresenterInterface.java")
-                .withProcessor(processor())
-                .generates(getExpectedResultFileContent("PathRegistrationsModuleConfiguration.java"));
-    }
-
-    @Test
-    public void givenClassAnnotatedWithPathAndPathParameter_WhenProcess_ShouldAddRegistrationLineToModuleConfiguration() throws Exception {
-        assertProcessing(BASE_PACKAGE + "AnnotatedClassWithPathAndPathParameter.java",
-                BASE_PACKAGE + "AnnotatedClassWithClientModuleWithPathAndParameterRegistrations.java",
-                BASE_PACKAGE + "PresenterInterface.java")
-                .withProcessor(processor())
-                .generates(getExpectedResultFileContent("PathAndParameterRegistrationsModuleConfiguration.java"));
-    }
-
-    @Test
-    public void givenClassAnnotatedWithPathAndCustomConverter_WhenProcess_ShouldAddRegistrationLineToModuleConfiguration() throws Exception {
-        assertProcessing(BASE_PACKAGE + "AnnotatedClassWithPathAndCustomMapper.java",
-                BASE_PACKAGE + "AnnotatedClassWithClientModuleWithPathAndCustomMapperRegistrations.java",
-                BASE_PACKAGE + "PresenterInterface.java",
-                BASE_PACKAGE + "SampleMapper.java")
-                .withProcessor(processor())
-                .generates(getExpectedResultFileContent("PathAndCustomMapperRegistrationsModuleConfiguration.java"));
-    }
-
-    @Test
-    public void givenClassAnnotatedWithPathAndParameterWithName_WhenProcess_ShouldAddRegistrationLineToModuleConfiguration() throws Exception {
-        assertProcessing(BASE_PACKAGE + "AnnotatedClassWithPathAndParameterWithName.java",
-                BASE_PACKAGE + "AnnotatedClassWithClientModuleWithPathAndParameterWithNameRegistrations.java",
-                BASE_PACKAGE + "PresenterInterface.java")
-                .withProcessor(processor())
-                .generates(getExpectedResultFileContent("PathAndParameterWithNameRegistrationsModuleConfiguration.java"));
-    }
-
-    @Test
-    public void givenClassAnnotatedWithPathAndParameterWithConverter_WhenProcess_ShouldAddRegistrationLineToModuleConfiguration() throws Exception {
-        assertProcessing(BASE_PACKAGE + "AnnotatedClassWithPathAndParameterWithConverter.java",
-                BASE_PACKAGE + "AnnotatedClassWithClientModuleWithPathAndParameterWithConverterRegistrations.java",
-                BASE_PACKAGE + "PresenterInterface.java",
-                BASE_PACKAGE + "BigDecimalConverter.java")
-                .withProcessor(processor())
-                .generates(getExpectedResultFileContent("PathAndParameterWithConverterRegistrationsModuleConfiguration.java"));
     }
 
     @Test(expected = RuntimeException.class)

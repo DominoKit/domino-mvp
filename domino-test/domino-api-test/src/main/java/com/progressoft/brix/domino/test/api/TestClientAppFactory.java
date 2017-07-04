@@ -2,11 +2,10 @@ package com.progressoft.brix.domino.test.api;
 
 
 import com.progressoft.brix.domino.api.client.ClientApp;
-import com.progressoft.brix.domino.api.client.history.PathTokenConstructor;
 import com.progressoft.brix.domino.api.server.entrypoint.ServerEntryPointContext;
 import com.progressoft.brix.domino.api.shared.extension.MainContext;
+import com.progressoft.brix.domino.api.shared.history.DominoHistory;
 import com.progressoft.brix.domino.gwt.client.events.RequestEventProcessor;
-import com.progressoft.brix.domino.gwt.client.history.InMemoryPathToRequestMappersRepository;
 import com.progressoft.brix.domino.gwt.client.request.InMemoryRequestRestSendersRepository;
 import com.progressoft.brix.domino.gwt.client.request.InMemoryRequestsRepository;
 
@@ -16,7 +15,6 @@ public class TestClientAppFactory {
     static InMemoryRequestsRepository requestRepository;
     static TestInMemoryViewRepository viewsRepository;
     static TestInMemoryContributionsRepository contributionsRepository;
-    static InMemoryPathToRequestMappersRepository pathToRequestMappersRepository;
 
     private TestClientAppFactory() {
     }
@@ -32,7 +30,6 @@ public class TestClientAppFactory {
         requestRepository = new InMemoryRequestsRepository();
         viewsRepository = new TestInMemoryViewRepository();
         contributionsRepository = new TestInMemoryContributionsRepository();
-        pathToRequestMappersRepository = new InMemoryPathToRequestMappersRepository();
         return ClientApp.ClientAppBuilder
                 .clientRouter(clientRouter)
                 .serverRouter(serverRouter)
@@ -41,15 +38,17 @@ public class TestClientAppFactory {
                 .presentersRepository(presentersRepository)
                 .viewsRepository(viewsRepository)
                 .contributionsRepository(contributionsRepository)
-                .pathToRequestMapperRepository(pathToRequestMappersRepository)
                 .requestSendersRepository(new InMemoryRequestRestSendersRepository())
-                .tokenConstruct(new PathTokenConstructor())
-                .urlHistory(new TestUrlHistory())
+                .history(new TestDominoHistory())
                 .asyncRunner(new TestAsyncRunner())
                 .mainExtensionPoint(TestMainContext::new)
                 .build();
     }
 
     private static class TestMainContext implements MainContext {
+        @Override
+        public DominoHistory history() {
+            return new TestDominoHistory();
+        }
     }
 }

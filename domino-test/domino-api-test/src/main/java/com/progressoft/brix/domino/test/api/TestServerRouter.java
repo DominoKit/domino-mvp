@@ -11,7 +11,6 @@ import com.progressoft.brix.domino.api.server.ServerApp;
 import com.progressoft.brix.domino.api.server.entrypoint.ServerEntryPointContext;
 import com.progressoft.brix.domino.api.shared.request.FailedServerResponse;
 import com.progressoft.brix.domino.api.shared.request.ServerResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

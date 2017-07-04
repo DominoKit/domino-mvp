@@ -1,11 +1,9 @@
 package com.progressoft.brix.domino.api.client.request;
 
 import com.progressoft.brix.domino.api.client.ClientApp;
-import com.progressoft.brix.domino.api.client.history.TokenConstruct;
 import com.progressoft.brix.domino.api.client.mvp.presenter.Presentable;
 
 public abstract class BaseRequest implements Request {
-
 
     public static final String REQUEST_HAVE_ALREADY_BEEN_SENT = "Request have already been sent";
 
@@ -48,15 +46,6 @@ public abstract class BaseRequest implements Request {
 
     private String getPresenterName() {
         return clientApp.getRequestRepository().findRequestPresenterWrapper(this.getKey()).getPresenterName();
-    }
-
-    protected void constructHistoryToken(TokenConstruct tokenConstruct){
-
-    }
-
-    protected void applyHistory(){
-        constructHistoryToken(clientApp.getTokenConstruct());
-        clientApp.applyUrlHistory();
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.progressoft.brix.domino.api.client.mvp.presenter;
 
-import static java.util.Objects.*;
+import static java.util.Objects.isNull;
 
 public abstract class LazyPresenterLoader {
 

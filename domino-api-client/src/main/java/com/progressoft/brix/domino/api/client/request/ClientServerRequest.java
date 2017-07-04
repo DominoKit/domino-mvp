@@ -4,7 +4,6 @@ import com.progressoft.brix.domino.api.client.mvp.presenter.Presentable;
 import com.progressoft.brix.domino.api.shared.request.FailedServerResponse;
 import com.progressoft.brix.domino.api.shared.request.ServerRequest;
 import com.progressoft.brix.domino.api.shared.request.ServerResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +20,6 @@ public abstract class ClientServerRequest<P extends Presentable, R extends Serve
 
     private final RequestState<ServerSuccessRequestStateContext> executedOnServer = context -> {
         process((P) getRequestPresenter(), serverArgs, (S) context.serverResponse);
-        applyHistory();
         state = completed;
         if (Objects.nonNull(chainedRequest))
             chainedRequest.send();

@@ -5,7 +5,6 @@ import com.google.gwt.core.client.RunAsyncCallback;
 import com.progressoft.brix.domino.api.client.events.ClientRequestEventFactory;
 import com.progressoft.brix.domino.api.client.request.ClientRequest;
 import com.progressoft.brix.domino.api.client.request.RequestRouter;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
