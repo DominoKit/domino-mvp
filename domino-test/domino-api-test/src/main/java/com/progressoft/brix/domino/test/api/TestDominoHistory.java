@@ -62,7 +62,7 @@ public class TestDominoHistory implements AppHistory {
 
     @Override
     public HistoryToken currentToken() {
-        return null;
+        return new StateHistoryToken(forwards.peek().token);
     }
 
     @Override

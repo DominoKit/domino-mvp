@@ -16,6 +16,7 @@ public class TestClientAppFactory {
     static TestInMemoryViewRepository viewsRepository;
     static TestServerRouter serverRouter;
     static TestInMemoryContributionsRepository contributionsRepository;
+    static TestDominoHistory history;
 
     private TestClientAppFactory() {
     }
@@ -31,6 +32,8 @@ public class TestClientAppFactory {
         requestRepository = new InMemoryRequestsRepository();
         viewsRepository = new TestInMemoryViewRepository();
         contributionsRepository = new TestInMemoryContributionsRepository();
+        history = new TestDominoHistory();
+
         return ClientApp.ClientAppBuilder
                 .clientRouter(clientRouter)
                 .serverRouter(serverRouter)
@@ -40,7 +43,7 @@ public class TestClientAppFactory {
                 .viewsRepository(viewsRepository)
                 .contributionsRepository(contributionsRepository)
                 .requestSendersRepository(new InMemoryRequestRestSendersRepository())
-                .history(new TestDominoHistory())
+                .history(history)
                 .asyncRunner(new TestAsyncRunner())
                 .mainExtensionPoint(TestMainContext::new)
                 .build();
@@ -49,7 +52,7 @@ public class TestClientAppFactory {
     private static class TestMainContext implements MainContext {
         @Override
         public DominoHistory history() {
-            return new TestDominoHistory();
+            return history;
         }
     }
 }
