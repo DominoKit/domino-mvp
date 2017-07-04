@@ -59,17 +59,20 @@ public class StateHistory implements AppHistory {
 
     @Override
     public StateHistoryToken currentToken() {
-        return null;
+        return new StateHistoryToken(getCurrentToken());
     }
 
     @Override
     public void fireCurrentStateHistory() {
-        String token =
-                Window.getSelf().getLocation().getPathname().substring(1) + Window.getSelf().getLocation().getSearch();
+        String token = getCurrentToken();
         History.State state = Window.getSelf().getHistory().getState();
         replaceState(token, Window.getSelf().getDocument().getTitle(),
                 stateData(state));
         inform(token, Window.getSelf().getDocument().getTitle(), stateData(state));
+    }
+
+    private String getCurrentToken() {
+        return Window.getSelf().getLocation().getPathname().substring(1) + Window.getSelf().getLocation().getSearch();
     }
 
     private String stateData(History.State state) {
