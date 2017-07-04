@@ -12,16 +12,25 @@ import static java.util.Objects.isNull;
 public class StateHistoryToken implements HistoryToken {
 
     private static final String QUERY_REGEX = "\\?";
-    private final String token;
+    private static final String FRAGMENT_REGEX = "\\#";
+    private static final int NAME_INDEX = 0;
+    private static final int VALUE_INDEX = 1;
     private List<String> paths = new LinkedList<>();
     private Map<String, String> queryParameters = new HashMap<>();
+    private String fragment;
 
     public StateHistoryToken(String token) {
         if (isNull(token))
             throw new TokenCannotBeNullException();
-        this.token = token;
         this.paths.addAll(asPathsList(token));
         this.queryParameters.putAll(asQueryParameters(token));
+        this.fragment = parseFragment(token);
+    }
+
+    private String parseFragment(String token) {
+        if (token.contains("#"))
+            return token.split(FRAGMENT_REGEX)[1];
+        return "";
     }
 
     @Override
@@ -135,34 +144,32 @@ public class StateHistoryToken implements HistoryToken {
     }
 
     @Override
-    public HistoryToken replaceLastParam(String name, String replacementName, String replacementValue) {
-        return null;
-    }
-
-    @Override
-    public HistoryToken replaceAllPath(String newPath) {
+    public HistoryToken replaceAllPaths(String newPath) {
         this.paths = asPathsList(newPath);
         return this;
     }
 
     @Override
-    public HistoryToken replaceAllQuery(String newQuery) {
-        return null;
+    public HistoryToken replaceQuery(String newQuery) {
+        this.queryParameters = parsedParameters(newQuery);
+        return this;
     }
 
     @Override
     public HistoryToken clearQuery() {
-        return null;
+        this.queryParameters.clear();
+        return this;
     }
 
     @Override
-    public HistoryToken removeQuery(String name) {
-        return null;
+    public HistoryToken removeParameter(String name) {
+        this.queryParameters.remove(name);
+        return this;
     }
 
     @Override
-    public HistoryToken clearPath() {
-        this.paths = new LinkedList<>();
+    public HistoryToken clearPaths() {
+        this.paths.clear();
         return this;
     }
 
@@ -174,18 +181,40 @@ public class StateHistoryToken implements HistoryToken {
 
     @Override
     public HistoryToken clear() {
-        return null;
+        clearPaths();
+        clearQuery();
+        removeFragment();
+        return this;
+    }
+
+    @Override
+    public HistoryToken setFragment(String fragment) {
+        this.fragment = fragment;
+        return this;
+    }
+
+    @Override
+    public HistoryToken removeFragment() {
+        this.fragment = "";
+        return this;
+    }
+
+    @Override
+    public String fragment() {
+        return fragment;
     }
 
     @Override
     public String value() {
-        if (token.startsWith("/"))
-            return ignoreFirstSlash();
-        return token;
+        return path() + appendQuery(query()) + appendFragment();
     }
 
-    private String ignoreFirstSlash() {
-        return token.substring(1);
+    private String appendFragment() {
+        return isEmpty(fragment) ? "" : "#" + fragment;
+    }
+
+    private String appendQuery(String query) {
+        return isEmpty(query) ? "" : "?" + query;
     }
 
     private List<String> asPathsList(String pathValue) {
@@ -196,7 +225,7 @@ public class StateHistoryToken implements HistoryToken {
     }
 
     private String[] splittedPaths(String pathString) {
-        return pathString.replace("!", "").split(QUERY_REGEX)[0].split("\\#")[0].split("/");
+        return pathString.replace("!", "").split(QUERY_REGEX)[0].split(FRAGMENT_REGEX)[0].split("/");
     }
 
     private boolean isEmpty(String path) {
@@ -210,10 +239,14 @@ public class StateHistoryToken implements HistoryToken {
     private Map<String, String> asQueryParameters(String token) {
         if (!token.contains("?"))
             return new HashMap<>();
-        return Stream.of(queryPart(token).split("&")).map(part -> part.split("=")).collect(Collectors.toMap(e -> e[0], e -> e[1]));
+        return parsedParameters(queryPart(token));
+    }
+
+    private Map<String, String> parsedParameters(String queryString) {
+        return Stream.of(queryString.split("&")).map(part -> part.split("=")).collect(Collectors.toMap(e -> e[NAME_INDEX], e -> e[VALUE_INDEX]));
     }
 
     private String queryPart(String token) {
-        return token.split(QUERY_REGEX)[1].split("\\#")[0];
+        return token.split(QUERY_REGEX)[1].split(FRAGMENT_REGEX)[0];
     }
 }

@@ -24,12 +24,12 @@ public class StateHistoryTokenTest {
 
     @Test
     public void createTokenWithSlashAndSinglePath_thenTokenValueShouldBeTheSinglePathString() {
-        assertThat(make("/somePath").value()).isEqualTo("somePath");
+        assertThat(make("/somePath").path()).isEqualTo("somePath");
     }
 
     @Test
     public void createTokenWithSlashAndMultiPaths_thenTokenValueShouldBeThePathsString() {
-        assertThat(make("/firstPath/secondPath/thirdPath").value()).isEqualTo("firstPath/secondPath/thirdPath");
+        assertThat(make("/firstPath/secondPath/thirdPath").path()).isEqualTo("firstPath/secondPath/thirdPath");
     }
 
     @Test
@@ -262,14 +262,14 @@ public class StateHistoryTokenTest {
 
     @Test
     public void givenStateHistoryToken_whenReplaceAllPath_thenThePathShouldBeAllReplacedwithTheReplacement() {
-        assertThat(make("").replaceAllPath("firstPath").path()).isEqualTo("firstPath");
-        assertThat(make("firstPath/secondPath").replaceAllPath("thirdPath/forthPath").path()).isEqualTo("thirdPath/forthPath");
-        assertThat(make("firstPath/secondPath").replaceAllPath(null).path()).isEqualTo("null");
+        assertThat(make("").replaceAllPaths("firstPath").path()).isEqualTo("firstPath");
+        assertThat(make("firstPath/secondPath").replaceAllPaths("thirdPath/forthPath").path()).isEqualTo("thirdPath/forthPath");
+        assertThat(make("firstPath/secondPath").replaceAllPaths(null).path()).isEqualTo("null");
     }
 
     @Test
     public void givenStateHistoryToken_whenClearPath_thenThePathShouldBeEmpty() {
-        assertThat(make("firstPath/secondPath").clearPath().path()).isEmpty();
+        assertThat(make("firstPath/secondPath").clearPaths().path()).isEmpty();
     }
 
     @Test
@@ -318,5 +318,64 @@ public class StateHistoryTokenTest {
                 .containsExactly(entry("param2", "value2"));
         assertThat(make("firstPath?param1=value1&param2=value2").replaceParameter("param1", "param3", "value2").queryParameters())
                 .containsExactly(entry("param3", "value2"), entry("param2", "value2"));
+    }
+
+    @Test
+    public void givenStateHistoryToken_whenReplacingAllQuery_thenTheQueryShouldBeReplacedWithTheNewOne() throws Exception {
+        assertThat(make("").replaceQuery("param=value").queryParameters()).containsExactly(entry("param", "value"));
+        assertThat(make("firstPath?param1=value1").replaceQuery("param2=value2").queryParameters()).containsExactly(entry("param2", "value2"));
+        assertThat(make("firstPath?param1=value1&param2=value2").replaceQuery("param3=value3").queryParameters()).containsExactly(entry("param3", "value3"));
+    }
+
+    @Test
+    public void givenStateHistoryToken_whenClearingQuery_thenTheQueryShouldBeCleared() throws Exception {
+        assertThat(make("").clearQuery().queryParameters()).isEmpty();
+        assertThat(make("firstPath?param=value").clearQuery().queryParameters()).isEmpty();
+    }
+
+    @Test
+    public void givenStateHistoryToken_whenRemovingParameter_thenTheParameterShouldBeRemovedFromTheQuery() throws Exception {
+        assertThat(make("").removeParameter("param").queryParameters()).isEmpty();
+        assertThat(make("firstPath?param=value").removeParameter("param").queryParameters()).isEmpty();
+        assertThat(make("firstPath?param=value").removeParameter("param1").queryParameters())
+                .containsExactly(entry("param", "value"));
+    }
+
+    @Test
+    public void givenStateHistoryToken_whenAskingForFragment_thenShouldReturnIt() throws Exception {
+        assertThat(make("").fragment()).isEmpty();
+        assertThat(make("#fragment").fragment()).isEqualTo("fragment");
+        assertThat(make("firstPath?param=value#fragment").fragment()).isEqualTo("fragment");
+    }
+
+    @Test
+    public void givenStateHistoryToken_whenRemovingFragment_thenTheFragmentShouldBeRemoved() throws Exception {
+        assertThat(make("").removeFragment().fragment()).isEmpty();
+        assertThat(make("#fragment").removeFragment().fragment()).isEmpty();
+    }
+
+    @Test
+    public void givenStateHistoryToken_whenSettingFragment_thenTheFragmentShouldBeReplacedWithTheNewValue() throws Exception {
+        assertThat(make("").setFragment("fragment").fragment()).isEqualTo("fragment");
+        assertThat(make("#fragment").setFragment("newFragment").fragment()).isEqualTo("newFragment");
+    }
+
+    @Test
+    public void givenStateHistoryToken_whenAskingForTokenValue_thenShouldReturnUrlString() throws Exception {
+        assertThat(make("").value()).isEmpty();
+        assertThat(make("firstPath").value()).isEqualTo("firstPath");
+        assertThat(make("firstPath?param=value").value()).isEqualTo("firstPath?param=value");
+        assertThat(make("firstPath?param=value#fragment").value()).isEqualTo("firstPath?param=value#fragment");
+        assertThat(make("firstPath?param=value#fragment").
+                replacePath("firstPath", "secondPath").
+                value()).isEqualTo("secondPath?param=value#fragment");
+    }
+
+    @Test
+    public void givenStateHistoryToken_whenClearingHistoryToken_thenTheValueShouldBeEmpty() throws Exception {
+        assertThat(make("").clear().value()).isEmpty();
+        assertThat(make("firstPath").clear().value()).isEmpty();
+        assertThat(make("firstPath?param=value").clear().value()).isEmpty();
+        assertThat(make("firstPath?param=value#fragment").clear().value()).isEmpty();
     }
 }
