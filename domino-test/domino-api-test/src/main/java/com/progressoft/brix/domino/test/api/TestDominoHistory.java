@@ -67,7 +67,8 @@ public class TestDominoHistory implements AppHistory {
 
     @Override
     public void fireCurrentStateHistory() {
-        inform(forwards.peek());
+        if (!forwards.isEmpty())
+            inform(forwards.peek());
     }
 
     public void initialState(String token, String data) {
