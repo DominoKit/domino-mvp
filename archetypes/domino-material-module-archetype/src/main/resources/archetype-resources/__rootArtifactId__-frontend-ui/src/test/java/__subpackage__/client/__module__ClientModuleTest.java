@@ -13,14 +13,14 @@ import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
 
 import ${package}.${subpackage}.client.presenters.${module}Presenter;
-import ${package}.${subpackage}.client.presnters.${module}PresenterSpy;
+import ${package}.${subpackage}.client.presenters.${module}PresenterSpy;
 import ${package}.${subpackage}.client.views.${module}ViewSpy;
 
-import com.progressoft.brix.domino.test.api.ModuleTestCase;
+import com.progressoft.brix.domino.test.api.DominoTestCase;
 
 @RunWith(GwtMockitoTestRunner.class)
 @WithClassesToStub(RootPanel.class)
-public class ${module}ClientModuleTest extends ModuleTestCase{
+public class ${module}ClientModuleTest extends DominoTestCase{
 
     private ${module}PresenterSpy presenterSpy;
     private ${module}ViewSpy viewSpy;

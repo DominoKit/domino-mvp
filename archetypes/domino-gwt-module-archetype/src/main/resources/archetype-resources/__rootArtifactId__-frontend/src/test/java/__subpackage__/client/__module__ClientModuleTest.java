@@ -14,14 +14,13 @@ import ${package}.${subpackage}.client.presenters.${module}Presenter;
 import ${package}.${subpackage}.client.requests.${module}ServerRequest;
 import ${package}.${subpackage}.shared.request.${module}Request;
 import ${package}.${subpackage}.shared.response.${module}Response;
-import ${package}.${subpackage}.client.presnters.${module}PresenterSpy;
+import ${package}.${subpackage}.client.presenters.${module}PresenterSpy;
 import ${package}.${subpackage}.client.views.Fake${module}View;
-
-import com.progressoft.brix.domino.test.api.ModuleTestCase;
+import com.progressoft.brix.domino.test.api.DominoTestCase;
 
 @ClientModule(name="Test${module}")
 @RunWith(GwtMockitoTestRunner.class)
-public class ${module}ClientModuleTest extends ModuleTestCase{
+public class ${module}ClientModuleTest extends DominoTestCase{
 
     private ${module}PresenterSpy presenterSpy;
     private Fake${module}View fakeView;
