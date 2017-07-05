@@ -74,7 +74,12 @@ public class StateHistoryToken implements HistoryToken {
     }
 
     private boolean contains(List<String> paths, List<String> targets) {
-        return paths.containsAll(targets);
+        return IntStream.rangeClosed(0, paths.size() - targets.size())
+                .anyMatch(i -> isOrderedEquals(paths.subList(i, i + targets.size()), targets));
+    }
+
+    private boolean isOrderedEquals(List<String> subList, List<String> targets) {
+        return IntStream.of(0, subList.size() - 1).allMatch(i -> subList.get(i).equals(targets.get(i)));
     }
 
     @Override

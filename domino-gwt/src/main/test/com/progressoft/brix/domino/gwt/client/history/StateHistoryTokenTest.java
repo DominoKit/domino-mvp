@@ -144,6 +144,8 @@ public class StateHistoryTokenTest {
                 .containsPath("firstPath/secondPath/thirdPath/forthPath")).isTrue();
         assertThat(make("firstPath/secondPath/thirdPath/firstPath/forthPath").containsPath("firstPath/forthPath"))
                 .isTrue();
+        assertThat(make("firstPath/secondPath/thirdPath/firstPath/forthPath").containsPath("firstPath/thirdPath"))
+                .isFalse();
     }
 
     //-------------------------------
