@@ -74,7 +74,7 @@ public class StateHistoryToken implements HistoryToken {
     }
 
     private boolean contains(List<String> paths, List<String> targets) {
-        return Collections.indexOfSubList(paths, targets) != -1;
+        return paths.containsAll(targets);
     }
 
     @Override
