@@ -7,8 +7,15 @@ import com.progressoft.brix.domino.api.client.mvp.view.View;
 import com.progressoft.brix.domino.api.server.entrypoint.ServerEntryPointContext;
 import com.progressoft.brix.domino.api.shared.extension.Contribution;
 
+import java.util.HashSet;
+import java.util.Set;
+
 
 public class TestModule {
+
+    private Set<Expect> expects=new HashSet<
+
+            >();
 
     public ClientApp init(ServerEntryPointContext entryPointContext) {
         return TestClientAppFactory.make(entryPointContext);
@@ -49,5 +56,15 @@ public class TestModule {
 
     public void removeRoutingListener(){
         TestClientAppFactory.serverRouter.removeRoutingListener();
+    }
+
+    public void expect(Expect expect){
+        this.expects.add(expect);
+    }
+
+
+    public interface Expect {
+        boolean happening();
+        void orElse();
     }
 }
