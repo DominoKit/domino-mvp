@@ -32,6 +32,7 @@ public class TestInMemoryPresenterRepository extends InMemoryPresentersRepositor
 
     private class TestPresenterLoader extends LazyPresenterLoader {
 
+        public static final int HASH_NUMBER = 31;
         private final LazyPresenterLoader lazyPresenterLoader;
         private final TestPresenterFactory presenterFactory;
         private Presentable presenter;
@@ -72,9 +73,9 @@ public class TestInMemoryPresenterRepository extends InMemoryPresentersRepositor
         @Override
         public int hashCode() {
             int result = super.hashCode();
-            result = 31 * result + (lazyPresenterLoader != null ? lazyPresenterLoader.hashCode() : 0);
-            result = 31 * result + (presenterFactory != null ? presenterFactory.hashCode() : 0);
-            result = 31 * result + (presenter != null ? presenter.hashCode() : 0);
+            result = HASH_NUMBER * result + (lazyPresenterLoader != null ? lazyPresenterLoader.hashCode() : 0);
+            result = HASH_NUMBER * result + (presenterFactory != null ? presenterFactory.hashCode() : 0);
+            result = HASH_NUMBER * result + (presenter != null ? presenter.hashCode() : 0);
             return result;
         }
     }
