@@ -46,8 +46,6 @@ public abstract class LazyPresenterLoader {
 
     @Override
     public int hashCode() {
-        int result = name.hashCode();
-        result = 31 * result + getConcreteName().hashCode();
-        return result;
+        return name.hashCode();
     }
 }
