@@ -125,7 +125,7 @@ public class TestDominoHistory implements AppHistory {
         }
     }
 
-    private class HistoryState {
+    public class HistoryState {
         private final String token;
         private final String data;
 
