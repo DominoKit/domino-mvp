@@ -133,5 +133,13 @@ public class TestDominoHistory implements AppHistory {
             this.token = token;
             this.data = data;
         }
+
+        public String getToken() {
+            return token;
+        }
+
+        public String getData() {
+            return data;
+        }
     }
 }
