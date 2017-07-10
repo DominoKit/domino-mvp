@@ -9,11 +9,6 @@ import com.progressoft.brix.domino.api.server.entrypoint.ServerEntryPointContext
 import com.progressoft.brix.domino.api.shared.extension.Contribution;
 import com.progressoft.brix.domino.api.shared.request.ServerResponse;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 
 public class TestModule {
 

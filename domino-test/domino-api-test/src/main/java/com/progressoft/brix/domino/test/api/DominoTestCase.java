@@ -1,8 +1,6 @@
 package com.progressoft.brix.domino.test.api;
 
-import com.progressoft.brix.domino.api.client.ClientApp;
 import com.progressoft.brix.domino.api.client.ModuleConfiguration;
-import com.progressoft.brix.domino.api.client.ModuleConfigurator;
 import com.progressoft.brix.domino.api.client.mvp.view.View;
 import com.progressoft.brix.domino.api.client.request.ClientServerRequest;
 import com.progressoft.brix.domino.api.server.config.ServerConfiguration;
