@@ -14,9 +14,15 @@ import com.progressoft.brix.domino.api.shared.request.ServerResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class TestServerRouter implements RequestRouter<ClientServerRequest> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TestServerRouter.class);
+
+    private Map<String, ResponseReply> fakeResponses=new HashMap<>();
+
     private RoutingListener defaultListener =
             (request, response) -> LOGGER.info(
                     "on routing request " + request + " with response " + response);
@@ -54,14 +60,22 @@ public class TestServerRouter implements RequestRouter<ClientServerRequest> {
     public void routeRequest(ClientServerRequest request) {
         ServerResponse response;
         try {
-            response = service.executeRequest(request.arguments());
+            if(fakeResponses.containsKey(request.getClass().getCanonicalName())){
+                response=fakeResponses.get(request.getClass().getCanonicalName()).reply();
+            }else {
+                response = service.executeRequest(request.arguments());
+            }
             listener.onRouteRequest(request, response);
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             LOGGER.error("could not execute request : ", ex);
             eventFactory.makeFailed(request, ex).fire();
             return;
         }
         eventFactory.makeSuccess(request, response).fire();
+    }
+
+    public void fakeResponse(Class<? extends ClientServerRequest> requestClass, ResponseReply reply){
+        fakeResponses.put(requestClass.getCanonicalName(), reply);
     }
 
     public class TestServerSuccessEvent implements Event {
@@ -145,5 +159,35 @@ public class TestServerRouter implements RequestRouter<ClientServerRequest> {
     public interface RoutingListener {
         void onRouteRequest(ClientServerRequest request,
                             ServerResponse response);
+    }
+
+    public interface ResponseReply{
+        ServerResponse reply() throws Throwable;
+    }
+
+    public static class SuccessReply implements ResponseReply{
+        private final ServerResponse response;
+
+        public SuccessReply(ServerResponse response) {
+            this.response = response;
+        }
+
+        @Override
+        public ServerResponse reply() {
+            return response;
+        }
+    }
+
+    public static class FailedReply implements ResponseReply{
+        private final Throwable error;
+
+        public FailedReply(Throwable error) {
+            this.error = error;
+        }
+
+        @Override
+        public ServerResponse reply() throws Throwable {
+            throw error;
+        }
     }
 }

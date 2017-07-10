@@ -4,18 +4,18 @@ import com.progressoft.brix.domino.api.client.ClientApp;
 import com.progressoft.brix.domino.api.client.ModuleConfiguration;
 import com.progressoft.brix.domino.api.client.ModuleConfigurator;
 import com.progressoft.brix.domino.api.client.mvp.view.View;
+import com.progressoft.brix.domino.api.client.request.ClientServerRequest;
 import com.progressoft.brix.domino.api.server.entrypoint.ServerEntryPointContext;
 import com.progressoft.brix.domino.api.shared.extension.Contribution;
+import com.progressoft.brix.domino.api.shared.request.ServerResponse;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 
 public class TestModule {
-
-    private Set<Expect> expects=new HashSet<
-
-            >();
 
     public ClientApp init(ServerEntryPointContext entryPointContext) {
         return TestClientAppFactory.make(entryPointContext);
@@ -58,13 +58,29 @@ public class TestModule {
         TestClientAppFactory.serverRouter.removeRoutingListener();
     }
 
-    public void expect(Expect expect){
-        this.expects.add(expect);
+    public TestResponse forRequest(Class<? extends ClientServerRequest> request){
+        return new TestResponse(request);
+    }
+
+    public static class TestResponse{
+
+        private Class<? extends ClientServerRequest> request;
+
+        public TestResponse(Class<? extends ClientServerRequest> request) {
+            this.request = request;
+        }
+
+        public void returnResponse(ServerResponse response){
+            TestClientAppFactory.serverRouter.fakeResponse(request, new TestServerRouter.SuccessReply(response));
+        }
+
+        public void failWith(Throwable throwable){
+            TestClientAppFactory.serverRouter.fakeResponse(request, new TestServerRouter.FailedReply(throwable));
+        }
+
+
     }
 
 
-    public interface Expect {
-        boolean happening();
-        void orElse();
-    }
+
 }

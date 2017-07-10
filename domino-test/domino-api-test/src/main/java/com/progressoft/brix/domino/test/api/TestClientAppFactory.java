@@ -17,16 +17,19 @@ public class TestClientAppFactory {
     static TestServerRouter serverRouter;
     static TestInMemoryContributionsRepository contributionsRepository;
     static TestDominoHistory history;
+    static TestClientRouter clientRouter;
+    static RequestEventProcessor requestEventProcessor;
+    static TestEventBus eventBus;
 
     private TestClientAppFactory() {
     }
 
     public static ClientApp make(ServerEntryPointContext entryPointContext) {
 
-        TestClientRouter clientRouter = new TestClientRouter();
+        clientRouter = new TestClientRouter();
         serverRouter = new TestServerRouter(entryPointContext);
-        RequestEventProcessor requestEventProcessor = new RequestEventProcessor();
-        TestEventBus eventBus = new TestEventBus(requestEventProcessor);
+        requestEventProcessor = new RequestEventProcessor();
+        eventBus = new TestEventBus(requestEventProcessor);
 
         presentersRepository = new TestInMemoryPresenterRepository();
         requestRepository = new InMemoryRequestsRepository();
