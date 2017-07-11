@@ -33,7 +33,7 @@ public abstract class DominoTestCase {
     @Rule
     public RunTestOnContext vertxRule=new RunTestOnContext();
 
-    public DominoServerRule dominoServerRule=new DominoServerRule(vertxRule.vertx());
+    public DominoServerRule dominoServerRule=new DominoServerRule(vertxRule);
 
     @Before
     public void moduleSetup() {
