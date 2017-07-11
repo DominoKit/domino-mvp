@@ -12,9 +12,11 @@ import com.progressoft.brix.domino.api.shared.extension.Contribution;
 import com.progressoft.brix.domino.service.discovery.VertxServiceDiscovery;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.unit.junit.RunTestOnContext;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import org.junit.Before;
+import org.junit.Rule;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +29,11 @@ public abstract class DominoTestCase {
     protected VertxEntryPointContext testEntryPointContext;
     protected Map<String, Object> attributes = new HashMap<>();
     protected Vertx vertx = Vertx.vertx();
+
+    @Rule
+    public RunTestOnContext vertxRule=new RunTestOnContext();
+
+    public DominoServerRule dominoServerRule=new DominoServerRule(vertxRule.vertx());
 
     @Before
     public void moduleSetup() {
@@ -46,12 +53,9 @@ public abstract class DominoTestCase {
         onConfigurationCompleted();
     }
 
-
-
     protected abstract void setUp();
 
     protected void onConfigurationCompleted() {
-
     }
 
     public void replacePresenter(String presenterName, TestPresenterFactory presenterFactory) {
@@ -89,5 +93,4 @@ public abstract class DominoTestCase {
     public TestModule.TestResponse forRequest(Class<? extends ClientServerRequest> request){
         return testModule.forRequest(request);
     }
-
 }
