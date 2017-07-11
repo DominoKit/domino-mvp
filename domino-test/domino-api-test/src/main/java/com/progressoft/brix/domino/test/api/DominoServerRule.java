@@ -4,18 +4,26 @@ import com.progressoft.brix.domino.api.server.DominoLoader;
 import com.progressoft.brix.domino.api.server.RouterConfigurator;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.unit.junit.RunTestOnContext;
 import io.vertx.ext.web.Router;
 import org.junit.rules.ExternalResource;
+import org.junit.runner.Description;
+import org.junit.runners.model.Statement;
 
 public class DominoServerRule extends ExternalResource{
 
-    private final Vertx vertx;
     private int actualPort;
     private Router router;
     private JsonObject config;
+    private final RunTestOnContext vertxRule;
 
-    public DominoServerRule(Vertx vertx) {
-        this.vertx = vertx;
+    public DominoServerRule(RunTestOnContext vertxRule) {
+        this.vertxRule = vertxRule;
+    }
+
+    @Override
+    public Statement apply(Statement base, Description description) {
+        return super.apply(base, description);
     }
 
     public void onBeforeDominoLoad(Router router, JsonObject config){
@@ -24,11 +32,11 @@ public class DominoServerRule extends ExternalResource{
 
     @Override
     protected void before() throws Throwable {
-        RouterConfigurator routerConfigurator=new RouterConfigurator(vertx);
+        RouterConfigurator routerConfigurator=new RouterConfigurator(vertxRule.vertx());
         router = routerConfigurator.configuredRouter();
         config = new JsonObject().put("http.port", 0);
         onBeforeDominoLoad(router, config);
-        new DominoLoader(vertx, router, config).start(server -> actualPort=server.result().actualPort());
+        new DominoLoader(vertxRule.vertx(), router, config).start(server -> actualPort=server.result().actualPort());
         onAfterDominoLoad(router, config);
     }
 
@@ -37,7 +45,7 @@ public class DominoServerRule extends ExternalResource{
     }
 
     public Vertx getVertx() {
-        return vertx;
+        return vertxRule.vertx();
     }
 
     public Router getRouter() {
