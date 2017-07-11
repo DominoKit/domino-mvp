@@ -73,6 +73,7 @@ public class DominoLoader {
                                                     VertxContext vertxContext, AsyncResult<HttpServerOptions> options,
                                                     Handler<AsyncResult<HttpServer>> serverStartupHandler) {
         immutableHttpServerOptions.init(options.result(), options.result().getPort(), options.result().getHost());
+
         new ServerConfigurationLoader(vertxContext).loadModules();
 
         router.route("/static/*").handler(StaticHandler.create())

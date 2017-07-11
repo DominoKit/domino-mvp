@@ -12,11 +12,9 @@ import com.progressoft.brix.domino.api.shared.extension.Contribution;
 import com.progressoft.brix.domino.service.discovery.VertxServiceDiscovery;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
-import io.vertx.ext.unit.junit.RunTestOnContext;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import org.junit.Before;
-import org.junit.Rule;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,11 +27,6 @@ public abstract class DominoTestCase {
     protected VertxEntryPointContext testEntryPointContext;
     protected Map<String, Object> attributes = new HashMap<>();
     protected Vertx vertx = Vertx.vertx();
-
-    @Rule
-    public RunTestOnContext vertxRule=new RunTestOnContext();
-
-    public DominoServerRule dominoServerRule=new DominoServerRule(vertxRule);
 
     @Before
     public void moduleSetup() {
@@ -74,7 +67,7 @@ public abstract class DominoTestCase {
         testModule.configureModule(configuration);
     }
 
-    public TestDominoHistory history(){
+    public TestDominoHistory history() {
         return testModule.history();
     }
 
@@ -82,15 +75,15 @@ public abstract class DominoTestCase {
         return testModule.getContribution(contributionClass);
     }
 
-    public void setRoutingListener(TestServerRouter.RoutingListener routingListener){
+    public void setRoutingListener(TestServerRouter.RoutingListener routingListener) {
         testModule.setRoutingListener(routingListener);
     }
 
-    public void removeRoutingListener(){
+    public void removeRoutingListener() {
         testModule.removeRoutingListener();
     }
 
-    public TestModule.TestResponse forRequest(Class<? extends ClientServerRequest> request){
+    public TestModule.TestResponse forRequest(Class<? extends ClientServerRequest> request) {
         return testModule.forRequest(request);
     }
 }

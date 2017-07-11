@@ -39,7 +39,7 @@ public class RouterConfigurator {
 
     private void addPredefinedHandlers(Vertx vertx, Router router) {
         addSessionHandler(vertx, router);
-        addCSRFHandler(router);
+//        addCSRFHandler(router);
         addBodyHandler(router);
     }
 
