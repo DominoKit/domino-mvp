@@ -19,9 +19,9 @@ public class DominoTestServer {
     }
 
     public void start(TestContext context) {
-        RouterConfigurator routerConfigurator = new RouterConfigurator(vertx);
-        router = routerConfigurator.configuredRouter();
         config = new JsonObject().put("http.port", 0);
+        RouterConfigurator routerConfigurator = new RouterConfigurator(vertx, config);
+        router = routerConfigurator.configuredRouter();
         onBeforeDominoLoad(router, config);
         new DominoLoader(vertx, router, config).start(context.asyncAssertSuccess(server -> actualPort = server.actualPort()));
         onAfterDominoLoad(router, config);

@@ -1,6 +1,7 @@
 package com.progressoft.brix.domino.api.server;
 
 import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.CSRFHandler;
@@ -10,24 +11,28 @@ import io.vertx.ext.web.sstore.ClusteredSessionStore;
 import io.vertx.ext.web.sstore.LocalSessionStore;
 import io.vertx.ext.web.sstore.SessionStore;
 
+import static java.util.Objects.isNull;
+
 public class RouterConfigurator {
 
     static final int DEFAULT_BODY_LIMIT = 50;
     static final long MB = 1048576L;
 
     private final Vertx vertx;
+    private final JsonObject config;
     private boolean clustered;
 
-    public RouterConfigurator(Vertx vertx) {
+    public RouterConfigurator(Vertx vertx, JsonObject config) {
         this.vertx = vertx;
+        this.config = config;
     }
 
-    public Router configuredRouter(){
+    public Router configuredRouter() {
         return makeRouterWithPredefinedHandlers(vertx);
     }
 
-    public Router configuredClusteredRouter(){
-        this.clustered=true;
+    public Router configuredClusteredRouter() {
+        this.clustered = true;
         return makeRouterWithPredefinedHandlers(vertx);
     }
 
@@ -44,7 +49,8 @@ public class RouterConfigurator {
     }
 
     private void addBodyHandler(Router router) {
-        router.route().handler(BodyHandler.create().setBodyLimit(DEFAULT_BODY_LIMIT * MB));
+        Integer bodyLimit = config.getInteger("body.limit");
+        router.route().handler(BodyHandler.create().setBodyLimit((isNull(bodyLimit) ? DEFAULT_BODY_LIMIT : bodyLimit) * MB));
     }
 
     private void addCSRFHandler(Router router) {

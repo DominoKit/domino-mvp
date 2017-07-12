@@ -18,7 +18,7 @@ import static org.junit.Assert.assertNotNull;
 public class ServerAppTest {
 
     @Rule
-    public RunTestOnContext rule= new RunTestOnContext();
+    public RunTestOnContext rule = new RunTestOnContext();
 
     private ServerApp serverApp;
     private TestRequest request;
@@ -26,15 +26,14 @@ public class ServerAppTest {
 
     @Before
     public void setUp() throws Exception {
-
-        vertx= rule.vertx();
-        JsonObject config=new JsonObject();
-        RouterConfigurator configurator=new RouterConfigurator(vertx);
-        DominoLauncher.routerHolder.router=configurator.configuredRouter();
-        DominoLauncher.configHolder.config=config;
-        config.put("http.port",0);
+        vertx = rule.vertx();
+        JsonObject config = new JsonObject();
+        config.put("http.port", 0);
+        RouterConfigurator configurator = new RouterConfigurator(vertx, config);
+        DominoLauncher.routerHolder.router = configurator.configuredRouter();
+        DominoLauncher.configHolder.config = config;
         new DominoLoader(vertx, DominoLauncher.routerHolder.router, DominoLauncher.configHolder.config).start();
-        serverApp=ServerApp.make();
+        serverApp = ServerApp.make();
         request = new TestRequest();
     }
 
