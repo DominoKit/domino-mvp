@@ -3,6 +3,7 @@ package com.progressoft.brix.domino.api.server.entrypoint;
 import com.progressoft.brix.domino.api.server.config.ServerConfiguration;
 import com.progressoft.brix.domino.api.server.endpoint.EndpointsRegistry;
 import com.progressoft.brix.domino.service.discovery.VertxServiceDiscovery;
+import io.vertx.config.ConfigRetriever;
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.Router;
 
@@ -13,14 +14,16 @@ public class VertxContext implements ServerContext {
     private final Vertx vertx;
     private final VertxServiceDiscovery serviceDiscovery;
     private final DominoHttpServerOptions httpServerOptions;
+    private final ConfigRetriever configRetriever;
 
     private VertxContext(Vertx vertx, Router router, ServerConfiguration config, VertxServiceDiscovery serviceDiscovery,
-                         DominoHttpServerOptions httpServerOptions) {
+                         DominoHttpServerOptions httpServerOptions, ConfigRetriever configRetriever) {
         this.router = router;
         this.config = config;
         this.vertx = vertx;
         this.serviceDiscovery = serviceDiscovery;
         this.httpServerOptions = httpServerOptions;
+        this.configRetriever = configRetriever;
     }
 
     @Override
@@ -57,8 +60,12 @@ public class VertxContext implements ServerContext {
         return this.serviceDiscovery;
     }
 
-    public DominoHttpServerOptions httpServerOptions(){
+    public DominoHttpServerOptions httpServerOptions() {
         return this.httpServerOptions;
+    }
+
+    public ConfigRetriever configRetriever() {
+        return this.configRetriever;
     }
 
     public static class VertxContextBuilder {
@@ -67,6 +74,7 @@ public class VertxContext implements ServerContext {
         private Vertx vertx;
         private VertxServiceDiscovery serviceDiscovery;
         private DominoHttpServerOptions httpServerOptions;
+        private ConfigRetriever configRetriever;
 
 
         private VertxContextBuilder(Vertx vertx) {
@@ -97,9 +105,13 @@ public class VertxContext implements ServerContext {
             return this;
         }
 
+        public VertxContextBuilder configRetriever(ConfigRetriever configRetriever) {
+            this.configRetriever = configRetriever;
+            return this;
+        }
 
         public VertxContext build() {
-            return new VertxContext(vertx, router, config, serviceDiscovery, httpServerOptions);
+            return new VertxContext(vertx, router, config, serviceDiscovery, httpServerOptions, configRetriever);
         }
     }
 }

@@ -5,6 +5,7 @@ import com.progressoft.brix.domino.api.server.config.ServerConfigurationLoader;
 import com.progressoft.brix.domino.api.server.config.VertxConfiguration;
 import com.progressoft.brix.domino.api.server.entrypoint.VertxContext;
 import com.progressoft.brix.domino.service.discovery.VertxServiceDiscovery;
+import io.vertx.config.ConfigRetriever;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
@@ -66,7 +67,8 @@ public class DominoLoader {
                 .router(router)
                 .serverConfiguration(new VertxConfiguration(config))
                 .httpServerOptions(immutableHttpServerOptions)
-                .vertxServiceDiscovery(new VertxServiceDiscovery(vertx)).build();
+                .vertxServiceDiscovery(new VertxServiceDiscovery(vertx))
+                .configRetriever(ConfigRetriever.create(vertx)).build();
     }
 
     private void onHttpServerConfigurationCompleted(ImmutableHttpServerOptions immutableHttpServerOptions,

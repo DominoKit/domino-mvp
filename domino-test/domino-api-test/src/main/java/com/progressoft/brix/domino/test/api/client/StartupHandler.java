@@ -7,8 +7,8 @@ public class StartupHandler {
     private static final Logger LOGGER= LoggerFactory.getLogger(StartupHandler.class);
 
     private final StartCompleted START_COMPLETED= context -> LOGGER.info("Client started...");
-    private final BeforeRun BEFORE_RUN= context -> LOGGER.info("Starting client...");
-    final BeforeRun beforeRunHandler;
+    private final BeforeStarted BEFORE_RUN= context -> LOGGER.info("Starting client...");
+    final BeforeStarted beforeRunHandler;
     final StartCompleted startCompleted;
 
     public StartupHandler() {
@@ -16,7 +16,7 @@ public class StartupHandler {
         this.startCompleted = START_COMPLETED;
     }
 
-    public StartupHandler(BeforeRun beforeRunHandler,
+    public StartupHandler(BeforeStarted beforeRunHandler,
                           StartCompleted startCompleted) {
         this.beforeRunHandler = beforeRunHandler;
         this.startCompleted = startCompleted;

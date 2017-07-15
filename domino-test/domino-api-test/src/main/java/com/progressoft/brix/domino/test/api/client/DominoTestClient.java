@@ -18,6 +18,8 @@ import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -28,7 +30,7 @@ public class DominoTestClient
         implements CanCustomizeClient, CanStartClient,
         ClientContext {
 
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(DominoTestClient.class);
 
     private ModuleConfiguration[] modules;
     private Map<String, PresenterReplacement> presentersReplacements = new HashMap<>();
@@ -38,9 +40,11 @@ public class DominoTestClient
 
     private VertxEntryPointContext testEntryPointContext;
     private Vertx vertx = Vertx.vertx();
+    private BeforeStarted beforeStarted = context -> LOGGER.info("Before start client...");
+    private StartCompleted startCompleted = context -> LOGGER.info("Client started...");
 
     private DominoTestClient(ModuleConfiguration... configurations) {
-        this.modules=configurations;
+        this.modules = configurations;
     }
 
     public static CanCustomizeClient useModules(ModuleConfiguration... configurations) {
@@ -67,18 +71,25 @@ public class DominoTestClient
 
     @Override
     public CanCustomizeClient contributionOf(Class<? extends Contribution> contributionName,
-                                          ContributionHandler handler) {
+                                             ContributionHandler handler) {
         this.contributionsOf.add(new ContributionOf(contributionName, handler));
         return this;
     }
 
     @Override
-    public void start() {
-        start(new StartupHandler());
+    public CanCustomizeClient onBeforeStart(BeforeStarted beforeStarted) {
+        this.beforeStarted = beforeStarted;
+        return this;
     }
 
     @Override
-    public void start(StartupHandler handler) {
+    public CanCustomizeClient onStartCompleted(StartCompleted startCompleted) {
+        this.startCompleted = startCompleted;
+        return this;
+    }
+
+    @Override
+    public void start() {
         ServerConfiguration testServerConfiguration = new VertxConfiguration(new JsonObject());
         testEntryPointContext = new VertxEntryPointContext(createMock(RoutingContext.class), testServerConfiguration,
                 vertx);
@@ -104,9 +115,9 @@ public class DominoTestClient
         viewsOf.forEach(v -> v.handler.handle(getView(v.presenterName)));
         contributionsOf.forEach(c -> c.handler.handle(getContribution(c.contributionName)));
 
-        handler.beforeRunHandler.onBeforeRun(this);
+        beforeStarted.onBeforeStart(this);
         make().run();
-        handler.startCompleted.onStarted(this);
+        startCompleted.onStarted(this);
     }
 
     private void init(ServerEntryPointContext entryPointContext) {
