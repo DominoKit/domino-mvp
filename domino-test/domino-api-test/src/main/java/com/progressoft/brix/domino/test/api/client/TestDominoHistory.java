@@ -1,4 +1,4 @@
-package com.progressoft.brix.domino.test.api;
+package com.progressoft.brix.domino.test.api.client;
 
 import com.progressoft.brix.domino.api.shared.history.AppHistory;
 import com.progressoft.brix.domino.api.shared.history.HistoryToken;

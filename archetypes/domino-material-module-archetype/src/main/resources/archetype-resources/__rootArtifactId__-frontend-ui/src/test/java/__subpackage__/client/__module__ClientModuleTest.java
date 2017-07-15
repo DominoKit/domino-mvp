@@ -9,6 +9,7 @@ import com.google.gwtmockito.WithClassesToStub;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.Before;
 
 import static org.junit.Assert.*;
 
@@ -16,30 +17,22 @@ import ${package}.${subpackage}.client.presenters.${module}Presenter;
 import ${package}.${subpackage}.client.presenters.${module}PresenterSpy;
 import ${package}.${subpackage}.client.views.${module}ViewSpy;
 
-import com.progressoft.brix.domino.test.api.DominoTestCase;
+import com.progressoft.brix.domino.test.api.client.DominoTestClient;
 
 @RunWith(GwtMockitoTestRunner.class)
 @WithClassesToStub(RootPanel.class)
-public class ${module}ClientModuleTest extends DominoTestCase{
+public class ${module}ClientModuleTest{
 
     private ${module}PresenterSpy presenterSpy;
     private ${module}ViewSpy viewSpy;
 
-    @Override
+    @Before
     public void setUp() {
-
-        testModule.configureModule(new ${module}ModuleConfiguration());
-        testModule.configureModule(new ${module}UIModuleConfiguration());
-
-        testModule.replacePresenter(${module}Presenter.class.getCanonicalName(), () -> {
-            presenterSpy=new ${module}PresenterSpy();
-            return presenterSpy;
-        });
-
-        testModule.replaceView(${module}Presenter.class.getCanonicalName(), () -> {
-            viewSpy=new ${module}ViewSpy();
-            return viewSpy;
-        });
+        DominoTestClient.useModules(new ${module}ModuleConfiguration(), new ${module}UIModuleConfiguration())
+                .replacePresenter(${module}Presenter.class, new ${module}PresenterSpy(), presentable -> presenterSpy=
+                    (${module}PresenterSpy) presentable)
+                .replaceView(${module}Presenter.class, new ${module}ViewSpy(), view -> viewSpy= (${module}ViewSpy) view)
+                .start();
     }
 
     @Test

@@ -1,7 +1,7 @@
 #set( $symbol_pound = '#' )
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
-package ${package}.${subpackage}.client;
+package ${package}.${subpackage}.client.views;
 
 import ${package}.${subpackage}.client.ui.views.Default${module}View;
 

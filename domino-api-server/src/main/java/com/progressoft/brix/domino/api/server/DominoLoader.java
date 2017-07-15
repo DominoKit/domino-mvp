@@ -25,7 +25,7 @@ public class DominoLoader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DominoLoader.class);
 
-    public static final int DEFAULT_PORT = 8080;
+    public static final int DEFAULT_PORT = 0;
     public static final String HTTP_PORT_KEY = "http.port";
     public static final int AROUND_6_MONTHS = 15768000;
 
