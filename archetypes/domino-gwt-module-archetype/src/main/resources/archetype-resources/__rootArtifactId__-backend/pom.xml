@@ -31,6 +31,12 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>com.progressoft.brix.domino.test</groupId>
+            <artifactId>domino-server-test</artifactId>
+            <version>${domino.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>com.google.auto.service</groupId>
             <artifactId>auto-service</artifactId>
             <version>1.0-rc2</version>

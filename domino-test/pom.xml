@@ -145,7 +145,8 @@
     </build>
 
     <modules>
-        <module>domino-api-test</module>
+        <module>domino-client-test</module>
+        <module>domino-server-test</module>
         <module>ui-test</module>
         <module>apt-test</module>
     </modules>

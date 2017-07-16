@@ -1,0 +1,31 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.progressoft.brix.domino.test</groupId>
+        <artifactId>domino-test</artifactId>
+        <version>1.0-rc.2-SNAPSHOT</version>
+    </parent>
+    <artifactId>domino-server-test</artifactId>
+    <packaging>jar</packaging>
+    <name>domino-server-test</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.progressoft.brix.domino.api</groupId>
+            <artifactId>domino-api-shared</artifactId>
+            <version>1.0-rc.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.progressoft.brix.domino.api</groupId>
+            <artifactId>domino-api-server</artifactId>
+            <version>1.0-rc.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-unit</artifactId>
+            <version>${vertx.version}</version>
+        </dependency>
+    </dependencies>
+</project>

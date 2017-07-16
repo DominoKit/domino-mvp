@@ -7,9 +7,9 @@
         <artifactId>domino-test</artifactId>
         <version>1.0-rc.2-SNAPSHOT</version>
     </parent>
-    <artifactId>domino-api-test</artifactId>
+    <artifactId>domino-client-test</artifactId>
     <packaging>jar</packaging>
-    <name>domino-api-test</name>
+    <name>domino-client-test</name>
 
     <dependencies>
         <dependency>

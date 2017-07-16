@@ -47,7 +47,7 @@
         </dependency>
         <dependency>
             <groupId>com.progressoft.brix.domino.test</groupId>
-            <artifactId>domino-api-test</artifactId>
+            <artifactId>domino-client-test</artifactId>
             <version>${domino.version}</version>
             <scope>test</scope>
         </dependency>
