@@ -60,8 +60,8 @@ public class TestServerRouter implements RequestRouter<ClientServerRequest> {
     public void routeRequest(ClientServerRequest request) {
         ServerResponse response;
         try {
-            if(fakeResponses.containsKey(request.getClass().getCanonicalName())){
-                response=fakeResponses.get(request.getClass().getCanonicalName()).reply();
+            if(fakeResponses.containsKey(request.getKey())){
+                response=fakeResponses.get(request.getKey()).reply();
             }else {
                 response = service.executeRequest(request.arguments());
             }
@@ -74,8 +74,8 @@ public class TestServerRouter implements RequestRouter<ClientServerRequest> {
         eventFactory.makeSuccess(request, response).fire();
     }
 
-    public void fakeResponse(Class<? extends ClientServerRequest> requestClass, ResponseReply reply){
-        fakeResponses.put(requestClass.getCanonicalName(), reply);
+    public void fakeResponse(String requestKey, ResponseReply reply){
+        fakeResponses.put(requestKey, reply);
     }
 
     public class TestServerSuccessEvent implements Event {

@@ -8,7 +8,7 @@ public interface ClientContext {
     TestDominoHistory history();
     void setRoutingListener(TestServerRouter.RoutingListener routingListener);
     void removeRoutingListener();
-    DominoTestClient.TestResponse forRequest(Class<? extends ClientServerRequest> request);
+    DominoTestClient.TestResponse forRequest(String requestKey);
     Vertx vertx();
     VertxEntryPointContext vertxEntryPointContext();
 }
