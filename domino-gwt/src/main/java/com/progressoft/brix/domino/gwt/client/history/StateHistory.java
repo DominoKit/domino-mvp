@@ -5,6 +5,8 @@ import com.progressoft.brix.domino.api.shared.history.AppHistory;
 import com.progressoft.brix.domino.api.shared.history.HistoryToken;
 import com.progressoft.brix.domino.api.shared.history.TokenFilter;
 import com.progressoft.brix.domino.gwt.client.history.History.PopStateEventListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -12,15 +14,21 @@ import java.util.Set;
 
 public class StateHistory implements AppHistory {
 
+    private static final Logger LOGGER= LoggerFactory.getLogger(StateHistory.class);
+
     private Set<HistoryListener> listeners = new HashSet<>();
 
     public StateHistory() {
         PopStateEventListener listener =
-                event -> inform(event.getState().historyToken, event.getState().title, event.getState().data);
+                event -> {
+            if(Objects.nonNull(event.getState()))
+                inform(event.getState().historyToken, event.getState().title, event.getState().data);
+        };
         Window.getSelf().addEventListener("popstate", listener::onPopState);
     }
 
     private void inform(String token, String title, String stateJson) {
+        LOGGER.info("History listeners count : "+listeners.size());
         listeners.stream().filter(l -> l.tokenFilter.filter(token))
                 .forEach(l -> ClientApp.make().getAsyncRunner().runAsync(() ->
                         l.listener.onPopState(new DominoHistoryState(token, title, stateJson))));

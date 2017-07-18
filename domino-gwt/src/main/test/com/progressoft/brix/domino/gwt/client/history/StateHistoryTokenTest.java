@@ -33,6 +33,11 @@ public class StateHistoryTokenTest {
     }
 
     @Test
+    public void createTokenWithSinglePath_whenCheckingForStartingWithPathPassingFirstPath_thenShouldReturnTrue() {
+        assertThat(make("firstPath").startsWithPath("firstPath")).isTrue();
+    }
+
+    @Test
     public void createTokenWithMultiPaths_whenCheckingForStartingWithPathPassingFirstPath_thenShouldReturnTrue() {
         assertThat(make("firstPath/secondPath/thirdPath").startsWithPath("firstPath")).isTrue();
     }

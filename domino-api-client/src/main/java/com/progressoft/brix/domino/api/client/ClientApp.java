@@ -127,7 +127,6 @@ public class ClientApp
     public void run() {
         INITIAL_TASKS_HOLDER.attribute.forEach(InitializeTask::execute);
         Contributions.apply(MainExtensionPoint.class, MAIN_EXTENSION_POINT_HOLDER.attribute);
-        HISTORY_HOLDER.attribute.fireCurrentStateHistory();
     }
 
     public void applyContributions(Class<? extends ExtensionPoint> extensionPointInterface,
