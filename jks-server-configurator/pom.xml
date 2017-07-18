@@ -7,10 +7,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>jks-server-cofigurator</artifactId>
+    <artifactId>jks-server-configurator</artifactId>
     <packaging>jar</packaging>
 
-    <name>jks-server-cofigurator</name>
+    <name>jks-server-configurator</name>
     <url>https://github.com/GwtDomino/domino</url>
     <description>GWT Domino</description>
 
