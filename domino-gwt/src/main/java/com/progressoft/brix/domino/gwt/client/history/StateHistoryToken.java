@@ -238,7 +238,7 @@ public class StateHistoryToken implements HistoryToken {
     }
 
     private boolean isValidSize(List<String> paths, List<String> targets) {
-        return !targets.isEmpty() && targets.size() < paths.size();
+        return !targets.isEmpty() && targets.size() <= paths.size();
     }
 
     private Map<String, String> asQueryParameters(String token) {

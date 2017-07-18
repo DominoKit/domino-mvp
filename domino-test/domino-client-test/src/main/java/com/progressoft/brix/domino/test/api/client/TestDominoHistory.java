@@ -10,6 +10,8 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
+import static java.util.Objects.isNull;
+
 public class TestDominoHistory implements AppHistory {
 
     private Set<HistoryListener> listeners = new HashSet<>();
@@ -62,6 +64,8 @@ public class TestDominoHistory implements AppHistory {
 
     @Override
     public HistoryToken currentToken() {
+        if(isNull(forwards.peek()))
+            return new StateHistoryToken("");
         return new StateHistoryToken(forwards.peek().token);
     }
 
