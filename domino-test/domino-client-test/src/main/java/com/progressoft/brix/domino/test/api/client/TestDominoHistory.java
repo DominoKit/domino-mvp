@@ -3,6 +3,7 @@ package com.progressoft.brix.domino.test.api.client;
 import com.progressoft.brix.domino.api.shared.history.AppHistory;
 import com.progressoft.brix.domino.api.shared.history.HistoryToken;
 import com.progressoft.brix.domino.api.shared.history.TokenFilter;
+import com.progressoft.brix.domino.gwt.client.history.DominoDirectState;
 import com.progressoft.brix.domino.gwt.client.history.StateHistoryToken;
 
 import java.util.Deque;
@@ -19,13 +20,24 @@ public class TestDominoHistory implements AppHistory {
     private Deque<HistoryState> backwards = new LinkedList<>();
 
     @Override
-    public void listen(StateListener listener) {
-        listeners.add(new HistoryListener(listener, TokenFilter.any()));
+    public DirectState listen(StateListener listener) {
+        return listen(TokenFilter.any(), listener);
     }
 
     @Override
-    public void listen(StateListener listener, TokenFilter tokenFilter) {
+    public DirectState listen(TokenFilter tokenFilter, StateListener listener) {
         listeners.add(new HistoryListener(listener, tokenFilter));
+        return new DominoDirectState(tokenFilter, currentState());
+    }
+
+    private State currentState() {
+        if(forwards.isEmpty())
+            return new TestState(nullState());
+        return new TestState(forwards.peek());
+    }
+
+    private HistoryState nullState() {
+        return new HistoryState("", "");
     }
 
     private void inform(HistoryState state) {
@@ -64,7 +76,7 @@ public class TestDominoHistory implements AppHistory {
 
     @Override
     public HistoryToken currentToken() {
-        if(isNull(forwards.peek()))
+        if (isNull(forwards.peek()))
             return new StateHistoryToken("");
         return new StateHistoryToken(forwards.peek().token);
     }

@@ -14,34 +14,35 @@ import java.util.Set;
 
 public class StateHistory implements AppHistory {
 
-    private static final Logger LOGGER= LoggerFactory.getLogger(StateHistory.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(StateHistory.class);
 
     private Set<HistoryListener> listeners = new HashSet<>();
 
     public StateHistory() {
         PopStateEventListener listener =
                 event -> {
-            if(Objects.nonNull(event.getState()))
-                inform(event.getState().historyToken, event.getState().title, event.getState().data);
-        };
+                    if (Objects.nonNull(event.getState()))
+                        inform(event.getState().historyToken, event.getState().title, event.getState().data);
+                };
         Window.getSelf().addEventListener("popstate", listener::onPopState);
     }
 
     private void inform(String token, String title, String stateJson) {
-        LOGGER.info("History listeners count : "+listeners.size());
+        LOGGER.info("History listeners count : " + listeners.size());
         listeners.stream().filter(l -> l.tokenFilter.filter(token))
                 .forEach(l -> ClientApp.make().getAsyncRunner().runAsync(() ->
                         l.listener.onPopState(new DominoHistoryState(token, title, stateJson))));
     }
 
     @Override
-    public void listen(StateListener listener) {
-        listeners.add(new HistoryListener(listener, TokenFilter.any()));
+    public DirectState listen(StateListener listener) {
+        return listen(TokenFilter.any(), listener);
     }
 
     @Override
-    public void listen(StateListener listener, TokenFilter tokenFilter) {
+    public DirectState listen(TokenFilter tokenFilter, StateListener listener) {
         listeners.add(new HistoryListener(listener, tokenFilter));
+        return new DominoDirectState(tokenFilter, currentState());
     }
 
     @Override
@@ -67,20 +68,33 @@ public class StateHistory implements AppHistory {
 
     @Override
     public StateHistoryToken currentToken() {
-        return new StateHistoryToken(getCurrentToken());
+        return new StateHistoryToken(windowToken());
     }
 
     @Override
     public void fireCurrentStateHistory() {
-        String token = getCurrentToken();
-        History.State state = Window.getSelf().getHistory().getState();
-        replaceState(token, Window.getSelf().getDocument().getTitle(),
-                stateData(state));
-        inform(token, Window.getSelf().getDocument().getTitle(), stateData(state));
+        fireState(windowToken(), stateData(windowState()));
     }
 
-    private String getCurrentToken() {
+    private void fireState(String token, String state) {
+        replaceState(token, windowTitle(), state);
+        inform(token, windowTitle(), state);
+    }
+
+    private History.State windowState() {
+        return Window.getSelf().getHistory().getState();
+    }
+
+    private String windowTitle() {
+        return Window.getSelf().getDocument().getTitle();
+    }
+
+    private String windowToken() {
         return Window.getSelf().getLocation().getPathname().substring(1) + Window.getSelf().getLocation().getSearch();
+    }
+
+    private State currentState() {
+        return new DominoHistoryState(windowToken(), windowTitle(), stateData(windowState()));
     }
 
     private String stateData(History.State state) {

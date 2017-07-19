@@ -2,9 +2,9 @@ package com.progressoft.brix.domino.api.shared.history;
 
 public interface DominoHistory {
 
-    void listen(StateListener listener);
+    DirectState listen(StateListener listener);
 
-    void listen(StateListener listener, TokenFilter tokenFilter);
+    DirectState listen(TokenFilter tokenFilter, StateListener listener);
 
     void back();
 
@@ -20,9 +20,21 @@ public interface DominoHistory {
         void onPopState(State state);
     }
 
-    interface State{
+    interface State {
         HistoryToken token();
+
         String data();
+
         String title();
+    }
+
+    @FunctionalInterface
+    interface DirectUrlHandler {
+        void handle(State state);
+    }
+
+    @FunctionalInterface
+    interface DirectState{
+        void onDirectUrl(DirectUrlHandler handler);
     }
 }
