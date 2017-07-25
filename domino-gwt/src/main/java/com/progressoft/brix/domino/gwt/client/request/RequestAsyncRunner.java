@@ -23,6 +23,8 @@ public class RequestAsyncRunner {
         Defaults.setServiceRoot(getModuleBaseURL()
                 .replace("static/"+getModuleName()+"/", "") + "service");
         Defaults.setDispatcher(new DominoRequestDispatcher());
+        // TODO implement some configuration to allow customizing resty.
+        Defaults.setDateFormat(null);
     }
 
     public final void run(final ClientServerRequest request) {
