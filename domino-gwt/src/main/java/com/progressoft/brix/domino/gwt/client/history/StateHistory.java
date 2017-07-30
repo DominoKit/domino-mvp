@@ -28,7 +28,6 @@ public class StateHistory implements AppHistory {
     }
 
     private void inform(String token, String title, String stateJson) {
-        LOGGER.info("History listeners count : " + listeners.size());
         listeners.stream().filter(l -> l.tokenFilter.filter(token))
                 .forEach(l -> ClientApp.make().getAsyncRunner().runAsync(() ->
                         l.listener.onPopState(new DominoHistoryState(token, title, stateJson))));
@@ -57,7 +56,7 @@ public class StateHistory implements AppHistory {
 
     @Override
     public void pushState(String token, String title, String data) {
-        Window.getSelf().getHistory().pushState(History.state(token, data), title, "/" + token);
+        Window.getSelf().getHistory().pushState(History.state(token, title, data), title, "/" + token);
     }
 
     @Override
