@@ -12,6 +12,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import static java.util.Objects.*;
+
 public class StateHistory implements AppHistory {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StateHistory.class);
@@ -21,7 +23,7 @@ public class StateHistory implements AppHistory {
     public StateHistory() {
         PopStateEventListener listener =
                 event -> {
-                    if (Objects.nonNull(event.getState()))
+                    if (nonNull(event.getState()))
                         inform(event.getState().historyToken, event.getState().title, event.getState().data);
                 };
         Window.getSelf().addEventListener("popstate", listener::onPopState);
@@ -56,7 +58,8 @@ public class StateHistory implements AppHistory {
 
     @Override
     public void pushState(String token, String title, String data) {
-        Window.getSelf().getHistory().pushState(History.state(token, title, data), title, "/" + token);
+        if(nonNull(currentToken().value()) && !currentToken().value().equals(token))
+            Window.getSelf().getHistory().pushState(History.state(token, title, data), title, "/" + token);
     }
 
     @Override
@@ -97,7 +100,7 @@ public class StateHistory implements AppHistory {
     }
 
     private String stateData(History.State state) {
-        return Objects.isNull(state) ? "" : state.data;
+        return isNull(state) ? "" : state.data;
     }
 
     private class HistoryListener {
