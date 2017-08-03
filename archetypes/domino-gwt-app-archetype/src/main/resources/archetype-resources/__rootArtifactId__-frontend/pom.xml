@@ -13,6 +13,10 @@
     <artifactId>${artifactId}</artifactId>
     <packaging>gwt-app</packaging>
 
+    <properties>
+        <compilation.directory>../${rootArtifactId}-backend/src/main/resources/webroot</compilation.directory>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.google.gwt</groupId>
@@ -63,11 +67,15 @@
             <plugin>
                 <groupId>net.ltgt.gwt.maven</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
-                <version>1.0-rc-7</version>
+                <version>${gwt.plugin.version}</version>
                 <configuration>
-                    <webappDirectory>../${rootArtifactId}-backend/src/main/resources/webroot</webappDirectory>
+                    <webappDirectory>${compilation.directory}</webappDirectory>
                     <moduleName>${package}.AppClientModule</moduleName>
                     <moduleShortName>app</moduleShortName>
+                    <extra>${compilation.directory}/gwt/extra</extra>
+                    <compilerArgs>
+                        <arg>-saveSource</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
             <plugin>

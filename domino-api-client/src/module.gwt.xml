@@ -4,13 +4,6 @@
 
     <inherits name="com.google.gwt.logging.Logging"/>
 
-
-    <!--<entry-point class='com.progressoft.brix.domino.api.client.Domino'/>-->
-
-    <set-property name="gwt.logging.logLevel" value="INFO"/>
-    <set-property name="gwt.logging.enabled" value="TRUE"/>
-    <set-property name="gwt.logging.consoleHandler" value="ENABLED"/>
-
     <source path='client'/>
     <source path='shared'/>
 

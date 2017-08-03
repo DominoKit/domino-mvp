@@ -19,6 +19,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <mavenVersion>3.0</mavenVersion>
         <domino.version>1.0-rc.2-SNAPSHOT</domino.version>
+        <gwt.plugin.version>1.0-rc-8</gwt.plugin.version>
     </properties>
 
     <url>https://github.com/GwtDomino/domino</url>
@@ -177,5 +178,6 @@
         <module>archetypes</module>
         <module>jks-server-configurator</module>
         <module>domino-service-discovery</module>
+        <module>domino-remote-logging</module>
     </modules>
 </project>

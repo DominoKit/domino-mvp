@@ -7,12 +7,16 @@ import com.progressoft.brix.domino.api.shared.request.ServerResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public abstract class ClientServerRequest<P extends Presentable, R extends ServerRequest, S extends ServerResponse>
         extends BaseRequest implements ServerFailedHandler<P, R> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ClientServerRequest.class);
+
+    private Map<String, String> headers = new HashMap<>();
 
     private R serverArgs;
 
@@ -68,5 +72,13 @@ public abstract class ClientServerRequest<P extends Presentable, R extends Serve
         this.serverArgs = buildArguments();
         this.serverArgs.setRequestKey(getKey());
         return this.serverArgs;
+    }
+
+    public void setHeader(String name, String value) {
+        headers.put(name, value);
+    }
+
+    public Map<String, String> headers() {
+        return new HashMap<>(headers);
     }
 }

@@ -8,7 +8,7 @@
     <packaging>jar</packaging>
 
     <name>domino-service-discovery</name>
-    <url>https://github.com/GwtDomino/domino-service-discovery</url>
+    <url>https://github.com/GwtDomino/domino</url>
     <description>Domino Service Discovery</description>
 
     <properties>

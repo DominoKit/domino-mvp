@@ -19,19 +19,22 @@ public class ServerConfigurationLoader {
         this.serverContext = vertxContext;
     }
 
-    public void loadModules(){
-        HandlersRepository handlersRepository=new InMemoryHandlersRepository();
-        InterceptorsRepository interceptorsRepository=new InMemoryInterceptorsRepository();
-        ServerApp serverApp= makeServerApp(handlersRepository, interceptorsRepository);
+    public void loadModules() {
+        HandlersRepository handlersRepository = new InMemoryHandlersRepository();
+        InterceptorsRepository interceptorsRepository = new InMemoryInterceptorsRepository();
+        ServerApp serverApp = makeServerApp(handlersRepository, interceptorsRepository);
 
         ServiceLoader.load(ServerModuleConfiguration.class).forEach(serverApp::configureModule);
         ServerEntryPointsLoader.runEntryPoints(serverContext);
-
     }
 
     private ServerApp makeServerApp(HandlersRepository handlersRepository,
                                     InterceptorsRepository interceptorsRepository) {
-        return new ServerApp.ServerAppBuilder().handlersRepository(handlersRepository).interceptorsRepository(interceptorsRepository).serverContext(serverContext).executor(new DefaultRequestExecutor(handlersRepository, interceptorsRepository)).build();
+        return new ServerApp.ServerAppBuilder()
+                .handlersRepository(handlersRepository)
+                .interceptorsRepository(interceptorsRepository)
+                .serverContext(serverContext)
+                .executor(new DefaultRequestExecutor(handlersRepository, interceptorsRepository))
+                .build();
     }
-
 }

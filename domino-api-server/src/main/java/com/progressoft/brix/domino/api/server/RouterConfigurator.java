@@ -1,7 +1,12 @@
 package com.progressoft.brix.domino.api.server;
 
+import com.progressoft.brix.domino.api.server.logging.DefaultRemoteLogger;
+import com.progressoft.brix.domino.api.server.logging.RemoteLogger;
+import com.progressoft.brix.domino.api.server.logging.RemoteLoggingHandler;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.CSRFHandler;
@@ -11,12 +16,18 @@ import io.vertx.ext.web.sstore.ClusteredSessionStore;
 import io.vertx.ext.web.sstore.LocalSessionStore;
 import io.vertx.ext.web.sstore.SessionStore;
 
+import java.util.ServiceLoader;
+import java.util.stream.StreamSupport;
+
 import static java.util.Objects.isNull;
 
 public class RouterConfigurator {
 
-    static final int DEFAULT_BODY_LIMIT = 50;
-    static final long MB = 1048576L;
+    private static final Logger LOGGER = LoggerFactory.getLogger(RouterConfigurator.class);
+
+    private static final int DEFAULT_BODY_LIMIT = 50;
+    private static final long MB = 1048576L;
+    private static final String REMOTE_LOGGER = "remote.logger";
 
     private final Vertx vertx;
     private final JsonObject config;
@@ -47,6 +58,15 @@ public class RouterConfigurator {
         // TODO add a confiuration to turn this filter on/off.
 //        addCSRFHandler(router);
         addBodyHandler(router);
+        addRemoteExceptionHandler(router);
+    }
+
+    private void addRemoteExceptionHandler(Router router) {
+        RemoteLogger remoteLogger = StreamSupport.stream(ServiceLoader.load(RemoteLogger.class).spliterator(), false)
+                .filter(logger -> logger.getClass().getName().equals(config.getString(REMOTE_LOGGER)))
+                .findFirst().orElseGet(DefaultRemoteLogger::new);
+        router.route("/service/remoteLogging")
+                .handler(new RemoteLoggingHandler(remoteLogger));
     }
 
     private void addBodyHandler(Router router) {

@@ -28,6 +28,11 @@
             <artifactId>domino-api-server</artifactId>
             <version>${domino.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.progressoft.brix.domino</groupId>
+            <artifactId>domino-remote-logging</artifactId>
+            <version>${domino.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
