@@ -74,8 +74,9 @@ public abstract class ClientServerRequest<P extends Presentable, R extends Serve
         return this.serverArgs;
     }
 
-    public void setHeader(String name, String value) {
+    public ClientServerRequest<P, R, S> setHeader(String name, String value) {
         headers.put(name, value);
+        return this;
     }
 
     public Map<String, String> headers() {
