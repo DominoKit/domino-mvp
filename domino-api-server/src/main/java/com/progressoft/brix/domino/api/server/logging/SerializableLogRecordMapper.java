@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-import static java.util.Objects.isNull;
+import static java.util.Optional.ofNullable;
 
 public class SerializableLogRecordMapper {
 
@@ -33,9 +33,8 @@ public class SerializableLogRecordMapper {
         }
 
         private StackTraceElement[] fromSerializableStackTrace(SerializableStackTraceElement[] serializableStackTrace) {
-            if (isNull(serializableStackTrace))
-                serializableStackTrace = new SerializableStackTraceElement[0];
-            return Arrays.stream(serializableStackTrace).map(this::asStackTrace).toArray(StackTraceElement[]::new);
+            return Arrays.stream(ofNullable(serializableStackTrace).orElse(new SerializableStackTraceElement[0]))
+                    .map(this::asStackTrace).toArray(StackTraceElement[]::new);
         }
 
         private StackTraceElement asStackTrace(SerializableStackTraceElement e) {

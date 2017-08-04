@@ -21,15 +21,16 @@ import java.util.stream.Stream;
 
 public class RestfulRemoteLogHandler extends RemoteLogHandlerBase {
 
+    private RemoteExceptionLoggingService service = GWT.create(RemoteExceptionLoggingService.class);
+
     public interface RemoteExceptionLoggingService extends RestService {
         @POST
         @Path("remoteLogging")
         @Produces(MediaType.APPLICATION_JSON)
         @Consumes(MediaType.APPLICATION_JSON)
         void send(SerializableLogRecord record, MethodCallback<Void> callback);
-    }
 
-    private RemoteExceptionLoggingService service = GWT.create(RemoteExceptionLoggingService.class);
+    }
 
     @Override
     public void publish(LogRecord record) {
