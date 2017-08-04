@@ -9,9 +9,4 @@ public interface ServerContext {
     void publishEndPoint(String path, EndpointsRegistry.EndpointHandlerFactory factory);
 
     void publishService(String path, EndpointsRegistry.EndpointHandlerFactory factory);
-
-    <T> T cast(Class<T> klass) throws InvalidContextTypeException;
-
-    class InvalidContextTypeException extends Exception {
-    }
 }

@@ -37,13 +37,6 @@ public class VertxContext implements ServerContext {
     }
 
     @Override
-    public <T> T cast(Class<T> klass) throws InvalidContextTypeException {
-        if (klass.isInstance(this))
-            return (T) this;
-        throw new InvalidContextTypeException();
-    }
-
-    @Override
     public void publishEndPoint(String path, EndpointsRegistry.EndpointHandlerFactory factory) {
         router.route().path(path).handler(factory.get());
     }
