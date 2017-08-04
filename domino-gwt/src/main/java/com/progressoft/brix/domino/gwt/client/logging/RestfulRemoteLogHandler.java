@@ -87,10 +87,12 @@ public class RestfulRemoteLogHandler extends RemoteLogHandlerBase {
 
         @Override
         public void onFailure(Method method, Throwable throwable) {
+            // TODO: implementing the behaviour for failing remote logging
         }
 
         @Override
         public void onSuccess(Method method, Void aVoid) {
+            // No action required
         }
     }
 

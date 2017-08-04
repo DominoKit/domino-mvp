@@ -5,8 +5,6 @@ import com.progressoft.brix.domino.api.server.logging.RemoteLogger;
 import com.progressoft.brix.domino.api.server.logging.RemoteLoggingHandler;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.CSRFHandler;
@@ -22,8 +20,6 @@ import java.util.stream.StreamSupport;
 import static java.util.Objects.isNull;
 
 public class RouterConfigurator {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(RouterConfigurator.class);
 
     private static final int DEFAULT_BODY_LIMIT = 50;
     private static final long MB = 1048576L;

@@ -23,7 +23,7 @@ public class DominoRequestDispatcher implements Dispatcher {
         headers.forEach(builder::setHeader);
     }
 
-    void withHeaders(Map<String, String> headers) {
+    public void withHeaders(Map<String, String> headers) {
         this.headers = headers;
     }
 }

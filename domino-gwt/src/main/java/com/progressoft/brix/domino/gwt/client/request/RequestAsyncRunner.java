@@ -29,7 +29,7 @@ class RequestAsyncRunner {
         Defaults.setDateFormat(null);
     }
 
-    final void run(final ClientServerRequest request) {
+    public final void run(final ClientServerRequest request) {
         ClientApp.make().getAsyncRunner().runAsync(new RequestAsyncTask(request));
     }
 

@@ -15,7 +15,7 @@ public class SerializableLogRecordMapper {
     private SerializableLogRecordMapper() {
     }
 
-    static LogRecord asLogRecord(SerializableLogRecord serializableLogRecord) {
+    public static LogRecord asLogRecord(SerializableLogRecord serializableLogRecord) {
         LogRecord logRecord = new LogRecord(Level.parse(serializableLogRecord.level), serializableLogRecord.message);
         logRecord.setLoggerName(serializableLogRecord.loggerName);
         logRecord.setMillis(serializableLogRecord.millis);
