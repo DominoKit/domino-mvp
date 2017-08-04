@@ -36,7 +36,7 @@ public class FieldBuilder {
         return this;
     }
 
-    String write() {
+    public String write() {
         return fieldWriter
                 .append("\n\t")
                 .append(modifiersWriter.toString())

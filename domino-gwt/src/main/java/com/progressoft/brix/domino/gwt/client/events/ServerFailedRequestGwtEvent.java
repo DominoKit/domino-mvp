@@ -6,7 +6,7 @@ import com.progressoft.brix.domino.api.client.events.EventProcessor;
 
 public abstract class ServerFailedRequestGwtEvent extends Event<EventProcessor> {
 
-    static final GwtEvent.Type<EventProcessor> SERVER_FAILED_REQUEST_EVENT_TYPE = new GwtEvent.Type<>();
+    protected static final GwtEvent.Type<EventProcessor> SERVER_FAILED_REQUEST_EVENT_TYPE = new GwtEvent.Type<>();
 
     @Override
     public Type<EventProcessor> getAssociatedType() {

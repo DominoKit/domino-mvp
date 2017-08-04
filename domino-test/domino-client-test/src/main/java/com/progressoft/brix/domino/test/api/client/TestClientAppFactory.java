@@ -11,15 +11,15 @@ import com.progressoft.brix.domino.gwt.client.request.InMemoryRequestsRepository
 
 public class TestClientAppFactory {
 
-    static TestInMemoryPresenterRepository presentersRepository;
-    static InMemoryRequestsRepository requestRepository;
-    static TestInMemoryViewRepository viewsRepository;
-    static TestServerRouter serverRouter;
-    static TestInMemoryContributionsRepository contributionsRepository;
-    static TestDominoHistory history;
-    static TestClientRouter clientRouter;
-    static RequestEventProcessor requestEventProcessor;
-    static TestEventBus eventBus;
+    protected static TestInMemoryPresenterRepository presentersRepository;
+    protected static InMemoryRequestsRepository requestRepository;
+    protected static TestInMemoryViewRepository viewsRepository;
+    protected static TestServerRouter serverRouter;
+    protected static TestInMemoryContributionsRepository contributionsRepository;
+    protected static TestDominoHistory history;
+    protected static TestClientRouter clientRouter;
+    protected static RequestEventProcessor requestEventProcessor;
+    protected static TestEventBus eventBus;
 
     private TestClientAppFactory() {
     }

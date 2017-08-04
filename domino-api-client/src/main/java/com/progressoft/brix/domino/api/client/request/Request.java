@@ -10,7 +10,7 @@ public interface Request {
     }
 
     class ServerResponseRecievedStateContext implements  RequestStateContext{
-        final RequestStateContext nextContext;
+        protected final RequestStateContext nextContext;
 
         public ServerResponseRecievedStateContext(RequestStateContext nextContext) {
             this.nextContext = nextContext;
@@ -28,7 +28,7 @@ public interface Request {
 
     class ServerFailedRequestStateContext implements RequestStateContext{
 
-        final FailedServerResponse response;
+        protected final FailedServerResponse response;
 
         public ServerFailedRequestStateContext(FailedServerResponse response) {
             this.response=response;

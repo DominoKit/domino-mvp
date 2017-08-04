@@ -12,7 +12,7 @@ public class MethodBuilder {
     private final StringBuilder annotationWriter = new StringBuilder();
     private final StringBuilder codeWriter = new StringBuilder();
 
-    MethodBuilder(String name, JavaSourceBuilder javaSourceBuilder) {
+    public MethodBuilder(String name, JavaSourceBuilder javaSourceBuilder) {
         this.methodName = name;
         this.javaSourceBuilder = javaSourceBuilder;
     }
@@ -37,7 +37,7 @@ public class MethodBuilder {
         return this;
     }
 
-    String write() {
+    public String write() {
         return methodWriter
                 .append(annotationWriter.toString())
                 .append("\n\t")
