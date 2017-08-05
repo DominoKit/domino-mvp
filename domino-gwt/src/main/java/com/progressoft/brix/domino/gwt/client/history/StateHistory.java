@@ -5,18 +5,14 @@ import com.progressoft.brix.domino.api.shared.history.AppHistory;
 import com.progressoft.brix.domino.api.shared.history.HistoryToken;
 import com.progressoft.brix.domino.api.shared.history.TokenFilter;
 import com.progressoft.brix.domino.gwt.client.history.History.PopStateEventListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
-import static java.util.Objects.*;
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 public class StateHistory implements AppHistory {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(StateHistory.class);
 
     private Set<HistoryListener> listeners = new HashSet<>();
 
@@ -58,7 +54,7 @@ public class StateHistory implements AppHistory {
 
     @Override
     public void pushState(String token, String title, String data) {
-        if(nonNull(currentToken().value()) && !currentToken().value().equals(token))
+        if (nonNull(currentToken().value()) && !currentToken().value().equals(token))
             Window.getSelf().getHistory().pushState(History.state(token, title, data), title, "/" + token);
     }
 

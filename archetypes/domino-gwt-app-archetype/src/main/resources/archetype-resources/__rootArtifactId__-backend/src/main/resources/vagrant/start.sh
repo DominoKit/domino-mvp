@@ -1,4 +1,5 @@
-# start.bat/sh 172.20.207.160 22 ---> will deploy on remote machine 
+#!/bin/sh
+# start.bat/sh 172.20.207.160 22 ---> will deploy on remote machine
 # start.bat/sh 127.0.0.1 10022 --> will call vagrant destroy , vagrant up , then deploy on local vagrant machine
 # start.bat/sh --> then don't provide any values when prompted --> will call vagrant destroy , vagrant up , then deploy on local vagrant machine
 # start.bat/sh --> then provide 127.0.0.1 and 10022 when prompted --> will call vagrant destroy , vagrant up , then deploy on local vagrant machine

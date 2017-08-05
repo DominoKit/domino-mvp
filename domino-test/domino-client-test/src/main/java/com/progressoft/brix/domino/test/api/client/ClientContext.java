@@ -1,6 +1,5 @@
 package com.progressoft.brix.domino.test.api.client;
 
-import com.progressoft.brix.domino.api.client.request.ClientServerRequest;
 import com.progressoft.brix.domino.api.server.entrypoint.VertxEntryPointContext;
 import io.vertx.core.Vertx;
 

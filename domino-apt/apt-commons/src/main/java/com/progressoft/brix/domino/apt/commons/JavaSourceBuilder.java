@@ -165,12 +165,12 @@ public class JavaSourceBuilder {
         return this;
     }
 
-    JavaSourceBuilder writeMethod(MethodBuilder methodBuilder) {
+    public JavaSourceBuilder writeMethod(MethodBuilder methodBuilder) {
         methodsWriter.append(methodBuilder.write());
         return this;
     }
 
-    JavaSourceBuilder writeField(FieldBuilder fieldBuilder) {
+    public JavaSourceBuilder writeField(FieldBuilder fieldBuilder) {
         fieldsWriter.append(fieldBuilder.write());
         return this;
     }

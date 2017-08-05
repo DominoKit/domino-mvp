@@ -145,7 +145,7 @@ public class ServerApp implements HandlerRegistry, InterceptorsRegistry, Endpoin
     private static final class AttributeHolder<T>{
         private T attribute;
 
-        void hold(T attribute){
+        private void hold(T attribute){
             this.attribute=attribute;
         }
     }
