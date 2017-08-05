@@ -2,8 +2,8 @@
 
 <a title="Gitter" href=""><img src="https://badges.gitter.im/Join%20Chat.svg"></a>
 [![Build Status](https://travis-ci.org/GwtDomino/domino.svg?branch=master)](https://travis-ci.org/GwtDomino/domino)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/5df3ae073cad41bfad99df6537bc17b6)](https://www.codacy.com/app/rafatbaroukii/domino?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=GwtDomino/domino&amp;utm_campaign=Badge_Grade)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.progressoft.brix.domino/domino/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.progressoft.brix.domino/domino)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/bfdb8283919a4adab6cbfeeb3a22e53a)](https://www.codacy.com/app/rafatbaroukii/domino?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=GwtDomino/domino&amp;utm_campaign=Badge_Grade)
 
 Our Domino is a small, simple and a very light framework for building applications using [GWT](http://www.gwtproject.org/) and [Vertx](http://vertx.io/), it introduce the concept of extension points and contributions allowing developers to write a modular application and shared components with any other domino application. The main benefit of using Vertx as a back-end, it gives the ability of choosing either to build one monolithic but yet a modular application, or a large application built as micro-services, moreover allows building the application using TDD approach with practices offering an easy and fast way to debug for both client and service side.
 
