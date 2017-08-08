@@ -32,7 +32,7 @@ public class DominoTestClient
     private static final Logger LOGGER = LoggerFactory.getLogger(DominoTestClient.class);
 
     private ModuleConfiguration[] modules;
-    private Map<String, PresenterReplacement> presentersReplacements = new HashMap<>();
+    private Map<String, Presentable> presentersReplacements = new HashMap<>();
     private Map<String, ViewReplacement> viewsReplacements = new HashMap<>();
     private List<ViewOf> viewsOf = new ArrayList<>();
     private List<ContributionOf> contributionsOf = new ArrayList<>();
@@ -51,8 +51,8 @@ public class DominoTestClient
     }
 
     @Override
-    public CanCustomizeClient replacePresenter(Class<? extends Presentable> original, Presentable presentable, ReplacePresenterHandler handler) {
-        presentersReplacements.put(original.getCanonicalName(), new PresenterReplacement(presentable, handler));
+    public CanCustomizeClient replacePresenter(Class<? extends Presentable> original, Presentable presentable) {
+        presentersReplacements.put(original.getCanonicalName(), presentable);
         return this;
     }
 
@@ -100,11 +100,7 @@ public class DominoTestClient
 
         init(testEntryPointContext);
         Arrays.stream(modules).forEach(this::configureModule);
-        presentersReplacements.forEach((key, value) -> replacePresenter(key,
-                () -> {
-                    value.handler.onReplacePresenter(value.presentable);
-                    return value.presentable;
-                }));
+        presentersReplacements.forEach((key, presentable) -> replacePresenter(key, () -> presentable));
 
         viewsReplacements.forEach((key, value) -> replaceView(key, () -> {
             value.handler.onReplaceView(value.viewable);
@@ -172,17 +168,6 @@ public class DominoTestClient
     @Override
     public VertxEntryPointContext vertxEntryPointContext() {
         return testEntryPointContext;
-    }
-
-    private static class PresenterReplacement {
-        private final Presentable presentable;
-        private final ReplacePresenterHandler handler;
-
-        private PresenterReplacement(Presentable presentable,
-                                     ReplacePresenterHandler handler) {
-            this.presentable = presentable;
-            this.handler = handler;
-        }
     }
 
     private static class ViewReplacement {
