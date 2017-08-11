@@ -15,9 +15,9 @@ public class JksServerConfigurator implements HttpServerConfigurator {
     private static final String SSL_CONFIGURATION_KEY = "ssl.enabled";
     private static final String SSL_JKS_PATH = "ssl.jks.path";
     private static final String SSL_JKS_SECRET = "ssl.jks.password";
-    public static final String DEFAULT_EMPTY = "";
+    private static final String DEFAULT_EMPTY = "";
     private static final String HTTPS_PORT = "https.port";
-    public static final int DEFAULT_HTTPS_PORT = 443;
+    private static final int DEFAULT_HTTPS_PORT = 443;
 
     @Override
     public void configureHttpServer(VertxContext context, HttpServerOptions options) {
