@@ -3,10 +3,13 @@ package com.progressoft.brix.domino.test.api;
 import com.progressoft.brix.domino.api.server.DominoLoader;
 import com.progressoft.brix.domino.api.server.RouterConfigurator;
 import io.vertx.core.Vertx;
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.TestContext;
 import io.vertx.ext.web.Router;
+import io.vertx.ext.web.client.HttpRequest;
+import io.vertx.ext.web.client.WebClient;
 
 import static java.util.Objects.nonNull;
 
@@ -17,9 +20,11 @@ public class DominoTestServer {
     private Vertx vertx;
     private AfterLoadHandler afterHandler;
     private BeforeLoadHandler beforeHandler;
+    private WebClient webClient;
 
     private DominoTestServer(Vertx vertx) {
         this.vertx = vertx;
+        webClient = WebClient.create(vertx);
     }
 
     public void start(TestContext context) {
@@ -37,7 +42,7 @@ public class DominoTestServer {
 
     private void afterLoad(HttpServer server) {
         if (nonNull(afterHandler))
-            afterHandler.handle(new DominoTestContext(router, config), server.actualPort());
+            afterHandler.handle(new DominoTestContext(router, config), new HttpServerContext(server.actualPort(), webClient));
     }
 
     public DominoTestServer onAfterLoad(AfterLoadHandler afterHandler) {
@@ -61,7 +66,7 @@ public class DominoTestServer {
 
     @FunctionalInterface
     public interface AfterLoadHandler {
-        void handle(DominoTestContext context, int actualPort);
+        void handle(DominoTestContext context, HttpServerContext serverContext);
     }
 
     public final static class DominoTestContext {
@@ -79,6 +84,24 @@ public class DominoTestServer {
 
         public JsonObject getConfig() {
             return config;
+        }
+    }
+
+    public final static class HttpServerContext {
+        private final int actualPort;
+        private final WebClient webClient;
+
+        public HttpServerContext(int actualPort, WebClient webClient) {
+            this.actualPort = actualPort;
+            this.webClient = webClient;
+        }
+
+        public int getActualPort() {
+            return actualPort;
+        }
+
+        public HttpRequest<Buffer> makeRequest(String path) {
+            return webClient.post(actualPort, "localhost", "/service/" + path);
         }
     }
 }
