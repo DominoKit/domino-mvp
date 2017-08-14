@@ -24,7 +24,7 @@ public class RequestTestClient<R extends ServerRequest, S extends ServerResponse
     }
 
     public void executeRequest(R request, ResponseHandler<S> handler) {
-        webClient.post(actualPort, "localhost", "/static/" + path).sendJson(request, context.asyncAssertSuccess(response -> {
+        webClient.post(actualPort, "localhost", "/service/" + path).sendJson(request, context.asyncAssertSuccess(response -> {
             handler.onResponseReceived(Json.decodeValue(response.body(), responseClass));
         }));
     }
