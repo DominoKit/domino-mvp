@@ -12,14 +12,17 @@ public class HandlerImplementingRequestHandlerInterfaceEndpointHandler implement
 
     @Override
     public void handle(RoutingContext routingContext) {
-        ServerApp serverApp=ServerApp.make();
-        ServerRequest requestBody = Json.decodeValue(routingContext.getBodyAsString(), ServerRequest.class);
-        serverApp.executeCallbackRequest(requestBody, new VertxEntryPointContext(routingContext, serverApp.serverContext().config(),
-                routingContext.vertx()), response -> {
-                    routingContext.response()
-                            .putHeader("content-type", "application/json")
-                            .end(Json.encode(response));
-                });
-
+        try {
+            ServerApp serverApp = ServerApp.make();
+            ServerRequest requestBody = Json.decodeValue(routingContext.getBodyAsString(), ServerRequest.class);
+            serverApp.executeCallbackRequest(requestBody, new VertxEntryPointContext(routingContext, serverApp.serverContext().config(),
+                    routingContext.vertx()), response -> {
+                routingContext.response()
+                        .putHeader("content-type", "application/json")
+                        .end(Json.encode(response));
+            });
+        } catch (Exception e){
+            routingContext.fail(e);
+        }
     }
 }

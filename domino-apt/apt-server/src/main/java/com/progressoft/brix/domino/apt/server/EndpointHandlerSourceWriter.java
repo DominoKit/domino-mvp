@@ -1,10 +1,10 @@
 package com.progressoft.brix.domino.apt.server;
 
 
-import com.progressoft.brix.domino.api.server.handler.CallbackRequestHandler;
-import com.progressoft.brix.domino.api.server.handler.RequestHandler;
 import com.progressoft.brix.domino.api.server.ServerApp;
 import com.progressoft.brix.domino.api.server.entrypoint.VertxEntryPointContext;
+import com.progressoft.brix.domino.api.server.handler.CallbackRequestHandler;
+import com.progressoft.brix.domino.api.server.handler.RequestHandler;
 import com.progressoft.brix.domino.apt.commons.*;
 import io.vertx.core.Handler;
 import io.vertx.core.json.Json;
@@ -66,6 +66,7 @@ public class EndpointHandlerSourceWriter extends JavaSourceWriter {
                 .withModifier(new ModifierBuilder().asPublic())
                 .returns("void")
                 .takes("RoutingContext", "routingContext")
+                .block("try {")
                 .block("ServerApp serverApp = ServerApp.make();")
                 .block(request.asSimpleName() + " requestBody = Json.decodeValue(routingContext.getBodyAsString(), " +
                         request.asSimpleName() + ".class);");
@@ -81,6 +82,9 @@ public class EndpointHandlerSourceWriter extends JavaSourceWriter {
                 .block("routingContext.response()\n" +
                         "                .putHeader(\"content-type\", \"application/json\")\n" +
                         "                .end(Json.encode(response));")
+                .block("} catch(Exception e) {")
+                .block("\troutingContext.fail(e);")
+                .block("}")
                 .end();
     }
 
@@ -88,8 +92,11 @@ public class EndpointHandlerSourceWriter extends JavaSourceWriter {
         methodBuilder.block("serverApp.executeCallbackRequest(requestBody, new VertxEntryPointContext(routingContext, serverApp.serverContext().config(), routingContext.vertx()), response -> {", false)
                 .block("routingContext.response()\n" +
                         "                .putHeader(\"content-type\", \"application/json\")\n" +
-                        "                .end(Json.encode(("+response.asSimpleName()+")response));")
+                        "                .end(Json.encode((" + response.asSimpleName() + ")response));")
                 .block("});")
+                .block("} catch(Exception e) {")
+                .block("\troutingContext.fail(e);")
+                .block("}")
                 .end();
     }
 }
