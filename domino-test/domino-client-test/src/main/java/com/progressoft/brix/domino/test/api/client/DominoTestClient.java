@@ -33,7 +33,7 @@ public class DominoTestClient
 
     private ModuleConfiguration[] modules;
     private Map<String, Presentable> presentersReplacements = new HashMap<>();
-    private Map<String, ViewReplacement> viewsReplacements = new HashMap<>();
+    private Map<String, View> viewsReplacements = new HashMap<>();
     private List<ViewOf> viewsOf = new ArrayList<>();
     private List<ContributionOf> contributionsOf = new ArrayList<>();
 
@@ -57,8 +57,8 @@ public class DominoTestClient
     }
 
     @Override
-    public CanCustomizeClient replaceView(Class<? extends Presentable> presenter, View view, ReplaceViewHandler handler) {
-        viewsReplacements.put(presenter.getCanonicalName(), new ViewReplacement(view, handler));
+    public CanCustomizeClient replaceView(Class<? extends Presentable> presenter, View view) {
+        viewsReplacements.put(presenter.getCanonicalName(), view);
         return this;
     }
 
@@ -102,10 +102,7 @@ public class DominoTestClient
         Arrays.stream(modules).forEach(this::configureModule);
         presentersReplacements.forEach((key, presentable) -> replacePresenter(key, () -> presentable));
 
-        viewsReplacements.forEach((key, value) -> replaceView(key, () -> {
-            value.handler.onReplaceView(value.viewable);
-            return value.viewable;
-        }));
+        viewsReplacements.forEach((key, value) -> replaceView(key, () -> value));
 
         viewsOf.forEach(v -> v.handler.handle(getView(v.presenterName)));
         contributionsOf.forEach(c -> c.handler.handle(getContribution(c.contributionName)));
@@ -168,17 +165,6 @@ public class DominoTestClient
     @Override
     public VertxEntryPointContext vertxEntryPointContext() {
         return testEntryPointContext;
-    }
-
-    private static class ViewReplacement {
-        private final View viewable;
-        private final ReplaceViewHandler handler;
-
-        private ViewReplacement(View presentable,
-                                ReplaceViewHandler handler) {
-            this.viewable = presentable;
-            this.handler = handler;
-        }
     }
 
     private static class ViewOf {
