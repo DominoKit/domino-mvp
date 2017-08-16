@@ -28,9 +28,9 @@ public class ${module}ClientModuleTest{
 
     @Before
     public void setUp() {
+        presenterSpy = new ${module}PresenterSpy();
         DominoTestClient.useModules(new ${module}ModuleConfiguration(), new ${module}UIModuleConfiguration())
-                .replacePresenter(${module}Presenter.class, new ${module}PresenterSpy(), presentable -> presenterSpy=
-                    (${module}PresenterSpy) presentable)
+                .replacePresenter(${module}Presenter.class, new ${module}PresenterSpy())
                 .replaceView(${module}Presenter.class, new ${module}ViewSpy(), view -> viewSpy= (${module}ViewSpy) view)
                 .start();
     }
@@ -39,5 +39,4 @@ public class ${module}ClientModuleTest{
     public void nothing() throws Exception {
 
     }
-
 }

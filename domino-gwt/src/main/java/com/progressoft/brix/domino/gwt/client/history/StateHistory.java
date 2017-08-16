@@ -4,7 +4,9 @@ import com.progressoft.brix.domino.api.client.ClientApp;
 import com.progressoft.brix.domino.api.shared.history.AppHistory;
 import com.progressoft.brix.domino.api.shared.history.HistoryToken;
 import com.progressoft.brix.domino.api.shared.history.TokenFilter;
-import com.progressoft.brix.domino.gwt.client.history.History.PopStateEventListener;
+import elemental2.dom.DomGlobal;
+import elemental2.dom.PopStateEvent;
+import jsinterop.base.Js;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,14 +17,15 @@ import static java.util.Objects.nonNull;
 public class StateHistory implements AppHistory {
 
     private Set<HistoryListener> listeners = new HashSet<>();
+    private final History history = Js.cast(DomGlobal.self.history);
 
     public StateHistory() {
-        PopStateEventListener listener =
-                event -> {
-                    if (nonNull(event.getState()))
-                        inform(event.getState().historyToken, event.getState().title, event.getState().data);
-                };
-        Window.getSelf().addEventListener("popstate", listener::onPopState);
+        DomGlobal.self.addEventListener("popstate", event -> {
+            PopStateEvent popStateEvent=Js.cast(event);
+            JsState state=Js.cast(popStateEvent.state);
+            if (nonNull(state))
+                inform(state.historyToken, state.title, state.data);
+        });
     }
 
     private void inform(String token, String title, String stateJson) {
@@ -44,24 +47,24 @@ public class StateHistory implements AppHistory {
 
     @Override
     public void back() {
-        Window.getSelf().getHistory().back();
+        history.back();
     }
 
     @Override
     public void forward() {
-        Window.getSelf().getHistory().forward();
+        history.forward();
     }
 
     @Override
     public void pushState(String token, String title, String data) {
         if (nonNull(currentToken().value()) && !currentToken().value().equals(token))
-            Window.getSelf().getHistory().pushState(History.state(token, title, data), title, "/" + token);
+            history.pushState(JsState.state(token, title, data), title, "/" + token);
     }
 
     @Override
     public void replaceState(String token, String title, String data) {
-        Window.getSelf().getHistory().replaceState(
-                History.state(token, data), title, "/" + token);
+        history.replaceState(
+                JsState.state(token, data), title, "/" + token);
     }
 
     @Override
@@ -79,24 +82,25 @@ public class StateHistory implements AppHistory {
         inform(token, windowTitle(), state);
     }
 
-    private History.State windowState() {
-        return Window.getSelf().getHistory().getState();
+    private State windowState() {
+        return (State) DomGlobal.self.history.state;
     }
 
     private String windowTitle() {
-        return Window.getSelf().getDocument().getTitle();
+        return DomGlobal.document.title;
     }
 
     private String windowToken() {
-        return Window.getSelf().getLocation().getPathname().substring(1) + Window.getSelf().getLocation().getSearch();
+       Location location= Js.cast(DomGlobal.location);
+        return location.getPathname().substring(1) + location.getSearch();
     }
 
     private State currentState() {
         return new DominoHistoryState(windowToken(), windowTitle(), stateData(windowState()));
     }
 
-    private String stateData(History.State state) {
-        return isNull(state) ? "" : state.data;
+    private String stateData(State state) {
+        return isNull(state) ? "" : state.data();
     }
 
     private class HistoryListener {

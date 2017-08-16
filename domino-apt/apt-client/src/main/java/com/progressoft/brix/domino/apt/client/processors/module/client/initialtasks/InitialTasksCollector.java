@@ -1,6 +1,6 @@
 package com.progressoft.brix.domino.apt.client.processors.module.client.initialtasks;
 
-import com.progressoft.brix.domino.api.client.InitializeTask;
+import com.progressoft.brix.domino.api.client.ClientStartupTask;
 import com.progressoft.brix.domino.api.client.annotations.InitialTask;
 import com.progressoft.brix.domino.apt.commons.BaseProcessor;
 
@@ -23,7 +23,7 @@ public class InitialTasksCollector {
         roundEnv.getElementsAnnotatedWith(InitialTask.class).stream()
                 .map(elementFactory::make)
                 .filter(e -> e.validateElementKind(ElementKind.CLASS))
-                .filter(i -> i.isImplementsInterface(InitializeTask.class))
+                .filter(i -> i.isImplementsInterface(ClientStartupTask.class))
                 .collect(Collectors.toSet())
                 .forEach(i -> initialTasks.add(i.fullQualifiedNoneGenericName()));
     }

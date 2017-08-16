@@ -27,6 +27,7 @@ public class ${module}ClientModuleTest{
 
     @Before
     public void setUp() {
+        presenterSpy = new ${module}PresenterSpy();
         DominoTestClient.useModules(new ${module}ModuleConfiguration(), new ${module}UIModuleConfiguration())
                 .replacePresenter(${module}Presenter.class, new ${module}PresenterSpy(), presentable -> presenterSpy=
                     (${module}PresenterSpy) presentable)

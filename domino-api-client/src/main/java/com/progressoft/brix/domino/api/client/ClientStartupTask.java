@@ -1,6 +1,6 @@
 package com.progressoft.brix.domino.api.client;
 
 @FunctionalInterface
-public interface InitializeTask {
+public interface ClientStartupTask {
     void execute();
 }

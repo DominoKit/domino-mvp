@@ -6,7 +6,7 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 
-public class StateHistoryTokenTest {
+public class JsStateHistoryTokenTest {
 
     private StateHistoryToken make(String token) {
         return new StateHistoryToken(token);

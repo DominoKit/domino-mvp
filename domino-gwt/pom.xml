@@ -130,6 +130,18 @@
             <artifactId>domino-api-server</artifactId>
             <version>1.0-rc.2-SNAPSHOT</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.elemental2/elemental2-core -->
+        <dependency>
+            <groupId>com.google.elemental2</groupId>
+            <artifactId>elemental2-core</artifactId>
+            <version>1.0.0-beta-1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.elemental2</groupId>
+            <artifactId>elemental2-dom</artifactId>
+            <version>1.0.0-beta-1</version>
+        </dependency>
         <dependency>
             <groupId>org.fusesource.restygwt</groupId>
             <artifactId>restygwt</artifactId>

@@ -30,9 +30,9 @@ public class ${module}ClientModuleTest{
 
     @Before
     public void setUp() {
+        presenterSpy = new ${module}PresenterSpy();
         DominoTestClient.useModules(new ${module}ModuleConfiguration(), new Test${module}ModuleConfiguration())
-                .replacePresenter(${module}Presenter.class, new ${module}PresenterSpy(), presentable -> presenterSpy=
-                    (${module}PresenterSpy) presentable)
+                .replacePresenter(${module}Presenter.class, new ${module}PresenterSpy())
                 .viewOf(${module}Presenter.class, view -> fakeView= (Fake${module}View) view)
                 .start();
     }

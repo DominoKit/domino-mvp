@@ -2,7 +2,6 @@ package com.progressoft.brix.domino.api.client;
 
 import com.progressoft.brix.domino.api.client.async.AsyncRunner;
 import com.progressoft.brix.domino.api.client.events.EventsBus;
-import com.progressoft.brix.domino.api.client.extension.Contributions;
 import com.progressoft.brix.domino.api.client.extension.ContributionsRegistry;
 import com.progressoft.brix.domino.api.client.extension.ContributionsRepository;
 import com.progressoft.brix.domino.api.client.mvp.PresenterRegistry;
@@ -38,7 +37,7 @@ public class ClientApp
             new AttributeHolder<>();
     private static final AttributeHolder<MainExtensionPoint> MAIN_EXTENSION_POINT_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<AppHistory> HISTORY_HOLDER = new AttributeHolder<>();
-    private static final AttributeHolder<List<InitializeTask>> INITIAL_TASKS_HOLDER = new AttributeHolder<>();
+    private static final AttributeHolder<List<ClientStartupTask>> INITIAL_TASKS_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<AsyncRunner> ASYNC_RUNNER = new AttributeHolder<>();
 
     private ClientApp() {
@@ -70,7 +69,7 @@ public class ClientApp
     }
 
     @Override
-    public void registerInitialTask(InitializeTask task) {
+    public void registerInitialTask(ClientStartupTask task) {
         INITIAL_TASKS_HOLDER.attribute.add(task);
     }
 
@@ -125,14 +124,15 @@ public class ClientApp
 
 
     public void run() {
-        INITIAL_TASKS_HOLDER.attribute.forEach(InitializeTask::execute);
-        Contributions.apply(MainExtensionPoint.class, MAIN_EXTENSION_POINT_HOLDER.attribute);
+        INITIAL_TASKS_HOLDER.attribute.forEach(ClientStartupTask::execute);
+        applyContributions(MainExtensionPoint.class, MAIN_EXTENSION_POINT_HOLDER.attribute);
     }
 
     public void applyContributions(Class<? extends ExtensionPoint> extensionPointInterface,
                                    ExtensionPoint extensionPoint) {
         CONTRIBUTIONS_REPOSITORY_HOLDER.attribute.findExtensionPointContributions(extensionPointInterface)
-                .forEach(c -> c.contribute(extensionPoint));
+                .forEach(c ->
+                getAsyncRunner().runAsync(() -> c.contribute(extensionPoint)));
     }
 
     @FunctionalInterface
