@@ -101,6 +101,10 @@ public class DominoTestServer {
         }
 
         public HttpRequest<Buffer> makeRequest(String path) {
+            return webClient.post(actualPort, "localhost", "/" + path);
+        }
+
+        public HttpRequest<Buffer> makeServiceRequest(String path) {
             return webClient.post(actualPort, "localhost", "/service/" + path);
         }
     }
