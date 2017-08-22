@@ -1,5 +1,6 @@
 package com.progressoft.brix.domino.apt.server.callbackHandler;
 
+import com.progressoft.brix.domino.api.server.handler.CallbackRequestHandler;
 import io.vertx.core.Handler;
 import io.vertx.core.json.Json;
 import io.vertx.ext.web.RoutingContext;
@@ -12,14 +13,23 @@ public class HandlerImplementingRequestHandlerInterfaceEndpointHandler implement
 
     @Override
     public void handle(RoutingContext routingContext) {
-        ServerApp serverApp=ServerApp.make();
+        ServerApp serverApp = ServerApp.make();
         ServerRequest requestBody = Json.decodeValue(routingContext.getBodyAsString(), ServerRequest.class);
         serverApp.executeCallbackRequest(requestBody, new VertxEntryPointContext(routingContext, serverApp.serverContext().config(),
-                routingContext.vertx()), response -> {
-                    routingContext.response()
-                            .putHeader("content-type", "application/json")
-                            .end(Json.encode((ServerResponse)response));
-                });
+                routingContext.vertx()), new CallbackRequestHandler.ResponseCallback() {
+            @Override
+            public void complete(Object response) {
+                routingContext.response()
+                        .putHeader("content-type", "application/json")
+                        .end(Json.encode((ServerResponse) response));
+            }
+
+            @Override
+            public void redirect(String location) {
+
+            }
+
+        });
 
     }
 }

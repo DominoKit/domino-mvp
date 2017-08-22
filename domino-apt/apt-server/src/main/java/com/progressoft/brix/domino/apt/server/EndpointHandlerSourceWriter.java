@@ -51,7 +51,10 @@ public class EndpointHandlerSourceWriter extends JavaSourceWriter {
 
         writeBody();
 
-        return sourceBuilder.build();
+        String result=sourceBuilder.build();
+        System.out.println(result);
+
+        return result;
     }
 
 
@@ -89,10 +92,17 @@ public class EndpointHandlerSourceWriter extends JavaSourceWriter {
     }
 
     private void completeHandlerCallback(MethodBuilder methodBuilder) {
-        methodBuilder.block("serverApp.executeCallbackRequest(requestBody, new VertxEntryPointContext(routingContext, serverApp.serverContext().config(), routingContext.vertx()), response -> {", false)
-                .block("routingContext.response()\n" +
+       sourceBuilder.imports(CallbackRequestHandler.class.getCanonicalName());
+        methodBuilder.block("serverApp.executeCallbackRequest(requestBody, new VertxEntryPointContext(routingContext, serverApp.serverContext().config(), routingContext.vertx()), new CallbackRequestHandler.ResponseCallback() {", false)
+                .block("@Override\n" +
+                        "public void complete(Object response) {\n")
+                .block("\troutingContext.response()\n" +
                         "                .putHeader(\"content-type\", \"application/json\")\n" +
                         "                .end(Json.encode((" + response.asSimpleName() + ")response));")
+                .block("}")
+                .block("@Override\n" +
+                        "public void redirect(String location) {\n" +
+                        "}")
                 .block("});")
                 .block("} catch(Exception e) {")
                 .block("\troutingContext.fail(e);")
