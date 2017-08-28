@@ -157,7 +157,18 @@ public class ClientClientModuleAnnotationProcessorTest {
                 BASE_PACKAGE + "AnnotatedClassWithHandlerPath.java")
                 .withProcessor(new HandlerPathProcessor())
                 .compilesWithoutErrors();
+    }
 
+    @Test
+    public void givenClassAnnotatedWithHandlerPath_whenProcess_shouldGenerateSenderWithServiceRootEntry()
+            throws Exception {
+        assertProcessing(BASE_PACKAGE + "PresenterInterface.java",
+                BASE_PACKAGE + "SomeRequest.java",
+                BASE_PACKAGE + "SomeResponse.java",
+                BASE_PACKAGE + "AnnotatedClassWithHandlerPathWithServiceRoot.java")
+                .withProcessor(new HandlerPathProcessor())
+                .generates(getExpectedResultFileContent(
+                        "AnnotatedClassWithHandlerPathWithServiceRootSender.java"));
     }
 
     @Test

@@ -28,10 +28,10 @@ public class ${module}ClientModuleTest{
     @Before
     public void setUp() {
         presenterSpy = new ${module}PresenterSpy();
+        viewSpy = new ${module}ViewSpy();
         DominoTestClient.useModules(new ${module}ModuleConfiguration(), new ${module}UIModuleConfiguration())
-                .replacePresenter(${module}Presenter.class, new ${module}PresenterSpy(), presentable -> presenterSpy=
-                    (${module}PresenterSpy) presentable)
-                .replaceView(${module}Presenter.class, new ${module}ViewSpy(), view -> viewSpy= (${module}ViewSpy) view)
+                .replacePresenter(${module}Presenter.class, presenterSpy)
+                .replaceView(${module}Presenter.class, viewSpy)
                 .start();
     }
 

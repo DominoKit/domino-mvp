@@ -12,6 +12,7 @@ import com.progressoft.brix.domino.gwt.client.extensions.InMemoryContributionRep
 import com.progressoft.brix.domino.gwt.client.history.StateHistory;
 import com.progressoft.brix.domino.gwt.client.mvp.presenter.InMemoryPresentersRepository;
 import com.progressoft.brix.domino.gwt.client.mvp.view.InMemoryViewRepository;
+import com.progressoft.brix.domino.gwt.client.options.RestyGwtOptions;
 import com.progressoft.brix.domino.gwt.client.request.ClientRouter;
 import com.progressoft.brix.domino.gwt.client.request.InMemoryRequestRestSendersRepository;
 import com.progressoft.brix.domino.gwt.client.request.InMemoryRequestsRepository;
@@ -44,6 +45,7 @@ public class CoreModule {
                 .history(new StateHistory())
                 .asyncRunner(new GwtAsyncRunner())
                 .mainExtensionPoint(new CoreMainExtensionPoint())
+                .dominoOptions(new RestyGwtOptions())
                 .build();
     }
 }

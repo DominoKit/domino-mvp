@@ -12,9 +12,6 @@ import org.fusesource.restygwt.client.Defaults;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.google.gwt.core.client.GWT.getModuleBaseURL;
-import static com.google.gwt.core.client.GWT.getModuleName;
-
 class RequestAsyncRunner {
     private static final Logger LOGGER = LoggerFactory.getLogger(RequestAsyncRunner.class);
     private final ServerRequestEventFactory requestEventFactory;
@@ -22,11 +19,7 @@ class RequestAsyncRunner {
 
     RequestAsyncRunner(ServerRequestEventFactory requestEventFactory) {
         this.requestEventFactory = requestEventFactory;
-
-        Defaults.setServiceRoot(getModuleBaseURL()
-                .replace("static/" + getModuleName() + "/", "") + "service");
         Defaults.setDispatcher(dispatcher);
-        Defaults.setDateFormat(null);
     }
 
     public final void run(final ClientServerRequest request) {

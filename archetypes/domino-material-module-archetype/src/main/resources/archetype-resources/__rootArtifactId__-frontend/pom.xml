@@ -64,12 +64,6 @@
             <version>${version}</version>
             <classifier>sources</classifier>
         </dependency>
-        <dependency>
-            <groupId>${groupId}</groupId>
-            <artifactId>${rootArtifactId}-backend</artifactId>
-            <version>${version}</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>

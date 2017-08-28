@@ -15,4 +15,6 @@ public @interface RequestSender {
 
     @NotNull
     Class<? extends ClientServerRequest> value();
+
+    boolean customServiceRoot() default false;
 }

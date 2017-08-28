@@ -31,7 +31,7 @@ public class SendersCollector {
                 .collect(Collectors.toSet())
                 .forEach(
                         s -> senders.add(s.fullQualifiedNoneGenericName() + ":" +
-                                getSenderRequest(s.asTypeElement())));
+                                getSenderRequest(s.asTypeElement())+":"+s.getAnnotation(RequestSender.class).customServiceRoot()));
     }
 
     private Element getSenderRequest(Element e) {

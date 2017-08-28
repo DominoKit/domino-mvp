@@ -1,25 +1,61 @@
 package com.progressoft.brix.domino.apt.client.processors.handlers;
 
 
-import com.progressoft.brix.domino.api.client.annotations.HandlerPath;
+import com.progressoft.brix.domino.api.client.annotations.Path;
 import com.progressoft.brix.domino.api.client.annotations.RequestSender;
 import com.progressoft.brix.domino.api.client.request.RequestRestSender;
 import com.progressoft.brix.domino.api.client.request.ServerRequestCallBack;
 import com.progressoft.brix.domino.apt.commons.*;
+
+import javax.ws.rs.HttpMethod;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RequestSenderSourceWriter extends JavaSourceWriter {
 
     private final JavaSourceBuilder sourceBuilder;
     private final FullClassName request;
     private final FullClassName response;
+    private final String serviceRoot;
+    private final String method;
+    private final List<String> pathParams = new ArrayList<>();
+    private final String path;
+
+    private static final Map<String, String> consumes=new HashMap<>();
+
+    static {
+        consumes.put(HttpMethod.GET, "");
+        consumes.put(HttpMethod.HEAD, "");
+        consumes.put(HttpMethod.DELETE, "");
+        consumes.put(HttpMethod.OPTIONS, "");
+
+        consumes.put(HttpMethod.POST, "        @Consumes(MediaType.APPLICATION_JSON)\n");
+        consumes.put(HttpMethod.PUT, "        @Consumes(MediaType.APPLICATION_JSON)\n");
+        consumes.put("PATCH", "        @Consumes(MediaType.APPLICATION_JSON)\n");
+    }
 
 
     public RequestSenderSourceWriter(ProcessorElement processorElement, FullClassName request, FullClassName response) {
         super(processorElement);
         this.request = request;
         this.response = response;
+        this.path = processorElement.getAnnotation(Path.class).value();
+        this.serviceRoot = processorElement.getAnnotation(Path.class).serviceRoot();
+        this.method = processorElement.getAnnotation(Path.class).method();
 
+        getPathParams(path);
         this.sourceBuilder = new JavaSourceBuilder(processorElement.simpleName() + "Sender");
+    }
+
+    private void getPathParams(String path) {
+        Matcher pathParamMatcher= Pattern.compile("\\{(.*?)\\}").matcher(path);
+        while(pathParamMatcher.find()){
+            pathParams.add(pathParamMatcher.group().replace("{","").replace("}",""));
+        }
     }
 
     @Override
@@ -32,15 +68,15 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
                 .imports(request.asImport())
                 .imports(response.asImport())
                 .imports(RequestSender.class.getCanonicalName())
-                .imports("org.fusesource.restygwt.client.Method")
-                .imports("org.fusesource.restygwt.client.MethodCallback")
-                .imports("org.fusesource.restygwt.client.RestService")
                 .imports("javax.ws.rs.Consumes")
-                .imports("javax.ws.rs.POST")
+                .imports("javax.ws.rs." + method)
+                .imports("javax.ws.rs.PathParam")
                 .imports("javax.ws.rs.Path")
                 .imports("javax.ws.rs.Produces")
                 .imports("javax.ws.rs.core.MediaType")
-                .annotate("@RequestSender(" + processorElement.simpleName() + ".class)")
+                .imports("static java.util.Objects.*")
+                .imports("org.fusesource.restygwt.client.*")
+                .annotate("@RequestSender(value = " + processorElement.simpleName() + ".class"+(hasServiceRoot()?", customServiceRoot=true":"")+")")
                 .withModifiers(new ModifierBuilder().asPublic())
                 .implement(RequestRestSender.class.getCanonicalName() + "<" + request.asSimpleName() + ">");
 
@@ -49,15 +85,39 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
     }
 
     private void writeBody() {
+
+        if (hasServiceRoot()) {
+            sourceBuilder.codeBlock("\n\tpublic static final String SERVICE_ROOT_KEY=\"" +
+                    processorElement.fullQualifiedNoneGenericName() + "\";");
+
+            sourceBuilder.codeBlock("\n\tpublic static final String SERVICE_ROOT=\"" +
+                    serviceRoot + "\";");
+        }
+
+
         sourceBuilder
                 .codeBlock("\n\tpublic interface " + processorElement.simpleName() + "Service extends RestService {\n" +
-                        "        @POST\n" +
-                        "        @Path(\"" + processorElement.getAnnotation(HandlerPath.class).value() + "\")\n" +
+                        "        @" + method + "\n" +
+                        "        @Path(\"" + processorElement.getAnnotation(Path.class).value() + "\")\n" +
                         "        @Produces(MediaType.APPLICATION_JSON)\n" +
-                        "        @Consumes(MediaType.APPLICATION_JSON)\n" +
-                        "        void send(" + request.asSimpleName() + " request, MethodCallback<" +
-                        response.asSimpleName() + "> callback);\n" +
-                        "    }\n");
+                        consumes.get(method));
+
+        if (hasServiceRoot()) {
+            sourceBuilder.codeBlock("        @Options(serviceRootKey = SERVICE_ROOT_KEY)\n");
+        }
+
+        if(pathParams.isEmpty()) {
+            sourceBuilder.codeBlock(
+                    "        void send("+request.asSimpleName() + " request, MethodCallback<" +
+                            response.asSimpleName() + "> callback);\n" +
+                            "    }\n");
+        }else {
+            sourceBuilder.codeBlock(
+                    "        void send("+allPathParameters()+" MethodCallback<" +
+                            response.asSimpleName() + "> callback);\n" +
+                            "    }\n");
+        }
+
 
         this.sourceBuilder.field("service")
                 .withModifier(new ModifierBuilder().asPrivate())
@@ -65,25 +125,55 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
                 .initializedWith("GWT.create(" + processorElement.simpleName() + "Service.class)")
                 .end();
 
-        this.sourceBuilder.method("send")
+
+        final MethodBuilder sendMethod = this.sourceBuilder.method("send")
                 .annotate("@Override")
                 .withModifier(new ModifierBuilder().asPublic())
                 .returnsVoid()
                 .takes(request.asSimpleName(), "request")
-                .takes("ServerRequestCallBack", "callBack")
+                .takes("ServerRequestCallBack", "callBack");
 
-                .block("service.send(request, new MethodCallback<" + response.asSimpleName() + ">() {" +
-                        "\n\t@Override" +
-                        "\n\tpublic void onFailure(Method method, Throwable throwable) {" +
-                        "\n\t\tcallBack.onFailure(throwable);" +
-                        "\n\t}" +
-                        "\n" +
-                        "\n\t@Override" +
-                        "\n\tpublic void onSuccess(Method method, " + response.asSimpleName() + " response) {\n" +
-                        "\n\t\tcallBack.onSuccess(response);" +
-                        "\n\t}" +
-                        "\n});")
+
+
+        String params="request, ";
+        if(!pathParams.isEmpty())
+            params= passedParams();
+
+        if(hasServiceRoot())
+            sendMethod.block("\t((RestServiceProxy)service).setResource(new Resource(SERVICE_ROOT));\n");
+        sendMethod.block("\tservice.send("+params+"new MethodCallback<" + response.asSimpleName() + ">() {" +
+                "\n\t\t@Override" +
+                "\n\t\tpublic void onFailure(Method method, Throwable throwable) {" +
+                "\n\t\t\tcallBack.onFailure(throwable);" +
+                "\n\t\t}" +
+                "\n" +
+                "\n\t\t@Override" +
+                "\n\t\tpublic void onSuccess(Method method, " + response.asSimpleName() + " response) {\n" +
+                "\n\t\t\tcallBack.onSuccess(response);" +
+                "\n\t\t}" +
+                "\n\t});")
                 .end();
+    }
+
+    private String allPathParameters() {
+        StringBuilder sb=new StringBuilder();
+        pathParams.forEach(p-> sb.append(pathParameter(p)));
+        return sb.toString();
+    }
+
+    private String passedParams(){
+        StringBuilder sb=new StringBuilder();
+        pathParams.forEach(p-> sb.append("request, "));
+        return sb.toString();
+    }
+
+    private String pathParameter(String name) {
+
+        return "@PathParam(\""+name+"\") @Attribute(\""+name+"\") "+request.asSimpleName()+" "+name+", ";
+    }
+
+    private boolean hasServiceRoot() {
+        return !serviceRoot.trim().isEmpty();
     }
 
 

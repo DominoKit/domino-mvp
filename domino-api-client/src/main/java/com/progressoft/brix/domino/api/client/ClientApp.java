@@ -38,7 +38,8 @@ public class ClientApp
     private static final AttributeHolder<MainExtensionPoint> MAIN_EXTENSION_POINT_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<AppHistory> HISTORY_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<List<ClientStartupTask>> INITIAL_TASKS_HOLDER = new AttributeHolder<>();
-    private static final AttributeHolder<AsyncRunner> ASYNC_RUNNER = new AttributeHolder<>();
+    private static final AttributeHolder<AsyncRunner> ASYNC_RUNNER_HOLDER = new AttributeHolder<>();
+    private static final AttributeHolder<DominoOptions> DOMINO_OPTIONS_HOLDER = new AttributeHolder<>();
 
     private ClientApp() {
     }
@@ -106,11 +107,15 @@ public class ClientApp
     }
 
     public AsyncRunner getAsyncRunner() {
-        return ASYNC_RUNNER.attribute;
+        return ASYNC_RUNNER_HOLDER.attribute;
     }
 
     public DominoHistory getHistory() {
         return HISTORY_HOLDER.attribute;
+    }
+
+    public DominoOptions dominoOptions(){
+        return DOMINO_OPTIONS_HOLDER.attribute;
     }
 
     public void configureModule(ModuleConfiguration configuration) {
@@ -124,6 +129,12 @@ public class ClientApp
 
 
     public void run() {
+        run(canSetDominoOptions -> {});
+    }
+
+    public void run(DominoOptionsHandler dominoOptionsHandler) {
+        dominoOptionsHandler.onBeforeRun(dominoOptions());
+        dominoOptions().applyOptions();
         INITIAL_TASKS_HOLDER.attribute.forEach(ClientStartupTask::execute);
         applyContributions(MainExtensionPoint.class, MAIN_EXTENSION_POINT_HOLDER.attribute);
     }
@@ -183,7 +194,12 @@ public class ClientApp
 
     @FunctionalInterface
     public interface HasAsyncRunner {
-        CanBuildClientApp mainExtensionPoint(MainExtensionPoint mainExtensionPoint);
+        HasOptions mainExtensionPoint(MainExtensionPoint mainExtensionPoint);
+    }
+
+    @FunctionalInterface
+    public interface HasOptions {
+        CanBuildClientApp dominoOptions(DominoOptions dominoOptions);
     }
 
     @FunctionalInterface
@@ -194,7 +210,7 @@ public class ClientApp
     public static class ClientAppBuilder
             implements HasClientRouter, HasServerRouter, HasEventBus, HasRequestRepository, HasPresentersRepository,
             HasViewRepository, HasContributionsRepository, HasRequestRestSendersRepository,
-            HasHistory, HasAsyncRunner, CanBuildClientApp {
+            HasHistory, HasAsyncRunner, HasOptions, CanBuildClientApp {
 
         private RequestRouter<ClientRequest> clientRouter;
         private RequestRouter<ClientServerRequest> serverRouter;
@@ -207,6 +223,7 @@ public class ClientApp
         private MainExtensionPoint mainExtensionPoint;
         private AppHistory history;
         private AsyncRunner asyncRunner;
+        private DominoOptions dominoOptions;
 
         private ClientAppBuilder(RequestRouter<ClientRequest> clientRouter) {
             this.clientRouter = clientRouter;
@@ -272,8 +289,14 @@ public class ClientApp
         }
 
         @Override
-        public CanBuildClientApp mainExtensionPoint(MainExtensionPoint mainExtensionPoint) {
+        public HasOptions mainExtensionPoint(MainExtensionPoint mainExtensionPoint) {
             this.mainExtensionPoint = mainExtensionPoint;
+            return this;
+        }
+
+        @Override
+        public CanBuildClientApp dominoOptions(DominoOptions dominoOptions) {
+            this.dominoOptions=dominoOptions;
             return this;
         }
 
@@ -295,8 +318,11 @@ public class ClientApp
             ClientApp.MAIN_EXTENSION_POINT_HOLDER.hold(mainExtensionPoint);
             ClientApp.HISTORY_HOLDER.hold(history);
             ClientApp.INITIAL_TASKS_HOLDER.hold(new LinkedList<>());
-            ClientApp.ASYNC_RUNNER.hold(asyncRunner);
+            ClientApp.ASYNC_RUNNER_HOLDER.hold(asyncRunner);
+            ClientApp.DOMINO_OPTIONS_HOLDER.hold(dominoOptions);
         }
+
+
     }
 
     private static final class AttributeHolder<T> {
@@ -305,5 +331,10 @@ public class ClientApp
         public void hold(T attribute) {
             this.attribute = attribute;
         }
+    }
+
+    @FunctionalInterface
+    public interface DominoOptionsHandler{
+        void onBeforeRun(CanSetDominoOptions canSetDominoOptions);
     }
 }

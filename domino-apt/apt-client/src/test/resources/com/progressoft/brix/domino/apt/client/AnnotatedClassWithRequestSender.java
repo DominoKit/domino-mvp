@@ -16,8 +16,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-@RequestSender(AnnotatedClassWithHandlerPath.class)
+@RequestSender(value = AnnotatedClassWithHandlerPath.class, customServiceRoot = true)
 public class AnnotatedClassWithRequestSender implements RequestRestSender<SomeRequest> {
+
+    public static final String SERVICE_ROOT_KEY="com.progressoft.brix.domino.apt.client.AnnotatedClassWithHandlerPath";
+    public static final String SERVICE_ROOT="someServiceRootPath";
 
     public interface AnnotatedClassWithRequestSenderService extends RestService {
         @POST

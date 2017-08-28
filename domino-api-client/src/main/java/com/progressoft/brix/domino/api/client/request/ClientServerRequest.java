@@ -74,7 +74,7 @@ public abstract class ClientServerRequest<P extends Presentable, R extends Serve
         return this.serverArgs;
     }
 
-    public ClientServerRequest<P, R, S> setHeader(String name, String value) {
+    protected ClientServerRequest<P, R, S> setHeader(String name, String value) {
         headers.put(name, value);
         return this;
     }

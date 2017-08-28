@@ -7,6 +7,7 @@ import com.progressoft.brix.domino.apt.commons.FullClassName;
 import com.progressoft.brix.domino.apt.commons.JavaSourceBuilder;
 import com.progressoft.brix.domino.apt.commons.MethodBuilder;
 import com.progressoft.brix.domino.apt.commons.ModifierBuilder;
+import org.fusesource.restygwt.client.ServiceRoots;
 
 import java.util.Set;
 
@@ -18,12 +19,12 @@ public class SendersWriter {
         this.sourceBuilder = sourceBuilder;
     }
 
-    public void write(Set<String> senders){
+    public void write(Set<String> senders) {
 
-        if(!senders.isEmpty()){
+        if (!senders.isEmpty()) {
             sourceBuilder.imports(RequestRestSendersRegistry.class.getCanonicalName())
-            .imports(LazyRequestRestSenderLoader.class.getCanonicalName())
-            .imports(RequestRestSender.class.getCanonicalName());
+                    .imports(LazyRequestRestSenderLoader.class.getCanonicalName())
+                    .imports(RequestRestSender.class.getCanonicalName());
 
             MethodBuilder methodBuilder = this.sourceBuilder.method("registerRequestRestSenders");
             methodBuilder.annotate("@Override")
@@ -31,23 +32,24 @@ public class SendersWriter {
                     .returnsVoid()
                     .takes("RequestRestSendersRegistry", "registry");
             senders.stream().map(this::parseEntry)
-                    .forEach(e-> registerSender(e, methodBuilder));
+                    .forEach(e -> registerSender(e, methodBuilder));
             methodBuilder.end();
         }
     }
 
     private void registerSender(SenderEntry e, MethodBuilder methodBuilder) {
         importSender(e);
-        FullClassName request=new FullClassName(e.request);
-        FullClassName sender=new FullClassName(e.sender);
+        FullClassName request = new FullClassName(e.request);
+        FullClassName sender = new FullClassName(e.sender);
 
-        methodBuilder.block("registry.registerRequestRestSender("+request.asSimpleName()+".class.getCanonicalName(),\n" +
-                "\t\t\t\tnew LazyRequestRestSenderLoader() {\n" +
-                "\t\t\t\t\t@Override\n" +
-                "\t\t\t\t\tprotected RequestRestSender make() {\n" +
-                "\t\t\t\t\t\treturn new "+sender.asSimpleName()+"();\n" +
-                "\t\t\t\t\t}\n" +
-                "\t\t\t\t});");
+        methodBuilder
+                .block("registry.registerRequestRestSender(" + request.asSimpleName() + ".class.getCanonicalName(),\n" +
+                        "\t\t\t\tnew LazyRequestRestSenderLoader() {\n" +
+                        "\t\t\t\t\t@Override\n" +
+                        "\t\t\t\t\tprotected RequestRestSender make() {\n" +
+                        "\t\t\t\t\t\treturn new " + sender.asSimpleName() + "();\n" +
+                        "\t\t\t\t\t}\n" +
+                        "\t\t\t\t});");
 
     }
 
@@ -56,17 +58,19 @@ public class SendersWriter {
     }
 
     private SenderEntry parseEntry(String senderEntry) {
-        String[] senderPair=senderEntry.split(":");
-        return new SenderEntry(senderPair[0], senderPair[1]);
+        String[] senderValues = senderEntry.split(":");
+        return new SenderEntry(senderValues[0], senderValues[1], Boolean.valueOf(senderValues[2]));
     }
 
     private class SenderEntry {
         private final String sender;
         private final String request;
+        private final boolean customServiceRoot;
 
-        public SenderEntry(String sender, String request) {
+        public SenderEntry(String sender, String request, boolean customServiceRoot) {
             this.sender = sender;
             this.request = request;
+            this.customServiceRoot = customServiceRoot;
         }
     }
 }

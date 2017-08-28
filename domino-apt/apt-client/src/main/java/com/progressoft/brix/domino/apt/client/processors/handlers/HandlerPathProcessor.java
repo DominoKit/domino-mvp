@@ -1,7 +1,7 @@
 package com.progressoft.brix.domino.apt.client.processors.handlers;
 
 import com.google.auto.service.AutoService;
-import com.progressoft.brix.domino.api.client.annotations.HandlerPath;
+import com.progressoft.brix.domino.api.client.annotations.Path;
 import com.progressoft.brix.domino.api.client.request.ClientServerRequest;
 import com.progressoft.brix.domino.apt.commons.BaseProcessor;
 import com.progressoft.brix.domino.apt.commons.FullClassName;
@@ -34,7 +34,7 @@ public class HandlerPathProcessor extends BaseProcessor {
     private final Set<String> supportedAnnotations = new HashSet<>();
 
     public HandlerPathProcessor() {
-        supportedAnnotations.add(HandlerPath.class.getCanonicalName());
+        supportedAnnotations.add(Path.class.getCanonicalName());
     }
 
     @Override
@@ -50,7 +50,7 @@ public class HandlerPathProcessor extends BaseProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        roundEnv.getElementsAnnotatedWith(HandlerPath.class).stream().filter(this::extendsClientServerRequest)
+        roundEnv.getElementsAnnotatedWith(Path.class).stream().filter(this::extendsClientServerRequest)
                 .forEach(this::generateRequestRestfulSender);
         return false;
     }

@@ -8,7 +8,11 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface HandlerPath {
+public @interface Path {
     @NotNull
     String value();
+    @NotNull
+    String serviceRoot() default "";
+    @NotNull
+    String method() default "POST";
 }

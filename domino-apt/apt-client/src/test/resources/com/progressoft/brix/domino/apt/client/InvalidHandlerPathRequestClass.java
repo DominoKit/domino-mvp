@@ -1,7 +1,7 @@
 package com.progressoft.brix.domino.apt.client;
 
-import com.progressoft.brix.domino.api.client.annotations.HandlerPath;
+import com.progressoft.brix.domino.api.client.annotations.Path;
 
-@HandlerPath("somePath")
+@Path("somePath")
 public class InvalidHandlerPathRequestClass {
 }

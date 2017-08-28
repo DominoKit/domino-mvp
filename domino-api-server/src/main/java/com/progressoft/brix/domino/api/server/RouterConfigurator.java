@@ -52,8 +52,7 @@ public class RouterConfigurator {
     private void addPredefinedHandlers(Vertx vertx, Router router) {
         addBodyHandler(router);
         addSessionHandler(vertx, router);
-        // TODO add a confiuration to turn this filter on/off.
-//        addCSRFHandler(router);
+        addCSRFHandler(router);
         addRemoteExceptionHandler(router);
     }
 

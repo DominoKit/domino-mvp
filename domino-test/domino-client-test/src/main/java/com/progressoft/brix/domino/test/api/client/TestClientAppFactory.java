@@ -49,6 +49,7 @@ public class TestClientAppFactory {
                 .history(history)
                 .asyncRunner(new TestAsyncRunner())
                 .mainExtensionPoint(TestMainContext::new)
+                .dominoOptions(new FakeDominoOptions())
                 .build();
     }
 
