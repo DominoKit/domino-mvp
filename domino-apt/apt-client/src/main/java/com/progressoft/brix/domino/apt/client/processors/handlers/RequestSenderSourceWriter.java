@@ -1,6 +1,7 @@
 package com.progressoft.brix.domino.apt.client.processors.handlers;
 
 
+import com.progressoft.brix.domino.api.client.ServiceRootMatcher;
 import com.progressoft.brix.domino.api.client.annotations.Path;
 import com.progressoft.brix.domino.api.client.annotations.RequestSender;
 import com.progressoft.brix.domino.api.client.request.RequestRestSender;
@@ -76,6 +77,7 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
                 .imports("javax.ws.rs.core.MediaType")
                 .imports("static java.util.Objects.*")
                 .imports("org.fusesource.restygwt.client.*")
+                .imports(ServiceRootMatcher.class.getCanonicalName())
                 .annotate("@RequestSender(value = " + processorElement.simpleName() + ".class"+(hasServiceRoot()?", customServiceRoot=true":"")+")")
                 .withModifiers(new ModifierBuilder().asPublic())
                 .implement(RequestRestSender.class.getCanonicalName() + "<" + request.asSimpleName() + ">");
@@ -87,24 +89,21 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
     private void writeBody() {
 
         if (hasServiceRoot()) {
-            sourceBuilder.codeBlock("\n\tpublic static final String SERVICE_ROOT_KEY=\"" +
-                    processorElement.fullQualifiedNoneGenericName() + "\";");
-
             sourceBuilder.codeBlock("\n\tpublic static final String SERVICE_ROOT=\"" +
                     serviceRoot + "\";");
         }
+
+        sourceBuilder.codeBlock("\n\tpublic static final String PATH=\"" +
+                path + "\";");
 
 
         sourceBuilder
                 .codeBlock("\n\tpublic interface " + processorElement.simpleName() + "Service extends RestService {\n" +
                         "        @" + method + "\n" +
-                        "        @Path(\"" + processorElement.getAnnotation(Path.class).value() + "\")\n" +
+                        "        @Path(PATH)\n" +
                         "        @Produces(MediaType.APPLICATION_JSON)\n" +
                         consumes.get(method));
 
-        if (hasServiceRoot()) {
-            sourceBuilder.codeBlock("        @Options(serviceRootKey = SERVICE_ROOT_KEY)\n");
-        }
 
         if(pathParams.isEmpty()) {
             sourceBuilder.codeBlock(
@@ -141,6 +140,9 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
 
         if(hasServiceRoot())
             sendMethod.block("\t((RestServiceProxy)service).setResource(new Resource(SERVICE_ROOT));\n");
+        else
+            sendMethod.block("\t((RestServiceProxy)service).setResource(new Resource(ServiceRootMatcher.matchedServiceRoot(PATH)));\n");
+
         sendMethod.block("\tservice.send("+params+"new MethodCallback<" + response.asSimpleName() + ">() {" +
                 "\n\t\t@Override" +
                 "\n\t\tpublic void onFailure(Method method, Throwable throwable) {" +

@@ -172,6 +172,18 @@ public class ClientClientModuleAnnotationProcessorTest {
     }
 
     @Test
+    public void givenClassAnnotatedWithHandlerPathAndNoServiceRoot_whenProcess_shouldGenerateSenderServiceRootMatcher()
+            throws Exception {
+        assertProcessing(BASE_PACKAGE + "PresenterInterface.java",
+                BASE_PACKAGE + "SomeRequest.java",
+                BASE_PACKAGE + "SomeResponse.java",
+                BASE_PACKAGE + "AnnotatedClassWithHandlerPathWithoutServiceRoot.java")
+                .withProcessor(new HandlerPathProcessor())
+                .generates(getExpectedResultFileContent(
+                        "AnnotatedClassWithHandlerPathWithoutServiceRootSender.java"));
+    }
+
+    @Test
     public void givenClassAnnotatedWithRequestSender_whenProcess_shouldRegisterItInTheClientModule() throws Exception {
         assertProcessing(BASE_PACKAGE + "AnnotatedClassWithRequestSender.java",
                 BASE_PACKAGE + "AnnotatedClassWithHandlerPath.java",

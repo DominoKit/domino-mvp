@@ -335,6 +335,6 @@ public class ClientApp
 
     @FunctionalInterface
     public interface DominoOptionsHandler{
-        void onBeforeRun(CanSetDominoOptions canSetDominoOptions);
+        void onBeforeRun(CanSetDominoOptions dominoOptions);
     }
 }

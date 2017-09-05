@@ -3,7 +3,7 @@ package com.progressoft.brix.domino.apt.client;
 import com.google.gwt.core.client.GWT;
 import com.progressoft.brix.domino.api.client.request.RequestRestSender;
 import com.progressoft.brix.domino.api.client.request.ServerRequestCallBack;
-import com.progressoft.brix.domino.apt.client.AnnotatedClassWithHandlerPathWithServiceRoot;
+import com.progressoft.brix.domino.apt.client.AnnotatedClassWithHandlerPathWithoutServiceRoot;
 import com.progressoft.brix.domino.apt.client.SomeRequest;
 import com.progressoft.brix.domino.apt.client.SomeResponse;
 import com.progressoft.brix.domino.api.client.annotations.RequestSender;
@@ -17,13 +17,12 @@ import static java.util.Objects.*;
 import org.fusesource.restygwt.client.*;
 import com.progressoft.brix.domino.api.client.ServiceRootMatcher;
 
-@RequestSender(value = AnnotatedClassWithHandlerPathWithServiceRoot.class, customServiceRoot=true)
-public class AnnotatedClassWithHandlerPathWithServiceRootSender implements RequestRestSender<SomeRequest> {
+@RequestSender(value = AnnotatedClassWithHandlerPathWithoutServiceRoot.class)
+public class AnnotatedClassWithHandlerPathWithoutServiceRootSender implements RequestRestSender<SomeRequest> {
 
-    public static final String SERVICE_ROOT="someServiceRootPath";
     public static final String PATH="somePath/{id}/{code}";
 
-    public interface AnnotatedClassWithHandlerPathWithServiceRootService extends RestService {
+    public interface AnnotatedClassWithHandlerPathWithoutServiceRootService extends RestService {
         @GET
         @Path(PATH)
         @Produces(MediaType.APPLICATION_JSON)
@@ -31,11 +30,11 @@ public class AnnotatedClassWithHandlerPathWithServiceRootSender implements Reque
                   MethodCallback<SomeResponse> callback);
     }
 
-    private AnnotatedClassWithHandlerPathWithServiceRootService service = GWT.create(AnnotatedClassWithHandlerPathWithServiceRootService.class);
+    private AnnotatedClassWithHandlerPathWithoutServiceRootService service = GWT.create(AnnotatedClassWithHandlerPathWithoutServiceRootService.class);
 
     @Override
     public void send(SomeRequest request, ServerRequestCallBack callBack) {
-        ((RestServiceProxy)service).setResource(new Resource(SERVICE_ROOT));
+        ((RestServiceProxy)service).setResource(new Resource(ServiceRootMatcher.matchedServiceRoot(PATH)));
         service.send(request, request, new MethodCallback<SomeResponse>() {
             @Override
             public void onFailure(Method method, Throwable throwable) {

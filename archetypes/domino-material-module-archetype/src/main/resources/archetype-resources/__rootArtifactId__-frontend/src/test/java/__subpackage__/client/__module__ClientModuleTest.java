@@ -48,7 +48,7 @@ public class ${module}ClientModuleTest{
 
     @Test
     public void given${module}ClientModule_when${module}ServerRequestIsSent_thenServerMessageShouldBeRecieved() {
-        clientContext.forRequest(new ${module}Request().getKey()).returnResponse(new ${module}Response("Server message"));
+        clientContext.forRequest(new ${module}ServerRequest().getKey()).returnResponse(new ${module}Response("Server message"));
         new ${module}ServerRequest(){
             @Override
             protected void process(${module}Presenter presenter, ${module}Request serverArgs, ${module}Response response) {
@@ -57,7 +57,7 @@ public class ${module}ClientModuleTest{
             }
 
             @Override
-            public void processFailed(${module}Presenter presenter, {module}Request serverArgs,
+            public void processFailed(${module}Presenter presenter, ${module}Request serverArgs,
                 FailedServerResponse failedResponse) {
                 fail(failedResponse.getError().getMessage());
             }
