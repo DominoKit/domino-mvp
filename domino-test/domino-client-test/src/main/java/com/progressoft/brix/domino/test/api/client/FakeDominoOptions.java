@@ -2,11 +2,16 @@ package com.progressoft.brix.domino.test.api.client;
 
 import com.progressoft.brix.domino.api.client.CanSetDominoOptions;
 import com.progressoft.brix.domino.api.client.DominoOptions;
+import com.progressoft.brix.domino.api.client.DynamicServiceRoot;
 
-public class FakeDominoOptions implements DominoOptions{
+import java.util.ArrayList;
+import java.util.List;
 
-    private String serviceRoot="";
-    private String dateFormat="";
+public class FakeDominoOptions implements DominoOptions {
+
+    private String serviceRoot = "";
+    private String dateFormat = "";
+    private List<DynamicServiceRoot> dynamicServiceRoots = new ArrayList<>();
 
     @Override
     public void applyOptions() {
@@ -15,13 +20,19 @@ public class FakeDominoOptions implements DominoOptions{
 
     @Override
     public CanSetDominoOptions setDefaultServiceRoot(String defaultServiceRoot) {
-        this.serviceRoot=defaultServiceRoot;
+        this.serviceRoot = defaultServiceRoot;
         return this;
     }
 
     @Override
     public CanSetDominoOptions setDefaultJsonDateFormat(String defaultJsonDateFormat) {
-        this.dateFormat=defaultJsonDateFormat;
+        this.dateFormat = defaultJsonDateFormat;
+        return this;
+    }
+
+    @Override
+    public CanSetDominoOptions addDynamicServiceRoot(DynamicServiceRoot dynamicServiceRoot) {
+        dynamicServiceRoots.add(dynamicServiceRoot);
         return this;
     }
 
@@ -33,5 +44,10 @@ public class FakeDominoOptions implements DominoOptions{
     @Override
     public String getDefaultJsonDateFormat() {
         return dateFormat;
+    }
+
+    @Override
+    public List<DynamicServiceRoot> getServiceRoots() {
+        return dynamicServiceRoots;
     }
 }

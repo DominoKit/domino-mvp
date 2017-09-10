@@ -69,8 +69,8 @@ public class DominoTestClient
     }
 
     @Override
-    public CanCustomizeClient contributionOf(Class<? extends Contribution> contributionName,
-                                             ContributionHandler handler) {
+    public <C extends Contribution> CanCustomizeClient contributionOf(Class<C> contributionName,
+                                                                      ContributionHandler<C> handler) {
         this.contributionsOf.add(new ContributionOf(contributionName, handler));
         return this;
     }

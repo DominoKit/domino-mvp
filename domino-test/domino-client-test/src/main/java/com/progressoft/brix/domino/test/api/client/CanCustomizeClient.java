@@ -11,8 +11,8 @@ public interface CanCustomizeClient extends CanStartClient {
 
     CanCustomizeClient viewOf(Class<? extends Presentable> presenter, ViewHandler handler);
 
-    CanCustomizeClient contributionOf(Class<? extends Contribution> contribution,
-                                      ContributionHandler handler);
+    <C extends Contribution> CanCustomizeClient contributionOf(Class<C> contribution,
+                                                               ContributionHandler<C> handler);
 
     CanCustomizeClient onBeforeStart(BeforeStarted beforeStarted);
 
