@@ -8,18 +8,18 @@ import com.progressoft.brix.domino.api.shared.extension.ExtensionPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class BaseClientPresenter<V extends View> implements ClientPresenter<V>, Presentable{
+public abstract class BaseClientPresenter<V extends View> implements ClientPresenter<V>, Presentable {
 
-    private static final Logger LOGGER= LoggerFactory.getLogger(BaseClientPresenter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseClientPresenter.class);
 
     private final PresenterState initialized = () ->
-        LOGGER.info("Presenter "+BaseClientPresenter.this.getClass()+" Have already been initialized.");
+            LOGGER.info("Presenter " + BaseClientPresenter.this.getClass() + " Have already been initialized.");
 
 
-    private final PresenterState uninitialized = ()-> {
-        view=loadView();
+    private final PresenterState uninitialized = () -> {
+        view = loadView();
         initView(BaseClientPresenter.this.view);
-        state= initialized;
+        state = initialized;
     };
 
     private PresenterState state;
@@ -39,23 +39,23 @@ public abstract class BaseClientPresenter<V extends View> implements ClientPrese
         return this;
     }
 
-    private V loadView(){
+    private V loadView() {
         return (V) ClientApp.make().getViewsRepository().getView(getName());
     }
 
-    protected String getConcrete(){
+    protected String getConcrete() {
         return this.getClass().getCanonicalName();
     }
 
-    protected void applyContributions(Class<? extends ExtensionPoint> extensionPointInterface, ExtensionPoint extensionPoint){
+    protected <E extends ExtensionPoint> void applyContributions(Class<E> extensionPointInterface, E extensionPoint) {
         Contributions.apply(extensionPointInterface, extensionPoint);
     }
 
-    protected void runAsync(AsyncRunner.AsyncTask asyncTask){
+    protected void runAsync(AsyncRunner.AsyncTask asyncTask) {
         ClientApp.make().getAsyncRunner().runAsync(asyncTask);
     }
 
-    private String getName(){
+    private String getName() {
         return ClientApp.make().getPresentersRepository().getNameFromConcreteName(getConcrete());
     }
 }
