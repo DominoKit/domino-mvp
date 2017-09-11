@@ -5,10 +5,6 @@ import com.progressoft.brix.domino.api.client.annotations.UiView;
 import com.progressoft.brix.domino.api.client.mvp.view.View;
 
 @UiView(presentable = PresenterInterface.class)
-public class AnnotatedClassWithUiView implements View<Object> {
+public class AnnotatedClassWithUiView implements View {
 
-    @Override
-    public Object get() {
-        return null;
-    }
 }
