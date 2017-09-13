@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Super-dev-mode" type="MavenRunConfiguration" factoryName="Maven">
+  <configuration default="false" name="super-dev-mode" type="MavenRunConfiguration" factoryName="Maven">
     <MavenSettings>
       <option name="myGeneralSettings" />
       <option name="myRunnerSettings" />
@@ -11,6 +11,7 @@
           <option name="goals">
             <list>
               <option value="gwt:codeserver" />
+              <option value="-o" />
             </list>
           </option>
           <option name="profilesMap">
