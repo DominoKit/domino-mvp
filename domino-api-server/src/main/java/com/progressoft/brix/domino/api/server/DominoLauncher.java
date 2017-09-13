@@ -5,6 +5,8 @@ import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 
+import static io.vertx.core.impl.FileResolver.DISABLE_FILE_CACHING_PROP_NAME;
+
 public class DominoLauncher extends Launcher {
 
     protected static final ConfigHolder configHolder = new ConfigHolder();
@@ -25,7 +27,6 @@ public class DominoLauncher extends Launcher {
 
     @Override
     public void afterStartingVertx(Vertx vertx) {
-        System.setProperty("vertx.disableFileCaching", "true");
         RouterConfigurator routerConfigurator = new RouterConfigurator(vertx, configHolder.config);
         routerHolder.router =
                 PROCESS_ARGS.contains("-cluster") ?
@@ -36,4 +37,8 @@ public class DominoLauncher extends Launcher {
     public void afterConfigParsed(JsonObject config) {
         configHolder.config = config;
     }
+
+
+
+
 }

@@ -17,7 +17,7 @@ Run the application for development:
             - From the popup dialog click + and select 'Application'.
             - Give the custom run a name eg: Run HttpServer.
             - in the main class set the value to : com.progressoft.brix.domino.api.server.DominoLauncher
-            - in the program arguments set the value to : run com.progressoft.brix.domino.api.server.StartupVerticle -conf target/classes/config.json
+            - in the program arguments set the value to : run com.progressoft.brix.domino.api.server.StartupVerticle -conf target/classes/config.json -Dvertx.options.fileResolverCachingEnabled=false
             - in the working directory select your backend module.
             - in the module select your webapp module.
             - for JRE select 1.8

@@ -30,9 +30,4 @@ public class Default${module}View extends Composite implements ${module}View{
     public Default${module}View() {
         initWidget(ourUiBinder.createAndBindUi(this));
     }
-
-    @Override
-    public IsWidget get() {
-        return this;
-    }
 }
