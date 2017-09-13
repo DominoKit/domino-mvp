@@ -11,4 +11,9 @@ public class ServiceRootMatcher {
         final List<DynamicServiceRoot> serviceRoots = ClientApp.make().dominoOptions().getServiceRoots();
         return serviceRoots.stream().filter(r -> r.isMatchingPath(path)).findFirst().orElse(defaultRoot).onMatchingPath();
     }
+
+    public static boolean hasServiceRoot(String path){
+        final List<DynamicServiceRoot> serviceRoots = ClientApp.make().dominoOptions().getServiceRoots();
+        return serviceRoots.stream().anyMatch(r -> r.isMatchingPath(path));
+    }
 }

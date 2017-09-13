@@ -3,12 +3,11 @@ package com.progressoft.brix.domino.gwt.client.logging;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.logging.client.RemoteLogHandlerBase;
 import com.google.web.bindery.event.shared.UmbrellaException;
+import com.progressoft.brix.domino.api.client.ServiceRootMatcher;
 import com.progressoft.brix.domino.api.shared.logging.SerializableLogRecord;
 import com.progressoft.brix.domino.api.shared.logging.SerializableStackTraceElement;
 import com.progressoft.brix.domino.api.shared.logging.SerializableThrowable;
-import org.fusesource.restygwt.client.Method;
-import org.fusesource.restygwt.client.MethodCallback;
-import org.fusesource.restygwt.client.RestService;
+import org.fusesource.restygwt.client.*;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -16,26 +15,37 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.stream.Stream;
 
 public class RestfulRemoteLogHandler extends RemoteLogHandlerBase {
 
     private RemoteExceptionLoggingService service = GWT.create(RemoteExceptionLoggingService.class);
+    private static final String PATH = "/service/remoteLogging";
 
     public interface RemoteExceptionLoggingService extends RestService {
         @POST
-        @Path("remoteLogging")
+        @Path(PATH)
         @Produces(MediaType.APPLICATION_JSON)
         @Consumes(MediaType.APPLICATION_JSON)
         void send(SerializableLogRecord record, MethodCallback<Void> callback);
 
     }
 
+    public RestfulRemoteLogHandler() {
+        setLevel(Level.SEVERE);
+    }
+
     @Override
     public void publish(LogRecord record) {
-        if (isLoggable(record))
+        if (isLoggable(record)) {
+            if (!ServiceRootMatcher.hasServiceRoot(PATH))
+                ((RestServiceProxy) service).setResource(new Resource(GWT.getHostPageBaseURL()));
+            else
+                ((RestServiceProxy) service).setResource(new Resource(ServiceRootMatcher.matchedServiceRoot(PATH)));
             service.send(asSerializableLogRecord(record), new RemoteLoggingCallBack());
+        }
     }
 
     private SerializableLogRecord asSerializableLogRecord(LogRecord record) {
