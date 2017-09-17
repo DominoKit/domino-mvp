@@ -7,6 +7,7 @@ import com.progressoft.brix.domino.api.server.handler.CallbackRequestHandler;
 import com.progressoft.brix.domino.api.server.handler.RequestHandler;
 import com.progressoft.brix.domino.apt.commons.*;
 import io.vertx.core.Handler;
+import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.Json;
 import io.vertx.ext.web.RoutingContext;
 
@@ -46,6 +47,7 @@ public class EndpointHandlerSourceWriter extends JavaSourceWriter {
                 .imports(request.asImport())
                 .imports(response.asImport())
                 .imports(VertxEntryPointContext.class.getCanonicalName())
+                .imports(HttpMethod.class.getCanonicalName())
                 .withModifiers(new ModifierBuilder().asPublic())
                 .implement("Handler<RoutingContext>");
 
@@ -71,8 +73,14 @@ public class EndpointHandlerSourceWriter extends JavaSourceWriter {
                 .takes("RoutingContext", "routingContext")
                 .block("try {")
                 .block("ServerApp serverApp = ServerApp.make();")
-                .block(request.asSimpleName() + " requestBody = Json.decodeValue(routingContext.getBodyAsString(), " +
-                        request.asSimpleName() + ".class);");
+                .block(request.asSimpleName() + " requestBody;")
+                .block("HttpMethod method=routingContext.request().method();")
+                .block("if(HttpMethod.POST.equals(method) || HttpMethod.PUT.equals(method) || HttpMethod.PATCH.equals(method)){")
+                .block("\trequestBody=Json.decodeValue(routingContext.getBodyAsString(), " +
+                        request.asSimpleName() + ".class);")
+                .block("}else {")
+                .block("\trequestBody = new " +request.asSimpleName() + "();")
+                .block("}");
         if (processorElement.isImplementsGenericInterface(RequestHandler.class))
             completeHandler(methodBuilder);
         else
