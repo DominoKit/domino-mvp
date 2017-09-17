@@ -102,6 +102,7 @@ public class EndpointHandlerSourceWriter extends JavaSourceWriter {
                 .block("}")
                 .block("@Override\n" +
                         "public void redirect(String location) {\n" +
+                        "\troutingContext.response().setStatusCode(302).putHeader(\"Location\",location).end();"+
                         "}")
                 .block("});")
                 .block("} catch(Exception e) {")
