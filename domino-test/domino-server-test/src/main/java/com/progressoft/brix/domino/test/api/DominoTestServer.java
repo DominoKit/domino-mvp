@@ -2,6 +2,7 @@ package com.progressoft.brix.domino.test.api;
 
 import com.progressoft.brix.domino.api.server.DominoLoader;
 import com.progressoft.brix.domino.api.server.RouterConfigurator;
+import com.progressoft.brix.domino.api.server.SecretKey;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServer;
@@ -10,6 +11,7 @@ import io.vertx.ext.unit.TestContext;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.WebClient;
+import io.vertx.ext.web.handler.CSRFHandler;
 
 import static java.util.Objects.nonNull;
 
@@ -21,6 +23,7 @@ public class DominoTestServer {
     private AfterLoadHandler afterHandler;
     private BeforeLoadHandler beforeHandler;
     private WebClient webClient;
+    private String csrfToken;
 
     private DominoTestServer(Vertx vertx) {
         this.vertx = vertx;
@@ -29,7 +32,9 @@ public class DominoTestServer {
 
     public void start(TestContext context) {
         config = new JsonObject().put("http.port", 0);
-        RouterConfigurator routerConfigurator = new RouterConfigurator(vertx, config);
+        String secret = SecretKey.generate();
+        csrfToken = new CSRFToken(secret).generate();
+        RouterConfigurator routerConfigurator = new RouterConfigurator(vertx, config, secret);
         router = routerConfigurator.configuredRouter();
         beforeLoad();
         new DominoLoader(vertx, router, config).start(context.asyncAssertSuccess(this::afterLoad));
@@ -42,7 +47,8 @@ public class DominoTestServer {
 
     private void afterLoad(HttpServer server) {
         if (nonNull(afterHandler))
-            afterHandler.handle(new DominoTestContext(router, config), new HttpServerContext(server.actualPort(), webClient));
+            afterHandler.handle(new DominoTestContext(router, config),
+                    new HttpServerContext(server.actualPort(), webClient, csrfToken));
     }
 
     public DominoTestServer onAfterLoad(AfterLoadHandler afterHandler) {
@@ -90,22 +96,30 @@ public class DominoTestServer {
     public final static class HttpServerContext {
         private final int actualPort;
         private final WebClient webClient;
+        private final String csrfToken;
 
-        public HttpServerContext(int actualPort, WebClient webClient) {
+        public HttpServerContext(int actualPort, WebClient webClient, String csrfToken) {
             this.actualPort = actualPort;
             this.webClient = webClient;
+            this.csrfToken = csrfToken;
         }
 
         public int getActualPort() {
             return actualPort;
         }
 
+        public String getCsrfToken() {
+            return csrfToken;
+        }
+
         public HttpRequest<Buffer> makeRequest(String path) {
-            return webClient.post(actualPort, "localhost", "/" + path);
+            return webClient.post(actualPort, "localhost", "/" + path)
+                    .putHeader(CSRFHandler.DEFAULT_HEADER_NAME, csrfToken);
         }
 
         public HttpRequest<Buffer> makeServiceRequest(String path) {
-            return webClient.post(actualPort, "localhost", "/service/" + path);
+            return webClient.post(actualPort, "localhost", "/service/" + path)
+                    .putHeader(CSRFHandler.DEFAULT_HEADER_NAME, csrfToken);
         }
     }
 }

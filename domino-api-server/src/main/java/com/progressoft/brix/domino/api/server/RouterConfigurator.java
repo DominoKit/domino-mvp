@@ -27,11 +27,13 @@ public class RouterConfigurator {
 
     private final Vertx vertx;
     private final JsonObject config;
+    private final String secret;
     private boolean clustered;
 
-    public RouterConfigurator(Vertx vertx, JsonObject config) {
+    public RouterConfigurator(Vertx vertx, JsonObject config, String secret) {
         this.vertx = vertx;
         this.config = config;
+        this.secret = secret;
     }
 
     public Router configuredRouter() {
@@ -70,7 +72,7 @@ public class RouterConfigurator {
     }
 
     private void addCSRFHandler(Router router) {
-        router.route().handler(CSRFHandler.create("You might be under attack!."));
+        router.route().handler(CSRFHandler.create(secret));
     }
 
     private void addSessionHandler(Vertx vertx, Router router) {

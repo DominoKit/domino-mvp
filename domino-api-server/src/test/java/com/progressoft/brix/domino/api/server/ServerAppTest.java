@@ -29,7 +29,8 @@ public class ServerAppTest {
         vertx = rule.vertx();
         JsonObject config = new JsonObject();
         config.put("http.port", 0);
-        RouterConfigurator configurator = new RouterConfigurator(vertx, config);
+        String secretKey=SecretKey.generate();
+        RouterConfigurator configurator = new RouterConfigurator(vertx, config, secretKey);
         DominoLauncher.routerHolder.router = configurator.configuredRouter();
         DominoLauncher.configHolder.config = config;
         new DominoLoader(vertx, DominoLauncher.routerHolder.router, DominoLauncher.configHolder.config).start();
