@@ -7,6 +7,7 @@ import com.progressoft.brix.domino.api.server.ServerApp;
 import com.progressoft.brix.domino.api.shared.request.ServerRequest;
 import com.progressoft.brix.domino.api.shared.request.ServerResponse;
 import com.progressoft.brix.domino.api.server.entrypoint.VertxEntryPointContext;
+import io.vertx.core.http.HttpMethod;
 import com.progressoft.brix.domino.api.server.handler.CallbackRequestHandler;
 
 public class HandlerImplementingRequestHandlerInterfaceEndpointHandler implements Handler<RoutingContext> {
@@ -15,7 +16,13 @@ public class HandlerImplementingRequestHandlerInterfaceEndpointHandler implement
     public void handle(RoutingContext routingContext) {
         try {
             ServerApp serverApp = ServerApp.make();
-            ServerRequest requestBody = Json.decodeValue(routingContext.getBodyAsString(), ServerRequest.class);
+            ServerRequest requestBody;
+            HttpMethod method=routingContext.request().method();
+            if(HttpMethod.POST.equals(method) || HttpMethod.PUT.equals(method) || HttpMethod.PATCH.equals(method)){
+                requestBody=Json.decodeValue(routingContext.getBodyAsString(), ServerRequest.class);
+            }else {
+                requestBody = new ServerRequest();
+            }
             serverApp.executeCallbackRequest(requestBody, new VertxEntryPointContext(routingContext, serverApp.serverContext().config(),
                     routingContext.vertx()), new CallbackRequestHandler.ResponseCallback() {
                 @Override
@@ -27,7 +34,7 @@ public class HandlerImplementingRequestHandlerInterfaceEndpointHandler implement
 
                 @Override
                 public void redirect(String location) {
-
+                    routingContext.response().setStatusCode(302).putHeader("Location",location).end();
                 }
             });
         } catch (Exception e){
