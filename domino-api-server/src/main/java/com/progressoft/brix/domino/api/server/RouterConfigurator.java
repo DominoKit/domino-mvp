@@ -4,17 +4,19 @@ import com.progressoft.brix.domino.api.server.logging.DefaultRemoteLogger;
 import com.progressoft.brix.domino.api.server.logging.RemoteLogger;
 import com.progressoft.brix.domino.api.server.logging.RemoteLoggingHandler;
 import io.vertx.core.Vertx;
+import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
-import io.vertx.ext.web.handler.BodyHandler;
-import io.vertx.ext.web.handler.CSRFHandler;
-import io.vertx.ext.web.handler.CookieHandler;
-import io.vertx.ext.web.handler.SessionHandler;
+import io.vertx.ext.web.handler.*;
 import io.vertx.ext.web.sstore.ClusteredSessionStore;
 import io.vertx.ext.web.sstore.LocalSessionStore;
 import io.vertx.ext.web.sstore.SessionStore;
 
+import java.util.Arrays;
 import java.util.ServiceLoader;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static java.util.Objects.isNull;
@@ -52,10 +54,15 @@ public class RouterConfigurator {
     }
 
     private void addPredefinedHandlers(Vertx vertx, Router router) {
+        addCorsHandler(router);
         addBodyHandler(router);
         addSessionHandler(vertx, router);
         addCSRFHandler(router);
         addRemoteExceptionHandler(router);
+    }
+
+    private void addCorsHandler(Router router) {
+        router.route().handler(CorsHandler.create("*").allowedMethods(Stream.of(HttpMethod.values()).collect(Collectors.toSet())));
     }
 
     private void addRemoteExceptionHandler(Router router) {
