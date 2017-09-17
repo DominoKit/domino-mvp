@@ -18,7 +18,7 @@ public class CSRFToken {
     public CSRFToken(String secret) {
         try {
             mac = Mac.getInstance("HmacSHA256");
-            mac.init(new SecretKeySpec("You might be under attack!.".getBytes(), "HmacSHA256"));
+            mac.init(new SecretKeySpec(secret.getBytes(), "HmacSHA256"));
         } catch (NoSuchAlgorithmException | InvalidKeyException e) {
             throw new RuntimeException(e);
         }
