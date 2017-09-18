@@ -53,10 +53,7 @@ public class EndpointHandlerSourceWriter extends JavaSourceWriter {
 
         writeBody();
 
-        String result=sourceBuilder.build();
-        System.out.println(result);
-
-        return result;
+        return sourceBuilder.build();
     }
 
 
@@ -72,15 +69,15 @@ public class EndpointHandlerSourceWriter extends JavaSourceWriter {
                 .returns("void")
                 .takes("RoutingContext", "routingContext")
                 .block("try {")
-                .block("ServerApp serverApp = ServerApp.make();")
-                .block(request.asSimpleName() + " requestBody;")
-                .block("HttpMethod method=routingContext.request().method();")
-                .block("if(HttpMethod.POST.equals(method) || HttpMethod.PUT.equals(method) || HttpMethod.PATCH.equals(method)){")
-                .block("\trequestBody=Json.decodeValue(routingContext.getBodyAsString(), " +
+                .block("\tServerApp serverApp = ServerApp.make();")
+                .block("\t"+request.asSimpleName() + " requestBody;")
+                .block("\tHttpMethod method=routingContext.request().method();")
+                .block("\n\t\t\tif(HttpMethod.POST.equals(method) || HttpMethod.PUT.equals(method) || HttpMethod.PATCH.equals(method)){")
+                .block("\t\trequestBody=Json.decodeValue(routingContext.getBodyAsString(), " +
                         request.asSimpleName() + ".class);")
-                .block("}else {")
-                .block("\trequestBody = new " +request.asSimpleName() + "();")
-                .block("}");
+                .block("\t}else {")
+                .block("\t\trequestBody = new " +request.asSimpleName() + "();")
+                .block("\t}\n");
         if (processorElement.isImplementsGenericInterface(RequestHandler.class))
             completeHandler(methodBuilder);
         else
@@ -101,18 +98,18 @@ public class EndpointHandlerSourceWriter extends JavaSourceWriter {
 
     private void completeHandlerCallback(MethodBuilder methodBuilder) {
        sourceBuilder.imports(CallbackRequestHandler.class.getCanonicalName());
-        methodBuilder.block("serverApp.executeCallbackRequest(requestBody, new VertxEntryPointContext(routingContext, serverApp.serverContext().config(), routingContext.vertx()), new CallbackRequestHandler.ResponseCallback() {", false)
-                .block("@Override\n" +
-                        "public void complete(Object response) {\n")
-                .block("\troutingContext.response()\n" +
-                        "                .putHeader(\"content-type\", \"application/json\")\n" +
-                        "                .end(Json.encode((" + response.asSimpleName() + ")response));")
-                .block("}")
-                .block("@Override\n" +
-                        "public void redirect(String location) {\n" +
-                        "\troutingContext.response().setStatusCode(302).putHeader(\"Location\",location).end();\n"+
-                        "}")
-                .block("});")
+        methodBuilder.block("\tserverApp.executeCallbackRequest(requestBody, new VertxEntryPointContext(routingContext, serverApp.serverContext().config(), routingContext.vertx()), new CallbackRequestHandler.ResponseCallback() {", false)
+                .block("\n\t\t\t\t@Override\n" +
+                        "\t\t\t\tpublic void complete(Object response) {")
+                .block("\t\t\troutingContext.response()\n" +
+                        "\t\t                .putHeader(\"content-type\", \"application/json\")\n" +
+                        "\t\t                .end(Json.encode((" + response.asSimpleName() + ")response));")
+                .block("\t\t}\n")
+                .block("\t\t@Override\n" +
+                        "\t\t\t\tpublic void redirect(String location) {\n" +
+                        "\t\t\t\t\troutingContext.response().setStatusCode(302).putHeader(\"Location\",location).end();\n"+
+                        "\t\t\t\t}")
+                .block("\t});\n")
                 .block("} catch(Exception e) {")
                 .block("\troutingContext.fail(e);")
                 .block("}")

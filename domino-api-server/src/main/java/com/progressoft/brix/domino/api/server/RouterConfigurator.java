@@ -62,7 +62,9 @@ public class RouterConfigurator {
     }
 
     private void addCorsHandler(Router router) {
-        router.route().handler(CorsHandler.create("*").allowedMethods(Stream.of(HttpMethod.values()).collect(Collectors.toSet())));
+        router.route().handler(CorsHandler.create("*")
+                .allowedHeaders(Arrays.asList("Content-Type", "X-HTTP-Method-Override", "X-XSRF-TOKEN").stream().collect(Collectors.toSet()))
+                .allowedMethods(Stream.of(HttpMethod.values()).collect(Collectors.toSet())));
     }
 
     private void addRemoteExceptionHandler(Router router) {

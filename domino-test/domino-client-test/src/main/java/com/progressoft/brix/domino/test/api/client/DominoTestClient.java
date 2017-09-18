@@ -148,6 +148,11 @@ public class DominoTestClient
     }
 
     @Override
+    public TestRoutingListener getDefaultRoutingListener() {
+        return TestClientAppFactory.serverRouter.getDefaultRoutingListener();
+    }
+
+    @Override
     public void removeRoutingListener() {
         TestClientAppFactory.serverRouter.removeRoutingListener();
     }

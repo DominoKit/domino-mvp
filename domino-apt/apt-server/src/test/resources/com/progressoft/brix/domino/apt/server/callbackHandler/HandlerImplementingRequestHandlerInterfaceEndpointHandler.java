@@ -26,7 +26,7 @@ public class HandlerImplementingRequestHandlerInterfaceEndpointHandler implement
 
             @Override
             public void redirect(String location) {
-
+                routingContext.response().setStatusCode(302).putHeader("Location",location).end();
             }
 
         });

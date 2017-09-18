@@ -23,9 +23,7 @@ public class TestServerRouter implements RequestRouter<ClientServerRequest> {
 
     private Map<String, ResponseReply> fakeResponses=new HashMap<>();
 
-    private RoutingListener defaultListener =
-            (request, response) -> LOGGER.info(
-                    "on routing request " + request + " with response " + response);
+    private TestRoutingListener defaultListener = new TestRoutingListener();
     private RoutingListener listener = defaultListener;
 
     private final ServerRequestEventFactory eventFactory = new ServerRequestEventFactory() {
@@ -76,6 +74,10 @@ public class TestServerRouter implements RequestRouter<ClientServerRequest> {
 
     public void fakeResponse(String requestKey, ResponseReply reply){
         fakeResponses.put(requestKey, reply);
+    }
+
+    public TestRoutingListener getDefaultRoutingListener() {
+        return defaultListener;
     }
 
     public class TestServerSuccessEvent implements Event {
