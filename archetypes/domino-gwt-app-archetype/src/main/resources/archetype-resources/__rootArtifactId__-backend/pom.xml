@@ -4,12 +4,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>${groupId}</groupId>
-        <artifactId>${rootArtifactId}</artifactId>
-        <version>${version}</version>
+        <groupId>com.progressoft.brix.domino</groupId>
+        <artifactId>domino-parent</artifactId>
+        <version>1.0-rc.2-SNAPSHOT</version>
     </parent>
 
     <artifactId>${rootArtifactId}-backend</artifactId>
+    <version>${version}</version>
     <packaging>jar</packaging>
 
     <dependencies>
