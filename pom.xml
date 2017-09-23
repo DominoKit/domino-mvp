@@ -186,5 +186,7 @@
         <module>domino-service-discovery</module>
         <module>domino-remote-logging</module>
         <module>domino-parent</module>
+        <module>domino-desktop</module>
+        <module>domino-client-commons</module>
     </modules>
 </project>

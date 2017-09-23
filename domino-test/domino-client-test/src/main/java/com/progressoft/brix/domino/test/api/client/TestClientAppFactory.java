@@ -5,9 +5,9 @@ import com.progressoft.brix.domino.api.client.ClientApp;
 import com.progressoft.brix.domino.api.server.entrypoint.ServerEntryPointContext;
 import com.progressoft.brix.domino.api.shared.extension.MainContext;
 import com.progressoft.brix.domino.api.shared.history.DominoHistory;
+import com.progressoft.brix.domino.client.commons.request.InMemoryRequestRestSendersRepository;
+import com.progressoft.brix.domino.client.commons.request.InMemoryRequestsRepository;
 import com.progressoft.brix.domino.gwt.client.events.RequestEventProcessor;
-import com.progressoft.brix.domino.gwt.client.request.InMemoryRequestRestSendersRepository;
-import com.progressoft.brix.domino.gwt.client.request.InMemoryRequestsRepository;
 
 public class TestClientAppFactory {
 

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module rename-to='common'>
+    <inherits name="com.google.gwt.logging.Logging"/>
+    <inherits name="ru.finam.slf4jgwt.logging.gwt.Logging"/>
+
+    <source path='client'/>
+    <source path='shared'/>
+
+    <add-linker name="xsiframe"/>
+</module>

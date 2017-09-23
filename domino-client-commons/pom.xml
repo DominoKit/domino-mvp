@@ -1,0 +1,46 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>domino</artifactId>
+        <groupId>com.progressoft.brix.domino</groupId>
+        <version>1.0-rc.2-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>domino-client-commons</artifactId>
+    <packaging>gwt-lib</packaging>
+
+    <name>domino-client-commons</name>
+    <url>http://maven.apache.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.progressoft.brix.domino.api</groupId>
+            <artifactId>domino-api-shared</artifactId>
+            <version>1.0-rc.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.progressoft.brix.domino.api</groupId>
+            <artifactId>domino-api-client</artifactId>
+            <version>1.0-rc.2-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>net.ltgt.gwt.maven</groupId>
+                <artifactId>gwt-maven-plugin</artifactId>
+                <version>${gwt.plugin.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <moduleName>com.progressoft.brix.domino.Common</moduleName>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

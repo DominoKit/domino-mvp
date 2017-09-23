@@ -97,7 +97,7 @@ public class TestServerRouter implements RequestRouter<ClientServerRequest> {
 
         @Override
         public void process() {
-            request.applyState(new Request.ServerResponseRecievedStateContext(makeSuccessContext()));
+            request.applyState(new Request.ServerResponseReceivedStateContext(makeSuccessContext()));
         }
 
         private Request.ServerSuccessRequestStateContext makeSuccessContext() {
@@ -136,7 +136,7 @@ public class TestServerRouter implements RequestRouter<ClientServerRequest> {
 
         @Override
         public void process() {
-            request.applyState(new Request.ServerResponseRecievedStateContext(makeFailedContext()));
+            request.applyState(new Request.ServerResponseReceivedStateContext(makeFailedContext()));
         }
 
         private Request.ServerFailedRequestStateContext makeFailedContext() {

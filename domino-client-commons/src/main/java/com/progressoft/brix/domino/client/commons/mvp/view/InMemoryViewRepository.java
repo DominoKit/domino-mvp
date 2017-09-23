@@ -1,4 +1,4 @@
-package com.progressoft.brix.domino.gwt.client.mvp.view;
+package com.progressoft.brix.domino.client.commons.mvp.view;
 
 import com.progressoft.brix.domino.api.client.mvp.view.LazyViewLoader;
 import com.progressoft.brix.domino.api.client.mvp.view.View;

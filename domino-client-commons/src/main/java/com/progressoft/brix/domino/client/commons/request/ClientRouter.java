@@ -1,7 +1,7 @@
-package com.progressoft.brix.domino.gwt.client.request;
+package com.progressoft.brix.domino.client.commons.request;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.RunAsyncCallback;
+import com.progressoft.brix.domino.api.client.ClientApp;
+import com.progressoft.brix.domino.api.client.async.AsyncRunner;
 import com.progressoft.brix.domino.api.client.events.ClientRequestEventFactory;
 import com.progressoft.brix.domino.api.client.request.ClientRequest;
 import com.progressoft.brix.domino.api.client.request.RequestRouter;
@@ -20,15 +20,15 @@ public class ClientRouter implements RequestRouter<ClientRequest> {
 
     @Override
     public void routeRequest(final ClientRequest request) {
-        GWT.runAsync(new RunAsyncCallback() {
-            @Override
-            public void onFailure(Throwable t) {
-                LOGGER.error("Could not RunAsync request [" + request + "]", t);
-            }
-
+        ClientApp.make().getAsyncRunner().runAsync(new AsyncRunner.AsyncTask() {
             @Override
             public void onSuccess() {
                 requestEventFactory.make(request).fire();
+            }
+
+            @Override
+            public void onFailed(Throwable error) {
+                LOGGER.error("Could not RunAsync request [" + request + "]", error);
             }
         });
     }

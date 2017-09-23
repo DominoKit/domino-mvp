@@ -1,4 +1,4 @@
-package com.progressoft.brix.domino.gwt.client.mvp.presenter;
+package com.progressoft.brix.domino.client.commons.mvp.presenter;
 
 
 import com.progressoft.brix.domino.api.client.mvp.presenter.LazyPresenterLoader;

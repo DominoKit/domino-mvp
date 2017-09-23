@@ -1,10 +1,12 @@
 package com.progressoft.brix.domino.apt.client;
 
+import com.google.auto.service.AutoService;
 import com.progressoft.brix.domino.api.client.ModuleConfiguration;
 import com.progressoft.brix.domino.api.client.extension.ContributionsRegistry;
 import com.progressoft.brix.domino.apt.client.AnnotatedClassWithContribution;
 import com.progressoft.brix.domino.api.shared.extension.MainExtensionPoint;
 
+@AutoService(ModuleConfiguration.class)
 public class ContributionRegistrationsModuleConfiguration implements ModuleConfiguration {
 
     @Override

@@ -1,41 +1,38 @@
-package com.progressoft.brix.domino.gwt.client.request;
+package com.progressoft.brix.domino.client.commons.request;
 
 import com.progressoft.brix.domino.api.client.ClientApp;
-import com.progressoft.brix.domino.api.client.async.AsyncRunner.AsyncTask;
+import com.progressoft.brix.domino.api.client.async.AsyncRunner;
 import com.progressoft.brix.domino.api.client.events.ServerRequestEventFactory;
-import com.progressoft.brix.domino.api.client.mvp.presenter.Presentable;
 import com.progressoft.brix.domino.api.client.request.ClientServerRequest;
 import com.progressoft.brix.domino.api.client.request.ServerRequestCallBack;
-import com.progressoft.brix.domino.api.shared.request.ServerRequest;
 import com.progressoft.brix.domino.api.shared.request.ServerResponse;
-import org.fusesource.restygwt.client.Defaults;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-class RequestAsyncRunner {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RequestAsyncRunner.class);
-    private final ServerRequestEventFactory requestEventFactory;
-    private final DominoRequestDispatcher dispatcher = new DominoRequestDispatcher();
+public abstract class AbstractRequestAsyncSender implements RequestAsyncSender {
 
-    RequestAsyncRunner(ServerRequestEventFactory requestEventFactory) {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RequestAsyncSender.class);
+    private final ServerRequestEventFactory requestEventFactory;
+
+    public AbstractRequestAsyncSender(ServerRequestEventFactory requestEventFactory) {
         this.requestEventFactory = requestEventFactory;
-        Defaults.setDispatcher(dispatcher);
     }
 
-    public final void run(final ClientServerRequest request) {
+    @Override
+    public final void send(final ClientServerRequest request) {
         ClientApp.make().getAsyncRunner().runAsync(new RequestAsyncTask(request));
     }
 
-    private class RequestAsyncTask<P extends Presentable, R extends ServerRequest, S extends ServerResponse> implements AsyncTask {
-        private final ClientServerRequest<P, R, S> request;
+    private class RequestAsyncTask implements AsyncRunner.AsyncTask {
+        private final ClientServerRequest request;
 
-        private RequestAsyncTask(ClientServerRequest<P, R, S> request) {
+        private RequestAsyncTask(ClientServerRequest request) {
             this.request = request;
         }
 
         @Override
         public void onSuccess() {
-            dispatcher.withHeaders(request.headers());
+            onBeforeSend(request);
             ClientApp.make().getRequestRestSendersRepository().get(request.getClass().getCanonicalName())
                     .send(request.arguments(),
                             new ServerRequestCallBack() {

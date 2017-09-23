@@ -26,7 +26,7 @@ public class ServerSuccessRequestEvent extends ServerSuccessRequestGwtEvent impl
 
     @Override
     public void process() {
-        request.applyState(new Request.ServerResponseRecievedStateContext(makeSuccessContext()));
+        request.applyState(new Request.ServerResponseReceivedStateContext(makeSuccessContext()));
     }
 
     private Request.ServerSuccessRequestStateContext makeSuccessContext() {

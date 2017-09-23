@@ -9,10 +9,10 @@ public interface Request {
 
     }
 
-    class ServerResponseRecievedStateContext implements  RequestStateContext{
+    class ServerResponseReceivedStateContext implements  RequestStateContext{
         protected final RequestStateContext nextContext;
 
-        public ServerResponseRecievedStateContext(RequestStateContext nextContext) {
+        public ServerResponseReceivedStateContext(RequestStateContext nextContext) {
             this.nextContext = nextContext;
         }
     }

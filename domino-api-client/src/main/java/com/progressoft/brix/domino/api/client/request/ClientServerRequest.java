@@ -20,7 +20,7 @@ public abstract class ClientServerRequest<P extends Presentable, R extends Serve
 
     private R serverArgs;
 
-    private final RequestState<ServerResponseRecievedStateContext> sent;
+    private final RequestState<ServerResponseReceivedStateContext> sent;
 
     private final RequestState<ServerSuccessRequestStateContext> executedOnServer = context -> {
         process((P) getRequestPresenter(), serverArgs, (S) context.serverResponse);

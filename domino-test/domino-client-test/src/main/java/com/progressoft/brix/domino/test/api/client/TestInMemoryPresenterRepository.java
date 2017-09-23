@@ -2,7 +2,7 @@ package com.progressoft.brix.domino.test.api.client;
 
 import com.progressoft.brix.domino.api.client.mvp.presenter.LazyPresenterLoader;
 import com.progressoft.brix.domino.api.client.mvp.presenter.Presentable;
-import com.progressoft.brix.domino.gwt.client.mvp.presenter.InMemoryPresentersRepository;
+import com.progressoft.brix.domino.client.commons.mvp.presenter.InMemoryPresentersRepository;
 
 import java.util.HashMap;
 import java.util.Objects;

@@ -2,24 +2,23 @@ package com.progressoft.brix.domino.test.api.client;
 
 import com.progressoft.brix.domino.api.client.mvp.view.LazyViewLoader;
 import com.progressoft.brix.domino.api.client.mvp.view.View;
-import com.progressoft.brix.domino.gwt.client.mvp.view.InMemoryViewRepository;
+import com.progressoft.brix.domino.client.commons.mvp.view.InMemoryViewRepository;
 
 import java.util.HashMap;
 import java.util.Objects;
 
-public class TestInMemoryViewRepository extends InMemoryViewRepository{
+public class TestInMemoryViewRepository extends InMemoryViewRepository {
 
-    private final HashMap<String, LazyViewLoader> replacedViews=new HashMap<>();
-
+    private final HashMap<String, LazyViewLoader> replacedViews = new HashMap<>();
 
     @Override
     public View getView(String presenterName) {
-        if(replacedViews.containsKey(presenterName))
+        if (replacedViews.containsKey(presenterName))
             return replacedViews.get(presenterName).getView();
         return super.getView(presenterName);
     }
 
-    public void replaceView(String presenterName, TestViewFactory viewFactory){
+    public void replaceView(String presenterName, TestViewFactory viewFactory) {
         replacedViews.put(presenterName, new TestViewLoader(getViewLoader(presenterName), viewFactory));
     }
 
@@ -37,7 +36,7 @@ public class TestInMemoryViewRepository extends InMemoryViewRepository{
 
         public TestViewLoader(LazyViewLoader lazyViewLoader, TestViewFactory viewFactory) {
             super(lazyViewLoader.getPresenterName());
-            this.lazyViewLoader=lazyViewLoader;
+            this.lazyViewLoader = lazyViewLoader;
             this.viewFactory = viewFactory;
         }
 
@@ -48,8 +47,8 @@ public class TestInMemoryViewRepository extends InMemoryViewRepository{
 
         @Override
         public View getView() {
-            if(Objects.isNull(view))
-                view=viewFactory.make();
+            if (Objects.isNull(view))
+                view = viewFactory.make();
             return view;
         }
 

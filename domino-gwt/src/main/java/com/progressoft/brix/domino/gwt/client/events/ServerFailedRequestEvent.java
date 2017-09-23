@@ -26,7 +26,7 @@ public class ServerFailedRequestEvent extends ServerFailedRequestGwtEvent implem
 
     @Override
     public void process() {
-        request.applyState(new Request.ServerResponseRecievedStateContext(makeFailedContext()));
+        request.applyState(new Request.ServerResponseReceivedStateContext(makeFailedContext()));
     }
 
     private Request.ServerFailedRequestStateContext makeFailedContext() {

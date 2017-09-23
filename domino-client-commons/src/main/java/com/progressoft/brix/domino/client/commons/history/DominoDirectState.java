@@ -1,4 +1,4 @@
-package com.progressoft.brix.domino.gwt.client.history;
+package com.progressoft.brix.domino.client.commons.history;
 
 import com.progressoft.brix.domino.api.shared.history.TokenFilter;
 

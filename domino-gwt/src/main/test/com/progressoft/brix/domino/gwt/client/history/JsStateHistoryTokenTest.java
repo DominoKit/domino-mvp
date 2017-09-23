@@ -1,6 +1,7 @@
 package com.progressoft.brix.domino.gwt.client.history;
 
 import com.progressoft.brix.domino.api.shared.history.HistoryToken;
+import com.progressoft.brix.domino.client.commons.history.StateHistoryToken;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

@@ -4,6 +4,8 @@ import com.progressoft.brix.domino.api.client.ClientApp;
 import com.progressoft.brix.domino.api.shared.history.AppHistory;
 import com.progressoft.brix.domino.api.shared.history.HistoryToken;
 import com.progressoft.brix.domino.api.shared.history.TokenFilter;
+import com.progressoft.brix.domino.client.commons.history.DominoDirectState;
+import com.progressoft.brix.domino.client.commons.history.StateHistoryToken;
 import elemental2.dom.DomGlobal;
 import elemental2.dom.PopStateEvent;
 import jsinterop.base.Js;

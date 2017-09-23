@@ -67,7 +67,7 @@ public class ClientModuleAnnotationProcessor extends BaseProcessor {
                     clientModules.stream()
                             .filter(e -> validateElementKind(e, ElementKind.CLASS))
                             .forEach(e -> generateModuleConfiguration(newProcessorElement(e)));
-                return false;
+                return true;
             }
 
             new PresentersCollector(messager, typeUtils, elementUtils, elementFactory, presenters).collectPresenters(roundEnv);

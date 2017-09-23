@@ -3,8 +3,8 @@ package com.progressoft.brix.domino.test.api.client;
 import com.progressoft.brix.domino.api.shared.history.AppHistory;
 import com.progressoft.brix.domino.api.shared.history.HistoryToken;
 import com.progressoft.brix.domino.api.shared.history.TokenFilter;
-import com.progressoft.brix.domino.gwt.client.history.DominoDirectState;
-import com.progressoft.brix.domino.gwt.client.history.StateHistoryToken;
+import com.progressoft.brix.domino.client.commons.history.DominoDirectState;
+import com.progressoft.brix.domino.client.commons.history.StateHistoryToken;
 
 import java.util.Deque;
 import java.util.HashSet;

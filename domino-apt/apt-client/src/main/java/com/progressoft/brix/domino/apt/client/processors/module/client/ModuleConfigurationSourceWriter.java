@@ -1,5 +1,6 @@
 package com.progressoft.brix.domino.apt.client.processors.module.client;
 
+import com.google.auto.service.AutoService;
 import com.progressoft.brix.domino.api.client.ModuleConfiguration;
 import com.progressoft.brix.domino.api.client.annotations.ClientModule;
 import com.progressoft.brix.domino.apt.client.processors.module.client.contributions.ContributionsWriter;
@@ -33,12 +34,14 @@ public class ModuleConfigurationSourceWriter extends JavaSourceWriter {
         this.initialTasks = initialTasks;
         this.contributions = contributions;
         this.senders = senders;
-        this.sourceBuilder = new JavaSourceBuilder(processorElement.getAnnotation(ClientModule.class).name() + "ModuleConfiguration");
+        this.sourceBuilder = new JavaSourceBuilder(processorElement.getAnnotation(ClientModule.class).name() + "ModuleConfiguration")
+                .annotate("@AutoService(ModuleConfiguration.class)");
     }
 
     @Override
     public String write() {
         this.sourceBuilder.onPackage(processorElement.elementPackage())
+                .imports(AutoService.class.getCanonicalName())
                 .withModifiers(new ModifierBuilder().asPublic())
                 .implement(ModuleConfiguration.class.getCanonicalName());
         writeBody();
