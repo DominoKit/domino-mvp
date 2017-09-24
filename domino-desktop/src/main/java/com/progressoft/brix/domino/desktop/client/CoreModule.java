@@ -33,8 +33,9 @@ public class CoreModule {
                 .contributionsRepository(new InMemoryContributionRepository())
                 .requestSendersRepository(new InMemoryRequestRestSendersRepository())
                 .history(new DesktopStateHistory())
-                .asyncRunner(new DesktopAsyncRunner())
-                .mainExtensionPoint(new CoreMainExtensionPoint())
+                .asyncRunner(asyncTask -> {
+
+                }).mainExtensionPoint(new CoreMainExtensionPoint())
                 .dominoOptions(new DesktopDominoOptions())
                 .build();
     }
