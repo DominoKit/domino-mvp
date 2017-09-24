@@ -80,7 +80,7 @@ public class ClientModuleAnnotationProcessor extends BaseProcessor {
             messager.printMessage(Diagnostic.Kind.ERROR, ExceptionUtils.getFullStackTrace(e));
             throw e;
         }
-        return true;
+        return false;
     }
 
     private void generateModuleConfiguration(ProcessorElement element) {

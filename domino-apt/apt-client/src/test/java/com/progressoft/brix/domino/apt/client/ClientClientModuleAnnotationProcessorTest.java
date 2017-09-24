@@ -4,9 +4,12 @@ import com.progressoft.brix.domino.apt.client.processors.contributions.Contribut
 import com.progressoft.brix.domino.apt.client.processors.handlers.HandlerPathProcessor;
 import com.progressoft.brix.domino.apt.client.processors.inject.InjectContextProcessor;
 import com.progressoft.brix.domino.apt.client.processors.module.client.ClientModuleAnnotationProcessor;
+import com.progressoft.brix.domino.apt.client.processors.module.client.ConfigurationProviderAnnotationProcessor;
+import com.progressoft.brix.domino.test.apt.ProcessorAssert;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
+import javax.annotation.processing.Processor;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -36,8 +39,13 @@ public class ClientClientModuleAnnotationProcessorTest {
     @Test
     public void givenAnnotatedClassWithClientModule_ShouldGenerateClassImplementsModuleConfigurations() throws Exception {
         assertProcessing(BASE_PACKAGE + "AnnotatedClassWithClientModuleWithNameTest.java")
-                .withProcessor(processor())
-                .generates(getExpectedResultFileContent("TestModuleConfiguration.java"));
+                .withProcessors(providerProcessor(), processor())
+                .generates(getExpectedResultFileContent("TestModuleConfiguration.java"),
+                        getExpectedResultFileContent("TestModuleConfiguration_Provider.java"));
+    }
+
+    private Processor providerProcessor() {
+        return new ConfigurationProviderAnnotationProcessor();
     }
 
     @Test

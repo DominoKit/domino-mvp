@@ -12,6 +12,11 @@ public class SingleInputSource implements InputSource {
     }
 
     @Override
+    public BaseTargetProcessor withProcessors(Processor processor, Processor... rest) {
+        return new SingleTargetProcessor(inputClassName, processor, rest);
+    }
+
+    @Override
     public SingleTargetProcessor withProcessor(Processor processor) {
         return new SingleTargetProcessor(inputClassName, processor);
     }

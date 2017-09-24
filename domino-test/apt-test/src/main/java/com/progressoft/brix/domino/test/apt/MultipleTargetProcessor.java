@@ -14,22 +14,31 @@ public class MultipleTargetProcessor implements BaseTargetProcessor {
 
     private final String[] inputClassesNames;
     private final Processor processor;
+    private final Processor[] rest;
 
     public MultipleTargetProcessor(String[] inputClassesNames, Processor processor) {
         this.inputClassesNames = inputClassesNames;
         this.processor = processor;
+        this.rest=new Processor[]{};
+    }
+
+    public MultipleTargetProcessor(String[] inputClassesNames, Processor processor, Processor[] rest) {
+
+        this.inputClassesNames = inputClassesNames;
+        this.processor = processor;
+        this.rest = rest;
     }
 
     @Override
     public CompileTester.SuccessfulCompilationClause compilesWithoutErrors() {
         return Truth.assert_().about(javaSources()).that(Arrays.asList(asJavaFileObjectsArray()))
-                .processedWith(processor).compilesWithoutError();
+                .processedWith(processor, rest).compilesWithoutError();
     }
 
     @Override
     public CompileTester.UnsuccessfulCompilationClause failsToCompile() {
         return Truth.assert_().about(javaSources()).that(Arrays.asList(asJavaFileObjectsArray()))
-                .processedWith(processor).failsToCompile();
+                .processedWith(processor, rest).failsToCompile();
     }
 
     private JavaFileObject[] asJavaFileObjectsArray() {

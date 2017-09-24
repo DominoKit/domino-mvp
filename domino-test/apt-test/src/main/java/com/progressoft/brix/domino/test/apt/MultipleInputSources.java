@@ -10,6 +10,11 @@ public class MultipleInputSources implements InputSource {
     }
 
     @Override
+    public BaseTargetProcessor withProcessors(Processor processor, Processor... rest) {
+        return new MultipleTargetProcessor(inputClassesNames, processor, rest);
+    }
+
+    @Override
     public BaseTargetProcessor withProcessor(Processor processor) {
         return new MultipleTargetProcessor(inputClassesNames, processor);
     }
