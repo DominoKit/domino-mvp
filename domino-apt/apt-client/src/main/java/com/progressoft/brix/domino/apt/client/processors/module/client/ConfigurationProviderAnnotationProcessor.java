@@ -29,7 +29,6 @@ public class ConfigurationProviderAnnotationProcessor extends BaseProcessor {
 
 
         Set<? extends Element> modules = roundEnv.getElementsAnnotatedWith(ClientModule.class);
-        messager.printMessage(Diagnostic.Kind.WARNING, "------------------------ new configuration module " + modules);
         modules.forEach(m -> generateModuleConfigurationProvider(newProcessorElement(m)));
 
         return false;
