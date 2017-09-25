@@ -1,6 +1,7 @@
 package com.progressoft.brix.domino.desktop.client;
 
 import com.progressoft.brix.domino.api.client.ClientApp;
+import com.progressoft.brix.domino.api.client.async.AsyncRunner;
 import com.progressoft.brix.domino.client.commons.extensions.CoreMainExtensionPoint;
 import com.progressoft.brix.domino.client.commons.extensions.InMemoryContributionRepository;
 import com.progressoft.brix.domino.client.commons.mvp.presenter.InMemoryPresentersRepository;
@@ -33,9 +34,7 @@ public class CoreModule {
                 .contributionsRepository(new InMemoryContributionRepository())
                 .requestSendersRepository(new InMemoryRequestRestSendersRepository())
                 .history(new DesktopStateHistory())
-                .asyncRunner(asyncTask -> {
-
-                }).mainExtensionPoint(new CoreMainExtensionPoint())
+                .asyncRunner(AsyncRunner.AsyncTask::onSuccess).mainExtensionPoint(new CoreMainExtensionPoint())
                 .dominoOptions(new DesktopDominoOptions())
                 .build();
     }

@@ -3,7 +3,7 @@ package com.progressoft.brix.domino.api.client;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Domino  {
+public class Domino {
 
     private static final Logger LOGGER = Logger.getLogger(Domino.class.getName());
 

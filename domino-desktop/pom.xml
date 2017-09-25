@@ -38,5 +38,10 @@
             <artifactId>domino-client-commons</artifactId>
             <version>1.0-rc.2-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.7.0</version>
+        </dependency>
     </dependencies>
 </project>

@@ -48,5 +48,4 @@ public class DominoLauncher extends Launcher {
         configHolder.config = config;
     }
 
-
 }

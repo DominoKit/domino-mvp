@@ -171,7 +171,7 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
 
     private String pathParameter(String name) {
 
-        return "@PathParam(\""+name+"\") @Attribute(\""+name+"\") "+request.asSimpleName()+" "+name+", ";
+        return "@PathParam(\""+name+"\") @Attribute(\""+name+"\") "+request.asSimpleName()+" "+name.replace(".","")+", ";
     }
 
     private boolean hasServiceRoot() {

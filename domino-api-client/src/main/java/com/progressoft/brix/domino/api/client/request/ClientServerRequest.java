@@ -82,4 +82,5 @@ public abstract class ClientServerRequest<P extends Presentable, R extends Serve
     public Map<String, String> headers() {
         return new HashMap<>(headers);
     }
+
 }
