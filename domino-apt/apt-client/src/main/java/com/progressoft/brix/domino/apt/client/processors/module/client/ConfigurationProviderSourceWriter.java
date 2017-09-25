@@ -1,6 +1,7 @@
 package com.progressoft.brix.domino.apt.client.processors.module.client;
 
 import com.google.auto.service.AutoService;
+import com.google.common.annotations.GwtIncompatible;
 import com.progressoft.brix.domino.api.client.ConfigurationProvider;
 import com.progressoft.brix.domino.api.client.ModuleConfiguration;
 import com.progressoft.brix.domino.api.client.annotations.ClientModule;
@@ -29,7 +30,10 @@ public class ConfigurationProviderSourceWriter {
                 .addStatement("return new " + element.getAnnotation(ClientModule.class).name() + "ModuleConfiguration()")
                 .build();
         AnnotationSpec autoService = AnnotationSpec.builder(AutoService.class).addMember("value", "ConfigurationProvider.class").build();
+        AnnotationSpec gwtIncompatible = AnnotationSpec.builder(GwtIncompatible.class).addMember("value", "\"Unused in GWT compilation\"").build();
+
         TypeSpec configurationProvider = TypeSpec.classBuilder(element.getAnnotation(ClientModule.class).name() + "ModuleConfiguration_Provider")
+                .addAnnotation(gwtIncompatible)
                 .addAnnotation(autoService)
                 .addSuperinterface(ConfigurationProvider.class)
                 .addModifiers(Modifier.PUBLIC)

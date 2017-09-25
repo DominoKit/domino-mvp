@@ -1,10 +1,12 @@
 package com.progressoft.brix.domino.apt.client;
 
 import com.google.auto.service.AutoService;
+import com.google.common.annotations.GwtIncompatible;
 import com.progressoft.brix.domino.api.client.ConfigurationProvider;
 import com.progressoft.brix.domino.api.client.ModuleConfiguration;
 import java.lang.Override;
 
+@GwtIncompatible("Unused in GWT compilation")
 @AutoService(ConfigurationProvider.class)
 public class TestModuleConfiguration_Provider implements ConfigurationProvider {
 
