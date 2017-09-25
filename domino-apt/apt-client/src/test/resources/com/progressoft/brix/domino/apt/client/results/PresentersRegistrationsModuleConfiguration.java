@@ -1,6 +1,5 @@
 package com.progressoft.brix.domino.apt.client;
 
-import com.google.auto.service.AutoService;
 import com.progressoft.brix.domino.api.client.ModuleConfiguration;
 import com.progressoft.brix.domino.api.client.mvp.PresenterRegistry;
 import com.progressoft.brix.domino.api.client.mvp.presenter.LazyPresenterLoader;
@@ -10,7 +9,6 @@ import com.progressoft.brix.domino.apt.client.FirstAnnotatedClassWithPresenter;
 import com.progressoft.brix.domino.apt.client.SecondPresenterInterface;
 import com.progressoft.brix.domino.apt.client.SecondAnnotatedClassWithPresenter;
 
-@AutoService(ModuleConfiguration.class)
 public class PresentersRegistrationsModuleConfiguration implements ModuleConfiguration {
     @Override
     public void registerPresenters(PresenterRegistry registry) {

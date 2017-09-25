@@ -34,14 +34,12 @@ public class ModuleConfigurationSourceWriter extends JavaSourceWriter {
         this.initialTasks = initialTasks;
         this.contributions = contributions;
         this.senders = senders;
-        this.sourceBuilder = new JavaSourceBuilder(processorElement.getAnnotation(ClientModule.class).name() + "ModuleConfiguration")
-                .annotate("@AutoService(ModuleConfiguration.class)");
+        this.sourceBuilder = new JavaSourceBuilder(processorElement.getAnnotation(ClientModule.class).name() + "ModuleConfiguration");
     }
 
     @Override
     public String write() {
         this.sourceBuilder.onPackage(processorElement.elementPackage())
-                .imports(AutoService.class.getCanonicalName())
                 .withModifiers(new ModifierBuilder().asPublic())
                 .implement(ModuleConfiguration.class.getCanonicalName());
         writeBody();
