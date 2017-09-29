@@ -1,3 +1,6 @@
+# This documentation is outdated and does not reflect latest domino api, but we promise it will updated very very soon. Sorry for that.
+
+
 ## Welcome to ![logoimage](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/projectavatar.png) Domino
 
 <a title="Gitter" href="https://gitter.im/domino-gwt/Domino"><img src="https://badges.gitter.im/Join%20Chat.svg"></a>
