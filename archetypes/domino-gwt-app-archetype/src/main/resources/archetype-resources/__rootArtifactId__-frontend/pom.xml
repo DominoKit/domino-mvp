@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.progressoft.brix.domino</groupId>
-        <artifactId>domino-parent</artifactId>
-        <version>1.0-rc.2-SNAPSHOT</version>
+        <groupId>${groupId}</groupId>
+        <artifactId>${rootArtifactId}</artifactId>
+        <version>${version}</version>
     </parent>
 
     <artifactId>${artifactId}</artifactId>
@@ -15,19 +15,21 @@
     <packaging>gwt-app</packaging>
 
     <properties>
-        <compilation.directory>../${rootArtifactId}-backend/src/main/resources/webroot</compilation.directory>
+        <compilation.directory>${project.build.directory}/${project.build.finalName}/webroot</compilation.directory>
+        <code.server.workdir>${project.build.directory}/${project.build.finalName}/codeserver</code.server.workdir>
+        <extra.directory>${project.build.directory}/${project.build.finalName}/webroot</extra.directory>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>
-            <version>${gwtVersion}</version>
+            <version>${gwt.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-dev</artifactId>
-            <version>${gwtVersion}</version>
+            <version>${gwt.version}</version>
         </dependency>
         <dependency>
             <groupId>com.progressoft.brix.domino.api</groupId>
@@ -70,13 +72,19 @@
                 <artifactId>gwt-maven-plugin</artifactId>
                 <version>${gwt.plugin.version}</version>
                 <configuration>
-                    <webappDirectory>${compilation.directory}</webappDirectory>
                     <moduleName>${package}.AppClientModule</moduleName>
                     <moduleShortName>app</moduleShortName>
-                    <extra>${compilation.directory}/gwt/extra</extra>
+                    <webappDirectory>${compilation.directory}</webappDirectory>
+                    <codeserverWorkDir>${code.server.workdir}</codeserverWorkDir>
+                    <extra>${extra.directory}/app/gwt/extra</extra>
                     <compilerArgs>
                         <arg>-saveSource</arg>
+                        <!--<arge>-style</arge>
+                        <arg>PRETTY</arg>-->
                     </compilerArgs>
+                    <systemProperties>
+                        <gwt.persistentunitcachedir>${project.build.directory}/cacheDir</gwt.persistentunitcachedir>
+                    </systemProperties>
                 </configuration>
             </plugin>
             <plugin>

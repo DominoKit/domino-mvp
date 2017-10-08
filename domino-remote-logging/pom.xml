@@ -54,6 +54,11 @@
         </snapshotRepository>
     </distributionManagement>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <gwt.version>2.8.1</gwt.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.progressoft.brix.domino.api</groupId>
@@ -63,7 +68,7 @@
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-servlet</artifactId>
-            <version>2.8.1</version>
+            <version>${gwt.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -71,8 +76,4 @@
             <version>2.6.2</version>
         </dependency>
     </dependencies>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 </project>

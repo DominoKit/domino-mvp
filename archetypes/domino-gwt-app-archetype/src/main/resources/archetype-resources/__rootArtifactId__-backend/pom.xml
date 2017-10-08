@@ -4,9 +4,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.progressoft.brix.domino</groupId>
-        <artifactId>domino-parent</artifactId>
-        <version>1.0-rc.2-SNAPSHOT</version>
+        <groupId>${groupId}</groupId>
+        <artifactId>${rootArtifactId}</artifactId>
+        <version>${version}</version>
     </parent>
 
     <artifactId>${rootArtifactId}-backend</artifactId>
@@ -14,6 +14,13 @@
     <packaging>jar</packaging>
 
     <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>${rootArtifactId}-frontend</artifactId>
+            <version>${version}</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-web</artifactId>
@@ -124,43 +131,27 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>1.5.0</version>
+                <version>1.6.0</version>
                 <configuration>
                     <mainClass>com.progressoft.brix.domino.api.server.DominoLauncher</mainClass>
                     <arguments>
                         <argument>run</argument>
                         <argument>com.progressoft.brix.domino.api.server.StartupVerticle</argument>
+                        <argument>-conf</argument>
+                        <argument>target/classes/config.json</argument>
                     </arguments>
+                    <systemProperties>
+                        <systemProperty>
+                            <key>vertx.options.fileResolverCachingEnabled</key>
+                            <value>false</value>
+                        </systemProperty>
+                        <systemProperty>
+                            <key>domino.webroot.location</key>
+                            <value>../${rootArtifactId}-frontend/target/${rootArtifactId}-frontend-${project.version}/webroot</value>
+                        </systemProperty>
+                    </systemProperties>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <!-- XXX: We want to exclude engine-app-client from 'env-dev' profile, Maven forces us to make a 'env-prod' profile -->
-            <id>env-prod</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>${project.groupId}</groupId>
-                    <artifactId>${rootArtifactId}-frontend</artifactId>
-                    <version>${version}</version>
-                    <type>war</type>
-                    <scope>runtime</scope>
-                </dependency>
-            </dependencies>
-        </profile>
-        <profile>
-            <id>env-dev</id>
-            <activation>
-                <property>
-                    <name>env</name>
-                    <value>dev</value>
-                </property>
-            </activation>
-        </profile>
-    </profiles>
 </project>
