@@ -5,7 +5,7 @@
 <module>
     <inherits name="com.google.gwt.user.User"/>
     <inherits name="com.google.gwt.user.theme.clean.Clean"/>
-    <inherits name="ru.finam.slf4jgwt.logging.gwt.Logging"/>
+    <inherits name="com.progressoft.brix.domino.logger.Logging"/>
 
     <source path=""/>
 

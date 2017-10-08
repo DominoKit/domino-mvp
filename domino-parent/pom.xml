@@ -99,6 +99,7 @@
             <version>1.0-rc3</version>
             <scope>provided</scope>
         </dependency>
+
     </dependencies>
 
     <build>

@@ -1,19 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.progressoft.brix.domino.api</groupId>
-    <artifactId>domino-api-client</artifactId>
+
+    <groupId>com.progressoft.brix.domino.logger</groupId>
+    <artifactId>domino-gwt-logger</artifactId>
     <version>1.0-rc.2-SNAPSHOT</version>
     <packaging>gwt-lib</packaging>
-    <name>domino-api-client</name>
+    <name>domino-gwt-logger</name>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <domino.version>1.0-rc.2-SNAPSHOT</domino.version>
         <gwt.plugin.version>1.0-rc-8</gwt.plugin.version>
+        <gwt.version>2.8.1</gwt.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <url>https://github.com/GwtDomino/domino</url>
@@ -59,24 +59,17 @@
         </snapshotRepository>
     </distributionManagement>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.google.gwt</groupId>
+                <artifactId>gwt</artifactId>
+                <version>${gwt.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.progressoft.brix.domino.api</groupId>
-            <artifactId>domino-api-shared</artifactId>
-            <version>1.0-rc.2-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.progressoft.brix.domino.api</groupId>
-            <artifactId>domino-api-shared</artifactId>
-            <version>1.0-rc.2-SNAPSHOT</version>
-            <classifier>sources</classifier>
-        </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -92,7 +85,7 @@
                 <version>${gwt.plugin.version}</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <moduleName>com.progressoft.brix.domino.api.Domino</moduleName>
+                    <moduleName>com.progressoft.brix.domino.logger.gwt.Logging</moduleName>
                 </configuration>
             </plugin>
             <plugin>
