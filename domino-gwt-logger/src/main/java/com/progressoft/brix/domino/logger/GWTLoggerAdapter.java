@@ -1,4 +1,4 @@
-package com.progressoft.brix.domino.logger.gwt;
+package com.progressoft.brix.domino.logger;
 
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MarkerIgnoringBase;

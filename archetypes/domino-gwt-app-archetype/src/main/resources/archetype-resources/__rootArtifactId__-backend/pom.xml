@@ -41,6 +41,11 @@
             <artifactId>domino-remote-logging</artifactId>
             <version>${domino.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.progressoft.brix.domino.logging</groupId>
+            <artifactId>domino-log4j-server-logging</artifactId>
+            <version>${domino.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

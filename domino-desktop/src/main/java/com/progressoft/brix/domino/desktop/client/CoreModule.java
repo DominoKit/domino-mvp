@@ -16,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CoreModule {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CoreModule.class);
 
     private CoreModule() {
     }

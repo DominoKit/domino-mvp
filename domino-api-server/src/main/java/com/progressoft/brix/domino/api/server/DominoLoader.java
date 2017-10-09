@@ -20,13 +20,9 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.StaticHandler;
 
-import java.io.File;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.ServiceLoader;
 
-import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 public class DominoLoader {
@@ -37,7 +33,7 @@ public class DominoLoader {
     public static final String HTTP_PORT_KEY = "http.port";
     public static final int AROUND_6_MONTHS = 15768000;
 
-    private static String WEB_ROOT="webroot";
+    private String webroot = "webroot";
 
     private final Vertx vertx;
     private final Router router;
@@ -87,13 +83,10 @@ public class DominoLoader {
 
         new ServerConfigurationLoader(vertxContext).loadModules();
 
-        StaticHandler requestHandler= StaticHandler.create();
+        StaticHandler requestHandler = StaticHandler.create();
         if (nonNull(System.getProperty("domino.webroot.location"))) {
-            System.out.println("using custom webroot");
             requestHandler.setAllowRootFileSystemAccess(true);
-            WEB_ROOT= Paths.get(System.getProperty("domino.webroot.location")).toAbsolutePath().toString();
-            requestHandler.setWebRoot(
-                    WEB_ROOT);
+            requestHandler.setWebRoot(getWebRoot());
         }
 
         router.route("/static/*").handler(requestHandler)
@@ -105,6 +98,10 @@ public class DominoLoader {
             addSecurityHeadersHandler(router);
         vertx.createHttpServer(options.result()).requestHandler(router::accept)
                 .listen(options.result().getPort(), serverStartupHandler);
+    }
+
+    private String getWebRoot() {
+        return Paths.get(System.getProperty("domino.webroot.location")).toAbsolutePath().toString();
     }
 
     private HttpServerResponse serveIndexPage(RoutingContext event) {

@@ -85,7 +85,7 @@
                 <version>${gwt.plugin.version}</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <moduleName>com.progressoft.brix.domino.logger.gwt.Logging</moduleName>
+                    <moduleName>com.progressoft.brix.domino.logger.Logging</moduleName>
                 </configuration>
             </plugin>
             <plugin>
