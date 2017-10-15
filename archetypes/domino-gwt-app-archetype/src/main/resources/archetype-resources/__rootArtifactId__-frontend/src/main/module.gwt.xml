@@ -19,7 +19,7 @@
     <set-property name="gwt.logging.consoleHandler" value="DISABLED"/>
     <set-property name="compiler.useSourceMaps" value="true"/>
     <set-property name="gwt.logging.simpleRemoteHandler" value="ENABLED"/>
-    <set-configuration-property name="includeSourceMapUrl" value="src/__HASH___sourceMap__FRAGMENT__.json"/>
+    <set-configuration-property name="includeSourceMapUrl" value="static/app/gwt/extra/app/symbolMaps/__HASH___sourceMap__FRAGMENT__.json"/>
 
     <replace-with class="com.progressoft.brix.domino.gwt.client.logging.RestfulRemoteLogHandler">
         <when-type-is class="com.google.gwt.logging.client.SimpleRemoteLogHandler"/>

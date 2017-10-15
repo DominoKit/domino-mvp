@@ -32,8 +32,9 @@ public class DominoLoader {
     public static final int DEFAULT_PORT = 0;
     public static final String HTTP_PORT_KEY = "http.port";
     public static final int AROUND_6_MONTHS = 15768000;
+    public static final String WEBROOT = "webroot";
 
-    private String webroot = "webroot";
+    private String webroot = WEBROOT;
 
     private final Vertx vertx;
     private final Router router;
@@ -83,14 +84,14 @@ public class DominoLoader {
 
         new ServerConfigurationLoader(vertxContext).loadModules();
 
-        StaticHandler requestHandler = StaticHandler.create();
+        StaticHandler staticHandler = StaticHandler.create();
         if (nonNull(System.getProperty("domino.webroot.location"))) {
-            requestHandler.setAllowRootFileSystemAccess(true);
-            requestHandler.setWebRoot(getWebRoot());
+            staticHandler.setAllowRootFileSystemAccess(true);
+            staticHandler.setWebRoot(getWebRoot());
         }
 
-        router.route("/static/*").handler(requestHandler)
-                .failureHandler(this::serveIndexPage);
+        router.route("/static/*").handler(staticHandler)
+                .failureHandler(this::serverResource);
 
         router.route("/*").handler(this::serveIndexPage);
 
@@ -98,6 +99,14 @@ public class DominoLoader {
             addSecurityHeadersHandler(router);
         vertx.createHttpServer(options.result()).requestHandler(router::accept)
                 .listen(options.result().getPort(), serverStartupHandler);
+    }
+
+    private void serverResource(RoutingContext context) {
+        context.response().sendFile(WEBROOT + context.request().path().replace("/static", ""), event -> {
+            if (event.failed()) {
+                context.next();
+            }
+        });
     }
 
     private String getWebRoot() {
