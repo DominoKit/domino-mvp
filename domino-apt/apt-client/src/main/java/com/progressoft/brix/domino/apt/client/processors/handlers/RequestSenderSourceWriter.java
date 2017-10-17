@@ -3,6 +3,7 @@ package com.progressoft.brix.domino.apt.client.processors.handlers;
 
 import com.progressoft.brix.domino.api.client.ServiceRootMatcher;
 import com.progressoft.brix.domino.api.client.annotations.Path;
+import com.progressoft.brix.domino.api.client.annotations.Request;
 import com.progressoft.brix.domino.api.client.annotations.RequestSender;
 import com.progressoft.brix.domino.api.client.request.RequestRestSender;
 import com.progressoft.brix.domino.api.client.request.ServerRequestCallBack;
@@ -15,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static java.util.Objects.nonNull;
 
 public class RequestSenderSourceWriter extends JavaSourceWriter {
 
@@ -142,6 +145,11 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
             sendMethod.block("\t((RestServiceProxy)service).setResource(new Resource(SERVICE_ROOT));\n");
         else
             sendMethod.block("\t((RestServiceProxy)service).setResource(new Resource(ServiceRootMatcher.matchedServiceRoot(PATH)));\n");
+
+        Request requestAnnotation = processorElement.getAnnotation(Request.class);
+        if(nonNull(requestAnnotation) && !requestAnnotation.classifier().isEmpty()){
+            sendMethod.block("\trequest.setRequestKey(request.getRequestKey() + \"_"+requestAnnotation.classifier()+"\");\n");
+        }
 
         sendMethod.block("\tservice.send("+params+"new MethodCallback<" + response.asSimpleName() + ">() {" +
                 "\n\t\t@Override" +

@@ -8,6 +8,10 @@ public class ServerRequest implements Serializable{
 
     private String requestKey;
 
+    public ServerRequest() {
+        this.requestKey = this.getClass().getCanonicalName();
+    }
+
     public String getRequestKey() {
         return requestKey;
     }

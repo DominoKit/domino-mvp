@@ -103,16 +103,19 @@ public class ServerModuleSourceWriter extends JavaSourceWriter {
     }
 
     private String getHandlerRegistrationLine(ProcessorElement handler) {
+        Handler handlerAnnotation = handler.getAnnotation(Handler.class);
+        String classifier=handlerAnnotation.classifier().isEmpty()?"":"+\"_"+handlerAnnotation.classifier()+"\"";
+
         if(handler.isImplementsGenericInterface(RequestHandler.class)) {
             sourceBuilder.imports(new FullClassName(handler.getFullQualifiedGenericName()));
             FullClassName request = new FullClassName(new FullClassName(handler.getInterfaceFullQualifiedGenericName(RequestHandler.class)).allImports().get(1));
             sourceBuilder.imports(request);
-            return "registry.registerHandler("+request.asSimpleGenericName()+ CLASS_GET_CANONICAL_NAME +","+ NEW_KEYWORD +handler.simpleName()+"());";
+            return "registry.registerHandler("+request.asSimpleGenericName()+ CLASS_GET_CANONICAL_NAME+classifier+","+ NEW_KEYWORD +handler.simpleName()+"());";
         }else{
             sourceBuilder.imports(new FullClassName(handler.getFullQualifiedGenericName()));
             FullClassName request = new FullClassName(new FullClassName(handler.getInterfaceFullQualifiedGenericName(CallbackRequestHandler.class)).allImports().get(1));
             sourceBuilder.imports(request);
-            return "registry.registerCallbackHandler("+request.asSimpleGenericName()+ CLASS_GET_CANONICAL_NAME +","+ NEW_KEYWORD +handler.simpleName()+"());";
+            return "registry.registerCallbackHandler("+request.asSimpleGenericName()+ CLASS_GET_CANONICAL_NAME+classifier+","+NEW_KEYWORD +handler.simpleName()+"());";
         }
 
 

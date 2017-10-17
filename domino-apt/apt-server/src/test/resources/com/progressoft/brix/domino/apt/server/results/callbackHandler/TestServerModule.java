@@ -13,7 +13,7 @@ public class TestServerModule implements ServerModuleConfiguration{
 
     @Override
     public void registerHandlers(HandlerRegistry registry) {
-        registry.registerCallbackHandler(ServerRequest.class.getCanonicalName(), new HandlerImplementingRequestHandlerInterface());
+        registry.registerCallbackHandler(ServerRequest.class.getCanonicalName()+"_xyz", new HandlerImplementingRequestHandlerInterface());
     }
 
     @Override

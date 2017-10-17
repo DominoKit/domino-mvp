@@ -25,7 +25,7 @@ public class DefaultRequestExecutor implements RequestExecutor {
     @Override
     public ServerResponse executeRequest(ServerRequest request, ServerEntryPointContext context) {
         callInterceptors(request, context);
-        return handlersRepository.findHandler(request.getClass().getCanonicalName()).handleRequest(request);
+        return handlersRepository.findHandler(request.getRequestKey()).handleRequest(request);
     }
 
     private void callInterceptors(ServerRequest request, ServerEntryPointContext context) {
@@ -36,7 +36,7 @@ public class DefaultRequestExecutor implements RequestExecutor {
     @Override
     public void executeCallbackRequest(ServerRequest request, ServerEntryPointContext context, CallbackRequestHandler.ResponseCallback<ServerResponse> responseCallback) {
         callInterceptors(request, context);
-        handlersRepository.findCallbackHandler(request.getClass().getCanonicalName()).handleRequest(request, responseCallback);
+        handlersRepository.findCallbackHandler(request.getRequestKey()).handleRequest(request, responseCallback);
     }
 
     private Collection<RequestInterceptor> getInterceptors(ServerRequest request, ServerEntryPointContext context) {

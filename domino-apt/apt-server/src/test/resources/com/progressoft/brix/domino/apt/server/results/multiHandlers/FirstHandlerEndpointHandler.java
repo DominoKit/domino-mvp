@@ -1,14 +1,17 @@
 package com.progressoft.brix.domino.apt.server.multiHandlers;
 
+import com.progressoft.brix.domino.api.server.ServerApp;
+import com.progressoft.brix.domino.api.server.entrypoint.VertxEntryPointContext;
+import com.progressoft.brix.domino.api.shared.request.ServerResponse;
 import io.vertx.core.Handler;
+import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.Json;
 import io.vertx.ext.web.RoutingContext;
-import com.progressoft.brix.domino.api.server.ServerApp;
-import com.progressoft.brix.domino.apt.server.multiHandlers.FirstRequest;
-import com.progressoft.brix.domino.api.shared.request.ServerResponse;
-import com.progressoft.brix.domino.api.server.entrypoint.VertxEntryPointContext;
-import io.vertx.core.http.HttpMethod;
+import java.lang.Exception;
+import java.lang.Override;
+import javax.annotation.Generated;
 
+@Generated("com.progressoft.brix.domino.apt.server.EndpointsProcessor")
 public class FirstHandlerEndpointHandler implements Handler<RoutingContext> {
 
     @Override
@@ -21,6 +24,7 @@ public class FirstHandlerEndpointHandler implements Handler<RoutingContext> {
                 requestBody=Json.decodeValue(routingContext.getBodyAsString(), FirstRequest.class);
             }else {
                 requestBody = new FirstRequest();
+                requestBody.setRequestKey(FirstRequest.class.getCanonicalName());
             }
             ServerResponse response = (ServerResponse) serverApp
                     .executeRequest(requestBody, new VertxEntryPointContext(routingContext, serverApp.serverContext().config(),

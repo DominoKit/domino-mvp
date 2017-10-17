@@ -5,22 +5,29 @@ import com.progressoft.brix.domino.api.server.ServerApp;
 import com.progressoft.brix.domino.api.server.entrypoint.VertxEntryPointContext;
 import com.progressoft.brix.domino.api.server.handler.CallbackRequestHandler;
 import com.progressoft.brix.domino.api.server.handler.RequestHandler;
-import com.progressoft.brix.domino.apt.commons.*;
+import com.progressoft.brix.domino.apt.commons.FullClassName;
+import com.progressoft.brix.domino.apt.commons.JavaSourceBuilder;
+import com.progressoft.brix.domino.apt.commons.JavaSourceWriter;
+import com.progressoft.brix.domino.apt.commons.ProcessorElement;
+import com.squareup.javapoet.*;
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.Json;
 import io.vertx.ext.web.RoutingContext;
 
+import javax.annotation.Generated;
+import javax.lang.model.element.Modifier;
+import javax.lang.model.type.TypeMirror;
+import java.io.IOException;
 import java.util.List;
 
 public class EndpointHandlerSourceWriter extends JavaSourceWriter {
 
-    private static final String OVERRIDE = "@Override";
     private static final int REQUEST_IMPORT_INDEX = 1;
     private static final int RESPONSE_IMPORT_INDEX = 2;
     private final JavaSourceBuilder sourceBuilder;
-    private final FullClassName request;
-    private final FullClassName response;
+    private TypeMirror requestType;
+    private TypeMirror responseType;
 
     public EndpointHandlerSourceWriter(ProcessorElement element) {
         super(element);
@@ -33,86 +40,106 @@ public class EndpointHandlerSourceWriter extends JavaSourceWriter {
             handlerImports = new FullClassName(processorElement.getInterfaceFullQualifiedGenericName(CallbackRequestHandler.class)).allImports();
         }
 
-        this.request = new FullClassName(handlerImports.get(REQUEST_IMPORT_INDEX));
-        this.response = new FullClassName(handlerImports.get(RESPONSE_IMPORT_INDEX));
+
+        responseType = processorElement.getElementUtils().getTypeElement(new FullClassName(handlerImports.get(RESPONSE_IMPORT_INDEX)).asImport()).asType();
+        requestType = processorElement.getElementUtils().getTypeElement(new FullClassName(handlerImports.get(REQUEST_IMPORT_INDEX)).asImport()).asType();
     }
 
     @Override
     public String write() {
-        sourceBuilder.onPackage(processorElement.elementPackage())
-                .imports(Handler.class.getCanonicalName())
-                .imports(Json.class.getCanonicalName())
-                .imports(RoutingContext.class.getCanonicalName())
-                .imports(ServerApp.class.getCanonicalName())
-                .imports(request.asImport())
-                .imports(response.asImport())
-                .imports(VertxEntryPointContext.class.getCanonicalName())
-                .imports(HttpMethod.class.getCanonicalName())
-                .withModifiers(new ModifierBuilder().asPublic())
-                .implement("Handler<RoutingContext>");
 
-        writeBody();
+        AnnotationSpec generatedAnnotation = AnnotationSpec.builder(Generated.class)
+                .addMember("value", "\""+EndpointsProcessor.class.getCanonicalName()+"\"")
+                .build();
+        TypeSpec endpoint = TypeSpec.classBuilder(processorElement.simpleName() +
+                "EndpointHandler")
+                .addModifiers(Modifier.PUBLIC)
+                .addSuperinterface(ParameterizedTypeName.get(Handler.class, RoutingContext.class))
+                .addMethod(writeBody())
+                .addAnnotation(generatedAnnotation)
+                .build();
 
-        return sourceBuilder.build();
+        StringBuilder builder = new StringBuilder();
+        try {
+            JavaFile.builder(processorElement.elementPackage(), endpoint).build().writeTo(builder);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return builder.toString();
     }
 
 
-    private void writeBody() {
-        writeHandleMethod();
+    private MethodSpec writeBody() {
+        return MethodSpec.methodBuilder("handle")
+                .addAnnotation(Override.class)
+                .addModifiers(Modifier.PUBLIC)
+                .addParameter(RoutingContext.class, "routingContext")
+                .beginControlFlow("try")
+                .addCode(buildBody())
+                .nextControlFlow("catch($T e)", Exception.class)
+                .addStatement("routingContext.fail(e)")
+                .endControlFlow()
+                .build();
     }
 
-    private void writeHandleMethod() {
 
-        MethodBuilder methodBuilder = sourceBuilder.method("handle")
-                .annotate(OVERRIDE)
-                .withModifier(new ModifierBuilder().asPublic())
-                .returns("void")
-                .takes("RoutingContext", "routingContext")
-                .block("try {")
-                .block("\tServerApp serverApp = ServerApp.make();")
-                .block("\t"+request.asSimpleName() + " requestBody;")
-                .block("\tHttpMethod method=routingContext.request().method();")
-                .block("\n\t\t\tif(HttpMethod.POST.equals(method) || HttpMethod.PUT.equals(method) || HttpMethod.PATCH.equals(method)){")
-                .block("\t\trequestBody=Json.decodeValue(routingContext.getBodyAsString(), " +
-                        request.asSimpleName() + ".class);")
-                .block("\t}else {")
-                .block("\t\trequestBody = new " +request.asSimpleName() + "();")
-                .block("\t}\n");
+    private CodeBlock buildBody() {
+        return CodeBlock.builder()
+                .addStatement("$1T serverApp = $1T.make()", ServerApp.class)
+                .addStatement("$T requestBody", requestType)
+                .addStatement("$T method = routingContext.request().method()", HttpMethod.class)
+                .beginControlFlow("if($1T.POST.equals(method) || $1T.PUT.equals(method) || $1T.PATCH.equals(method))", HttpMethod.class)
+                .addStatement("requestBody=$T.decodeValue(routingContext.getBodyAsString(), $T.class)", Json.class, requestType)
+                .nextControlFlow("else")
+                .addStatement("requestBody = new $T()", requestType)
+                .addStatement("requestBody.setRequestKey($T.class.getCanonicalName())", requestType)
+                .endControlFlow()
+                .add(evaluateHandler())
+                .build();
+    }
+
+    private CodeBlock evaluateHandler() {
         if (processorElement.isImplementsGenericInterface(RequestHandler.class))
-            completeHandler(methodBuilder);
+            return completeHandler();
         else
-            completeHandlerCallback(methodBuilder);
+            return completeHandlerCallback();
     }
 
-    private void completeHandler(MethodBuilder methodBuilder) {
-        methodBuilder.block(response.asSimpleName() + " response=(" + response.asSimpleName() +
-                ")serverApp.executeRequest(requestBody, new VertxEntryPointContext(routingContext, serverApp.serverContext().config(), routingContext.vertx()));")
-                .block("routingContext.response()\n" +
+    private CodeBlock completeHandler() {
+
+        return CodeBlock.builder()
+                .addStatement("$1T response=($1T)serverApp.executeRequest(requestBody, new $2T(routingContext, serverApp.serverContext().config(), routingContext.vertx()))", responseType, VertxEntryPointContext.class)
+                .addStatement("routingContext.response()\n" +
                         "                .putHeader(\"content-type\", \"application/json\")\n" +
-                        "                .end(Json.encode(response));")
-                .block("} catch(Exception e) {")
-                .block("\troutingContext.fail(e);")
-                .block("}")
-                .end();
+                        "                .end($T.encode(response))", Json.class)
+                .build();
     }
 
-    private void completeHandlerCallback(MethodBuilder methodBuilder) {
-       sourceBuilder.imports(CallbackRequestHandler.class.getCanonicalName());
-        methodBuilder.block("\tserverApp.executeCallbackRequest(requestBody, new VertxEntryPointContext(routingContext, serverApp.serverContext().config(), routingContext.vertx()), new CallbackRequestHandler.ResponseCallback() {", false)
-                .block("\n\t\t\t\t@Override\n" +
-                        "\t\t\t\tpublic void complete(Object response) {")
-                .block("\t\t\troutingContext.response()\n" +
-                        "\t\t                .putHeader(\"content-type\", \"application/json\")\n" +
-                        "\t\t                .end(Json.encode((" + response.asSimpleName() + ")response));")
-                .block("\t\t}\n")
-                .block("\t\t@Override\n" +
-                        "\t\t\t\tpublic void redirect(String location) {\n" +
-                        "\t\t\t\t\troutingContext.response().setStatusCode(302).putHeader(\"Location\",location).end();\n"+
-                        "\t\t\t\t}")
-                .block("\t});\n")
-                .block("} catch(Exception e) {")
-                .block("\troutingContext.fail(e);")
-                .block("}")
-                .end();
+    private CodeBlock completeHandlerCallback() {
+        sourceBuilder.imports(CallbackRequestHandler.class.getCanonicalName());
+        MethodSpec completeMethod = MethodSpec.methodBuilder("complete")
+                .addModifiers(Modifier.PUBLIC)
+                .addAnnotation(Override.class)
+                .addParameter(Object.class, "response")
+                .addStatement("routingContext.response()" +
+                        ".putHeader(\"content-type\", \"application/json\")" +
+                        ".end($T.encode(($T)response))", Json.class, responseType).build();
+
+        MethodSpec redirectMethod = MethodSpec.methodBuilder("redirect")
+                .addModifiers(Modifier.PUBLIC)
+                .addAnnotation(Override.class)
+                .addParameter(String.class, "location")
+                .addStatement("routingContext.response().setStatusCode(302).putHeader(\"Location\",location).end()").build();
+
+
+        TypeSpec responseCallback = TypeSpec.anonymousClassBuilder("")
+                .addSuperinterface(CallbackRequestHandler.ResponseCallback.class)
+                .addMethod(completeMethod)
+                .addMethod(redirectMethod)
+                .build();
+
+        return CodeBlock.builder()
+                .addStatement("serverApp.executeCallbackRequest(requestBody, new $T(routingContext, serverApp.serverContext().config(), routingContext.vertx()), $L)", VertxEntryPointContext.class, responseCallback).build();
+
     }
 }

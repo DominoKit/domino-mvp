@@ -11,4 +11,7 @@ import java.lang.annotation.Target;
 public @interface Handler {
     @NotNull
     String value();
+
+    @NotNull
+    String classifier() default "";
 }
