@@ -13,6 +13,7 @@ import java.lang.Exception;
 import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
+import java.util.Objects;
 import javax.annotation.Generated;
 
 @Generated("com.progressoft.brix.domino.apt.server.EndpointsProcessor")
@@ -23,13 +24,20 @@ public class HandlerImplementingRequestHandlerInterfaceEndpointHandler implement
         try {
             ServerApp serverApp = ServerApp.make();
             ServerRequest requestBody;
+            String requestKey=routingContext.request().getHeader("REQUEST_KEY");
             HttpMethod method=routingContext.request().method();
             if(HttpMethod.POST.equals(method) || HttpMethod.PUT.equals(method) || HttpMethod.PATCH.equals(method)){
                 requestBody=Json.decodeValue(routingContext.getBodyAsString(), ServerRequest.class);
             }else {
                 requestBody = new ServerRequest();
-                requestBody.setRequestKey(ServerRequest.class.getCanonicalName());
             }
+
+            if(Objects.nonNull(requestKey) && !requestKey.isEmpty()) {
+                requestBody.setRequestKey(requestKey);
+            } else {
+                requestBody.setRequestKey(requestBody.getClass().getCanonicalName());
+            }
+
             serverApp.executeCallbackRequest(requestBody, new VertxEntryPointContext(routingContext, serverApp.serverContext().config(),
                     routingContext.vertx()), new CallbackRequestHandler.ResponseCallback() {
                 @Override

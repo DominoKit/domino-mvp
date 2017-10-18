@@ -20,6 +20,7 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.type.TypeMirror;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 public class EndpointHandlerSourceWriter extends JavaSourceWriter {
 
@@ -87,12 +88,17 @@ public class EndpointHandlerSourceWriter extends JavaSourceWriter {
         return CodeBlock.builder()
                 .addStatement("$1T serverApp = $1T.make()", ServerApp.class)
                 .addStatement("$T requestBody", requestType)
+                .addStatement("$T requestKey=routingContext.request().getHeader(\"REQUEST_KEY\")", String.class)
                 .addStatement("$T method = routingContext.request().method()", HttpMethod.class)
                 .beginControlFlow("if($1T.POST.equals(method) || $1T.PUT.equals(method) || $1T.PATCH.equals(method))", HttpMethod.class)
                 .addStatement("requestBody=$T.decodeValue(routingContext.getBodyAsString(), $T.class)", Json.class, requestType)
                 .nextControlFlow("else")
                 .addStatement("requestBody = new $T()", requestType)
-                .addStatement("requestBody.setRequestKey($T.class.getCanonicalName())", requestType)
+                .endControlFlow()
+                .beginControlFlow("if($T.nonNull(requestKey) && !requestKey.isEmpty())", Objects.class)
+                .addStatement("requestBody.setRequestKey(requestKey)")
+                .nextControlFlow("else")
+                .addStatement("requestBody.setRequestKey(requestBody.getClass().getCanonicalName())")
                 .endControlFlow()
                 .add(evaluateHandler())
                 .build();

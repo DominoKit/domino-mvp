@@ -78,6 +78,7 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
                 .imports("javax.ws.rs.Path")
                 .imports("javax.ws.rs.Produces")
                 .imports("javax.ws.rs.core.MediaType")
+                .imports(Map.class.getCanonicalName())
                 .imports("static java.util.Objects.*")
                 .imports("org.fusesource.restygwt.client.*")
                 .imports(ServiceRootMatcher.class.getCanonicalName())
@@ -133,6 +134,7 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
                 .withModifier(new ModifierBuilder().asPublic())
                 .returnsVoid()
                 .takes(request.asSimpleName(), "request")
+                .takes("Map<String, String>", "headers")
                 .takes("ServerRequestCallBack", "callBack");
 
 
@@ -141,15 +143,19 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
         if(!pathParams.isEmpty())
             params= passedParams();
 
-        if(hasServiceRoot())
-            sendMethod.block("\t((RestServiceProxy)service).setResource(new Resource(SERVICE_ROOT));\n");
-        else
-            sendMethod.block("\t((RestServiceProxy)service).setResource(new Resource(ServiceRootMatcher.matchedServiceRoot(PATH)));\n");
-
         Request requestAnnotation = processorElement.getAnnotation(Request.class);
         if(nonNull(requestAnnotation) && !requestAnnotation.classifier().isEmpty()){
-            sendMethod.block("\trequest.setRequestKey(request.getRequestKey() + \"_"+requestAnnotation.classifier()+"\");\n");
+            sendMethod.block("\theaders.put(\"REQUEST_KEY\", request.getClass().getCanonicalName()" + "+\"_"+requestAnnotation.classifier()+"\");\n");
+        }else{
+            sendMethod.block("\theaders.put(\"REQUEST_KEY\", request.getClass().getCanonicalName());\n");
         }
+
+        if(hasServiceRoot())
+            sendMethod.block("\t((RestServiceProxy)service).setResource(new Resource(SERVICE_ROOT, headers));\n");
+        else
+            sendMethod.block("\t((RestServiceProxy)service).setResource(new Resource(ServiceRootMatcher.matchedServiceRoot(PATH), headers));\n");
+
+
 
         sendMethod.block("\tservice.send("+params+"new MethodCallback<" + response.asSimpleName() + ">() {" +
                 "\n\t\t@Override" +

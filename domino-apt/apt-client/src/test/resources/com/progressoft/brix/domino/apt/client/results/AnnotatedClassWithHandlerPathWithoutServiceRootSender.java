@@ -13,6 +13,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.Map;
 import static java.util.Objects.*;
 import org.fusesource.restygwt.client.*;
 import com.progressoft.brix.domino.api.client.ServiceRootMatcher;
@@ -33,8 +34,9 @@ public class AnnotatedClassWithHandlerPathWithoutServiceRootSender implements Re
     private AnnotatedClassWithHandlerPathWithoutServiceRootService service = GWT.create(AnnotatedClassWithHandlerPathWithoutServiceRootService.class);
 
     @Override
-    public void send(SomeRequest request, ServerRequestCallBack callBack) {
-        ((RestServiceProxy)service).setResource(new Resource(ServiceRootMatcher.matchedServiceRoot(PATH)));
+    public void send(SomeRequest request, Map<String, String> headers, ServerRequestCallBack callBack) {
+        headers.put("REQUEST_KEY", request.getClass().getCanonicalName());
+        ((RestServiceProxy)service).setResource(new Resource(ServiceRootMatcher.matchedServiceRoot(PATH), headers));
         service.send(request, request, new MethodCallback<SomeResponse>() {
             @Override
             public void onFailure(Method method, Throwable throwable) {

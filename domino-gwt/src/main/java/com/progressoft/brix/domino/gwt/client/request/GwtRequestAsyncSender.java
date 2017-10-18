@@ -22,7 +22,7 @@ public class GwtRequestAsyncSender extends AbstractRequestAsyncSender {
     @Override
     protected void sendRequest(ClientServerRequest request, ServerRequestEventFactory requestEventFactory) {
         ClientApp.make().getRequestRestSendersRepository().get(request.getKey())
-                .send(request.arguments(),
+                .send(request.arguments(), request.headers(),
                         new ServerRequestCallBack() {
                             @Override
                             public void onFailure(Throwable throwable) {

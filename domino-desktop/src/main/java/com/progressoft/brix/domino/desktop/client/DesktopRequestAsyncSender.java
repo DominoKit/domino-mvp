@@ -4,6 +4,7 @@ import com.progressoft.brix.domino.api.client.ServiceRootMatcher;
 import com.progressoft.brix.domino.api.client.annotations.Path;
 import com.progressoft.brix.domino.api.client.events.ServerRequestEventFactory;
 import com.progressoft.brix.domino.api.client.request.ClientServerRequest;
+import com.progressoft.brix.domino.api.client.request.Request;
 import com.progressoft.brix.domino.api.shared.request.ServerRequest;
 import com.progressoft.brix.domino.api.shared.request.ServerResponse;
 import com.progressoft.brix.domino.client.commons.request.AbstractRequestAsyncSender;
@@ -46,11 +47,17 @@ public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
     protected void sendRequest(ClientServerRequest request, ServerRequestEventFactory requestEventFactory) {
         Path pathAnnotation = request.getClass().getAnnotation(Path.class);
         HttpMethod method = HttpMethod.valueOf(pathAnnotation.method());
+        String classifier=request.getClass().getAnnotation(com.progressoft.brix.domino.api.client.annotations.Request.class).classifier();
+
 
 
         String absoluteURI = buildPath(pathAnnotation, request.arguments());
-        System.out.println(">>>>>>>>>>. " + absoluteURI);
         HttpRequest<Buffer> httpRequest = webClient.requestAbs(method, absoluteURI);
+
+        if(classifier.isEmpty())
+            httpRequest.putHeader("REQUEST_KEY", request.arguments().getRequestKey());
+        else
+            httpRequest.putHeader("REQUEST_KEY", request.arguments().getRequestKey()+"_"+classifier);
 
         httpRequest.putHeader("Content-Type", "application/json");
         if (HttpMethod.POST.equals(method) || HttpMethod.PUT.equals(method) || HttpMethod.PATCH.equals(method))
