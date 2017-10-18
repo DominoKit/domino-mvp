@@ -7,7 +7,6 @@ import com.progressoft.brix.domino.apt.commons.FullClassName;
 import com.progressoft.brix.domino.apt.commons.JavaSourceBuilder;
 import com.progressoft.brix.domino.apt.commons.MethodBuilder;
 import com.progressoft.brix.domino.apt.commons.ModifierBuilder;
-import org.fusesource.restygwt.client.ServiceRoots;
 
 import java.util.Set;
 

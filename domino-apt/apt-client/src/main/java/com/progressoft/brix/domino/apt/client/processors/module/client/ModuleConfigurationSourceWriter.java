@@ -1,6 +1,5 @@
 package com.progressoft.brix.domino.apt.client.processors.module.client;
 
-import com.google.auto.service.AutoService;
 import com.progressoft.brix.domino.api.client.ModuleConfiguration;
 import com.progressoft.brix.domino.api.client.annotations.ClientModule;
 import com.progressoft.brix.domino.apt.client.processors.module.client.contributions.ContributionsWriter;
@@ -9,7 +8,10 @@ import com.progressoft.brix.domino.apt.client.processors.module.client.presenter
 import com.progressoft.brix.domino.apt.client.processors.module.client.requests.RequestsWriter;
 import com.progressoft.brix.domino.apt.client.processors.module.client.requests.SendersWriter;
 import com.progressoft.brix.domino.apt.client.processors.module.client.views.ViewWriter;
-import com.progressoft.brix.domino.apt.commons.*;
+import com.progressoft.brix.domino.apt.commons.JavaSourceBuilder;
+import com.progressoft.brix.domino.apt.commons.JavaSourceWriter;
+import com.progressoft.brix.domino.apt.commons.ModifierBuilder;
+import com.progressoft.brix.domino.apt.commons.ProcessorElement;
 
 import java.util.Set;
 

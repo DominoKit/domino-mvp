@@ -5,7 +5,6 @@ import com.progressoft.brix.domino.api.client.request.ClientServerRequest;
 import com.progressoft.brix.domino.api.client.annotations.Request;
 
 import javax.ws.rs.HttpMethod;
-import javax.ws.rs.POST;
 
 @Request(classifier="xyz")
 @Path(value="somePath/{id}/{code}", serviceRoot ="someServiceRootPath", method=HttpMethod.GET)

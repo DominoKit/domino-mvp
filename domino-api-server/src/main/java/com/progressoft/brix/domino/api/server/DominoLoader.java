@@ -34,8 +34,6 @@ public class DominoLoader {
     public static final int AROUND_6_MONTHS = 15768000;
     public static final String WEBROOT = "webroot";
 
-    private String webroot = WEBROOT;
-
     private final Vertx vertx;
     private final Router router;
     private final JsonObject config;

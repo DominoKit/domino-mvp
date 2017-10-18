@@ -12,8 +12,6 @@ import com.progressoft.brix.domino.client.commons.request.InMemoryRequestsReposi
 import com.progressoft.brix.domino.client.commons.request.ServerRouter;
 import com.progressoft.brix.domino.desktop.client.events.DesktopClientEventFactory;
 import com.progressoft.brix.domino.desktop.client.events.DesktopEventBus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class CoreModule {
 
