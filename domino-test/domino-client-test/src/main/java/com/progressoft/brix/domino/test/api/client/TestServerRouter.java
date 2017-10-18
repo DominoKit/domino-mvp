@@ -9,6 +9,7 @@ import com.progressoft.brix.domino.api.client.request.Request;
 import com.progressoft.brix.domino.api.client.request.RequestRouter;
 import com.progressoft.brix.domino.api.server.ServerApp;
 import com.progressoft.brix.domino.api.server.entrypoint.ServerEntryPointContext;
+import com.progressoft.brix.domino.api.server.handler.HandlersRepository;
 import com.progressoft.brix.domino.api.shared.request.FailedServerResponse;
 import com.progressoft.brix.domino.api.shared.request.ServerResponse;
 import org.slf4j.Logger;
@@ -64,7 +65,11 @@ public class TestServerRouter implements RequestRouter<ClientServerRequest> {
                 response = service.executeRequest(request.arguments());
             }
             listener.onRouteRequest(request, response);
-        } catch (Throwable ex) {
+        }catch (HandlersRepository.RequestHandlerNotFound ex){
+            LOGGER.error("Request handler not found for request ["+request.getClass().getSimpleName()+"]! either fake the request or start an actual server");
+            eventFactory.makeFailed(request, ex).fire();
+            return;
+        }catch (Throwable ex) {
             LOGGER.error("could not execute request : ", ex);
             eventFactory.makeFailed(request, ex).fire();
             return;

@@ -4,6 +4,7 @@ import com.progressoft.brix.domino.api.client.ModuleConfiguration;
 import com.progressoft.brix.domino.api.client.ModuleConfigurator;
 import com.progressoft.brix.domino.api.client.mvp.presenter.Presentable;
 import com.progressoft.brix.domino.api.client.mvp.view.View;
+import com.progressoft.brix.domino.api.client.request.ClientServerRequest;
 import com.progressoft.brix.domino.api.server.config.ServerConfiguration;
 import com.progressoft.brix.domino.api.server.config.ServerConfigurationLoader;
 import com.progressoft.brix.domino.api.server.config.VertxConfiguration;
@@ -39,8 +40,8 @@ public class DominoTestClient
 
     private VertxEntryPointContext testEntryPointContext;
     private Vertx vertx = Vertx.vertx();
-    private BeforeStarted beforeStarted = context -> LOGGER.info("Before start client...");
-    private StartCompleted startCompleted = context -> LOGGER.info("Client started...");
+    private BeforeStarted beforeStarted = context -> {};
+    private StartCompleted startCompleted = context -> {};
 
     private DominoTestClient(ModuleConfiguration... configurations) {
         this.modules = configurations;
@@ -160,6 +161,11 @@ public class DominoTestClient
     @Override
     public TestResponse forRequest(String requestKey) {
         return new TestResponse(requestKey);
+    }
+
+    @Override
+    public TestResponse forRequest(Class<? extends ClientServerRequest> request) {
+        return forRequest(request.getCanonicalName());
     }
 
     @Override

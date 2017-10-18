@@ -4,7 +4,6 @@ import com.progressoft.brix.domino.api.client.ServiceRootMatcher;
 import com.progressoft.brix.domino.api.client.annotations.Path;
 import com.progressoft.brix.domino.api.client.events.ServerRequestEventFactory;
 import com.progressoft.brix.domino.api.client.request.ClientServerRequest;
-import com.progressoft.brix.domino.api.client.request.Request;
 import com.progressoft.brix.domino.api.shared.request.ServerRequest;
 import com.progressoft.brix.domino.api.shared.request.ServerResponse;
 import com.progressoft.brix.domino.client.commons.request.AbstractRequestAsyncSender;
@@ -23,12 +22,15 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
+import static io.vertx.ext.web.handler.CSRFHandler.DEFAULT_HEADER_NAME;
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
 
@@ -36,6 +38,7 @@ public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
 
     private final Vertx vertx;
     private final WebClient webClient;
+    private String csrfToken;
 
     public DesktopRequestAsyncSender(ServerRequestEventFactory requestEventFactory) {
         super(requestEventFactory);
@@ -47,17 +50,20 @@ public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
     protected void sendRequest(ClientServerRequest request, ServerRequestEventFactory requestEventFactory) {
         Path pathAnnotation = request.getClass().getAnnotation(Path.class);
         HttpMethod method = HttpMethod.valueOf(pathAnnotation.method());
-        String classifier=request.getClass().getAnnotation(com.progressoft.brix.domino.api.client.annotations.Request.class).classifier();
-
+        String classifier = request.getClass().getAnnotation(com.progressoft.brix.domino.api.client.annotations.Request.class).classifier();
 
 
         String absoluteURI = buildPath(pathAnnotation, request.arguments());
         HttpRequest<Buffer> httpRequest = webClient.requestAbs(method, absoluteURI);
 
-        if(classifier.isEmpty())
+        if (classifier.isEmpty())
             httpRequest.putHeader("REQUEST_KEY", request.arguments().getRequestKey());
         else
-            httpRequest.putHeader("REQUEST_KEY", request.arguments().getRequestKey()+"_"+classifier);
+            httpRequest.putHeader("REQUEST_KEY", request.arguments().getRequestKey() + "_" + classifier);
+
+        if (nonNull(csrfToken))
+            httpRequest.putHeader(DEFAULT_HEADER_NAME, csrfToken);
+        ((Map<String, String>) request.headers()).forEach(httpRequest::putHeader);
 
         httpRequest.putHeader("Content-Type", "application/json");
         if (HttpMethod.POST.equals(method) || HttpMethod.PUT.equals(method) || HttpMethod.PATCH.equals(method))
@@ -69,9 +75,15 @@ public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
         try {
             Class<? extends ServerResponse> clazz = (Class<? extends ServerResponse>) Class.forName(type.getTypeName());
             httpRequest.sendJson(request.arguments(), event -> {
-                if (event.succeeded())
+                if (event.succeeded()) {
+                    this.csrfToken = event.result().headers().getAll("Set-Cookie")
+                            .stream()
+                            .filter(header -> header.startsWith("XSRF-TOKEN"))
+                            .map(header -> header.substring(0, header.indexOf(";")).replace("XSRF-TOKEN=", ""))
+                            .findFirst().orElse(csrfToken);
+
                     requestEventFactory.makeSuccess(request, Json.decodeValue(event.result().body(), clazz)).fire();
-                else
+                } else
                     requestEventFactory.makeFailed(request, event.cause()).fire();
             });
         } catch (ClassNotFoundException e) {

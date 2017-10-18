@@ -9,12 +9,24 @@ import java.util.Map;
 public class TestRoutingListener implements TestServerRouter.RoutingListener {
 
     private class RequestResponsePair {
-        private final ClientServerRequest request;
-        private final ServerResponse response;
+        private ClientServerRequest request;
+        private ServerResponse response;
+        private int executionsCount;
 
         public RequestResponsePair(ClientServerRequest request, ServerResponse response) {
             this.request = request;
             this.response = response;
+            this.executionsCount = 0;
+        }
+
+        public int getExecutionsCount() {
+            return executionsCount;
+        }
+
+        private void increment(ClientServerRequest request, ServerResponse response) {
+            this.request = request;
+            this.response = response;
+            this.executionsCount++;
         }
     }
 
@@ -22,11 +34,18 @@ public class TestRoutingListener implements TestServerRouter.RoutingListener {
 
     @Override
     public void onRouteRequest(ClientServerRequest request, ServerResponse response) {
-        receivedRequests.put(request.getKey(), new RequestResponsePair(request, response));
+        if (receivedRequests.containsKey(request.getClass().getCanonicalName()))
+            receivedRequests.get(request.getClass().getCanonicalName()).increment(request, response);
+        else
+            receivedRequests.put(request.getClass().getCanonicalName(), new RequestResponsePair(request, response));
     }
 
     public <C extends ClientServerRequest> boolean isSent(Class<C> request) {
         return receivedRequests.containsKey(request.getCanonicalName());
+    }
+
+    public <C extends ClientServerRequest> boolean isSent(Class<C> request, int executionCount) {
+        return receivedRequests.containsKey(request.getCanonicalName()) && receivedRequests.get(request.getCanonicalName()).executionsCount==executionCount;
     }
 
     public <S extends ServerResponse, C extends ClientServerRequest> S getResponse(Class<C> request) {

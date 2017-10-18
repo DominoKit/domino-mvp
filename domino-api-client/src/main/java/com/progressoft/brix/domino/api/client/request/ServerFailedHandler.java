@@ -10,6 +10,6 @@ public interface ServerFailedHandler<P extends Presentable, R extends ServerRequ
 
     Logger LOGGER= LoggerFactory.getLogger(ServerFailedHandler.class);
     default void processFailed(P presenter, R serverArgs, FailedServerResponse failedResponse){
-        LOGGER.error("could not execute request on server: ", failedResponse.getError());
+        LOGGER.debug("could not execute request on server: ", failedResponse.getError());
     }
 }
