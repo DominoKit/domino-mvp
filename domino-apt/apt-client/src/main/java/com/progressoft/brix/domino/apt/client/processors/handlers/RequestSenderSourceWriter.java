@@ -3,6 +3,7 @@ package com.progressoft.brix.domino.apt.client.processors.handlers;
 
 import com.progressoft.brix.domino.api.client.ServiceRootMatcher;
 import com.progressoft.brix.domino.api.client.annotations.Path;
+import com.progressoft.brix.domino.api.client.annotations.Request;
 import com.progressoft.brix.domino.api.client.annotations.RequestSender;
 import com.progressoft.brix.domino.api.client.request.RequestRestSender;
 import com.progressoft.brix.domino.api.client.request.ServerRequestCallBack;
@@ -15,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static java.util.Objects.nonNull;
 
 public class RequestSenderSourceWriter extends JavaSourceWriter {
 
@@ -75,6 +78,7 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
                 .imports("javax.ws.rs.Path")
                 .imports("javax.ws.rs.Produces")
                 .imports("javax.ws.rs.core.MediaType")
+                .imports(Map.class.getCanonicalName())
                 .imports("static java.util.Objects.*")
                 .imports("org.fusesource.restygwt.client.*")
                 .imports(ServiceRootMatcher.class.getCanonicalName())
@@ -130,6 +134,7 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
                 .withModifier(new ModifierBuilder().asPublic())
                 .returnsVoid()
                 .takes(request.asSimpleName(), "request")
+                .takes("Map<String, String>", "headers")
                 .takes("ServerRequestCallBack", "callBack");
 
 
@@ -138,10 +143,19 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
         if(!pathParams.isEmpty())
             params= passedParams();
 
+        Request requestAnnotation = processorElement.getAnnotation(Request.class);
+        if(nonNull(requestAnnotation) && !requestAnnotation.classifier().isEmpty()){
+            sendMethod.block("\theaders.put(\"REQUEST_KEY\", request.getClass().getCanonicalName()" + "+\"_"+requestAnnotation.classifier()+"\");\n");
+        }else{
+            sendMethod.block("\theaders.put(\"REQUEST_KEY\", request.getClass().getCanonicalName());\n");
+        }
+
         if(hasServiceRoot())
-            sendMethod.block("\t((RestServiceProxy)service).setResource(new Resource(SERVICE_ROOT));\n");
+            sendMethod.block("\t((RestServiceProxy)service).setResource(new Resource(SERVICE_ROOT, headers));\n");
         else
-            sendMethod.block("\t((RestServiceProxy)service).setResource(new Resource(ServiceRootMatcher.matchedServiceRoot(PATH)));\n");
+            sendMethod.block("\t((RestServiceProxy)service).setResource(new Resource(ServiceRootMatcher.matchedServiceRoot(PATH), headers));\n");
+
+
 
         sendMethod.block("\tservice.send("+params+"new MethodCallback<" + response.asSimpleName() + ">() {" +
                 "\n\t\t@Override" +

@@ -12,8 +12,7 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
-import java.io.IOException;
-import java.io.Writer;
+import java.io.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -45,7 +44,17 @@ public class EndpointsProcessor extends BaseProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        getHandlers(roundEnv).forEach(this::generateEndpoint);
+
+            getHandlers(roundEnv).forEach(e ->{
+                try {
+                    generateEndpoint(e);
+                }catch (Exception ex){
+                    StringWriter sw=new StringWriter();
+                    ex.printStackTrace(new PrintWriter(sw));
+                    messager.printMessage(Diagnostic.Kind.NOTE, "could not generate source. "+sw.toString() );
+                }
+            });
+
         return false;
     }
 

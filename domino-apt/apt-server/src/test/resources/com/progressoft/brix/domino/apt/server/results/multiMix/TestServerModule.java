@@ -27,7 +27,7 @@ public class TestServerModule implements ServerModuleConfiguration{
 
     @Override
     public void registerHandlers(HandlerRegistry registry) {
-        registry.registerHandler(FirstRequest.class.getCanonicalName(), new FirstHandler());
+        registry.registerHandler(FirstRequest.class.getCanonicalName()+"_xyz", new FirstHandler());
         registry.registerHandler(SecondRequest.class.getCanonicalName(), new SecondHandler());
         registry.registerHandler(ThirdRequest.class.getCanonicalName(), new ThirdHandler());
     }

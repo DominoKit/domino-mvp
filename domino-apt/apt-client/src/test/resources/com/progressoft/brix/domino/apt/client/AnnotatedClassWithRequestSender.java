@@ -3,9 +3,6 @@ package com.progressoft.brix.domino.apt.client;
 import com.google.gwt.core.client.GWT;
 import com.progressoft.brix.domino.api.client.request.RequestRestSender;
 import com.progressoft.brix.domino.api.client.request.ServerRequestCallBack;
-import com.progressoft.brix.domino.apt.client.AnnotatedClassWithHandlerPath;
-import com.progressoft.brix.domino.apt.client.SomeRequest;
-import com.progressoft.brix.domino.apt.client.SomeResponse;
 import com.progressoft.brix.domino.api.client.annotations.RequestSender;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
@@ -15,6 +12,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.Map;
 
 @RequestSender(value = AnnotatedClassWithHandlerPath.class, customServiceRoot = true)
 public class AnnotatedClassWithRequestSender implements RequestRestSender<SomeRequest> {
@@ -34,7 +32,7 @@ public class AnnotatedClassWithRequestSender implements RequestRestSender<SomeRe
     private AnnotatedClassWithRequestSenderService service = GWT.create(AnnotatedClassWithRequestSenderService.class);
 
     @Override
-    public void send(SomeRequest request, ServerRequestCallBack callBack) {
+    public void send(SomeRequest request, Map headers, ServerRequestCallBack callBack) {
         service.send(request, new MethodCallback<SomeResponse>() {
             @Override
             public void onFailure(Method method, Throwable throwable) {

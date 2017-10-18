@@ -36,6 +36,8 @@ public class ServerAppTest {
         new DominoLoader(vertx, DominoLauncher.routerHolder.router, DominoLauncher.configHolder.config).start();
         serverApp = ServerApp.make();
         request = new TestRequest();
+
+        request.setRequestKey(TestRequest.class.getCanonicalName());
     }
 
     @Test

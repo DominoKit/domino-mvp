@@ -15,7 +15,6 @@
 
     <name>${artifactId}</name>
     <url>http://maven.apache.org</url>
-    <version>${version}</version>
 
     <prerequisites>
         <maven>${mavenVersion}</maven>
