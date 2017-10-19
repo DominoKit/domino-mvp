@@ -33,6 +33,7 @@
             <directory/>
             <includes>
                 <include>**/*.txt</include>
+                <include>**/*.md</include>
             </includes>
         </fileSet>
         <fileSet filtered="true" packaged="false" encoding="UTF-8">
