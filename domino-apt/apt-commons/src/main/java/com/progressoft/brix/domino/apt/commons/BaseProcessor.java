@@ -55,7 +55,7 @@ public abstract class BaseProcessor extends AbstractProcessor {
     }
 
     protected ProcessorElement newProcessorElement(Element element){
-        return new ProcessorElement(element, elementUtils, typeUtils);
+        return new ProcessorElement(element, elementUtils, typeUtils, messager);
     }
 
     public class ElementFactory{
@@ -69,7 +69,7 @@ public abstract class BaseProcessor extends AbstractProcessor {
         }
 
         public ProcessorElement make(Element element){
-            return new ProcessorElement(element, this.elementUtils, this.typeUtils);
+            return new ProcessorElement(element, this.elementUtils, this.typeUtils, messager);
         }
     }
 }

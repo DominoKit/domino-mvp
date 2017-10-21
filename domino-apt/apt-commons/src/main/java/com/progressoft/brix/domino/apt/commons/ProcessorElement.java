@@ -1,5 +1,6 @@
 package com.progressoft.brix.domino.apt.commons;
 
+import javax.annotation.processing.Messager;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
@@ -20,17 +21,20 @@ public class ProcessorElement {
     private final Element element;
     private Elements elementUtils;
     private Types typeUtils;
+    private Messager messager;
 
     private ImportsWriter importsWriter = new ImportsWriter();
 
-    public ProcessorElement(Element element, Elements elementUtils, Types typeUtils) {
+    public ProcessorElement(Element element, Elements elementUtils, Types typeUtils,
+                            Messager messager ) {
         this.element = element;
         this.elementUtils = elementUtils;
         this.typeUtils = typeUtils;
+        this.messager = messager;
     }
 
     public ProcessorElement make(Element element) {
-        return new ProcessorElement(element, elementUtils, typeUtils);
+        return new ProcessorElement(element, elementUtils, typeUtils, messager);
     }
 
     public TypeMirror asType() {
@@ -194,5 +198,9 @@ public class ProcessorElement {
 
     public Types getTypeUtils() {
         return typeUtils;
+    }
+
+    public Messager getMessager() {
+        return messager;
     }
 }
