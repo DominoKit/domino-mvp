@@ -3,61 +3,82 @@ package com.progressoft.brix.domino.apt.client.processors.contributions;
 import com.progressoft.brix.domino.api.client.annotations.Request;
 import com.progressoft.brix.domino.api.client.request.ClientRequest;
 import com.progressoft.brix.domino.api.shared.extension.Contribution;
-import com.progressoft.brix.domino.apt.commons.*;
+import com.progressoft.brix.domino.apt.commons.FullClassName;
+import com.progressoft.brix.domino.apt.commons.JavaSourceWriter;
+import com.progressoft.brix.domino.apt.commons.ProcessorElement;
+import com.squareup.javapoet.*;
+
+import javax.annotation.Generated;
+import javax.lang.model.element.Modifier;
+import java.io.IOException;
 
 public class ContributionRequestSourceWriter extends JavaSourceWriter {
 
-    private final JavaSourceBuilder sourceBuilder;
     private final String targetPackage;
     private final String generatedClassName;
-    private final String presenter;
-    private final String contextName;
     private final String presenterMethod;
+    private final ClassName presenterType;
+    private final ClassName contextType;
 
 
     public ContributionRequestSourceWriter(ProcessorElement processorElement, String presenterName,
                                            String targetPackage, String generatedClassName, String presenterMethod) {
         super(processorElement);
-        this.presenter = presenterName;
         this.targetPackage = targetPackage;
         this.generatedClassName = generatedClassName;
-        this.sourceBuilder = new JavaSourceBuilder(generatedClassName);
-
-        this.contextName = new FullClassName(processorElement.getInterfaceFullQualifiedGenericName(Contribution.class)).allImports().get(1);
         this.presenterMethod = presenterMethod;
+        presenterType = ClassName.bestGuess(presenterName);
+        contextType = ClassName.bestGuess(getContextName());
+    }
+
+    private String getContextName() {
+        return new FullClassName(processorElement.getInterfaceFullQualifiedGenericName(Contribution.class)).allImports().get(1);
     }
 
     @Override
-    public String write() {
-        this.sourceBuilder.onPackage(targetPackage)
-                .imports(ClientRequest.class.getCanonicalName())
-                .imports(Request.class.getCanonicalName())
-                .annotate("@Request")
-                .withModifiers(new ModifierBuilder().asPublic())
-                .extend(ClientRequest.class.getCanonicalName() + "<" + presenter + ">");
-        writeBody();
-        return this.sourceBuilder.build();
+    public String write() throws IOException {
+
+        FieldSpec extensionPoint = makeExtensionPointField(contextType);
+        MethodSpec constructor = makeConstructor(contextType);
+        MethodSpec process = makeProcessMethod(presenterType);
+
+        AnnotationSpec generatedAnnotation = AnnotationSpec.builder(Generated.class)
+                .addMember("value", "\"" + ContributionClientRequestProcessor.class.getCanonicalName() + "\"")
+                .build();
+
+        TypeSpec contributionRequest = TypeSpec.classBuilder(generatedClassName)
+                .addAnnotation(generatedAnnotation)
+                .addAnnotation(Request.class)
+                .addModifiers(Modifier.PUBLIC)
+                .superclass(ParameterizedTypeName.get(ClassName.get(ClientRequest.class), presenterType))
+                .addField(extensionPoint)
+                .addMethod(constructor)
+                .addMethod(process)
+                .build();
+
+        StringBuilder asString = new StringBuilder();
+        JavaFile.builder(targetPackage, contributionRequest).build().writeTo(asString);
+        return asString.toString();
     }
 
-    private void writeBody() {
-        FieldBuilder fieldBuilder = this.sourceBuilder.field("extensionPoint");
-        fieldBuilder.withModifier(new ModifierBuilder().asPrivate())
-                .ofType(contextName)
-                .end();
+    private MethodSpec makeProcessMethod(ClassName presenterType) {
+        return MethodSpec.methodBuilder("process")
+                .addAnnotation(Override.class)
+                .addModifiers(Modifier.PROTECTED)
+                .addParameter(presenterType, "presenter")
+                .addStatement("presenter." + presenterMethod + "(extensionPoint.context())")
+                .build();
+    }
 
-        ConstructorBuilder constructorBuilder = this.sourceBuilder.constructor(generatedClassName);
-        constructorBuilder.withModifier(new ModifierBuilder().asPublic())
-                .takes(contextName, "extensionPoint")
-                .block("this.extensionPoint=extensionPoint;")
-                .end();
+    private MethodSpec makeConstructor(ClassName contextType) {
+        return MethodSpec.constructorBuilder()
+                .addModifiers(Modifier.PUBLIC)
+                .addParameter(contextType, "extensionPoint")
+                .addStatement("this.extensionPoint = extensionPoint")
+                .build();
+    }
 
-        MethodBuilder methodBuilder = this.sourceBuilder.method("process");
-        methodBuilder.annotate("@Override")
-                .withModifier(new ModifierBuilder().asProtected())
-                .returnsVoid()
-                .takes(presenter, "presenter")
-                .block("\tpresenter." + presenterMethod + "(extensionPoint.context());")
-                .end();
-
+    private FieldSpec makeExtensionPointField(ClassName contextType) {
+        return FieldSpec.builder(contextType, "extensionPoint", Modifier.PRIVATE).build();
     }
 }

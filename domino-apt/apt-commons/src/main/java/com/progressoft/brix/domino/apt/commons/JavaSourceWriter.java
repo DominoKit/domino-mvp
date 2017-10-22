@@ -1,6 +1,7 @@
 package com.progressoft.brix.domino.apt.commons;
 
 import javax.lang.model.element.Element;
+import java.io.IOException;
 import java.util.stream.Stream;
 
 public abstract class JavaSourceWriter {
@@ -21,5 +22,5 @@ public abstract class JavaSourceWriter {
         return importsWriter.asImportsString();
     }
 
-    public abstract String write();
+    public abstract String write() throws IOException;
 }
