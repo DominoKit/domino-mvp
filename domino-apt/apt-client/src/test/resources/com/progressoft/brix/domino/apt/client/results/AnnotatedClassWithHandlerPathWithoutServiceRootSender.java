@@ -9,6 +9,7 @@ import java.lang.Override;
 import java.lang.String;
 import java.lang.Throwable;
 import java.util.Map;
+import javax.annotation.Generated;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -21,6 +22,7 @@ import org.fusesource.restygwt.client.Resource;
 import org.fusesource.restygwt.client.RestService;
 import org.fusesource.restygwt.client.RestServiceProxy;
 
+@Generated("com.progressoft.brix.domino.apt.client.processors.handlers.HandlerPathProcessor")
 @RequestSender(AnnotatedClassWithHandlerPathWithoutServiceRoot.class)
 public class AnnotatedClassWithHandlerPathWithoutServiceRootSender implements RequestRestSender<SomeRequest> {
 

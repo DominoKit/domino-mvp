@@ -14,6 +14,7 @@ import com.progressoft.brix.domino.apt.commons.ProcessorElement;
 import com.squareup.javapoet.*;
 import org.fusesource.restygwt.client.*;
 
+import javax.annotation.Generated;
 import javax.lang.model.element.Modifier;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.HttpMethod;
@@ -101,9 +102,14 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
         if (hasServiceRoot())
             requestSenderAnnotationBuilder.addMember("customServiceRoot", "true");
 
+        AnnotationSpec generatedAnnotation = AnnotationSpec.builder(Generated.class)
+                .addMember("value", "\"" + HandlerPathProcessor.class.getCanonicalName() + "\"")
+                .build();
+
 
         return TypeSpec.classBuilder(processorElement.simpleName() + "Sender")
                 .addModifiers(Modifier.PUBLIC)
+                .addAnnotation(generatedAnnotation)
                 .addAnnotation(requestSenderAnnotationBuilder.build())
                 .addSuperinterface(ParameterizedTypeName.get(ClassName.get(RequestRestSender.class), requestType));
     }
