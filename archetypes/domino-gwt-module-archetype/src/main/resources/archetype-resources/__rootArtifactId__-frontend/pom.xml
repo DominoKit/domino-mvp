@@ -37,11 +37,6 @@
             <classifier>sources</classifier>
         </dependency>
         <dependency>
-            <groupId>ru.finam</groupId>
-            <artifactId>slf4j-gwt</artifactId>
-            <version>1.7.7.1</version>
-        </dependency>
-        <dependency>
             <groupId>com.progressoft.brix.domino.apt</groupId>
             <artifactId>apt-client</artifactId>
             <version>${domino.version}</version>
@@ -53,6 +48,12 @@
             <version>${domino.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.progressoft.brix.domino.logger</groupId>
+            <artifactId>domino-gwt-logger</artifactId>
+            <version>${domino.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>${groupId}</groupId>
             <artifactId>${rootArtifactId}-shared</artifactId>

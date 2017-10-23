@@ -14,6 +14,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <domino.version>1.0-rc.2-SNAPSHOT</domino.version>
         <vertx.version>3.4.2</vertx.version>
+        <gwt.version>2.8.1</gwt.version>
     </properties>
 
     <url>https://github.com/GwtDomino/domino</url>
@@ -63,7 +64,7 @@
         <dependency>
             <groupId>com.progressoft.brix.domino.test</groupId>
             <artifactId>apt-test</artifactId>
-            <version>1.0-rc.2-SNAPSHOT</version>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

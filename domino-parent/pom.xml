@@ -63,7 +63,7 @@
         <material.version>2.0-rc6</material.version>
         <vertx.version>3.4.2</vertx.version>
         <domino.version>1.0-rc.2-SNAPSHOT</domino.version>
-        <gwt.plugin.version>1.0-rc-8</gwt.plugin.version>
+        <gwt.plugin.version>1.0-rc-9</gwt.plugin.version>
     </properties>
 
     <dependencyManagement>

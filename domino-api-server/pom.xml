@@ -77,7 +77,12 @@
         <dependency>
             <groupId>com.progressoft.brix.domino.api</groupId>
             <artifactId>domino-api-shared</artifactId>
-            <version>1.0-rc.2-SNAPSHOT</version>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.progressoft.brix.domino</groupId>
+            <artifactId>domino-service-discovery</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>io.vertx</groupId>
@@ -90,11 +95,7 @@
             <version>${vertx.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.progressoft.brix.domino</groupId>
-            <artifactId>domino-service-discovery</artifactId>
-            <version>1.0-rc.2-SNAPSHOT</version>
-        </dependency>
+
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-config</artifactId>

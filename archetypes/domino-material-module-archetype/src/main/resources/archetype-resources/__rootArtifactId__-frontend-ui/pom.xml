@@ -89,12 +89,6 @@
             <artifactId>gwt-material-addins</artifactId>
             <version>${material.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.progressoft.brix.domino.test.ui</groupId>
-            <artifactId>material-testing</artifactId>
-            <version>${domino.version}</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>
