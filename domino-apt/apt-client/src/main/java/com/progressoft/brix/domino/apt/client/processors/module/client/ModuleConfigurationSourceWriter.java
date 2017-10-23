@@ -2,14 +2,13 @@ package com.progressoft.brix.domino.apt.client.processors.module.client;
 
 import com.progressoft.brix.domino.api.client.ModuleConfiguration;
 import com.progressoft.brix.domino.api.client.annotations.ClientModule;
-import com.progressoft.brix.domino.apt.commons.DominoTypeBuilder;
 import com.progressoft.brix.domino.apt.client.processors.module.client.contributions.RegisterContributionsMethodWriter;
 import com.progressoft.brix.domino.apt.client.processors.module.client.initialtasks.RegisterInitialTasksMethodWriter;
 import com.progressoft.brix.domino.apt.client.processors.module.client.presenters.RegisterPresentersMethodWriter;
 import com.progressoft.brix.domino.apt.client.processors.module.client.requests.RegisterRequestsMethodWriter;
 import com.progressoft.brix.domino.apt.client.processors.module.client.requests.sender.RegisterSendersMethodWriter;
 import com.progressoft.brix.domino.apt.client.processors.module.client.views.RegisterViewsMethodWriter;
-import com.progressoft.brix.domino.apt.commons.JavaSourceBuilder;
+import com.progressoft.brix.domino.apt.commons.DominoTypeBuilder;
 import com.progressoft.brix.domino.apt.commons.JavaSourceWriter;
 import com.progressoft.brix.domino.apt.commons.ProcessorElement;
 import com.squareup.javapoet.JavaFile;
@@ -20,7 +19,6 @@ import java.util.Set;
 
 public class ModuleConfigurationSourceWriter extends JavaSourceWriter {
 
-    private final JavaSourceBuilder sourceBuilder;
     private final Set<String> senders;
     private final Set<String> contributions;
     private final Set<String> initialTasks;
@@ -39,7 +37,6 @@ public class ModuleConfigurationSourceWriter extends JavaSourceWriter {
         this.initialTasks = initialTasks;
         this.contributions = contributions;
         this.senders = senders;
-        this.sourceBuilder = new JavaSourceBuilder(processorElement.getAnnotation(ClientModule.class).name() + "ModuleConfiguration");
     }
 
     @Override
