@@ -1,12 +1,12 @@
-package com.progressoft.brix.domino.apt.client.processors.module.client;
+package com.progressoft.brix.domino.apt.commons;
 
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
 
 import javax.lang.model.element.Modifier;
-import java.util.Set;
+import java.util.Collection;
 
-public abstract class AbstractRegisterMethodWriter<T extends AbstractRegisterMethodWriter.ItemEntry> {
+public abstract class AbstractRegisterMethodWriter<E extends AbstractRegisterMethodWriter.ItemEntry, I> {
 
     private final TypeSpec.Builder clientModuleTypeBuilder;
 
@@ -14,7 +14,7 @@ public abstract class AbstractRegisterMethodWriter<T extends AbstractRegisterMet
         this.clientModuleTypeBuilder = clientModuleTypeBuilder;
     }
 
-    public void write(Set<String> items) {
+    public void write(Collection<I> items) {
         if (!items.isEmpty()) {
             MethodSpec.Builder registerViewsMethodBuilder = MethodSpec.methodBuilder(methodName())
                     .addAnnotation(Override.class)
@@ -30,9 +30,9 @@ public abstract class AbstractRegisterMethodWriter<T extends AbstractRegisterMet
 
     protected abstract Class<?> registryClass();
 
-    protected abstract void registerItem(T entry, MethodSpec.Builder methodBuilder);
+    protected abstract void registerItem(E entry, MethodSpec.Builder methodBuilder);
 
-    protected abstract T parseEntry(String item);
+    protected abstract E parseEntry(I item);
 
     public interface ItemEntry {
     }

@@ -3,14 +3,14 @@ package com.progressoft.brix.domino.apt.client.processors.module.client.views;
 import com.progressoft.brix.domino.api.client.mvp.ViewRegistry;
 import com.progressoft.brix.domino.api.client.mvp.view.LazyViewLoader;
 import com.progressoft.brix.domino.api.client.mvp.view.View;
-import com.progressoft.brix.domino.apt.client.processors.module.client.AbstractRegisterMethodWriter;
+import com.progressoft.brix.domino.apt.commons.AbstractRegisterMethodWriter;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
 
 import javax.lang.model.element.Modifier;
 
-public class RegisterViewsMethodWriter extends AbstractRegisterMethodWriter<ViewEntry> {
+public class RegisterViewsMethodWriter extends AbstractRegisterMethodWriter<ViewEntry, String> {
 
     public RegisterViewsMethodWriter(TypeSpec.Builder clientModuleTypeBuilder) {
         super(clientModuleTypeBuilder);

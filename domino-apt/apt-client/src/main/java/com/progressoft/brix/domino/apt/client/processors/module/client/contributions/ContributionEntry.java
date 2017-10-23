@@ -1,6 +1,6 @@
 package com.progressoft.brix.domino.apt.client.processors.module.client.contributions;
 
-import com.progressoft.brix.domino.apt.client.processors.module.client.AbstractRegisterMethodWriter;
+import com.progressoft.brix.domino.apt.commons.AbstractRegisterMethodWriter;
 
 class ContributionEntry implements AbstractRegisterMethodWriter.ItemEntry {
     protected final String contribution;

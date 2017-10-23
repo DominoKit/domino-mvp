@@ -1,12 +1,12 @@
 package com.progressoft.brix.domino.apt.client.processors.module.client.requests;
 
 import com.progressoft.brix.domino.api.client.request.RequestRegistry;
-import com.progressoft.brix.domino.apt.client.processors.module.client.AbstractRegisterMethodWriter;
+import com.progressoft.brix.domino.apt.commons.AbstractRegisterMethodWriter;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
 
-public class RegisterRequestsMethodWriter extends AbstractRegisterMethodWriter<RequestEntry> {
+public class RegisterRequestsMethodWriter extends AbstractRegisterMethodWriter<RequestEntry, String> {
 
     public RegisterRequestsMethodWriter(TypeSpec.Builder clientModuleTypeBuilder) {
         super(clientModuleTypeBuilder);

@@ -1,4 +1,4 @@
-package com.progressoft.brix.domino.apt.client.processors;
+package com.progressoft.brix.domino.apt.commons;
 
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.TypeSpec;

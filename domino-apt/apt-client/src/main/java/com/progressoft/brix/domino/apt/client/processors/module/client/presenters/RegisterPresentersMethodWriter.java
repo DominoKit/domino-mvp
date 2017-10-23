@@ -3,14 +3,14 @@ package com.progressoft.brix.domino.apt.client.processors.module.client.presente
 import com.progressoft.brix.domino.api.client.mvp.PresenterRegistry;
 import com.progressoft.brix.domino.api.client.mvp.presenter.LazyPresenterLoader;
 import com.progressoft.brix.domino.api.client.mvp.presenter.Presentable;
-import com.progressoft.brix.domino.apt.client.processors.module.client.AbstractRegisterMethodWriter;
+import com.progressoft.brix.domino.apt.commons.AbstractRegisterMethodWriter;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
 
 import javax.lang.model.element.Modifier;
 
-public class RegisterPresentersMethodWriter extends AbstractRegisterMethodWriter<PresenterEntry> {
+public class RegisterPresentersMethodWriter extends AbstractRegisterMethodWriter<PresenterEntry, String> {
 
     public RegisterPresentersMethodWriter(TypeSpec.Builder clientModuleTypeBuilder) {
         super(clientModuleTypeBuilder);

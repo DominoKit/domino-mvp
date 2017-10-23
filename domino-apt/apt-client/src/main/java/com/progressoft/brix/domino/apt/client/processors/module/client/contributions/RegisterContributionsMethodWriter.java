@@ -1,12 +1,12 @@
 package com.progressoft.brix.domino.apt.client.processors.module.client.contributions;
 
 import com.progressoft.brix.domino.api.client.extension.ContributionsRegistry;
-import com.progressoft.brix.domino.apt.client.processors.module.client.AbstractRegisterMethodWriter;
+import com.progressoft.brix.domino.apt.commons.AbstractRegisterMethodWriter;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
 
-public class RegisterContributionsMethodWriter extends AbstractRegisterMethodWriter<ContributionEntry> {
+public class RegisterContributionsMethodWriter extends AbstractRegisterMethodWriter<ContributionEntry, String> {
 
     public RegisterContributionsMethodWriter(TypeSpec.Builder clientModuleTypeBuilder) {
         super(clientModuleTypeBuilder);

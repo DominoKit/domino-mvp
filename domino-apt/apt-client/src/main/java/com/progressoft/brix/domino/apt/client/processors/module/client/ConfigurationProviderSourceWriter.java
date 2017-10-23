@@ -5,7 +5,7 @@ import com.google.common.annotations.GwtIncompatible;
 import com.progressoft.brix.domino.api.client.ConfigurationProvider;
 import com.progressoft.brix.domino.api.client.ModuleConfiguration;
 import com.progressoft.brix.domino.api.client.annotations.ClientModule;
-import com.progressoft.brix.domino.apt.client.processors.DominoTypeBuilder;
+import com.progressoft.brix.domino.apt.commons.DominoTypeBuilder;
 import com.progressoft.brix.domino.apt.commons.ProcessorElement;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.JavaFile;

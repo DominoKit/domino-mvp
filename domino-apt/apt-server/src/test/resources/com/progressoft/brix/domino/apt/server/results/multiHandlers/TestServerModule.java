@@ -2,18 +2,12 @@ package com.progressoft.brix.domino.apt.server.multiHandlers;
 
 import com.google.auto.service.AutoService;
 import com.progressoft.brix.domino.api.server.config.ServerModuleConfiguration;
-import com.progressoft.brix.domino.api.server.handler.HandlerRegistry;
-import com.progressoft.brix.domino.apt.server.multiHandlers.FirstHandler;
-import com.progressoft.brix.domino.apt.server.multiHandlers.FirstRequest;
-import com.progressoft.brix.domino.apt.server.multiHandlers.SecondHandler;
-import com.progressoft.brix.domino.apt.server.multiHandlers.SecondRequest;
-import com.progressoft.brix.domino.apt.server.multiHandlers.ThirdHandler;
-import com.progressoft.brix.domino.apt.server.multiHandlers.ThirdRequest;
 import com.progressoft.brix.domino.api.server.endpoint.EndpointsRegistry;
-import com.progressoft.brix.domino.apt.server.multiHandlers.FirstHandlerEndpointHandler;
-import com.progressoft.brix.domino.apt.server.multiHandlers.SecondHandlerEndpointHandler;
-import com.progressoft.brix.domino.apt.server.multiHandlers.ThirdHandlerEndpointHandler;
+import com.progressoft.brix.domino.api.server.handler.HandlerRegistry;
+import java.lang.Override;
+import javax.annotation.Generated;
 
+@Generated("com.progressoft.brix.domino.apt.server.ServerModuleAnnotationProcessor")
 @AutoService(ServerModuleConfiguration.class)
 public class TestServerModule implements ServerModuleConfiguration{
     @Override

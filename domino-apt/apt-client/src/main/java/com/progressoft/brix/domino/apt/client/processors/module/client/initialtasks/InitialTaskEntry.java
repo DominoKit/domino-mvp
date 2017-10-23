@@ -1,6 +1,6 @@
 package com.progressoft.brix.domino.apt.client.processors.module.client.initialtasks;
 
-import com.progressoft.brix.domino.apt.client.processors.module.client.AbstractRegisterMethodWriter;
+import com.progressoft.brix.domino.apt.commons.AbstractRegisterMethodWriter;
 
 public class InitialTaskEntry implements AbstractRegisterMethodWriter.ItemEntry {
     protected String initalTask;

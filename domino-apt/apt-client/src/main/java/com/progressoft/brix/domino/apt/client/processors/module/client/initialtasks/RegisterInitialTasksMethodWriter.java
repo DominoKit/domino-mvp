@@ -1,12 +1,12 @@
 package com.progressoft.brix.domino.apt.client.processors.module.client.initialtasks;
 
 import com.progressoft.brix.domino.api.client.InitialTaskRegistry;
-import com.progressoft.brix.domino.apt.client.processors.module.client.AbstractRegisterMethodWriter;
+import com.progressoft.brix.domino.apt.commons.AbstractRegisterMethodWriter;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
 
-public class RegisterInitialTasksMethodWriter extends AbstractRegisterMethodWriter<InitialTaskEntry> {
+public class RegisterInitialTasksMethodWriter extends AbstractRegisterMethodWriter<InitialTaskEntry, String> {
 
     public RegisterInitialTasksMethodWriter(TypeSpec.Builder clientModuleTypeBuilder) {
         super(clientModuleTypeBuilder);

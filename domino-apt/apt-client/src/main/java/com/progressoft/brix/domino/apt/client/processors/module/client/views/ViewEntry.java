@@ -1,6 +1,6 @@
 package com.progressoft.brix.domino.apt.client.processors.module.client.views;
 
-import com.progressoft.brix.domino.apt.client.processors.module.client.AbstractRegisterMethodWriter;
+import com.progressoft.brix.domino.apt.commons.AbstractRegisterMethodWriter;
 
 public class ViewEntry implements AbstractRegisterMethodWriter.ItemEntry {
     protected final String view;

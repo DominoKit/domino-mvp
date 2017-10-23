@@ -28,11 +28,11 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @AutoService(Processor.class)
-public class ServerModuleAnnotationProcessor extends BaseProcessor{
+public class ServerModuleAnnotationProcessor extends BaseProcessor {
 
-    private static final Logger LOGGER= Logger.getLogger(ServerModuleAnnotationProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ServerModuleAnnotationProcessor.class.getName());
 
-    private final Set<String> supportedAnnotations=new HashSet<>();
+    private final Set<String> supportedAnnotations = new HashSet<>();
 
     public ServerModuleAnnotationProcessor() {
         supportedAnnotations.add(Handler.class.getCanonicalName());
@@ -51,11 +51,12 @@ public class ServerModuleAnnotationProcessor extends BaseProcessor{
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        if(roundEnv.getElementsAnnotatedWith(ServerModule.class).size()==1)
-            generateServerModule(getModule(roundEnv.getElementsAnnotatedWith(ServerModule.class).stream()
-                    .findFirst().orElseThrow(IllegalArgumentException::new)), getHandlers(roundEnv), getInterceptors(roundEnv), getGlobalInterceptors(roundEnv));
+        if (roundEnv.getElementsAnnotatedWith(ServerModule.class).size() == 1) {
+            ProcessorElement module = getModule(roundEnv.getElementsAnnotatedWith(ServerModule.class).stream()
+                    .findFirst().orElseThrow(IllegalArgumentException::new));
 
-        else if(roundEnv.getElementsAnnotatedWith(ServerModule.class).size()>1){
+            generateServerModule(module, getHandlers(roundEnv), getInterceptors(roundEnv), getGlobalInterceptors(roundEnv));
+        } else if (roundEnv.getElementsAnnotatedWith(ServerModule.class).size() > 1) {
             this.messager.printMessage(Diagnostic.Kind.ERROR, "Only one ServerModule is allowed per project.!");
         }
         return true;
@@ -67,7 +68,7 @@ public class ServerModuleAnnotationProcessor extends BaseProcessor{
 
     private List<ProcessorElement> getHandlers(RoundEnvironment roundEnv) {
         return roundEnv.getElementsAnnotatedWith(Handler.class).stream()
-        .filter(e -> implementsHandler(newProcessorElement(e))).map(this::newProcessorElement).collect(Collectors.toList());
+                .filter(e -> implementsHandler(newProcessorElement(e))).map(this::newProcessorElement).collect(Collectors.toList());
     }
 
     private List<ProcessorElement> getInterceptors(RoundEnvironment roundEnv) {
@@ -81,20 +82,21 @@ public class ServerModuleAnnotationProcessor extends BaseProcessor{
     }
 
     private boolean implementsHandler(ProcessorElement e) {
-        if(e.isImplementsGenericInterface(RequestHandler.class) || e.isImplementsGenericInterface(CallbackRequestHandler.class))
+        if (e.isImplementsGenericInterface(RequestHandler.class) || e.isImplementsGenericInterface(CallbackRequestHandler.class))
             return true;
         this.messager.printMessage(Diagnostic.Kind.ERROR, "Classes annotated as Handlers must implement RequestHandler interface.!", e.asTypeElement());
         return false;
     }
 
     private boolean implementsInterceptor(ProcessorElement e) {
-        if(e.isImplementsGenericInterface(RequestInterceptor.class))
+        if (e.isImplementsGenericInterface(RequestInterceptor.class))
             return true;
         this.messager.printMessage(Diagnostic.Kind.ERROR, "Classes annotated as Interceptors must implement RequestInterceptor interface.!", e.asTypeElement());
         return false;
     }
+
     private boolean implementsGlobalInterceptor(ProcessorElement e) {
-        if(e.isImplementsGenericInterface(GlobalRequestInterceptor.class))
+        if (e.isImplementsGenericInterface(GlobalRequestInterceptor.class))
             return true;
         this.messager.printMessage(Diagnostic.Kind.ERROR, "Classes annotated as Global Interceptors must implement GlobalRequestInterceptor interface.!", e.asTypeElement());
         return false;
@@ -103,7 +105,7 @@ public class ServerModuleAnnotationProcessor extends BaseProcessor{
 
     private void generateServerModule(ProcessorElement processorElement, List<ProcessorElement> handlers,
                                       List<ProcessorElement> interceptors, List<ProcessorElement> globalInterceptors) {
-        try (Writer sourceWriter = obtainSourceWriter(processorElement.elementPackage(), processorElement.getAnnotation(ServerModule.class).name()+"ServerModule")) {
+        try (Writer sourceWriter = obtainSourceWriter(processorElement.elementPackage(), processorElement.getAnnotation(ServerModule.class).name() + "ServerModule")) {
             sourceWriter.write(new ServerModuleSourceWriter(processorElement, handlers, interceptors, globalInterceptors).write());
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Could not generate classes : ", e);

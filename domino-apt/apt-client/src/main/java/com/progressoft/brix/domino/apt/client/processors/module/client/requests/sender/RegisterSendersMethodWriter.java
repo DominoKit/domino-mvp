@@ -3,14 +3,14 @@ package com.progressoft.brix.domino.apt.client.processors.module.client.requests
 import com.progressoft.brix.domino.api.client.request.LazyRequestRestSenderLoader;
 import com.progressoft.brix.domino.api.client.request.RequestRestSender;
 import com.progressoft.brix.domino.api.client.request.RequestRestSendersRegistry;
-import com.progressoft.brix.domino.apt.client.processors.module.client.AbstractRegisterMethodWriter;
+import com.progressoft.brix.domino.apt.commons.AbstractRegisterMethodWriter;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
 
 import javax.lang.model.element.Modifier;
 
-public class RegisterSendersMethodWriter extends AbstractRegisterMethodWriter<SenderEntry> {
+public class RegisterSendersMethodWriter extends AbstractRegisterMethodWriter<SenderEntry, String> {
 
     public RegisterSendersMethodWriter(TypeSpec.Builder clientModuleTypeBuilder) {
         super(clientModuleTypeBuilder);

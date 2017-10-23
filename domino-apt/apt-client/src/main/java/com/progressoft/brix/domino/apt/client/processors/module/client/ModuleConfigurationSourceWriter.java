@@ -2,7 +2,7 @@ package com.progressoft.brix.domino.apt.client.processors.module.client;
 
 import com.progressoft.brix.domino.api.client.ModuleConfiguration;
 import com.progressoft.brix.domino.api.client.annotations.ClientModule;
-import com.progressoft.brix.domino.apt.client.processors.DominoTypeBuilder;
+import com.progressoft.brix.domino.apt.commons.DominoTypeBuilder;
 import com.progressoft.brix.domino.apt.client.processors.module.client.contributions.RegisterContributionsMethodWriter;
 import com.progressoft.brix.domino.apt.client.processors.module.client.initialtasks.RegisterInitialTasksMethodWriter;
 import com.progressoft.brix.domino.apt.client.processors.module.client.presenters.RegisterPresentersMethodWriter;

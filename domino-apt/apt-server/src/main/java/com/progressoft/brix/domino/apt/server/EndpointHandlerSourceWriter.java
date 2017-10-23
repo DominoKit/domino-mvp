@@ -5,11 +5,11 @@ import com.progressoft.brix.domino.api.server.endpoint.AbstractEndpointCallBackH
 import com.progressoft.brix.domino.api.server.endpoint.AbstractEndpointHandler;
 import com.progressoft.brix.domino.api.server.handler.CallbackRequestHandler;
 import com.progressoft.brix.domino.api.server.handler.RequestHandler;
+import com.progressoft.brix.domino.apt.commons.DominoTypeBuilder;
 import com.progressoft.brix.domino.apt.commons.JavaSourceWriter;
 import com.progressoft.brix.domino.apt.commons.ProcessorElement;
 import com.squareup.javapoet.*;
 
-import javax.annotation.Generated;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
@@ -39,14 +39,8 @@ public class EndpointHandlerSourceWriter extends JavaSourceWriter {
 
     @Override
     public String write() {
-
-        AnnotationSpec generatedAnnotation = AnnotationSpec.builder(Generated.class)
-                .addMember("value", "\"" + EndpointsProcessor.class.getCanonicalName() + "\"")
-                .build();
-        TypeSpec endpoint = TypeSpec.classBuilder(processorElement.simpleName() +
-                "EndpointHandler")
-                .addAnnotation(generatedAnnotation)
-                .addModifiers(Modifier.PUBLIC)
+        TypeSpec endpoint = DominoTypeBuilder.build(processorElement.simpleName() +
+                "EndpointHandler", EndpointsProcessor.class)
                 .superclass(getSuperclass())
                 .addMethod(makeRequestMethod())
                 .addMethod(getRequestClassMethod())

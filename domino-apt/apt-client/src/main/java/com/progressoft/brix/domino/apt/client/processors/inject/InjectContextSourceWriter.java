@@ -3,7 +3,7 @@ package com.progressoft.brix.domino.apt.client.processors.inject;
 import com.progressoft.brix.domino.api.client.annotations.AutoRequest;
 import com.progressoft.brix.domino.api.client.annotations.Contribute;
 import com.progressoft.brix.domino.api.shared.extension.Contribution;
-import com.progressoft.brix.domino.apt.client.processors.DominoTypeBuilder;
+import com.progressoft.brix.domino.apt.commons.DominoTypeBuilder;
 import com.progressoft.brix.domino.apt.commons.FullClassName;
 import com.progressoft.brix.domino.apt.commons.JavaSourceWriter;
 import com.progressoft.brix.domino.apt.commons.ProcessorElement;

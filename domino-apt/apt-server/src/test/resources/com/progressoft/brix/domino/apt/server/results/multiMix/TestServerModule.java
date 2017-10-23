@@ -2,26 +2,13 @@ package com.progressoft.brix.domino.apt.server.multiMix;
 
 import com.google.auto.service.AutoService;
 import com.progressoft.brix.domino.api.server.config.ServerModuleConfiguration;
-import com.progressoft.brix.domino.api.server.handler.HandlerRegistry;
-import com.progressoft.brix.domino.apt.server.multiMix.FirstHandler;
-import com.progressoft.brix.domino.apt.server.multiMix.FirstRequest;
-import com.progressoft.brix.domino.apt.server.multiMix.SecondHandler;
-import com.progressoft.brix.domino.apt.server.multiMix.SecondRequest;
-import com.progressoft.brix.domino.apt.server.multiMix.ThirdHandler;
-import com.progressoft.brix.domino.apt.server.multiMix.ThirdRequest;
 import com.progressoft.brix.domino.api.server.endpoint.EndpointsRegistry;
-import com.progressoft.brix.domino.apt.server.multiMix.FirstHandlerEndpointHandler;
-import com.progressoft.brix.domino.apt.server.multiMix.SecondHandlerEndpointHandler;
-import com.progressoft.brix.domino.apt.server.multiMix.ThirdHandlerEndpointHandler;
+import com.progressoft.brix.domino.api.server.handler.HandlerRegistry;
 import com.progressoft.brix.domino.api.server.interceptor.InterceptorsRegistry;
-import com.progressoft.brix.domino.apt.server.multiMix.FirstInterceptor;
-import com.progressoft.brix.domino.apt.server.multiMix.TestServerEntryPointContext;
-import com.progressoft.brix.domino.apt.server.multiMix.SecondInterceptor;
-import com.progressoft.brix.domino.apt.server.multiMix.ThirdInterceptor;
-import com.progressoft.brix.domino.apt.server.multiMix.FirstGlobalInterceptor;
-import com.progressoft.brix.domino.apt.server.multiMix.SecondGlobalInterceptor;
-import com.progressoft.brix.domino.apt.server.multiMix.ThirdGlobalInterceptor;
+import java.lang.Override;
+import javax.annotation.Generated;
 
+@Generated("com.progressoft.brix.domino.apt.server.ServerModuleAnnotationProcessor")
 @AutoService(ServerModuleConfiguration.class)
 public class TestServerModule implements ServerModuleConfiguration{
 
