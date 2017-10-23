@@ -3,12 +3,12 @@ package com.progressoft.brix.domino.apt.client.processors.contributions;
 import com.progressoft.brix.domino.api.client.annotations.Request;
 import com.progressoft.brix.domino.api.client.request.ClientRequest;
 import com.progressoft.brix.domino.api.shared.extension.Contribution;
+import com.progressoft.brix.domino.apt.client.processors.DominoTypeBuilder;
 import com.progressoft.brix.domino.apt.commons.FullClassName;
 import com.progressoft.brix.domino.apt.commons.JavaSourceWriter;
 import com.progressoft.brix.domino.apt.commons.ProcessorElement;
 import com.squareup.javapoet.*;
 
-import javax.annotation.Generated;
 import javax.lang.model.element.Modifier;
 import java.io.IOException;
 
@@ -42,14 +42,8 @@ public class ContributionRequestSourceWriter extends JavaSourceWriter {
         MethodSpec constructor = makeConstructor(contextType);
         MethodSpec process = makeProcessMethod(presenterType);
 
-        AnnotationSpec generatedAnnotation = AnnotationSpec.builder(Generated.class)
-                .addMember("value", "\"" + ContributionClientRequestProcessor.class.getCanonicalName() + "\"")
-                .build();
-
-        TypeSpec contributionRequest = TypeSpec.classBuilder(generatedClassName)
-                .addAnnotation(generatedAnnotation)
+        TypeSpec contributionRequest = DominoTypeBuilder.build(generatedClassName, ContributionClientRequestProcessor.class)
                 .addAnnotation(Request.class)
-                .addModifiers(Modifier.PUBLIC)
                 .superclass(ParameterizedTypeName.get(ClassName.get(ClientRequest.class), presenterType))
                 .addField(extensionPoint)
                 .addMethod(constructor)

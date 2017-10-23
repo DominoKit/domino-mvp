@@ -2,17 +2,20 @@ package com.progressoft.brix.domino.apt.client.processors.module.client;
 
 import com.progressoft.brix.domino.api.client.ModuleConfiguration;
 import com.progressoft.brix.domino.api.client.annotations.ClientModule;
-import com.progressoft.brix.domino.apt.client.processors.module.client.contributions.ContributionsWriter;
-import com.progressoft.brix.domino.apt.client.processors.module.client.initialtasks.InitialTasksWriter;
-import com.progressoft.brix.domino.apt.client.processors.module.client.presenters.PresentersWriter;
-import com.progressoft.brix.domino.apt.client.processors.module.client.requests.RequestsWriter;
-import com.progressoft.brix.domino.apt.client.processors.module.client.requests.SendersWriter;
-import com.progressoft.brix.domino.apt.client.processors.module.client.views.ViewWriter;
+import com.progressoft.brix.domino.apt.client.processors.DominoTypeBuilder;
+import com.progressoft.brix.domino.apt.client.processors.module.client.contributions.RegisterContributionsMethodWriter;
+import com.progressoft.brix.domino.apt.client.processors.module.client.initialtasks.RegisterInitialTasksMethodWriter;
+import com.progressoft.brix.domino.apt.client.processors.module.client.presenters.RegisterPresentersMethodWriter;
+import com.progressoft.brix.domino.apt.client.processors.module.client.requests.RegisterRequestsMethodWriter;
+import com.progressoft.brix.domino.apt.client.processors.module.client.requests.sender.RegisterSendersMethodWriter;
+import com.progressoft.brix.domino.apt.client.processors.module.client.views.RegisterViewsMethodWriter;
 import com.progressoft.brix.domino.apt.commons.JavaSourceBuilder;
 import com.progressoft.brix.domino.apt.commons.JavaSourceWriter;
-import com.progressoft.brix.domino.apt.commons.ModifierBuilder;
 import com.progressoft.brix.domino.apt.commons.ProcessorElement;
+import com.squareup.javapoet.JavaFile;
+import com.squareup.javapoet.TypeSpec;
 
+import java.io.IOException;
 import java.util.Set;
 
 public class ModuleConfigurationSourceWriter extends JavaSourceWriter {
@@ -40,21 +43,23 @@ public class ModuleConfigurationSourceWriter extends JavaSourceWriter {
     }
 
     @Override
-    public String write() {
-        this.sourceBuilder.onPackage(processorElement.elementPackage())
-                .withModifiers(new ModifierBuilder().asPublic())
-                .implement(ModuleConfiguration.class.getCanonicalName());
-        writeBody();
-        return this.sourceBuilder.build();
+    public String write() throws IOException {
+        TypeSpec.Builder clientModuleTypeBuilder = DominoTypeBuilder.build(processorElement.getAnnotation(ClientModule.class).name() + "ModuleConfiguration",
+                ClientModuleAnnotationProcessor.class)
+                .addSuperinterface(ModuleConfiguration.class);
+        writeBody(clientModuleTypeBuilder);
+        StringBuilder asString = new StringBuilder();
+        JavaFile.builder(processorElement.elementPackage(), clientModuleTypeBuilder.build()).build().writeTo(asString);
+        return asString.toString();
     }
 
-    private void writeBody() {
-        new PresentersWriter(sourceBuilder).write(presenters);
-        new ViewWriter(sourceBuilder).write(views);
-        new RequestsWriter(sourceBuilder).write(requests);
-        new InitialTasksWriter(sourceBuilder).write(initialTasks);
-        new ContributionsWriter(sourceBuilder).write(contributions);
-        new SendersWriter(sourceBuilder).write(senders);
+    private void writeBody(TypeSpec.Builder clientModuleTypeBuilder) {
+        new RegisterPresentersMethodWriter(clientModuleTypeBuilder).write(presenters);
+        new RegisterViewsMethodWriter(clientModuleTypeBuilder).write(views);
+        new RegisterRequestsMethodWriter(clientModuleTypeBuilder).write(requests);
+        new RegisterInitialTasksMethodWriter(clientModuleTypeBuilder).write(initialTasks);
+        new RegisterContributionsMethodWriter(clientModuleTypeBuilder).write(contributions);
+        new RegisterSendersMethodWriter(clientModuleTypeBuilder).write(senders);
     }
 
 }

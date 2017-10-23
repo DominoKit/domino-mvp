@@ -1,4 +1,4 @@
-package com.progressoft.brix.domino.apt.client.processors.module.client.requests;
+package com.progressoft.brix.domino.apt.client.processors.module.client.requests.sender;
 
 import com.google.auto.common.MoreElements;
 import com.progressoft.brix.domino.api.client.annotations.RequestSender;

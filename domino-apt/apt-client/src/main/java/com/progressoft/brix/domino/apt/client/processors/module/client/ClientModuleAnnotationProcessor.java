@@ -6,7 +6,7 @@ import com.progressoft.brix.domino.apt.client.processors.module.client.contribut
 import com.progressoft.brix.domino.apt.client.processors.module.client.initialtasks.InitialTasksCollector;
 import com.progressoft.brix.domino.apt.client.processors.module.client.presenters.PresentersCollector;
 import com.progressoft.brix.domino.apt.client.processors.module.client.requests.RequestsCollector;
-import com.progressoft.brix.domino.apt.client.processors.module.client.requests.SendersCollector;
+import com.progressoft.brix.domino.apt.client.processors.module.client.requests.sender.SendersCollector;
 import com.progressoft.brix.domino.apt.client.processors.module.client.views.ViewsCollector;
 import com.progressoft.brix.domino.apt.commons.BaseProcessor;
 import com.progressoft.brix.domino.apt.commons.ProcessorElement;

@@ -8,13 +8,13 @@ import com.progressoft.brix.domino.api.client.annotations.Request;
 import com.progressoft.brix.domino.api.client.annotations.RequestSender;
 import com.progressoft.brix.domino.api.client.request.RequestRestSender;
 import com.progressoft.brix.domino.api.client.request.ServerRequestCallBack;
+import com.progressoft.brix.domino.apt.client.processors.DominoTypeBuilder;
 import com.progressoft.brix.domino.apt.commons.FullClassName;
 import com.progressoft.brix.domino.apt.commons.JavaSourceWriter;
 import com.progressoft.brix.domino.apt.commons.ProcessorElement;
 import com.squareup.javapoet.*;
 import org.fusesource.restygwt.client.*;
 
-import javax.annotation.Generated;
 import javax.lang.model.element.Modifier;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.HttpMethod;
@@ -102,14 +102,7 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
         if (hasServiceRoot())
             requestSenderAnnotationBuilder.addMember("customServiceRoot", "true");
 
-        AnnotationSpec generatedAnnotation = AnnotationSpec.builder(Generated.class)
-                .addMember("value", "\"" + HandlerPathProcessor.class.getCanonicalName() + "\"")
-                .build();
-
-
-        return TypeSpec.classBuilder(processorElement.simpleName() + "Sender")
-                .addModifiers(Modifier.PUBLIC)
-                .addAnnotation(generatedAnnotation)
+        return DominoTypeBuilder.build(processorElement.simpleName() + "Sender", HandlerPathProcessor.class)
                 .addAnnotation(requestSenderAnnotationBuilder.build())
                 .addSuperinterface(ParameterizedTypeName.get(ClassName.get(RequestRestSender.class), requestType));
     }

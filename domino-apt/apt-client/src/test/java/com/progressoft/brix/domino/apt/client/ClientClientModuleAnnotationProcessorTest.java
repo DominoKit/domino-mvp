@@ -7,6 +7,7 @@ import com.progressoft.brix.domino.apt.client.processors.module.client.ClientMod
 import com.progressoft.brix.domino.apt.client.processors.module.client.ConfigurationProviderAnnotationProcessor;
 import com.progressoft.brix.domino.test.apt.ProcessorAssert;
 import org.apache.commons.io.IOUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.annotation.processing.Processor;
