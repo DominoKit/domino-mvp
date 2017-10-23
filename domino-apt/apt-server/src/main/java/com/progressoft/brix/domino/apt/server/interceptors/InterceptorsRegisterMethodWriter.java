@@ -29,7 +29,7 @@ public class InterceptorsRegisterMethodWriter extends AbstractRegisterMethodWrit
         FullClassName request = new FullClassName(new FullClassName(entry.element.getInterfaceFullQualifiedGenericName(RequestInterceptor.class)).allImports().get(1));
         FullClassName entryPoint = new FullClassName(new FullClassName(entry.element.getInterfaceFullQualifiedGenericName(RequestInterceptor.class)).allImports().get(2));
         methodBuilder.addStatement("registry.registerInterceptor($T.class.getCanonicalName(), $T.class.getCanonicalName(), new $T())",
-                ClassName.bestGuess(request.asSimpleGenericName()), ClassName.bestGuess(entryPoint.asSimpleGenericName()), ClassName.bestGuess(entry.element.simpleName()));
+                ClassName.get(request.asPackage(), request.asSimpleGenericName()), ClassName.get(entryPoint.asPackage(), entryPoint.asSimpleGenericName()), ClassName.get(entry.element.elementPackage(), entry.element.simpleName()));
     }
 
     @Override

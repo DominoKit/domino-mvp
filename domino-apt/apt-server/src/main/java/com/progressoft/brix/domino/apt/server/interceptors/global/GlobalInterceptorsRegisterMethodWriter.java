@@ -28,7 +28,7 @@ public class GlobalInterceptorsRegisterMethodWriter extends AbstractRegisterMeth
     protected void registerItem(GlobalInterceptorsEntry entry, MethodSpec.Builder methodBuilder) {
         FullClassName entryPoint = new FullClassName(new FullClassName(entry.element.getInterfaceFullQualifiedGenericName(GlobalRequestInterceptor.class)).allImports().get(1));
         methodBuilder.addStatement("registry.registerGlobalInterceptor($T.class.getCanonicalName(), new $T())",
-                ClassName.bestGuess(entryPoint.asSimpleGenericName()), ClassName.bestGuess(entry.element.simpleName()));
+                ClassName.get(entryPoint.asPackage(), entryPoint.asSimpleGenericName()), ClassName.get(entry.element.elementPackage(), entry.element.simpleName()));
     }
 
     @Override
