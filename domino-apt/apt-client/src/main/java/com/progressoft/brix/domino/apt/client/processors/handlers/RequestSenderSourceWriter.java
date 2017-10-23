@@ -58,8 +58,8 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
         this.path = processorElement.getAnnotation(Path.class).value();
         this.serviceRoot = processorElement.getAnnotation(Path.class).serviceRoot();
         this.method = processorElement.getAnnotation(Path.class).method();
-        requestType = ClassName.bestGuess(request.asImport());
-        responseType = ClassName.bestGuess(response.asImport());
+        requestType = ClassName.get(request.asPackage(), request.asSimpleName());
+        responseType = ClassName.get(response.asPackage(), response.asSimpleName());
         fillPathParameters(path);
     }
 
