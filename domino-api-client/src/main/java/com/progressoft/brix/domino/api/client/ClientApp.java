@@ -41,6 +41,8 @@ public class ClientApp
     private static final AttributeHolder<AsyncRunner> ASYNC_RUNNER_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<DominoOptions> DOMINO_OPTIONS_HOLDER = new AttributeHolder<>();
 
+    private static ClientApp instance=new ClientApp();
+
     private ClientApp() {
     }
 
@@ -75,7 +77,7 @@ public class ClientApp
     }
 
     public static ClientApp make() {
-        return new ClientApp();
+        return instance;
     }
 
     public RequestRouter<ClientRequest> getClientRouter() {

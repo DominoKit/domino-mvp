@@ -5,6 +5,7 @@ import com.progressoft.brix.domino.api.server.RouterConfigurator;
 import com.progressoft.brix.domino.api.server.SecretKey;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.TestContext;
@@ -113,12 +114,30 @@ public class DominoTestServer {
         }
 
         public HttpRequest<Buffer> makeRequest(String path) {
-            return webClient.post(actualPort, "localhost", "/" + path)
+            return webClient.post( "/" + path)
+                    .host("localhost")
+                    .port(actualPort)
+                    .putHeader(CSRFHandler.DEFAULT_HEADER_NAME, csrfToken);
+        }
+
+        public HttpRequest<Buffer> makeRequest(String path, HttpMethod method) {
+            return webClient.request(method, "/" + path)
+                    .host("localhost")
+                    .port(actualPort)
                     .putHeader(CSRFHandler.DEFAULT_HEADER_NAME, csrfToken);
         }
 
         public HttpRequest<Buffer> makeServiceRequest(String path) {
-            return webClient.post(actualPort, "localhost", "/service/" + path)
+            return webClient.post( "/service/" + path)
+                    .host("localhost")
+                    .port(actualPort)
+                    .putHeader(CSRFHandler.DEFAULT_HEADER_NAME, csrfToken);
+        }
+
+        public HttpRequest<Buffer> makeServiceRequest(String path, HttpMethod method) {
+            return webClient.request(method, "/service/" + path)
+                    .host("localhost")
+                    .port(actualPort)
                     .putHeader(CSRFHandler.DEFAULT_HEADER_NAME, csrfToken);
         }
     }
