@@ -1,13 +1,9 @@
 package com.progressoft.brix.domino.apt.client;
 
-import com.progressoft.brix.domino.api.client.annotations.Request;
-import com.progressoft.brix.domino.api.client.request.ClientRequest;
+import com.progressoft.brix.domino.api.client.annotations.Command;
+import com.progressoft.brix.domino.api.client.request.PresenterCommand;
 
-@Request
-public class AnnotatedClassWithRequest extends ClientRequest<PresenterInterface> {
+@Command
+public class AnnotatedClassWithRequest extends PresenterCommand<PresenterInterface> {
 
-    @Override
-    protected void process(PresenterInterface presenter) {
-
-    }
 }

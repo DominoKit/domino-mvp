@@ -1,6 +1,6 @@
 package com.progressoft.brix.domino.apt.client.processors.module.client.requests;
 
-import com.progressoft.brix.domino.api.client.request.RequestRegistry;
+import com.progressoft.brix.domino.api.client.request.CommandRegistry;
 import com.progressoft.brix.domino.apt.commons.AbstractRegisterMethodWriter;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
@@ -19,12 +19,12 @@ public class RegisterRequestsMethodWriter extends AbstractRegisterMethodWriter<R
 
     @Override
     protected Class<?> registryClass() {
-        return RequestRegistry.class;
+        return CommandRegistry.class;
     }
 
     @Override
     protected void registerItem(RequestEntry entry, MethodSpec.Builder methodBuilder) {
-        methodBuilder.addStatement("registry.registerRequest($T.class.getCanonicalName(), $T.class.getCanonicalName())"
+        methodBuilder.addStatement("registry.registerCommand($T.class.getCanonicalName(), $T.class.getCanonicalName())"
                 , ClassName.bestGuess(entry.request), ClassName.bestGuess(entry.presenter));
     }
 

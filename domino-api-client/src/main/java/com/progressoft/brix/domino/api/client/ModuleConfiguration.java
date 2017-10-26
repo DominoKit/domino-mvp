@@ -3,7 +3,7 @@ package com.progressoft.brix.domino.api.client;
 import com.progressoft.brix.domino.api.client.extension.ContributionsRegistry;
 import com.progressoft.brix.domino.api.client.mvp.PresenterRegistry;
 import com.progressoft.brix.domino.api.client.mvp.ViewRegistry;
-import com.progressoft.brix.domino.api.client.request.RequestRegistry;
+import com.progressoft.brix.domino.api.client.request.CommandRegistry;
 import com.progressoft.brix.domino.api.client.request.RequestRestSendersRegistry;
 
 public interface ModuleConfiguration {
@@ -12,7 +12,7 @@ public interface ModuleConfiguration {
         // Default implementation
     }
 
-    default void registerRequests(RequestRegistry registry) {
+    default void registerRequests(CommandRegistry registry) {
         // Default implementation
     }
 

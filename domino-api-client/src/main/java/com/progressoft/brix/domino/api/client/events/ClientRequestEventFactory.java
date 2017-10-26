@@ -1,8 +1,8 @@
 package com.progressoft.brix.domino.api.client.events;
 
-import com.progressoft.brix.domino.api.client.request.ClientRequest;
+import com.progressoft.brix.domino.api.client.request.PresenterCommand;
 
 @FunctionalInterface
 public interface ClientRequestEventFactory {
-    Event make(ClientRequest request);
+    Event make(PresenterCommand request);
 }

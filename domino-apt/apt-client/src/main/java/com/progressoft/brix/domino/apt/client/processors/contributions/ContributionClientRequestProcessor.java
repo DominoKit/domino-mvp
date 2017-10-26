@@ -69,11 +69,11 @@ public class ContributionClientRequestProcessor extends BaseProcessor {
         String contextSimpleName = contextFullName.asSimpleName();
         String presenterSimpleName = new FullClassName(presenterName).asSimpleName();
         String targetPackage = processorElement.elementPackage().replace("contributions", "requests");
-        String generatedClassName = "Obtain" + contextSimpleName + "For" + presenterSimpleName + "ClientRequest";
+        String generatedClassName = "Obtain" + contextSimpleName + "For" + presenterSimpleName + "PresenterCommand";
         try (Writer sourceWriter = obtainSourceWriter(
                 targetPackage, generatedClassName)) {
             sourceWriter
-                    .write(new ContributionRequestSourceWriter(processorElement, presenterName, targetPackage, generatedClassName, presenterMethod).write());
+                    .write(new ContributionRequestSourceWriter(processorElement, presenterName, targetPackage, generatedClassName).write());
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Could not generate classes : ", e);
             messager.printMessage(Diagnostic.Kind.ERROR, "could not generate class");

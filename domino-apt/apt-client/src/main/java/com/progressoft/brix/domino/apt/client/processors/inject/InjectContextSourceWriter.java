@@ -54,7 +54,7 @@ public class InjectContextSourceWriter extends JavaSourceWriter {
                 .addAnnotation(Override.class)
                 .addModifiers(Modifier.PUBLIC)
                 .addParameter(ClassName.bestGuess(extensionPoint), "extensionPoint")
-                .addStatement("new $T(extensionPoint).send()", ClassName.bestGuess(makeRequestClassName()))
+                .addStatement("new $T().onPresenterReady(presenter -> presenter.$L(extensionPoint.context())).send()", ClassName.bestGuess(makeRequestClassName()), processorElement.simpleName())
                 .build();
     }
 
@@ -62,6 +62,6 @@ public class InjectContextSourceWriter extends JavaSourceWriter {
         return targetPackage.replace("contributions", "requests") + "." +
                 "Obtain" + extensionPointFullClassName.asSimpleName() +
                 "For" + presenterFullClassName.asSimpleName() +
-                "ClientRequest";
+                "PresenterCommand";
     }
 }

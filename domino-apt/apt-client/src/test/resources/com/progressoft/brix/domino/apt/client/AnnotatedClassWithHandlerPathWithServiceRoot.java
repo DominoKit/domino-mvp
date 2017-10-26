@@ -8,15 +8,5 @@ import javax.ws.rs.HttpMethod;
 
 @Request(classifier="xyz")
 @Path(value="somePath/{id}/{code}", serviceRoot ="someServiceRootPath", method=HttpMethod.GET)
-public class AnnotatedClassWithHandlerPathWithServiceRoot extends ClientServerRequest<PresenterInterface, SomeRequest, SomeResponse> {
-
-    @Override
-    protected void process(PresenterInterface presenter, SomeRequest serverArgs, SomeResponse response) {
-
-    }
-
-    @Override
-    public SomeRequest buildArguments() {
-        return null;
-    }
+public class AnnotatedClassWithHandlerPathWithServiceRoot extends ClientServerRequest<SomeRequest, SomeResponse> {
 }

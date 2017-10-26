@@ -128,7 +128,7 @@ public class ClientClientModuleAnnotationProcessorTest {
         )
                 .withProcessor(new ContributionClientRequestProcessor())
 
-                .generates(getExpectedResultFileContent("ObtainMainExtensionPointForPresenterInterfaceClientRequest.java"));
+                .generates(getExpectedResultFileContent("ObtainMainExtensionPointForPresenterInterfacePresenterCommand.java"));
     }
 
     @Test

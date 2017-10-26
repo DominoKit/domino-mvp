@@ -2,14 +2,14 @@ package com.progressoft.brix.domino.desktop.client.events;
 
 import com.progressoft.brix.domino.api.client.ClientApp;
 import com.progressoft.brix.domino.api.client.events.Event;
-import com.progressoft.brix.domino.api.client.request.ClientRequest;
+import com.progressoft.brix.domino.api.client.request.PresenterCommand;
 import com.progressoft.brix.domino.api.client.request.Request;
 
 public class DesktopClientEvent implements Event {
 
-    private final ClientRequest request;
+    private final PresenterCommand request;
 
-    public DesktopClientEvent(ClientRequest request) {
+    public DesktopClientEvent(PresenterCommand request) {
         this.request = request;
     }
 

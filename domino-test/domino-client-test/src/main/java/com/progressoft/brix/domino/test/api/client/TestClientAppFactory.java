@@ -6,13 +6,13 @@ import com.progressoft.brix.domino.api.server.entrypoint.ServerEntryPointContext
 import com.progressoft.brix.domino.api.shared.extension.MainContext;
 import com.progressoft.brix.domino.api.shared.history.DominoHistory;
 import com.progressoft.brix.domino.client.commons.request.InMemoryRequestRestSendersRepository;
-import com.progressoft.brix.domino.client.commons.request.InMemoryRequestsRepository;
+import com.progressoft.brix.domino.client.commons.request.InMemoryCommandsRepository;
 import com.progressoft.brix.domino.gwt.client.events.RequestEventProcessor;
 
 public class TestClientAppFactory {
 
     protected static TestInMemoryPresenterRepository presentersRepository;
-    protected static InMemoryRequestsRepository requestRepository;
+    protected static InMemoryCommandsRepository commandsRepository;
     protected static TestInMemoryViewRepository viewsRepository;
     protected static TestServerRouter serverRouter;
     protected static TestInMemoryContributionsRepository contributionsRepository;
@@ -32,7 +32,7 @@ public class TestClientAppFactory {
         eventBus = new TestEventBus(requestEventProcessor);
 
         presentersRepository = new TestInMemoryPresenterRepository();
-        requestRepository = new InMemoryRequestsRepository();
+        commandsRepository = new InMemoryCommandsRepository();
         viewsRepository = new TestInMemoryViewRepository();
         contributionsRepository = new TestInMemoryContributionsRepository();
         history = new TestDominoHistory();
@@ -41,7 +41,7 @@ public class TestClientAppFactory {
                 .clientRouter(clientRouter)
                 .serverRouter(serverRouter)
                 .eventsBus(eventBus)
-                .requestRepository(requestRepository)
+                .requestRepository(commandsRepository)
                 .presentersRepository(presentersRepository)
                 .viewsRepository(viewsRepository)
                 .contributionsRepository(contributionsRepository)

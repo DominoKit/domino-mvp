@@ -27,8 +27,8 @@ import java.util.logging.Logger;
 public class HandlerPathProcessor extends BaseProcessor {
 
     private static final Logger LOGGER = Logger.getLogger(HandlerPathProcessor.class.getName());
-    public static final int REQUEST_INDEX = 2;
-    public static final int RESPONSE_INDEX = 3;
+    public static final int REQUEST_INDEX = 1;
+    public static final int RESPONSE_INDEX = 2;
 
     private final Set<String> supportedAnnotations = new HashSet<>();
 

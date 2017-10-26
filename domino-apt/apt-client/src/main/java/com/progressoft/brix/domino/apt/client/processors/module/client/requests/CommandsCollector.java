@@ -1,7 +1,8 @@
 package com.progressoft.brix.domino.apt.client.processors.module.client.requests;
 
+import com.progressoft.brix.domino.api.client.annotations.Command;
 import com.progressoft.brix.domino.api.client.annotations.Request;
-import com.progressoft.brix.domino.api.client.request.ClientRequest;
+import com.progressoft.brix.domino.api.client.request.PresenterCommand;
 import com.progressoft.brix.domino.api.client.request.ClientServerRequest;
 import com.progressoft.brix.domino.apt.commons.BaseProcessor;
 import com.progressoft.brix.domino.apt.commons.FullClassName;
@@ -15,14 +16,14 @@ import javax.tools.Diagnostic;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class RequestsCollector {
+public class CommandsCollector {
 
     private final Messager messager;
     private final Types typeUtils;
     private final BaseProcessor.ElementFactory elementFactory;
     private final Set<String> requests;
 
-    public RequestsCollector(Messager messager, Types typeUtils,
+    public CommandsCollector(Messager messager, Types typeUtils,
                              BaseProcessor.ElementFactory elementFactory, Set<String> requests) {
         this.messager = messager;
         this.typeUtils = typeUtils;
@@ -30,8 +31,8 @@ public class RequestsCollector {
         this.requests = requests;
     }
 
-    public void collectRequests(RoundEnvironment roundEnv) {
-        roundEnv.getElementsAnnotatedWith(Request.class).stream()
+    public void collectCommands(RoundEnvironment roundEnv) {
+        roundEnv.getElementsAnnotatedWith(Command.class).stream()
                 .map(elementFactory::make)
                 .filter(e -> e.validateElementKind(ElementKind.CLASS))
                 .collect(Collectors.toSet())
@@ -50,8 +51,7 @@ public class RequestsCollector {
     private boolean isRequestClass(ProcessorElement element) {
         String superType = elementFactory.make(typeUtils.asElement(element.asTypeElement().getSuperclass()))
                 .fullQualifiedNoneGenericName();
-        return superType.equals(ClientServerRequest.class.getCanonicalName()) ||
-                superType.equals(ClientRequest.class.getCanonicalName());
+        return superType.equals(PresenterCommand.class.getCanonicalName());
     }
 
     private String getRequestPresenter(ProcessorElement element) {

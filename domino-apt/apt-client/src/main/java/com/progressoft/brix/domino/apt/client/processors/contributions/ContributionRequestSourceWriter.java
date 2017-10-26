@@ -1,53 +1,38 @@
 package com.progressoft.brix.domino.apt.client.processors.contributions;
 
-import com.progressoft.brix.domino.api.client.annotations.Request;
-import com.progressoft.brix.domino.api.client.request.ClientRequest;
-import com.progressoft.brix.domino.api.shared.extension.Contribution;
+import com.progressoft.brix.domino.api.client.annotations.Command;
+import com.progressoft.brix.domino.api.client.request.PresenterCommand;
 import com.progressoft.brix.domino.apt.commons.DominoTypeBuilder;
-import com.progressoft.brix.domino.apt.commons.FullClassName;
 import com.progressoft.brix.domino.apt.commons.JavaSourceWriter;
 import com.progressoft.brix.domino.apt.commons.ProcessorElement;
-import com.squareup.javapoet.*;
+import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.JavaFile;
+import com.squareup.javapoet.ParameterizedTypeName;
+import com.squareup.javapoet.TypeSpec;
 
-import javax.lang.model.element.Modifier;
 import java.io.IOException;
 
 public class ContributionRequestSourceWriter extends JavaSourceWriter {
 
     private final String targetPackage;
     private final String generatedClassName;
-    private final String presenterMethod;
     private final ClassName presenterType;
-    private final ClassName contextType;
 
 
     public ContributionRequestSourceWriter(ProcessorElement processorElement, String presenterName,
-                                           String targetPackage, String generatedClassName, String presenterMethod) {
+                                           String targetPackage, String generatedClassName) {
         super(processorElement);
         this.targetPackage = targetPackage;
         this.generatedClassName = generatedClassName;
-        this.presenterMethod = presenterMethod;
         presenterType = ClassName.bestGuess(presenterName);
-        contextType = ClassName.bestGuess(getContextName());
-    }
-
-    private String getContextName() {
-        return new FullClassName(processorElement.getInterfaceFullQualifiedGenericName(Contribution.class)).allImports().get(1);
     }
 
     @Override
     public String write() throws IOException {
 
-        FieldSpec extensionPoint = makeExtensionPointField(contextType);
-        MethodSpec constructor = makeConstructor(contextType);
-        MethodSpec process = makeProcessMethod(presenterType);
-
         TypeSpec contributionRequest = DominoTypeBuilder.build(generatedClassName, ContributionClientRequestProcessor.class)
-                .addAnnotation(Request.class)
-                .superclass(ParameterizedTypeName.get(ClassName.get(ClientRequest.class), presenterType))
-                .addField(extensionPoint)
-                .addMethod(constructor)
-                .addMethod(process)
+                .addAnnotation(Command.class)
+                .superclass(ParameterizedTypeName.get(ClassName.get(PresenterCommand.class), presenterType))
                 .build();
 
         StringBuilder asString = new StringBuilder();
@@ -55,24 +40,4 @@ public class ContributionRequestSourceWriter extends JavaSourceWriter {
         return asString.toString();
     }
 
-    private MethodSpec makeProcessMethod(ClassName presenterType) {
-        return MethodSpec.methodBuilder("process")
-                .addAnnotation(Override.class)
-                .addModifiers(Modifier.PROTECTED)
-                .addParameter(presenterType, "presenter")
-                .addStatement("presenter." + presenterMethod + "(extensionPoint.context())")
-                .build();
-    }
-
-    private MethodSpec makeConstructor(ClassName contextType) {
-        return MethodSpec.constructorBuilder()
-                .addModifiers(Modifier.PUBLIC)
-                .addParameter(contextType, "extensionPoint")
-                .addStatement("this.extensionPoint = extensionPoint")
-                .build();
-    }
-
-    private FieldSpec makeExtensionPointField(ClassName contextType) {
-        return FieldSpec.builder(contextType, "extensionPoint", Modifier.PRIVATE).build();
-    }
 }

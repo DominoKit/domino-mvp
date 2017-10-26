@@ -5,7 +5,7 @@ import com.progressoft.brix.domino.api.client.annotations.*;
 import com.progressoft.brix.domino.apt.client.processors.module.client.contributions.ContributionsCollector;
 import com.progressoft.brix.domino.apt.client.processors.module.client.initialtasks.InitialTasksCollector;
 import com.progressoft.brix.domino.apt.client.processors.module.client.presenters.PresentersCollector;
-import com.progressoft.brix.domino.apt.client.processors.module.client.requests.RequestsCollector;
+import com.progressoft.brix.domino.apt.client.processors.module.client.requests.CommandsCollector;
 import com.progressoft.brix.domino.apt.client.processors.module.client.requests.sender.SendersCollector;
 import com.progressoft.brix.domino.apt.client.processors.module.client.views.ViewsCollector;
 import com.progressoft.brix.domino.apt.commons.BaseProcessor;
@@ -30,7 +30,7 @@ public class ClientModuleAnnotationProcessor extends BaseProcessor {
 
     private Set<String> presenters;
     private Set<String> views;
-    private Set<String> requests;
+    private Set<String> commands;
     private Set<String> initialTasks;
     private Set<String> contributions;
     private Set<String> senders;
@@ -44,14 +44,14 @@ public class ClientModuleAnnotationProcessor extends BaseProcessor {
 
             Register presentersRegister = new Register("presenters", presenters, messager, processingEnv);
             Register viewsRegister = new Register("views", views, messager, processingEnv);
-            Register requestRegister = new Register("requests", requests, messager, processingEnv);
+            Register commandsRegister = new Register("commands", commands, messager, processingEnv);
             Register initialTasksRegister = new Register("initialTasks", initialTasks, messager, processingEnv);
             Register contributionsRegister = new Register("contributions", contributions, messager, processingEnv);
             Register sendersRegister = new Register("senders", senders, messager, processingEnv);
 
             presenters = presentersRegister.readItems();
             views = viewsRegister.readItems();
-            requests = requestRegister.readItems();
+            commands = commandsRegister.readItems();
             initialTasks = initialTasksRegister.readItems();
             contributions = contributionsRegister.readItems();
             senders = sendersRegister.readItems();
@@ -59,7 +59,7 @@ public class ClientModuleAnnotationProcessor extends BaseProcessor {
             if (roundEnv.processingOver()) {
                 presentersRegister.writeItems();
                 viewsRegister.writeItems();
-                requestRegister.writeItems();
+                commandsRegister.writeItems();
                 initialTasksRegister.writeItems();
                 contributionsRegister.writeItems();
                 sendersRegister.writeItems();
@@ -72,7 +72,7 @@ public class ClientModuleAnnotationProcessor extends BaseProcessor {
 
             new PresentersCollector(messager, typeUtils, elementUtils, elementFactory, presenters).collectPresenters(roundEnv);
             new ViewsCollector(messager, elementFactory, views).collectViews(roundEnv);
-            new RequestsCollector(messager, typeUtils, elementFactory, requests).collectRequests(roundEnv);
+            new CommandsCollector(messager, typeUtils, elementFactory, commands).collectCommands(roundEnv);
             new InitialTasksCollector(elementFactory, initialTasks).collectInitialTasks(roundEnv);
             new ContributionsCollector(messager, elementFactory, contributions).collectContributions(roundEnv);
             new SendersCollector(elementFactory, senders).collectSenders(roundEnv);
@@ -87,7 +87,7 @@ public class ClientModuleAnnotationProcessor extends BaseProcessor {
         try (Writer sourceWriter = obtainSourceWriter(element.elementPackage(),
                 element.getAnnotation(ClientModule.class).name() + "ModuleConfiguration")) {
 
-            String clazz = new ModuleConfigurationSourceWriter(element, presenters, views, requests, initialTasks,
+            String clazz = new ModuleConfigurationSourceWriter(element, presenters, views, commands, initialTasks,
                     contributions, senders).write();
             sourceWriter.write(clazz);
             sourceWriter.flush();
@@ -104,7 +104,7 @@ public class ClientModuleAnnotationProcessor extends BaseProcessor {
         Set<String> annotations = new HashSet<>();
         annotations.add(Presenter.class.getCanonicalName());
         annotations.add(UiView.class.getCanonicalName());
-        annotations.add(Request.class.getCanonicalName());
+        annotations.add(Command.class.getCanonicalName());
         annotations.add(InitialTask.class.getCanonicalName());
         annotations.add(ClientModule.class.getCanonicalName());
         return annotations;

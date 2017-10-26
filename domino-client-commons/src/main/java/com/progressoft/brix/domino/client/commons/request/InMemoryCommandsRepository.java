@@ -1,18 +1,18 @@
 package com.progressoft.brix.domino.client.commons.request;
 
 import com.progressoft.brix.domino.api.client.request.RequestHolder;
-import com.progressoft.brix.domino.api.client.request.RequestsRepository;
+import com.progressoft.brix.domino.api.client.request.CommandsRepository;
 
 import java.util.HashMap;
 
-public class InMemoryRequestsRepository implements RequestsRepository {
+public class InMemoryCommandsRepository implements CommandsRepository {
 
     private final HashMap<String, RequestHolder> requestPresenterWrappers = new HashMap<>();
 
     @Override
-    public void registerRequest(RequestHolder requestHolder) {
+    public void registerCommand(RequestHolder requestHolder) {
         if (isRegisteredRequest(requestHolder.getRequestName()))
-            throw new RequestCannotBeRegisteredMoreThanOnce("Request key [" + requestHolder.getRequestName() + "]");
+            throw new CommandCannotBeRegisteredMoreThanOnce("Request key [" + requestHolder.getRequestName() + "]");
         requestPresenterWrappers.put(requestHolder.getRequestName(), requestHolder);
     }
 
@@ -20,7 +20,7 @@ public class InMemoryRequestsRepository implements RequestsRepository {
     public RequestHolder findRequestPresenterWrapper(String requestName) {
         if (isRegisteredRequest(requestName))
             return requestPresenterWrappers.get(requestName);
-        throw new RequestKeyNotFoundException("Request Key [" + requestName + "]");
+        throw new CommandKeyNotFoundException("Request Key [" + requestName + "]");
     }
 
     @Override

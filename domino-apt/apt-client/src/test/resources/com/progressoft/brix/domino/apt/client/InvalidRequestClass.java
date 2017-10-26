@@ -1,7 +1,7 @@
 package com.progressoft.brix.domino.apt.client;
 
-import com.progressoft.brix.domino.api.client.annotations.Request;
+import com.progressoft.brix.domino.api.client.annotations.Command;
 
-@Request
+@Command
 public class InvalidRequestClass {
 }

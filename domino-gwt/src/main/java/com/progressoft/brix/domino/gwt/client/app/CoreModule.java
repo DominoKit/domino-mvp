@@ -8,7 +8,7 @@ import com.progressoft.brix.domino.client.commons.mvp.presenter.InMemoryPresente
 import com.progressoft.brix.domino.client.commons.mvp.view.InMemoryViewRepository;
 import com.progressoft.brix.domino.client.commons.request.ClientRouter;
 import com.progressoft.brix.domino.client.commons.request.InMemoryRequestRestSendersRepository;
-import com.progressoft.brix.domino.client.commons.request.InMemoryRequestsRepository;
+import com.progressoft.brix.domino.client.commons.request.InMemoryCommandsRepository;
 import com.progressoft.brix.domino.client.commons.request.ServerRouter;
 import com.progressoft.brix.domino.gwt.client.async.GwtAsyncRunner;
 import com.progressoft.brix.domino.gwt.client.events.ClientEventFactory;
@@ -38,7 +38,7 @@ public class CoreModule {
                 .clientRouter(clientRouter)
                 .serverRouter(serverRouter)
                 .eventsBus(eventBus)
-                .requestRepository(new InMemoryRequestsRepository())
+                .requestRepository(new InMemoryCommandsRepository())
                 .presentersRepository(new InMemoryPresentersRepository())
                 .viewsRepository(new InMemoryViewRepository())
                 .contributionsRepository(new InMemoryContributionRepository())

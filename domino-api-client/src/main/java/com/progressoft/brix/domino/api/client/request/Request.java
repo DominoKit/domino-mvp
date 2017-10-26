@@ -35,13 +35,9 @@ public interface Request {
         }
     }
 
-    void send();
-
     void startRouting();
 
     String getKey();
-
-    void chainRequest(Request request);
 
     void applyState(RequestStateContext context);
 

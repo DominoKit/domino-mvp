@@ -14,6 +14,8 @@ public class InjectContributionPresenterInterfaceContributionToMainExtensionPoin
 
     @Override
     public void contribute(MainExtensionPoint extensionPoint) {
-        new ObtainMainExtensionPointForInjectContributionPresenterInterfaceClientRequest(extensionPoint).send();
+        new ObtainMainExtensionPointForInjectContributionPresenterInterfacePresenterCommand()
+                .onPresenterReady(presenter -> presenter.onMainExtensionPointContextReceived(extensionPoint.context()))
+                .send();
     }
 }

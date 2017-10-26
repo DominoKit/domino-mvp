@@ -10,7 +10,6 @@ public abstract class BaseRequest implements Request {
     protected final String key;
     protected RequestState state;
     protected final ClientApp clientApp=ClientApp.make();
-    protected Request chainedRequest;
 
     protected final RequestState<DefaultRequestStateContext> ready= context -> startRouting();
 
@@ -24,17 +23,12 @@ public abstract class BaseRequest implements Request {
     }
 
     @Override
-    public void chainRequest(Request request) {
-        this.chainedRequest=request;
-    }
-
-    @Override
     public String getKey() {
         return this.key;
     }
 
-    @Override
-    public void send() {
+
+    protected void execute() {
         if(!state.equals(ready))
             throw new InvalidRequestState(REQUEST_HAVE_ALREADY_BEEN_SENT);
         this.state.execute(new DefaultRequestStateContext());

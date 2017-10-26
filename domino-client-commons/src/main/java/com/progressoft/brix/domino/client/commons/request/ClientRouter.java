@@ -3,12 +3,12 @@ package com.progressoft.brix.domino.client.commons.request;
 import com.progressoft.brix.domino.api.client.ClientApp;
 import com.progressoft.brix.domino.api.client.async.AsyncRunner;
 import com.progressoft.brix.domino.api.client.events.ClientRequestEventFactory;
-import com.progressoft.brix.domino.api.client.request.ClientRequest;
+import com.progressoft.brix.domino.api.client.request.PresenterCommand;
 import com.progressoft.brix.domino.api.client.request.RequestRouter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ClientRouter implements RequestRouter<ClientRequest> {
+public class ClientRouter implements RequestRouter<PresenterCommand> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ClientRouter.class);
 
@@ -19,7 +19,7 @@ public class ClientRouter implements RequestRouter<ClientRequest> {
     }
 
     @Override
-    public void routeRequest(final ClientRequest request) {
+    public void routeRequest(final PresenterCommand request) {
         ClientApp.make().getAsyncRunner().runAsync(new AsyncRunner.AsyncTask() {
             @Override
             public void onSuccess() {

@@ -4,15 +4,15 @@ import com.progressoft.brix.domino.api.client.ClientApp;
 import com.progressoft.brix.domino.api.client.events.Event;
 import com.progressoft.brix.domino.api.client.events.EventProcessor;
 import com.progressoft.brix.domino.api.client.events.EventsBus;
-import com.progressoft.brix.domino.api.client.request.ClientRequest;
+import com.progressoft.brix.domino.api.client.request.PresenterCommand;
 import com.progressoft.brix.domino.api.client.request.Request;
 
 public class ClientRequestEvent extends ClientRequestGwtEvent implements Event {
 
-    protected final ClientRequest request;
+    protected final PresenterCommand request;
     private final ClientApp clientApp = ClientApp.make();
 
-    public ClientRequestEvent(ClientRequest request) {
+    public ClientRequestEvent(PresenterCommand request) {
         this.request = request;
     }
 

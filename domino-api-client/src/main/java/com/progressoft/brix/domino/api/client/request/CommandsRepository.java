@@ -1,22 +1,22 @@
 package com.progressoft.brix.domino.api.client.request;
 
-public interface RequestsRepository {
+public interface CommandsRepository {
 
-    void registerRequest(RequestHolder requestHolder);
+    void registerCommand(RequestHolder requestHolder);
     RequestHolder findRequestPresenterWrapper(String requestKey);
     void clear();
 
-    class RequestCannotBeRegisteredMoreThanOnce extends RuntimeException {
+    class CommandCannotBeRegisteredMoreThanOnce extends RuntimeException {
         private static final long serialVersionUID = -4925004944311728702L;
 
-        public RequestCannotBeRegisteredMoreThanOnce(String message) {
+        public CommandCannotBeRegisteredMoreThanOnce(String message) {
             super(message);
         }
     }
-    class RequestKeyNotFoundException extends RuntimeException {
+    class CommandKeyNotFoundException extends RuntimeException {
         private static final long serialVersionUID = -6084468443200600274L;
 
-        public RequestKeyNotFoundException(String message) {
+        public CommandKeyNotFoundException(String message) {
             super(message);
         }
     }

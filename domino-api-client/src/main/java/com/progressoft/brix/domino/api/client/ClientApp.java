@@ -21,14 +21,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ClientApp
-        implements PresenterRegistry, RequestRegistry, ViewRegistry, InitialTaskRegistry, ContributionsRegistry,
+        implements PresenterRegistry, CommandRegistry, ViewRegistry, InitialTaskRegistry, ContributionsRegistry,
         RequestRestSendersRegistry {
 
-    private static final AttributeHolder<RequestRouter<ClientRequest>> CLIENT_ROUTER_HOLDER = new AttributeHolder<>();
+    private static final AttributeHolder<RequestRouter<PresenterCommand>> CLIENT_ROUTER_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<RequestRouter<ClientServerRequest>> SERVER_ROUTER_HOLDER =
             new AttributeHolder<>();
     private static final AttributeHolder<EventsBus> EVENTS_BUS_HOLDER = new AttributeHolder<>();
-    private static final AttributeHolder<RequestsRepository> REQUEST_REPOSITORY_HOLDER = new AttributeHolder<>();
+    private static final AttributeHolder<CommandsRepository> COMMANDS_REPOSITORY_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<PresentersRepository> PRESENTERS_REPOSITORY_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<ViewsRepository> VIEWS_REPOSITORY_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<ContributionsRepository> CONTRIBUTIONS_REPOSITORY_HOLDER =
@@ -52,8 +52,8 @@ public class ClientApp
     }
 
     @Override
-    public void registerRequest(String requestName, String presenterName) {
-        REQUEST_REPOSITORY_HOLDER.attribute.registerRequest(new RequestHolder(requestName, presenterName));
+    public void registerCommand(String commandName, String presenterName) {
+        COMMANDS_REPOSITORY_HOLDER.attribute.registerCommand(new RequestHolder(commandName, presenterName));
     }
 
     @Override
@@ -80,7 +80,7 @@ public class ClientApp
         return instance;
     }
 
-    public RequestRouter<ClientRequest> getClientRouter() {
+    public RequestRouter<PresenterCommand> getClientRouter() {
         return CLIENT_ROUTER_HOLDER.attribute;
     }
 
@@ -92,8 +92,8 @@ public class ClientApp
         return EVENTS_BUS_HOLDER.attribute;
     }
 
-    public RequestsRepository getRequestRepository() {
-        return REQUEST_REPOSITORY_HOLDER.attribute;
+    public CommandsRepository getRequestRepository() {
+        return COMMANDS_REPOSITORY_HOLDER.attribute;
     }
 
     public PresentersRepository getPresentersRepository() {
@@ -160,7 +160,7 @@ public class ClientApp
 
     @FunctionalInterface
     public interface HasEventBus {
-        HasRequestRepository requestRepository(RequestsRepository requestRepository);
+        HasRequestRepository requestRepository(CommandsRepository requestRepository);
     }
 
     @FunctionalInterface
@@ -214,10 +214,10 @@ public class ClientApp
             HasViewRepository, HasContributionsRepository, HasRequestRestSendersRepository,
             HasHistory, HasAsyncRunner, HasOptions, CanBuildClientApp {
 
-        private RequestRouter<ClientRequest> clientRouter;
+        private RequestRouter<PresenterCommand> clientRouter;
         private RequestRouter<ClientServerRequest> serverRouter;
         private EventsBus eventsBus;
-        private RequestsRepository requestRepository;
+        private CommandsRepository requestRepository;
         private PresentersRepository presentersRepository;
         private ViewsRepository viewsRepository;
         private ContributionsRepository contributionsRepository;
@@ -227,11 +227,11 @@ public class ClientApp
         private AsyncRunner asyncRunner;
         private DominoOptions dominoOptions;
 
-        private ClientAppBuilder(RequestRouter<ClientRequest> clientRouter) {
+        private ClientAppBuilder(RequestRouter<PresenterCommand> clientRouter) {
             this.clientRouter = clientRouter;
         }
 
-        public static HasClientRouter clientRouter(RequestRouter<ClientRequest> clientRouter) {
+        public static HasClientRouter clientRouter(RequestRouter<PresenterCommand> clientRouter) {
             return new ClientAppBuilder(clientRouter);
         }
 
@@ -248,7 +248,7 @@ public class ClientApp
         }
 
         @Override
-        public HasRequestRepository requestRepository(RequestsRepository requestRepository) {
+        public HasRequestRepository requestRepository(CommandsRepository requestRepository) {
             this.requestRepository = requestRepository;
             return this;
         }
@@ -312,7 +312,7 @@ public class ClientApp
             ClientApp.CLIENT_ROUTER_HOLDER.hold(clientRouter);
             ClientApp.SERVER_ROUTER_HOLDER.hold(serverRouter);
             ClientApp.EVENTS_BUS_HOLDER.hold(eventsBus);
-            ClientApp.REQUEST_REPOSITORY_HOLDER.hold(requestRepository);
+            ClientApp.COMMANDS_REPOSITORY_HOLDER.hold(requestRepository);
             ClientApp.PRESENTERS_REPOSITORY_HOLDER.hold(presentersRepository);
             ClientApp.VIEWS_REPOSITORY_HOLDER.hold(viewsRepository);
             ClientApp.CONTRIBUTIONS_REPOSITORY_HOLDER.hold(contributionsRepository);
