@@ -14,7 +14,7 @@ public class DesktopDominoOptions implements DominoOptions {
 
     @Override
     public void applyOptions() {
-
+        //not implemented yet
     }
 
     @Override

@@ -17,7 +17,7 @@ public class DesktopStateHistory implements AppHistory {
 
     @Override
     public void fireCurrentStateHistory() {
-
+        //not implemented for desktop
     }
 
     @Override
@@ -60,22 +60,22 @@ public class DesktopStateHistory implements AppHistory {
 
     @Override
     public void back() {
-
+        //not implemented for desktop
     }
 
     @Override
     public void forward() {
-
+        //not implemented for desktop
     }
 
     @Override
     public void pushState(String token, String title, String data) {
-
+        //not implemented for desktop
     }
 
     @Override
     public void replaceState(String token, String title, String data) {
-
+        //not implemented for desktop
     }
 
     @Override

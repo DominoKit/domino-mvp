@@ -30,8 +30,6 @@ public class DominoTestClient
         implements CanCustomizeClient, CanStartClient,
         ClientContext {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DominoTestClient.class);
-
     private ModuleConfiguration[] modules;
     private Map<String, Presentable> presentersReplacements = new HashMap<>();
     private Map<String, View> viewsReplacements = new HashMap<>();
