@@ -92,10 +92,6 @@ public class ContributionClientRequestProcessor extends BaseProcessor {
         return elements.stream().map(t -> t.getQualifiedName().toString()).collect(Collectors.toSet());
     }
 
-    private String getMethodName(Element e) {
-        return this.getMethod(MoreElements.getAnnotationMirror(e, AutoRequest.class).get());
-    }
-
     private TypeElement asTypeElement(DeclaredType p) {
         return (TypeElement) p.asElement();
     }
@@ -112,14 +108,5 @@ public class ContributionClientRequestProcessor extends BaseProcessor {
 
     private Object getPresentersAnnotationValueObject(Map valueIndex) {
         return valueIndex.get(valueIndex.keySet().stream().filter(k -> "presenters()".equals(k.toString())).findFirst().orElse(null));
-    }
-
-    private String getMethod(AnnotationMirror providerAnnotation) {//NOSONAR
-        Map valueIndex = providerAnnotation.getElementValues();
-        Object annotationValueObject = valueIndex.get(valueIndex.keySet().stream().filter(k -> "method()".equals(k.toString())).findFirst().orElse(null));
-
-        if (nonNull(annotationValueObject))
-            return (String) ((AnnotationValue) annotationValueObject).getValue();
-        return "";
     }
 }

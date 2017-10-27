@@ -130,7 +130,6 @@ public class FullNameTest {
         String expected_4="Test\n" +"A\n"+"B\n";
         assertEquals(expected_4, importsAsOneString(new FullClassName("Test<A,B>").allImports()));
 
-        String expected_5="Test\n"+ "ddd.eee.fff.A\n"+"ggg.hhh.iii.B\n";
         assertEquals(expected_3, importsAsOneString(new FullClassName("Test<ddd.eee.fff.A,ggg.hhh.iii.B,ggg.hhh.iii.B>").allImports()));
 
     }

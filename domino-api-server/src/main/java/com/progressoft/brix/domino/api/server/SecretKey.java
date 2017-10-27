@@ -9,12 +9,14 @@ import java.util.UUID;
 
 public class SecretKey {
     private static final Logger LOGGER= LoggerFactory.getLogger(SecretKey.class);
+    public static final String HMAC_SHA_256 = "HmacSHA256";
+    public static final int KEY_LENGTH = 256;
 
     public static String generate(){
         KeyGenerator generator = null;
         try {
-            generator = KeyGenerator.getInstance("HmacSHA256");
-            generator.init(256);
+            generator = KeyGenerator.getInstance(HMAC_SHA_256);
+            generator.init(KEY_LENGTH);
 
             return new String(generator.generateKey().getEncoded());
         } catch (NoSuchAlgorithmException e) {

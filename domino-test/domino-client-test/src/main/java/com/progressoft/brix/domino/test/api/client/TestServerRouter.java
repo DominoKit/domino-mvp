@@ -69,7 +69,7 @@ public class TestServerRouter implements RequestRouter<ClientServerRequest> {
             LOGGER.error("Request handler not found for request ["+request.getClass().getSimpleName()+"]! either fake the request or start an actual server");
             eventFactory.makeFailed(request, ex).fire();
             return;
-        }catch (Throwable ex) {
+        }catch (Exception ex) {
             LOGGER.error("could not execute request : ", ex);
             eventFactory.makeFailed(request, ex).fire();
             return;
@@ -169,7 +169,7 @@ public class TestServerRouter implements RequestRouter<ClientServerRequest> {
     }
 
     public interface ResponseReply{
-        ServerResponse reply() throws Throwable;
+        ServerResponse reply() throws Exception;
     }
 
     public static class SuccessReply implements ResponseReply{
@@ -186,14 +186,14 @@ public class TestServerRouter implements RequestRouter<ClientServerRequest> {
     }
 
     public static class FailedReply implements ResponseReply{
-        private final Throwable error;
+        private final Exception error;
 
-        public FailedReply(Throwable error) {
+        public FailedReply(Exception error) {
             this.error = error;
         }
 
         @Override
-        public ServerResponse reply() throws Throwable {
+        public ServerResponse reply() throws Exception {
             throw error;
         }
     }

@@ -5,9 +5,7 @@ import com.progressoft.brix.domino.apt.client.processors.handlers.HandlerPathPro
 import com.progressoft.brix.domino.apt.client.processors.inject.InjectContextProcessor;
 import com.progressoft.brix.domino.apt.client.processors.module.client.ClientModuleAnnotationProcessor;
 import com.progressoft.brix.domino.apt.client.processors.module.client.ConfigurationProviderAnnotationProcessor;
-import com.progressoft.brix.domino.test.apt.ProcessorAssert;
 import org.apache.commons.io.IOUtils;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.annotation.processing.Processor;

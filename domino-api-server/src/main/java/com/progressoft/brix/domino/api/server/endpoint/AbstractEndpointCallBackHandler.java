@@ -10,6 +10,8 @@ import io.vertx.ext.web.RoutingContext;
 
 public abstract class AbstractEndpointCallBackHandler<R extends ServerRequest, S extends ServerResponse> extends AbstractEndpoint<R,S> {
 
+    public static final int REDIRECT_FOUND = 302;
+
     protected void executeRequest(RoutingContext routingContext, ServerApp serverApp, R requestBody) {
         serverApp.executeCallbackRequest(requestBody, new VertxEntryPointContext(routingContext, serverApp.serverContext().config(),
                 routingContext.vertx()), new CallbackRequestHandler.ResponseCallback<S>() {
@@ -22,7 +24,7 @@ public abstract class AbstractEndpointCallBackHandler<R extends ServerRequest, S
 
             @Override
             public void redirect(String location) {
-                routingContext.response().setStatusCode(302).putHeader("Location",location).end();
+                routingContext.response().setStatusCode(REDIRECT_FOUND).putHeader("Location",location).end();
             }
         });
     }

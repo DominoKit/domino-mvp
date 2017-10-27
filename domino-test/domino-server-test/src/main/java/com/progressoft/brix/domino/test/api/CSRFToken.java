@@ -11,6 +11,7 @@ import java.util.Random;
 public class CSRFToken {
 
     private static final Base64.Encoder BASE64 = Base64.getMimeEncoder();
+    public static final int SALT_LENGTH = 32;
 
     private Random RAND = new SecureRandom();
     private Mac mac;
@@ -25,7 +26,7 @@ public class CSRFToken {
     }
 
     public String generate() {
-        byte[] salt = new byte[32];
+        byte[] salt = new byte[SALT_LENGTH];
         RAND.nextBytes(salt);
 
         String saltPlusToken = BASE64.encodeToString(salt) + "." + Long.toString(System.currentTimeMillis());
