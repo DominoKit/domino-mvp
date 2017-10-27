@@ -47,23 +47,9 @@ public class ${module}ClientModuleTest{
     @Test
     public void given${module}ClientModule_when${module}ServerRequestIsSent_thenServerMessageShouldBeRecieved() {
         clientContext.forRequest(new ${module}ServerRequest().getKey()).returnResponse(new ${module}Response("Server message"));
-        new ${module}ServerRequest(){
-            @Override
-            protected void process(${module}Presenter presenter, ${module}Request serverArgs, ${module}Response response) {
-                super.process(presenter, serverArgs, response);
-                assertEquals("Server message",response.getServerMessage());
-            }
 
-            @Override
-            public void processFailed(${module}Presenter presenter, ${module}Request serverArgs,
-                FailedServerResponse failedResponse) {
-                fail(failedResponse.getError().getMessage());
-            }
-
-            @Override
-            public String getKey() {
-                return ${module}ServerRequest.class.getCanonicalName();
-            }
-        }.send();
+        new ${module}ServerRequest().onSuccess(response -> assertEquals("Server message",response.getServerMessage()))
+        .onFailed(failedResponse -> fail(failedResponse.getError().getMessage()))
+        .send(new ${module}Request("client message"));
     }
 }
