@@ -18,7 +18,7 @@ import org.fusesource.restygwt.client.Resource;
 import org.fusesource.restygwt.client.RestService;
 import org.fusesource.restygwt.client.RestServiceProxy;
 
-@Generated("com.progressoft.brix.domino.apt.client.processors.handlers.HandlerPathProcessor")
+@Generated("com.progressoft.brix.domino.apt.client.processors.handlers.RequestPathProcessor")
 @RequestSender(value = AnnotatedClassWithHandlerPathWithServiceRoot.class, customServiceRoot=true)
 public class AnnotatedClassWithHandlerPathWithServiceRootSender implements RequestRestSender<SomeRequest> {
 

@@ -12,6 +12,7 @@ import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 import java.io.IOException;
@@ -24,15 +25,15 @@ import java.util.logging.Logger;
 
 
 @AutoService(Processor.class)
-public class HandlerPathProcessor extends BaseProcessor {
+public class RequestPathProcessor extends BaseProcessor {
 
-    private static final Logger LOGGER = Logger.getLogger(HandlerPathProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(RequestPathProcessor.class.getName());
     public static final int REQUEST_INDEX = 1;
     public static final int RESPONSE_INDEX = 2;
 
     private final Set<String> supportedAnnotations = new HashSet<>();
 
-    public HandlerPathProcessor() {
+    public RequestPathProcessor() {
         supportedAnnotations.add(Path.class.getCanonicalName());
     }
 
@@ -49,7 +50,7 @@ public class HandlerPathProcessor extends BaseProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        roundEnv.getElementsAnnotatedWith(Path.class).stream().filter(this::extendsServerRequest)
+        roundEnv.getElementsAnnotatedWith(Path.class).stream().filter(this::extendsServerRequest).filter(e -> ElementKind.CLASS.equals(e.getKind()))
                 .forEach(this::generateRequestRestfulSender);
         return false;
     }

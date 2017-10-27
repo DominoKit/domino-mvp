@@ -1,7 +1,7 @@
 package com.progressoft.brix.domino.apt.client;
 
 import com.progressoft.brix.domino.apt.client.processors.contributions.ContributionClientRequestProcessor;
-import com.progressoft.brix.domino.apt.client.processors.handlers.HandlerPathProcessor;
+import com.progressoft.brix.domino.apt.client.processors.handlers.RequestPathProcessor;
 import com.progressoft.brix.domino.apt.client.processors.inject.InjectContextProcessor;
 import com.progressoft.brix.domino.apt.client.processors.module.client.ClientModuleAnnotationProcessor;
 import com.progressoft.brix.domino.apt.client.processors.module.client.ConfigurationProviderAnnotationProcessor;
@@ -150,7 +150,7 @@ public class ClientClientModuleAnnotationProcessorTest {
             throws Exception {
         assertProcessing(
                 BASE_PACKAGE + "InvalidHandlerPathRequestClass.java")
-                .withProcessor(new HandlerPathProcessor())
+                .withProcessor(new RequestPathProcessor())
                 .failsToCompile();
 
     }
@@ -162,7 +162,7 @@ public class ClientClientModuleAnnotationProcessorTest {
                 BASE_PACKAGE + "SomeRequest.java",
                 BASE_PACKAGE + "SomeResponse.java",
                 BASE_PACKAGE + "AnnotatedClassWithHandlerPath.java")
-                .withProcessor(new HandlerPathProcessor())
+                .withProcessor(new RequestPathProcessor())
                 .compilesWithoutErrors();
     }
 
@@ -173,7 +173,7 @@ public class ClientClientModuleAnnotationProcessorTest {
                 BASE_PACKAGE + "SomeRequest.java",
                 BASE_PACKAGE + "SomeResponse.java",
                 BASE_PACKAGE + "AnnotatedClassWithHandlerPathWithServiceRoot.java")
-                .withProcessor(new HandlerPathProcessor())
+                .withProcessor(new RequestPathProcessor())
                 .generates(getExpectedResultFileContent(
                         "AnnotatedClassWithHandlerPathWithServiceRootSender.java"));
     }
@@ -185,7 +185,7 @@ public class ClientClientModuleAnnotationProcessorTest {
                 BASE_PACKAGE + "SomeRequest.java",
                 BASE_PACKAGE + "SomeResponse.java",
                 BASE_PACKAGE + "AnnotatedClassWithHandlerPathWithoutServiceRoot.java")
-                .withProcessor(new HandlerPathProcessor())
+                .withProcessor(new RequestPathProcessor())
                 .generates(getExpectedResultFileContent(
                         "AnnotatedClassWithHandlerPathWithoutServiceRootSender.java"));
     }

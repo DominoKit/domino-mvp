@@ -15,9 +15,7 @@ import com.progressoft.brix.domino.apt.commons.ProcessorElement;
 import com.squareup.javapoet.*;
 import org.fusesource.restygwt.client.*;
 
-import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
-import javax.lang.model.util.Elements;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.HttpMethod;
 import javax.ws.rs.PathParam;
@@ -104,7 +102,7 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
         if (hasServiceRoot())
             requestSenderAnnotationBuilder.addMember("customServiceRoot", "true");
 
-        return DominoTypeBuilder.build(processorElement.simpleName() + "Sender", HandlerPathProcessor.class)
+        return DominoTypeBuilder.build(processorElement.simpleName() + "Sender", RequestPathProcessor.class)
                 .addAnnotation(requestSenderAnnotationBuilder.build())
                 .addSuperinterface(ParameterizedTypeName.get(ClassName.get(RequestRestSender.class), requestType));
     }
