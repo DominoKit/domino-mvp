@@ -1,7 +1,7 @@
 package com.progressoft.brix.domino.api.client.request;
 
-import com.progressoft.brix.domino.api.shared.request.FailedServerResponse;
-import com.progressoft.brix.domino.api.shared.request.ServerResponse;
+import com.progressoft.brix.domino.api.shared.request.FailedResponseBean;
+import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 
 public interface Request {
 
@@ -18,18 +18,18 @@ public interface Request {
 
     class ServerSuccessRequestStateContext implements RequestStateContext{
 
-        protected final ServerResponse serverResponse;
+        protected final ResponseBean responseBean;
 
-        public ServerSuccessRequestStateContext(ServerResponse serverResponse) {
-            this.serverResponse = serverResponse;
+        public ServerSuccessRequestStateContext(ResponseBean responseBean) {
+            this.responseBean = responseBean;
         }
     }
 
     class ServerFailedRequestStateContext implements RequestStateContext{
 
-        protected final FailedServerResponse response;
+        protected final FailedResponseBean response;
 
-        public ServerFailedRequestStateContext(FailedServerResponse response) {
+        public ServerFailedRequestStateContext(FailedResponseBean response) {
             this.response=response;
         }
     }

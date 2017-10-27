@@ -1,21 +1,21 @@
 package com.progressoft.brix.domino.api.client.request;
 
-import com.progressoft.brix.domino.api.shared.request.FailedServerResponse;
-import com.progressoft.brix.domino.api.shared.request.ServerResponse;
+import com.progressoft.brix.domino.api.shared.request.RequestBean;
+import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class ServerRequest<R extends com.progressoft.brix.domino.api.shared.request.ServerRequest, S extends ServerResponse>
-        extends BaseRequest{
+public abstract class ServerRequest<R extends RequestBean, S extends ResponseBean>
+        extends BaseRequest implements Response<S>, CanFailOrSend{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServerRequest.class);
 
     private Map<String, String> headers = new HashMap<>();
 
-    private R serverArgs;
+    private R requestBean;
 
     private Success<S> success = response -> {
     };
@@ -23,7 +23,7 @@ public abstract class ServerRequest<R extends com.progressoft.brix.domino.api.sh
             failedResponse -> LOGGER.debug("could not execute request on server: ", failedResponse.getError());
 
     private final RequestState<ServerSuccessRequestStateContext> executedOnServer = context -> {
-        success.onSuccess((S) context.serverResponse);
+        success.onSuccess((S) context.responseBean);
         state = completed;
     };
 
@@ -42,16 +42,25 @@ public abstract class ServerRequest<R extends com.progressoft.brix.domino.api.sh
             ServerRequest.this.applyState(context.nextContext);
         } else {
             throw new InvalidRequestState(
-                    "Request cannot be processed until a serverResponse is recieved from the server");
+                    "Request cannot be processed until a responseBean is recieved from the server");
         }
     };
 
     protected ServerRequest() {
     }
 
-    public final void send(R serverArgs){
-        this.serverArgs=serverArgs;
+    protected ServerRequest(R requestBean) {
+        this.requestBean = requestBean;
+    }
+
+    @Override
+    public final void send(){
         execute();
+    }
+
+    public ServerRequest<R, S> setBean(R requestBean){
+        this.requestBean = requestBean;
+        return this;
     }
 
     @Override
@@ -61,8 +70,8 @@ public abstract class ServerRequest<R extends com.progressoft.brix.domino.api.sh
     }
 
 
-    public R arguments() {
-        return this.serverArgs;
+    public R requestBean() {
+        return this.requestBean;
     }
 
     protected ServerRequest<R, S> setHeader(String name, String value) {
@@ -74,26 +83,15 @@ public abstract class ServerRequest<R extends com.progressoft.brix.domino.api.sh
         return new HashMap<>(headers);
     }
 
-    public ServerRequest<R,S> onSuccess(Success<S> success){
+    @Override
+    public CanFailOrSend onSuccess(Success<S> success) {
         this.success =success;
         return this;
     }
 
-    public ServerRequest<R,S> onFailed(Fail fail){
-        this.fail =fail;
+    @Override
+    public CanSend onFailed(Fail fail) {
+        this.fail=fail;
         return this;
-    }
-
-    @FunctionalInterface
-    public interface Success<S> {
-        void onSuccess(S response);
-    }
-
-    @FunctionalInterface
-    public interface Fail {
-        void onFail(FailedServerResponse failedResponse);
-    }
-
-    public static class SuccessHandlerNotProvidedException extends RuntimeException {
     }
 }
