@@ -3,7 +3,6 @@ package com.progressoft.brix.domino.apt.client;
 import com.progressoft.brix.domino.api.client.ModuleConfiguration;
 import com.progressoft.brix.domino.api.client.extension.ContributionsRegistry;
 import com.progressoft.brix.domino.api.shared.extension.MainExtensionPoint;
-import java.lang.Override;
 import javax.annotation.Generated;
 
 @Generated("com.progressoft.brix.domino.apt.client.processors.module.client.ClientModuleAnnotationProcessor")

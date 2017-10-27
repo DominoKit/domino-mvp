@@ -45,7 +45,7 @@ public class InjectContextSourceWriter extends JavaSourceWriter {
                 .build();
 
         StringBuilder asString = new StringBuilder();
-        JavaFile.builder(targetPackage, contributionType).build().writeTo(asString);
+        JavaFile.builder(targetPackage, contributionType).skipJavaLangImports(true).build().writeTo(asString);
         return asString.toString();
     }
 

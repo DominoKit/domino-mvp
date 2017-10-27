@@ -34,7 +34,7 @@ public class ConfigurationProviderSourceWriter {
                 .addMethod(makeGetMethod())
                 .build();
 
-        JavaFile javaFile = JavaFile.builder(element.elementPackage(), configurationProvider).build();
+        JavaFile javaFile = JavaFile.builder(element.elementPackage(), configurationProvider).skipJavaLangImports(true).build();
 
         StringBuilder classAsString = new StringBuilder();
         javaFile.writeTo(classAsString);

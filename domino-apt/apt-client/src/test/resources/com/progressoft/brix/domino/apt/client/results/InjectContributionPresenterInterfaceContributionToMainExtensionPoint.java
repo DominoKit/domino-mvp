@@ -4,7 +4,6 @@ import com.progressoft.brix.domino.api.client.annotations.AutoRequest;
 import com.progressoft.brix.domino.api.client.annotations.Contribute;
 import com.progressoft.brix.domino.api.shared.extension.Contribution;
 import com.progressoft.brix.domino.api.shared.extension.MainExtensionPoint;
-import java.lang.Override;
 import javax.annotation.Generated;
 
 @Generated("com.progressoft.brix.domino.apt.client.processors.inject.InjectContextProcessor")

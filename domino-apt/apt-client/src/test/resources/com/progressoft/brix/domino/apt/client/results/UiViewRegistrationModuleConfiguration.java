@@ -4,7 +4,6 @@ import com.progressoft.brix.domino.api.client.ModuleConfiguration;
 import com.progressoft.brix.domino.api.client.mvp.ViewRegistry;
 import com.progressoft.brix.domino.api.client.mvp.view.LazyViewLoader;
 import com.progressoft.brix.domino.api.client.mvp.view.View;
-import java.lang.Override;
 import javax.annotation.Generated;
 
 @Generated("com.progressoft.brix.domino.apt.client.processors.module.client.ClientModuleAnnotationProcessor")

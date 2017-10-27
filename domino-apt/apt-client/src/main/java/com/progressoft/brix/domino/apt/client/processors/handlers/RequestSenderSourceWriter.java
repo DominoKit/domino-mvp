@@ -91,7 +91,7 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
         senderBuilder.addMethod(new SendMethodBuilder().build());
 
         StringBuilder asString = new StringBuilder();
-        JavaFile.builder(processorElement.elementPackage(), senderBuilder.build()).build().writeTo(asString);
+        JavaFile.builder(processorElement.elementPackage(), senderBuilder.build()).skipJavaLangImports(true).build().writeTo(asString);
         return asString.toString();
     }
 

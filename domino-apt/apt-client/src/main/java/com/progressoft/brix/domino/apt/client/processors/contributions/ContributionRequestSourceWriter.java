@@ -36,7 +36,7 @@ public class ContributionRequestSourceWriter extends JavaSourceWriter {
                 .build();
 
         StringBuilder asString = new StringBuilder();
-        JavaFile.builder(targetPackage, contributionRequest).build().writeTo(asString);
+        JavaFile.builder(targetPackage, contributionRequest).skipJavaLangImports(true).build().writeTo(asString);
         return asString.toString();
     }
 

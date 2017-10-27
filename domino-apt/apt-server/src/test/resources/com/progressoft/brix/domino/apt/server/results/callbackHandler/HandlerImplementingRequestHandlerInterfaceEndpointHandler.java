@@ -3,8 +3,6 @@ package com.progressoft.brix.domino.apt.server.callbackHandler;
 import com.progressoft.brix.domino.api.server.endpoint.AbstractEndpointCallBackHandler;
 import com.progressoft.brix.domino.api.shared.request.ServerRequest;
 import com.progressoft.brix.domino.api.shared.request.ServerResponse;
-import java.lang.Class;
-import java.lang.Override;
 import javax.annotation.Generated;
 
 @Generated("com.progressoft.brix.domino.apt.server.EndpointsProcessor")

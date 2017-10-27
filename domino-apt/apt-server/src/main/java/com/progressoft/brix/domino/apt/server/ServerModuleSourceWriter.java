@@ -45,7 +45,7 @@ public class ServerModuleSourceWriter extends JavaSourceWriter {
         writeRegisterMethods(serverModuleTypeBuilder);
 
         StringBuilder asString = new StringBuilder();
-        JavaFile.builder(processorElement.elementPackage(), serverModuleTypeBuilder.build())
+        JavaFile.builder(processorElement.elementPackage(), serverModuleTypeBuilder.build()).skipJavaLangImports(true)
                 .build().writeTo(asString);
         return asString.toString();
     }

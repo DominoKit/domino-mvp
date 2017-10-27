@@ -48,7 +48,7 @@ public class EndpointHandlerSourceWriter extends JavaSourceWriter {
 
         StringBuilder builder = new StringBuilder();
         try {
-            JavaFile.builder(processorElement.elementPackage(), endpoint).build().writeTo(builder);
+            JavaFile.builder(processorElement.elementPackage(), endpoint).skipJavaLangImports(true).build().writeTo(builder);
         } catch (IOException e) {
             processorElement.getMessager().printMessage(Kind.ERROR, "Could not generate endpoint : " + e.getMessage(),
                     processorElement.getElement());

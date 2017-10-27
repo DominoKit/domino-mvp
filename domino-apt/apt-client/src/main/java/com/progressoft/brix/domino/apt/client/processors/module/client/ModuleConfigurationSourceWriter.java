@@ -46,7 +46,7 @@ public class ModuleConfigurationSourceWriter extends JavaSourceWriter {
                 .addSuperinterface(ModuleConfiguration.class);
         writeBody(clientModuleTypeBuilder);
         StringBuilder asString = new StringBuilder();
-        JavaFile.builder(processorElement.elementPackage(), clientModuleTypeBuilder.build()).build().writeTo(asString);
+        JavaFile.builder(processorElement.elementPackage(), clientModuleTypeBuilder.build()).skipJavaLangImports(true).build().writeTo(asString);
         return asString.toString();
     }
 
