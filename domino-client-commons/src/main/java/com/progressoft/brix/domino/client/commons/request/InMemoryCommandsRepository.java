@@ -1,7 +1,7 @@
 package com.progressoft.brix.domino.client.commons.request;
 
-import com.progressoft.brix.domino.api.client.request.RequestHolder;
 import com.progressoft.brix.domino.api.client.request.CommandsRepository;
+import com.progressoft.brix.domino.api.client.request.RequestHolder;
 
 import java.util.HashMap;
 

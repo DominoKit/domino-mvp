@@ -1,10 +1,10 @@
 package com.progressoft.brix.domino.service.discovery.type;
 
 import com.progressoft.brix.domino.service.discovery.BaseVertxServiceDiscoveryTest;
-import com.progressoft.brix.domino.service.discovery.generation.TestService;
 import com.progressoft.brix.domino.service.discovery.configuration.AddressableServiceConfiguration;
 import com.progressoft.brix.domino.service.discovery.configuration.BaseServiceConfiguration;
 import com.progressoft.brix.domino.service.discovery.configuration.EventBusServiceConfiguration;
+import com.progressoft.brix.domino.service.discovery.generation.TestService;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.ext.unit.TestContext;

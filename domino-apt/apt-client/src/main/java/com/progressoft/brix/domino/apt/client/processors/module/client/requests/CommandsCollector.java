@@ -1,9 +1,7 @@
 package com.progressoft.brix.domino.apt.client.processors.module.client.requests;
 
 import com.progressoft.brix.domino.api.client.annotations.Command;
-import com.progressoft.brix.domino.api.client.annotations.Request;
 import com.progressoft.brix.domino.api.client.request.PresenterCommand;
-import com.progressoft.brix.domino.api.client.request.ClientServerRequest;
 import com.progressoft.brix.domino.apt.commons.BaseProcessor;
 import com.progressoft.brix.domino.apt.commons.FullClassName;
 import com.progressoft.brix.domino.apt.commons.ProcessorElement;

@@ -7,8 +7,8 @@ import com.progressoft.brix.domino.client.commons.extensions.InMemoryContributio
 import com.progressoft.brix.domino.client.commons.mvp.presenter.InMemoryPresentersRepository;
 import com.progressoft.brix.domino.client.commons.mvp.view.InMemoryViewRepository;
 import com.progressoft.brix.domino.client.commons.request.ClientRouter;
-import com.progressoft.brix.domino.client.commons.request.InMemoryRequestRestSendersRepository;
 import com.progressoft.brix.domino.client.commons.request.InMemoryCommandsRepository;
+import com.progressoft.brix.domino.client.commons.request.InMemoryRequestRestSendersRepository;
 import com.progressoft.brix.domino.client.commons.request.ServerRouter;
 import com.progressoft.brix.domino.gwt.client.async.GwtAsyncRunner;
 import com.progressoft.brix.domino.gwt.client.events.ClientEventFactory;
