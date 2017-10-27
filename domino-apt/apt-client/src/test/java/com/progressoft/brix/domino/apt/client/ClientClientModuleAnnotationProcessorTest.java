@@ -146,7 +146,7 @@ public class ClientClientModuleAnnotationProcessorTest {
     }
 
     @Test(expected = RuntimeException.class)
-    public void givenClassAnnotatedWithHandlerPathButNotExtendingClientServerRequest_whenProcess_shouldThrowException()
+    public void givenClassAnnotatedWithHandlerPathButNotExtendingServerRequest_whenProcess_shouldThrowException()
             throws Exception {
         assertProcessing(
                 BASE_PACKAGE + "InvalidHandlerPathRequestClass.java")

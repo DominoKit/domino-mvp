@@ -49,16 +49,16 @@ public class HandlerPathProcessor extends BaseProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        roundEnv.getElementsAnnotatedWith(Path.class).stream().filter(this::extendsClientServerRequest)
+        roundEnv.getElementsAnnotatedWith(Path.class).stream().filter(this::extendsServerRequest)
                 .forEach(this::generateRequestRestfulSender);
         return false;
     }
 
-    private boolean extendsClientServerRequest(Element e) {
+    private boolean extendsServerRequest(Element e) {
         FullClassName fullClassName=new FullClassName(((TypeElement)e).getSuperclass().toString());
         if(!ServerRequest.class.getCanonicalName().equals(fullClassName.asImport())){
             messager.printMessage(Diagnostic.Kind.ERROR, "Class does not extends ServerRequest", e);
-            throw new ProcessingException(e, "Class is not a valid Client - Server Request");
+            throw new ProcessingException(e, "Class is not a valid Server Request");
         }
         return true;
     }
