@@ -1,7 +1,6 @@
 package com.progressoft.brix.domino.api.client.request;
 
 import com.progressoft.brix.domino.api.shared.request.FailedServerResponse;
-import com.progressoft.brix.domino.api.shared.request.ServerRequest;
 import com.progressoft.brix.domino.api.shared.request.ServerResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,17 +8,16 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class ClientServerRequest<R extends ServerRequest, S extends ServerResponse>
+public abstract class ServerRequest<R extends com.progressoft.brix.domino.api.shared.request.ServerRequest, S extends ServerResponse>
         extends BaseRequest{
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ClientServerRequest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServerRequest.class);
 
     private Map<String, String> headers = new HashMap<>();
 
     private R serverArgs;
 
     private Success<S> success = response -> {
-        throw new SuccessHandlerNotProvidedException();
     };
     private Fail fail =
             failedResponse -> LOGGER.debug("could not execute request on server: ", failedResponse.getError());
@@ -38,17 +36,17 @@ public abstract class ClientServerRequest<R extends ServerRequest, S extends Ser
     private final RequestState<ServerResponseReceivedStateContext> sent=context -> {
         if (context.nextContext instanceof ServerSuccessRequestStateContext) {
             state = executedOnServer;
-            ClientServerRequest.this.applyState(context.nextContext);
+            ServerRequest.this.applyState(context.nextContext);
         } else if (context.nextContext instanceof ServerFailedRequestStateContext) {
             state = failedOnServer;
-            ClientServerRequest.this.applyState(context.nextContext);
+            ServerRequest.this.applyState(context.nextContext);
         } else {
             throw new InvalidRequestState(
                     "Request cannot be processed until a serverResponse is recieved from the server");
         }
     };
 
-    protected ClientServerRequest() {
+    protected ServerRequest() {
     }
 
     public final void send(R serverArgs){
@@ -67,7 +65,7 @@ public abstract class ClientServerRequest<R extends ServerRequest, S extends Ser
         return this.serverArgs;
     }
 
-    protected ClientServerRequest<R, S> setHeader(String name, String value) {
+    protected ServerRequest<R, S> setHeader(String name, String value) {
         headers.put(name, value);
         return this;
     }
@@ -76,12 +74,12 @@ public abstract class ClientServerRequest<R extends ServerRequest, S extends Ser
         return new HashMap<>(headers);
     }
 
-    public ClientServerRequest<R,S> onSuccess(Success<S> success){
+    public ServerRequest<R,S> onSuccess(Success<S> success){
         this.success =success;
         return this;
     }
 
-    public ClientServerRequest<R,S> onFailed(Fail fail){
+    public ServerRequest<R,S> onFailed(Fail fail){
         this.fail =fail;
         return this;
     }

@@ -2,7 +2,7 @@ package com.progressoft.brix.domino.apt.client.processors.handlers;
 
 import com.google.auto.service.AutoService;
 import com.progressoft.brix.domino.api.client.annotations.Path;
-import com.progressoft.brix.domino.api.client.request.ClientServerRequest;
+import com.progressoft.brix.domino.api.client.request.ServerRequest;
 import com.progressoft.brix.domino.apt.commons.BaseProcessor;
 import com.progressoft.brix.domino.apt.commons.FullClassName;
 import com.progressoft.brix.domino.apt.commons.ProcessingException;
@@ -56,8 +56,8 @@ public class HandlerPathProcessor extends BaseProcessor {
 
     private boolean extendsClientServerRequest(Element e) {
         FullClassName fullClassName=new FullClassName(((TypeElement)e).getSuperclass().toString());
-        if(!ClientServerRequest.class.getCanonicalName().equals(fullClassName.asImport())){
-            messager.printMessage(Diagnostic.Kind.ERROR, "Class does not extends ClientServerRequest", e);
+        if(!ServerRequest.class.getCanonicalName().equals(fullClassName.asImport())){
+            messager.printMessage(Diagnostic.Kind.ERROR, "Class does not extends ServerRequest", e);
             throw new ProcessingException(e, "Class is not a valid Client - Server Request");
         }
         return true;

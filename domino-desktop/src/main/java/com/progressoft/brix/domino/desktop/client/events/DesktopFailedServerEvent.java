@@ -2,15 +2,15 @@ package com.progressoft.brix.domino.desktop.client.events;
 
 import com.progressoft.brix.domino.api.client.ClientApp;
 import com.progressoft.brix.domino.api.client.events.Event;
-import com.progressoft.brix.domino.api.client.request.ClientServerRequest;
+import com.progressoft.brix.domino.api.client.request.ServerRequest;
 import com.progressoft.brix.domino.api.client.request.Request;
 import com.progressoft.brix.domino.api.shared.request.FailedServerResponse;
 
 public class DesktopFailedServerEvent implements Event {
-    private final ClientServerRequest request;
+    private final ServerRequest request;
     private final Throwable error;
 
-    public DesktopFailedServerEvent(ClientServerRequest request, Throwable error) {
+    public DesktopFailedServerEvent(ServerRequest request, Throwable error) {
         this.request = request;
         this.error = error;
     }

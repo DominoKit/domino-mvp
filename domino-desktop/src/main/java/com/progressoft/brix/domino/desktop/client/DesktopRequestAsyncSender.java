@@ -3,8 +3,7 @@ package com.progressoft.brix.domino.desktop.client;
 import com.progressoft.brix.domino.api.client.ServiceRootMatcher;
 import com.progressoft.brix.domino.api.client.annotations.Path;
 import com.progressoft.brix.domino.api.client.events.ServerRequestEventFactory;
-import com.progressoft.brix.domino.api.client.request.ClientServerRequest;
-import com.progressoft.brix.domino.api.shared.request.ServerRequest;
+import com.progressoft.brix.domino.api.client.request.ServerRequest;
 import com.progressoft.brix.domino.api.shared.request.ServerResponse;
 import com.progressoft.brix.domino.client.commons.request.AbstractRequestAsyncSender;
 import io.vertx.core.Vertx;
@@ -45,7 +44,7 @@ public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
     }
 
     @Override
-    protected void sendRequest(ClientServerRequest request, ServerRequestEventFactory requestEventFactory) {
+    protected void sendRequest(ServerRequest request, ServerRequestEventFactory requestEventFactory) {
         Path pathAnnotation = request.getClass().getAnnotation(Path.class);
         HttpMethod method = HttpMethod.valueOf(pathAnnotation.method());
         String classifier = request.getClass().getAnnotation(com.progressoft.brix.domino.api.client.annotations.Request.class).classifier();
@@ -89,7 +88,7 @@ public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
         }
     }
 
-    private String buildPath(Path pathAnnotation, ServerRequest arguments) {
+    private String buildPath(Path pathAnnotation, com.progressoft.brix.domino.api.shared.request.ServerRequest arguments) {
 
         String path = formattedPath(getPathParams(pathAnnotation.value()), arguments, pathAnnotation.value());
 
@@ -104,7 +103,7 @@ public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
         return (serviceRoot + "/" + path);
     }
 
-    private String formattedPath(Collection<String> pathParams, ServerRequest arguments, String path) {
+    private String formattedPath(Collection<String> pathParams, com.progressoft.brix.domino.api.shared.request.ServerRequest arguments, String path) {
         final String[] processedPath = {path};
         pathParams.forEach(p -> {
             try {
@@ -123,7 +122,7 @@ public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
         return processedPath[0];
     }
 
-    private String getNestedValue(ServerRequest arguments, String p) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    private String getNestedValue(com.progressoft.brix.domino.api.shared.request.ServerRequest arguments, String p) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         if (!isNestedNull(arguments, p.split("\\.")))
             return BeanUtils.getProperty(arguments, p);
         return "";
@@ -133,7 +132,7 @@ public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
         return p.contains(".");
     }
 
-    private boolean isNestedNull(ServerRequest arguments, String[] nestedParts) {
+    private boolean isNestedNull(com.progressoft.brix.domino.api.shared.request.ServerRequest arguments, String[] nestedParts) {
         return IntStream.range(0, nestedParts.length - 1).anyMatch(i -> {
             try {
                 return isNull(BeanUtils.getProperty(arguments, nestedParts[i]));

@@ -4,7 +4,7 @@ import com.progressoft.brix.domino.api.client.ClientApp;
 import com.progressoft.brix.domino.api.client.events.Event;
 import com.progressoft.brix.domino.api.client.events.EventsBus;
 import com.progressoft.brix.domino.api.client.events.ServerRequestEventFactory;
-import com.progressoft.brix.domino.api.client.request.ClientServerRequest;
+import com.progressoft.brix.domino.api.client.request.ServerRequest;
 import com.progressoft.brix.domino.api.client.request.Request;
 import com.progressoft.brix.domino.api.client.request.RequestRouter;
 import com.progressoft.brix.domino.api.server.ServerApp;
@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TestServerRouter implements RequestRouter<ClientServerRequest> {
+public class TestServerRouter implements RequestRouter<ServerRequest> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TestServerRouter.class);
 
@@ -29,12 +29,12 @@ public class TestServerRouter implements RequestRouter<ClientServerRequest> {
 
     private final ServerRequestEventFactory eventFactory = new ServerRequestEventFactory() {
         @Override
-        public Event makeSuccess(ClientServerRequest request, ServerResponse serverResponse) {
+        public Event makeSuccess(ServerRequest request, ServerResponse serverResponse) {
             return new TestServerSuccessEvent(request, serverResponse);
         }
 
         @Override
-        public Event makeFailed(ClientServerRequest request, Throwable error) {
+        public Event makeFailed(ServerRequest request, Throwable error) {
             return new TestServerFailedEvent(request, error);
         }
     };
@@ -56,7 +56,7 @@ public class TestServerRouter implements RequestRouter<ClientServerRequest> {
     }
 
     @Override
-    public void routeRequest(ClientServerRequest request) {
+    public void routeRequest(ServerRequest request) {
         ServerResponse response;
         try {
             if(fakeResponses.containsKey(request.getKey())){
@@ -86,11 +86,11 @@ public class TestServerRouter implements RequestRouter<ClientServerRequest> {
     }
 
     public class TestServerSuccessEvent implements Event {
-        protected final ClientServerRequest request;
+        protected final ServerRequest request;
         protected final ServerResponse serverResponse;
         private final ClientApp clientApp = ClientApp.make();
 
-        public TestServerSuccessEvent(ClientServerRequest request, ServerResponse serverResponse) {
+        public TestServerSuccessEvent(ServerRequest request, ServerResponse serverResponse) {
             this.request = request;
             this.serverResponse = serverResponse;
         }
@@ -125,11 +125,11 @@ public class TestServerRouter implements RequestRouter<ClientServerRequest> {
     }
 
     public class TestServerFailedEvent implements Event {
-        protected final ClientServerRequest request;
+        protected final ServerRequest request;
         protected final Throwable error;
         private final ClientApp clientApp = ClientApp.make();
 
-        public TestServerFailedEvent(ClientServerRequest request, Throwable error) {
+        public TestServerFailedEvent(ServerRequest request, Throwable error) {
             this.request = request;
             this.error = error;
         }
@@ -164,7 +164,7 @@ public class TestServerRouter implements RequestRouter<ClientServerRequest> {
     }
 
     public interface RoutingListener {
-        void onRouteRequest(ClientServerRequest request,
+        void onRouteRequest(ServerRequest request,
                             ServerResponse response);
     }
 

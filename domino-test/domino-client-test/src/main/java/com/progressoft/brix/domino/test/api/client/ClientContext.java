@@ -1,6 +1,6 @@
 package com.progressoft.brix.domino.test.api.client;
 
-import com.progressoft.brix.domino.api.client.request.ClientServerRequest;
+import com.progressoft.brix.domino.api.client.request.ServerRequest;
 import com.progressoft.brix.domino.api.server.entrypoint.VertxEntryPointContext;
 import io.vertx.core.Vertx;
 
@@ -15,7 +15,7 @@ public interface ClientContext {
 
     DominoTestClient.TestResponse forRequest(String requestKey);
 
-    DominoTestClient.TestResponse forRequest(Class<? extends ClientServerRequest> request);
+    DominoTestClient.TestResponse forRequest(Class<? extends ServerRequest> request);
 
     Vertx vertx();
 

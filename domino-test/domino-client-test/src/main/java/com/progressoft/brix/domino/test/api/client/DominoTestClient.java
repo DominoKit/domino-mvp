@@ -4,7 +4,7 @@ import com.progressoft.brix.domino.api.client.ModuleConfiguration;
 import com.progressoft.brix.domino.api.client.ModuleConfigurator;
 import com.progressoft.brix.domino.api.client.mvp.presenter.Presentable;
 import com.progressoft.brix.domino.api.client.mvp.view.View;
-import com.progressoft.brix.domino.api.client.request.ClientServerRequest;
+import com.progressoft.brix.domino.api.client.request.ServerRequest;
 import com.progressoft.brix.domino.api.server.config.ServerConfiguration;
 import com.progressoft.brix.domino.api.server.config.ServerConfigurationLoader;
 import com.progressoft.brix.domino.api.server.config.VertxConfiguration;
@@ -160,7 +160,7 @@ public class DominoTestClient
     }
 
     @Override
-    public TestResponse forRequest(Class<? extends ClientServerRequest> request) {
+    public TestResponse forRequest(Class<? extends ServerRequest> request) {
         return forRequest(request.getCanonicalName());
     }
 

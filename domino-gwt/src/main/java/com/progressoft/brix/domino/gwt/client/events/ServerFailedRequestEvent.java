@@ -4,17 +4,17 @@ import com.progressoft.brix.domino.api.client.ClientApp;
 import com.progressoft.brix.domino.api.client.events.Event;
 import com.progressoft.brix.domino.api.client.events.EventProcessor;
 import com.progressoft.brix.domino.api.client.events.EventsBus;
-import com.progressoft.brix.domino.api.client.request.ClientServerRequest;
+import com.progressoft.brix.domino.api.client.request.ServerRequest;
 import com.progressoft.brix.domino.api.client.request.Request;
 import com.progressoft.brix.domino.api.shared.request.FailedServerResponse;
 
 public class ServerFailedRequestEvent extends ServerFailedRequestGwtEvent implements Event {
 
-    protected final ClientServerRequest request;
+    protected final ServerRequest request;
     private final Throwable error;
     private final ClientApp clientApp = ClientApp.make();
 
-    public ServerFailedRequestEvent(ClientServerRequest request, Throwable error) {
+    public ServerFailedRequestEvent(ServerRequest request, Throwable error) {
         this.request = request;
         this.error = error;
     }

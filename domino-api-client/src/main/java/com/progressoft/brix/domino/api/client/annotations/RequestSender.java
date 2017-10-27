@@ -1,7 +1,7 @@
 package com.progressoft.brix.domino.api.client.annotations;
 
 
-import com.progressoft.brix.domino.api.client.request.ClientServerRequest;
+import com.progressoft.brix.domino.api.client.request.ServerRequest;
 
 import javax.validation.constraints.NotNull;
 import java.lang.annotation.ElementType;
@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 public @interface RequestSender {
 
     @NotNull
-    Class<? extends ClientServerRequest> value();
+    Class<? extends ServerRequest> value();
 
     boolean customServiceRoot() default false;
 }

@@ -6,7 +6,6 @@ import com.progressoft.brix.domino.api.shared.request.ServerResponse;
 public interface Request {
 
     class DefaultRequestStateContext implements RequestStateContext{
-
     }
 
     class ServerResponseReceivedStateContext implements  RequestStateContext{

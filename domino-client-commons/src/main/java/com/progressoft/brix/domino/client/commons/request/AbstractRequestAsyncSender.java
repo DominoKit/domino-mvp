@@ -3,7 +3,7 @@ package com.progressoft.brix.domino.client.commons.request;
 import com.progressoft.brix.domino.api.client.ClientApp;
 import com.progressoft.brix.domino.api.client.async.AsyncRunner;
 import com.progressoft.brix.domino.api.client.events.ServerRequestEventFactory;
-import com.progressoft.brix.domino.api.client.request.ClientServerRequest;
+import com.progressoft.brix.domino.api.client.request.ServerRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,14 +17,14 @@ public abstract class AbstractRequestAsyncSender implements RequestAsyncSender {
     }
 
     @Override
-    public final void send(final ClientServerRequest request) {
+    public final void send(final ServerRequest request) {
         ClientApp.make().getAsyncRunner().runAsync(new RequestAsyncTask(request));
     }
 
     private class RequestAsyncTask implements AsyncRunner.AsyncTask {
-        private final ClientServerRequest request;
+        private final ServerRequest request;
 
-        private RequestAsyncTask(ClientServerRequest request) {
+        private RequestAsyncTask(ServerRequest request) {
             this.request = request;
         }
 
@@ -39,5 +39,5 @@ public abstract class AbstractRequestAsyncSender implements RequestAsyncSender {
         }
     }
 
-    protected abstract void sendRequest(ClientServerRequest request, ServerRequestEventFactory requestEventFactory);
+    protected abstract void sendRequest(ServerRequest request, ServerRequestEventFactory requestEventFactory);
 }

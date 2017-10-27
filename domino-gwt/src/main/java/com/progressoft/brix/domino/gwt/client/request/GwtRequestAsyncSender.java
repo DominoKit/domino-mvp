@@ -2,7 +2,7 @@ package com.progressoft.brix.domino.gwt.client.request;
 
 import com.progressoft.brix.domino.api.client.ClientApp;
 import com.progressoft.brix.domino.api.client.events.ServerRequestEventFactory;
-import com.progressoft.brix.domino.api.client.request.ClientServerRequest;
+import com.progressoft.brix.domino.api.client.request.ServerRequest;
 import com.progressoft.brix.domino.api.client.request.ServerRequestCallBack;
 import com.progressoft.brix.domino.api.shared.request.ServerResponse;
 import com.progressoft.brix.domino.client.commons.request.AbstractRequestAsyncSender;
@@ -18,7 +18,7 @@ public class GwtRequestAsyncSender extends AbstractRequestAsyncSender {
     }
 
     @Override
-    protected void sendRequest(ClientServerRequest request, ServerRequestEventFactory requestEventFactory) {
+    protected void sendRequest(ServerRequest request, ServerRequestEventFactory requestEventFactory) {
         ClientApp.make().getRequestRestSendersRepository().get(request.getKey())
                 .send(request.arguments(), request.headers(),
                         new ServerRequestCallBack() {

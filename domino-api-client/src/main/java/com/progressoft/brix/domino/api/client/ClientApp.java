@@ -25,7 +25,7 @@ public class ClientApp
         RequestRestSendersRegistry {
 
     private static final AttributeHolder<RequestRouter<PresenterCommand>> CLIENT_ROUTER_HOLDER = new AttributeHolder<>();
-    private static final AttributeHolder<RequestRouter<ClientServerRequest>> SERVER_ROUTER_HOLDER =
+    private static final AttributeHolder<RequestRouter<ServerRequest>> SERVER_ROUTER_HOLDER =
             new AttributeHolder<>();
     private static final AttributeHolder<EventsBus> EVENTS_BUS_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<CommandsRepository> COMMANDS_REPOSITORY_HOLDER = new AttributeHolder<>();
@@ -84,7 +84,7 @@ public class ClientApp
         return CLIENT_ROUTER_HOLDER.attribute;
     }
 
-    public RequestRouter<ClientServerRequest> getServerRouter() {
+    public RequestRouter<ServerRequest> getServerRouter() {
         return SERVER_ROUTER_HOLDER.attribute;
     }
 
@@ -150,7 +150,7 @@ public class ClientApp
 
     @FunctionalInterface
     public interface HasClientRouter {
-        HasServerRouter serverRouter(RequestRouter<ClientServerRequest> serverRouter);
+        HasServerRouter serverRouter(RequestRouter<ServerRequest> serverRouter);
     }
 
     @FunctionalInterface
@@ -215,7 +215,7 @@ public class ClientApp
             HasHistory, HasAsyncRunner, HasOptions, CanBuildClientApp {
 
         private RequestRouter<PresenterCommand> clientRouter;
-        private RequestRouter<ClientServerRequest> serverRouter;
+        private RequestRouter<ServerRequest> serverRouter;
         private EventsBus eventsBus;
         private CommandsRepository requestRepository;
         private PresentersRepository presentersRepository;
@@ -236,7 +236,7 @@ public class ClientApp
         }
 
         @Override
-        public HasServerRouter serverRouter(RequestRouter<ClientServerRequest> serverRouter) {
+        public HasServerRouter serverRouter(RequestRouter<ServerRequest> serverRouter) {
             this.serverRouter = serverRouter;
             return this;
         }
