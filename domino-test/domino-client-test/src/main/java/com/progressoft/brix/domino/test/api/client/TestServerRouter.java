@@ -10,8 +10,8 @@ import com.progressoft.brix.domino.api.client.request.RequestRouter;
 import com.progressoft.brix.domino.api.server.ServerApp;
 import com.progressoft.brix.domino.api.server.entrypoint.ServerEntryPointContext;
 import com.progressoft.brix.domino.api.server.handler.HandlersRepository;
-import com.progressoft.brix.domino.api.shared.request.FailedServerResponse;
-import com.progressoft.brix.domino.api.shared.request.ServerResponse;
+import com.progressoft.brix.domino.api.shared.request.FailedResponseBean;
+import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,8 +29,8 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
 
     private final ServerRequestEventFactory eventFactory = new ServerRequestEventFactory() {
         @Override
-        public Event makeSuccess(ServerRequest request, ServerResponse serverResponse) {
-            return new TestServerSuccessEvent(request, serverResponse);
+        public Event makeSuccess(ServerRequest request, ResponseBean responseBean) {
+            return new TestServerSuccessEvent(request, responseBean);
         }
 
         @Override
@@ -57,12 +57,12 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
 
     @Override
     public void routeRequest(ServerRequest request) {
-        ServerResponse response;
+        ResponseBean response;
         try {
             if(fakeResponses.containsKey(request.getKey())){
                 response=fakeResponses.get(request.getKey()).reply();
             }else {
-                response = service.executeRequest(request.arguments());
+                response = service.executeRequest(request.requestBean());
             }
             listener.onRouteRequest(request, response);
         }catch (HandlersRepository.RequestHandlerNotFound ex){
@@ -87,12 +87,12 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
 
     public class TestServerSuccessEvent implements Event {
         protected final ServerRequest request;
-        protected final ServerResponse serverResponse;
+        protected final ResponseBean responseBean;
         private final ClientApp clientApp = ClientApp.make();
 
-        public TestServerSuccessEvent(ServerRequest request, ServerResponse serverResponse) {
+        public TestServerSuccessEvent(ServerRequest request, ResponseBean responseBean) {
             this.request = request;
-            this.serverResponse = serverResponse;
+            this.responseBean = responseBean;
         }
 
         @Override
@@ -106,7 +106,7 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
         }
 
         private Request.ServerSuccessRequestStateContext makeSuccessContext() {
-            return new Request.ServerSuccessRequestStateContext(serverResponse);
+            return new Request.ServerSuccessRequestStateContext(responseBean);
         }
     }
 
@@ -145,7 +145,7 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
         }
 
         private Request.ServerFailedRequestStateContext makeFailedContext() {
-            return new Request.ServerFailedRequestStateContext(new FailedServerResponse(error));
+            return new Request.ServerFailedRequestStateContext(new FailedResponseBean(error));
         }
     }
 
@@ -165,22 +165,22 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
 
     public interface RoutingListener {
         void onRouteRequest(ServerRequest request,
-                            ServerResponse response);
+                            ResponseBean response);
     }
 
     public interface ResponseReply{
-        ServerResponse reply() throws Exception;
+        ResponseBean reply() throws Exception;
     }
 
     public static class SuccessReply implements ResponseReply{
-        private final ServerResponse response;
+        private final ResponseBean response;
 
-        public SuccessReply(ServerResponse response) {
+        public SuccessReply(ResponseBean response) {
             this.response = response;
         }
 
         @Override
-        public ServerResponse reply() {
+        public ResponseBean reply() {
             return response;
         }
     }
@@ -193,7 +193,7 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
         }
 
         @Override
-        public ServerResponse reply() throws Exception {
+        public ResponseBean reply() throws Exception {
             throw error;
         }
     }

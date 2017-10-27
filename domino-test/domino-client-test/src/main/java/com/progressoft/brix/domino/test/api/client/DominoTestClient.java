@@ -12,7 +12,7 @@ import com.progressoft.brix.domino.api.server.entrypoint.ServerEntryPointContext
 import com.progressoft.brix.domino.api.server.entrypoint.VertxContext;
 import com.progressoft.brix.domino.api.server.entrypoint.VertxEntryPointContext;
 import com.progressoft.brix.domino.api.shared.extension.Contribution;
-import com.progressoft.brix.domino.api.shared.request.ServerResponse;
+import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 import com.progressoft.brix.domino.service.discovery.VertxServiceDiscovery;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
@@ -202,7 +202,7 @@ public class DominoTestClient
             this.request = request;
         }
 
-        public void returnResponse(ServerResponse response) {
+        public void returnResponse(ResponseBean response) {
             TestClientAppFactory.serverRouter.fakeResponse(request, new TestServerRouter.SuccessReply(response));
         }
 

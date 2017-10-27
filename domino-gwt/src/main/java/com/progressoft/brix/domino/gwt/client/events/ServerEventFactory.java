@@ -3,12 +3,12 @@ package com.progressoft.brix.domino.gwt.client.events;
 import com.progressoft.brix.domino.api.client.events.Event;
 import com.progressoft.brix.domino.api.client.events.ServerRequestEventFactory;
 import com.progressoft.brix.domino.api.client.request.ServerRequest;
-import com.progressoft.brix.domino.api.shared.request.ServerResponse;
+import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 
 public class ServerEventFactory implements ServerRequestEventFactory {
     @Override
-    public Event makeSuccess(ServerRequest request, ServerResponse serverResponse) {
-        return new ServerSuccessRequestEvent(request, serverResponse);
+    public Event makeSuccess(ServerRequest request, ResponseBean responseBean) {
+        return new ServerSuccessRequestEvent(request, responseBean);
     }
 
     @Override

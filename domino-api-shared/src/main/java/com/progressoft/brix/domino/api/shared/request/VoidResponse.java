@@ -1,4 +1,5 @@
 package com.progressoft.brix.domino.api.shared.request;
 
-public class VoidResponse {
+public final class VoidResponse extends ResponseBean {
+
 }

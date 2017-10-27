@@ -6,17 +6,17 @@ import com.progressoft.brix.domino.api.client.events.EventProcessor;
 import com.progressoft.brix.domino.api.client.events.EventsBus;
 import com.progressoft.brix.domino.api.client.request.ServerRequest;
 import com.progressoft.brix.domino.api.client.request.Request;
-import com.progressoft.brix.domino.api.shared.request.ServerResponse;
+import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 
 public class ServerSuccessRequestEvent extends ServerSuccessRequestGwtEvent implements Event {
 
     protected final ServerRequest request;
-    private final ServerResponse serverResponse;
+    private final ResponseBean responseBean;
     private final ClientApp clientApp = ClientApp.make();
 
-    public ServerSuccessRequestEvent(ServerRequest request, ServerResponse serverResponse) {
+    public ServerSuccessRequestEvent(ServerRequest request, ResponseBean responseBean) {
         this.request = request;
-        this.serverResponse = serverResponse;
+        this.responseBean = responseBean;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class ServerSuccessRequestEvent extends ServerSuccessRequestGwtEvent impl
     }
 
     private Request.ServerSuccessRequestStateContext makeSuccessContext() {
-        return new Request.ServerSuccessRequestStateContext(serverResponse);
+        return new Request.ServerSuccessRequestStateContext(responseBean);
     }
 
     @Override

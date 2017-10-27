@@ -1,19 +1,19 @@
 package com.progressoft.brix.domino.apt.server.callbackHandler;
 
 import com.progressoft.brix.domino.api.server.endpoint.AbstractEndpointCallBackHandler;
-import com.progressoft.brix.domino.api.shared.request.ServerRequest;
-import com.progressoft.brix.domino.api.shared.request.ServerResponse;
+import com.progressoft.brix.domino.api.shared.request.RequestBean;
+import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 import javax.annotation.Generated;
 
 @Generated("com.progressoft.brix.domino.apt.server.EndpointsProcessor")
-public class HandlerImplementingRequestHandlerInterfaceEndpointHandler extends AbstractEndpointCallBackHandler<ServerRequest, ServerResponse> {
+public class HandlerImplementingRequestHandlerInterfaceEndpointHandler extends AbstractEndpointCallBackHandler<RequestBean, ResponseBean> {
     @Override
-    protected ServerRequest makeNewRequest() {
-        return new ServerRequest();
+    protected RequestBean makeNewRequest() {
+        return new RequestBean();
     }
 
     @Override
-    protected Class<ServerRequest> getRequestClass() {
-        return ServerRequest.class;
+    protected Class<RequestBean> getRequestClass() {
+        return RequestBean.class;
     }
 }

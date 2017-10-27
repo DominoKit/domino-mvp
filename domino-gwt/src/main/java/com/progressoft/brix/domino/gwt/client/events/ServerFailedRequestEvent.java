@@ -6,7 +6,7 @@ import com.progressoft.brix.domino.api.client.events.EventProcessor;
 import com.progressoft.brix.domino.api.client.events.EventsBus;
 import com.progressoft.brix.domino.api.client.request.ServerRequest;
 import com.progressoft.brix.domino.api.client.request.Request;
-import com.progressoft.brix.domino.api.shared.request.FailedServerResponse;
+import com.progressoft.brix.domino.api.shared.request.FailedResponseBean;
 
 public class ServerFailedRequestEvent extends ServerFailedRequestGwtEvent implements Event {
 
@@ -30,7 +30,7 @@ public class ServerFailedRequestEvent extends ServerFailedRequestGwtEvent implem
     }
 
     private Request.ServerFailedRequestStateContext makeFailedContext() {
-        return new Request.ServerFailedRequestStateContext(new FailedServerResponse(error));
+        return new Request.ServerFailedRequestStateContext(new FailedResponseBean(error));
     }
 
     @Override

@@ -4,15 +4,15 @@ import com.progressoft.brix.domino.api.client.ClientApp;
 import com.progressoft.brix.domino.api.client.events.Event;
 import com.progressoft.brix.domino.api.client.request.ServerRequest;
 import com.progressoft.brix.domino.api.client.request.Request;
-import com.progressoft.brix.domino.api.shared.request.ServerResponse;
+import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 
 public class DesktopSuccessServerEvent implements Event {
     private final ServerRequest request;
-    private final ServerResponse serverResponse;
+    private final ResponseBean responseBean;
 
-    public DesktopSuccessServerEvent(ServerRequest request, ServerResponse serverResponse) {
+    public DesktopSuccessServerEvent(ServerRequest request, ResponseBean responseBean) {
         this.request = request;
-        this.serverResponse = serverResponse;
+        this.responseBean = responseBean;
     }
 
     @Override
@@ -26,6 +26,6 @@ public class DesktopSuccessServerEvent implements Event {
     }
 
     private Request.ServerSuccessRequestStateContext makeSuccessContext() {
-        return new Request.ServerSuccessRequestStateContext(serverResponse);
+        return new Request.ServerSuccessRequestStateContext(responseBean);
     }
 }

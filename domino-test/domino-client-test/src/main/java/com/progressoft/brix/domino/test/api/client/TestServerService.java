@@ -1,15 +1,15 @@
 package com.progressoft.brix.domino.test.api.client;
 
-import com.progressoft.brix.domino.api.shared.request.ServerRequest;
-import com.progressoft.brix.domino.api.shared.request.ServerResponse;
+import com.progressoft.brix.domino.api.shared.request.RequestBean;
+import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 
 @FunctionalInterface
 public interface TestServerService {
 
     interface RequestExecutionCallBack{
-        void onSuccess(ServerResponse response);
-        void onFailed(ServerResponse response);
+        void onSuccess(ResponseBean response);
+        void onFailed(ResponseBean response);
     }
 
-    ServerResponse executeRequest(ServerRequest request);
+    ResponseBean executeRequest(RequestBean request);
 }

@@ -3,9 +3,9 @@
 #set( $symbol_escape = '\' )
 package ${package}.${subpackage}.shared.response;
 
-import com.progressoft.brix.domino.api.shared.request.ServerResponse;
+import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 
-public class ${module}Response extends ServerResponse {
+public class ${module}Response extends ResponseBean {
 
     private String serverMessage;
 

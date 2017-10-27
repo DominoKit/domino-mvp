@@ -2,12 +2,12 @@ package com.progressoft.brix.domino.api.server.endpoint;
 
 import com.progressoft.brix.domino.api.server.ServerApp;
 import com.progressoft.brix.domino.api.server.entrypoint.VertxEntryPointContext;
-import com.progressoft.brix.domino.api.shared.request.ServerRequest;
-import com.progressoft.brix.domino.api.shared.request.ServerResponse;
+import com.progressoft.brix.domino.api.shared.request.RequestBean;
+import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 import io.vertx.core.json.Json;
 import io.vertx.ext.web.RoutingContext;
 
-public abstract class AbstractEndpointHandler<R extends ServerRequest, S extends ServerResponse> extends AbstractEndpoint<R,S> {
+public abstract class AbstractEndpointHandler<R extends RequestBean, S extends ResponseBean> extends AbstractEndpoint<R,S> {
 
     protected void executeRequest(RoutingContext routingContext, ServerApp serverApp, R requestBody) {
         S response=(S)serverApp.executeRequest(requestBody, new VertxEntryPointContext(routingContext, serverApp.serverContext().config(), routingContext.vertx()));

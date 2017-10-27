@@ -15,7 +15,9 @@ import com.progressoft.brix.domino.apt.commons.ProcessorElement;
 import com.squareup.javapoet.*;
 import org.fusesource.restygwt.client.*;
 
+import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
+import javax.lang.model.util.Elements;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.HttpMethod;
 import javax.ws.rs.PathParam;
@@ -97,7 +99,7 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
 
     private TypeSpec.Builder makeSenderBuilder() {
         AnnotationSpec.Builder requestSenderAnnotationBuilder = AnnotationSpec.builder(RequestSender.class)
-                .addMember("value", processorElement.simpleName() + ".class");
+                .addMember("value", CodeBlock.builder().add("$T.class", TypeName.get(processorElement.getElement().asType())).build());
 
         if (hasServiceRoot())
             requestSenderAnnotationBuilder.addMember("customServiceRoot", "true");

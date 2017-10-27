@@ -6,8 +6,8 @@ import com.progressoft.brix.domino.api.server.handler.HandlersRepository;
 import com.progressoft.brix.domino.api.server.interceptor.GlobalRequestInterceptor;
 import com.progressoft.brix.domino.api.server.interceptor.InterceptorsRepository;
 import com.progressoft.brix.domino.api.server.interceptor.RequestInterceptor;
-import com.progressoft.brix.domino.api.shared.request.ServerRequest;
-import com.progressoft.brix.domino.api.shared.request.ServerResponse;
+import com.progressoft.brix.domino.api.shared.request.RequestBean;
+import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 
 import java.util.Collection;
 
@@ -23,23 +23,23 @@ public class DefaultRequestExecutor implements RequestExecutor {
     }
 
     @Override
-    public ServerResponse executeRequest(ServerRequest request, ServerEntryPointContext context) {
+    public ResponseBean executeRequest(RequestBean request, ServerEntryPointContext context) {
         callInterceptors(request, context);
         return handlersRepository.findHandler(request.getRequestKey()).handleRequest(request);
     }
 
-    private void callInterceptors(ServerRequest request, ServerEntryPointContext context) {
+    private void callInterceptors(RequestBean request, ServerEntryPointContext context) {
         getInterceptors(request, context).forEach(i -> i.intercept(request, context));
         getGlobalInterceptors(context).forEach(i -> i.intercept(request, context));
     }
 
     @Override
-    public void executeCallbackRequest(ServerRequest request, ServerEntryPointContext context, CallbackRequestHandler.ResponseCallback<ServerResponse> responseCallback) {
+    public void executeCallbackRequest(RequestBean request, ServerEntryPointContext context, CallbackRequestHandler.ResponseCallback<ResponseBean> responseCallback) {
         callInterceptors(request, context);
         handlersRepository.findCallbackHandler(request.getRequestKey()).handleRequest(request, responseCallback);
     }
 
-    private Collection<RequestInterceptor> getInterceptors(ServerRequest request, ServerEntryPointContext context) {
+    private Collection<RequestInterceptor> getInterceptors(RequestBean request, ServerEntryPointContext context) {
         return interceptorsRepository.findInterceptors(request.getClass().getCanonicalName(), context.getName());
     }
 

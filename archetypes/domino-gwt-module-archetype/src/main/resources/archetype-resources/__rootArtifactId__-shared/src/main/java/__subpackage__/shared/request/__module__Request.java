@@ -3,9 +3,9 @@
 #set( $symbol_escape = '\' )
 package ${package}.${subpackage}.shared.request;
 
-import com.progressoft.brix.domino.api.shared.request.ServerRequest;
+import com.progressoft.brix.domino.api.shared.request.RequestBean;
 
-public class ${module}Request extends ServerRequest {
+public class ${module}Request extends RequestBean {
 
     private String message;
 

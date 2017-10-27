@@ -4,7 +4,8 @@ import com.progressoft.brix.domino.api.client.ServiceRootMatcher;
 import com.progressoft.brix.domino.api.client.annotations.Path;
 import com.progressoft.brix.domino.api.client.events.ServerRequestEventFactory;
 import com.progressoft.brix.domino.api.client.request.ServerRequest;
-import com.progressoft.brix.domino.api.shared.request.ServerResponse;
+import com.progressoft.brix.domino.api.shared.request.RequestBean;
+import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 import com.progressoft.brix.domino.client.commons.request.AbstractRequestAsyncSender;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
@@ -50,13 +51,13 @@ public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
         String classifier = request.getClass().getAnnotation(com.progressoft.brix.domino.api.client.annotations.Request.class).classifier();
 
 
-        String absoluteURI = buildPath(pathAnnotation, request.arguments());
+        String absoluteURI = buildPath(pathAnnotation, request.requestBean());
         HttpRequest<Buffer> httpRequest = webClient.requestAbs(method, absoluteURI);
 
         if (classifier.isEmpty())
-            httpRequest.putHeader("REQUEST_KEY", request.arguments().getRequestKey());
+            httpRequest.putHeader("REQUEST_KEY", request.requestBean().getRequestKey());
         else
-            httpRequest.putHeader("REQUEST_KEY", request.arguments().getRequestKey() + "_" + classifier);
+            httpRequest.putHeader("REQUEST_KEY", request.requestBean().getRequestKey() + "_" + classifier);
 
         if (nonNull(csrfToken))
             httpRequest.putHeader(DEFAULT_HEADER_NAME, csrfToken);
@@ -70,8 +71,8 @@ public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
         Type type = parameterizedType.getActualTypeArguments()[2];
 
         try {
-            Class<? extends ServerResponse> clazz = (Class<? extends ServerResponse>) Class.forName(type.getTypeName());
-            httpRequest.sendJson(request.arguments(), event -> {
+            Class<? extends ResponseBean> clazz = (Class<? extends ResponseBean>) Class.forName(type.getTypeName());
+            httpRequest.sendJson(request.requestBean(), event -> {
                 if (event.succeeded()) {
                     this.csrfToken = event.result().headers().getAll("Set-Cookie")
                             .stream()
@@ -88,7 +89,7 @@ public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
         }
     }
 
-    private String buildPath(Path pathAnnotation, com.progressoft.brix.domino.api.shared.request.ServerRequest arguments) {
+    private String buildPath(Path pathAnnotation, RequestBean arguments) {
 
         String path = formattedPath(getPathParams(pathAnnotation.value()), arguments, pathAnnotation.value());
 
@@ -103,7 +104,7 @@ public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
         return (serviceRoot + "/" + path);
     }
 
-    private String formattedPath(Collection<String> pathParams, com.progressoft.brix.domino.api.shared.request.ServerRequest arguments, String path) {
+    private String formattedPath(Collection<String> pathParams, RequestBean arguments, String path) {
         final String[] processedPath = {path};
         pathParams.forEach(p -> {
             try {
@@ -122,7 +123,7 @@ public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
         return processedPath[0];
     }
 
-    private String getNestedValue(com.progressoft.brix.domino.api.shared.request.ServerRequest arguments, String p) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    private String getNestedValue(RequestBean arguments, String p) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         if (!isNestedNull(arguments, p.split("\\.")))
             return BeanUtils.getProperty(arguments, p);
         return "";
@@ -132,7 +133,7 @@ public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
         return p.contains(".");
     }
 
-    private boolean isNestedNull(com.progressoft.brix.domino.api.shared.request.ServerRequest arguments, String[] nestedParts) {
+    private boolean isNestedNull(RequestBean arguments, String[] nestedParts) {
         return IntStream.range(0, nestedParts.length - 1).anyMatch(i -> {
             try {
                 return isNull(BeanUtils.getProperty(arguments, nestedParts[i]));

@@ -4,7 +4,7 @@ import com.progressoft.brix.domino.api.client.ClientApp;
 import com.progressoft.brix.domino.api.client.events.ServerRequestEventFactory;
 import com.progressoft.brix.domino.api.client.request.ServerRequest;
 import com.progressoft.brix.domino.api.client.request.ServerRequestCallBack;
-import com.progressoft.brix.domino.api.shared.request.ServerResponse;
+import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 import com.progressoft.brix.domino.client.commons.request.AbstractRequestAsyncSender;
 import org.fusesource.restygwt.client.Defaults;
 
@@ -20,7 +20,7 @@ public class GwtRequestAsyncSender extends AbstractRequestAsyncSender {
     @Override
     protected void sendRequest(ServerRequest request, ServerRequestEventFactory requestEventFactory) {
         ClientApp.make().getRequestRestSendersRepository().get(request.getKey())
-                .send(request.arguments(), request.headers(),
+                .send(request.requestBean(), request.headers(),
                         new ServerRequestCallBack() {
                             @Override
                             public void onFailure(Throwable throwable) {
@@ -28,7 +28,7 @@ public class GwtRequestAsyncSender extends AbstractRequestAsyncSender {
                             }
 
                             @Override
-                            public void onSuccess(ServerResponse response) {
+                            public void onSuccess(ResponseBean response) {
                                 requestEventFactory.makeSuccess(request, response).fire();
                             }
                         });

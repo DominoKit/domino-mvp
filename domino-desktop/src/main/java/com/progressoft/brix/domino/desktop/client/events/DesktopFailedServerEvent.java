@@ -4,7 +4,7 @@ import com.progressoft.brix.domino.api.client.ClientApp;
 import com.progressoft.brix.domino.api.client.events.Event;
 import com.progressoft.brix.domino.api.client.request.ServerRequest;
 import com.progressoft.brix.domino.api.client.request.Request;
-import com.progressoft.brix.domino.api.shared.request.FailedServerResponse;
+import com.progressoft.brix.domino.api.shared.request.FailedResponseBean;
 
 public class DesktopFailedServerEvent implements Event {
     private final ServerRequest request;
@@ -26,6 +26,6 @@ public class DesktopFailedServerEvent implements Event {
     }
 
     private Request.ServerFailedRequestStateContext makeFailedContext() {
-        return new Request.ServerFailedRequestStateContext(new FailedServerResponse(error));
+        return new Request.ServerFailedRequestStateContext(new FailedResponseBean(error));
     }
 }

@@ -1,8 +1,8 @@
 package com.progressoft.brix.domino.api.server;
 
-import com.progressoft.brix.domino.api.shared.request.ServerRequest;
+import com.progressoft.brix.domino.api.shared.request.RequestBean;
 
-public class TestRequest extends ServerRequest {
+public class TestRequest extends RequestBean {
 
     private StringBuilder testWord=new StringBuilder("");
 

@@ -13,8 +13,8 @@ import com.progressoft.brix.domino.api.server.interceptor.InterceptorsRegistry;
 import com.progressoft.brix.domino.api.server.interceptor.InterceptorsRepository;
 import com.progressoft.brix.domino.api.server.interceptor.RequestInterceptor;
 import com.progressoft.brix.domino.api.server.request.RequestExecutor;
-import com.progressoft.brix.domino.api.shared.request.ServerRequest;
-import com.progressoft.brix.domino.api.shared.request.ServerResponse;
+import com.progressoft.brix.domino.api.shared.request.RequestBean;
+import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 
 import static java.util.Objects.isNull;
 
@@ -36,10 +36,10 @@ public class ServerApp implements HandlerRegistry, InterceptorsRegistry, Endpoin
         return this;
     }
 
-    public ServerResponse executeRequest(ServerRequest request, ServerEntryPointContext context) {
+    public ResponseBean executeRequest(RequestBean request, ServerEntryPointContext context) {
         return requestExecutorHolder.attribute.executeRequest(request, context);
     }
-    public void executeCallbackRequest(ServerRequest request, ServerEntryPointContext context, CallbackRequestHandler.ResponseCallback responseCallback) {
+    public void executeCallbackRequest(RequestBean request, ServerEntryPointContext context, CallbackRequestHandler.ResponseCallback responseCallback) {
         requestExecutorHolder.attribute.executeCallbackRequest(request, context, responseCallback);
     }
 

@@ -4,7 +4,7 @@ import io.vertx.core.Handler;
 import io.vertx.core.json.Json;
 import io.vertx.ext.web.RoutingContext;
 import com.progressoft.brix.domino.api.server.ServerApp;
-import com.progressoft.brix.domino.api.shared.request.ServerResponse;
+import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 import com.progressoft.brix.domino.api.server.entrypoint.VertxEntryPointContext;
 
 public class FirstHandlerEndpointHandler implements Handler<RoutingContext> {
@@ -14,7 +14,7 @@ public class FirstHandlerEndpointHandler implements Handler<RoutingContext> {
         try {
             ServerApp serverApp = ServerApp.make();
             FirstRequest requestBody = Json.decodeValue(routingContext.getBodyAsString(), FirstRequest.class);
-            ServerResponse response = (ServerResponse) serverApp
+            ResponseBean response = (ResponseBean) serverApp
                     .executeRequest(requestBody, new VertxEntryPointContext(routingContext, serverApp.serverContext().config(),
                             routingContext.vertx()));
             routingContext.response()

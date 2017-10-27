@@ -1,8 +1,8 @@
 package com.progressoft.brix.domino.api.server.endpoint;
 
 import com.progressoft.brix.domino.api.server.ServerApp;
-import com.progressoft.brix.domino.api.shared.request.ServerRequest;
-import com.progressoft.brix.domino.api.shared.request.ServerResponse;
+import com.progressoft.brix.domino.api.shared.request.RequestBean;
+import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.Json;
@@ -10,7 +10,7 @@ import io.vertx.ext.web.RoutingContext;
 
 import static java.util.Objects.nonNull;
 
-public abstract class AbstractEndpoint<R extends ServerRequest, S extends ServerResponse> implements Handler<RoutingContext> {
+public abstract class AbstractEndpoint<R extends RequestBean, S extends ResponseBean> implements Handler<RoutingContext> {
     @Override
     public void handle(RoutingContext routingContext) {
         try {
