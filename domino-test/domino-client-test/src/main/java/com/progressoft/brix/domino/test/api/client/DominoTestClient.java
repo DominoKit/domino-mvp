@@ -206,8 +206,8 @@ public class DominoTestClient
             TestClientAppFactory.serverRouter.fakeResponse(request, new TestServerRouter.SuccessReply(response));
         }
 
-        public void failWith(Throwable throwable) {
-            TestClientAppFactory.serverRouter.fakeResponse(request, new TestServerRouter.FailedReply(throwable));
+        public void failWith(Exception error) {
+            TestClientAppFactory.serverRouter.fakeResponse(request, new TestServerRouter.FailedReply(error));
         }
     }
 
