@@ -99,10 +99,10 @@ import java.util.Set;
  */
 public class MessageFormatter {
     private static final char DELIM_START = '{';
-    private static final char DELIM_STOP = '}';
     private static final String DELIM_STR = "{}";
     private static final char ESCAPE_CHAR = '\\';
     private static final String ARRAY_JOIN_STR = ", ";
+    public static final int OFFSET = 50;
 
     private MessageFormatter() {
     }
@@ -195,7 +195,7 @@ public class MessageFormatter {
             return new FormattingTuple(messagePattern);
         }
 
-        StringBuilder sbuf = new StringBuilder(messagePattern.length() + 50);
+        StringBuilder sbuf = new StringBuilder(messagePattern.length() + OFFSET);
 
         Set<Object> seenSet = null;
         int L;
