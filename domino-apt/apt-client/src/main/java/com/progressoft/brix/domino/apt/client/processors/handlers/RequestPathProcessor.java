@@ -50,7 +50,7 @@ public class RequestPathProcessor extends BaseProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        roundEnv.getElementsAnnotatedWith(Path.class).stream().filter(this::extendsServerRequest).filter(e -> ElementKind.CLASS.equals(e.getKind()))
+        roundEnv.getElementsAnnotatedWith(Path.class).stream().filter(e -> ElementKind.CLASS.equals(e.getKind())).filter(this::extendsServerRequest)
                 .forEach(this::generateRequestRestfulSender);
         return false;
     }
