@@ -11,5 +11,6 @@ public class AnnotatedClassWithPresentableContribution implements Contribution<M
 
     @Override
     public void contribute(MainExtensionPoint extensionPoint) {
+        //for generation testing only
     }
 }

@@ -8,7 +8,7 @@ public class SecondInterceptor implements RequestInterceptor<SecondRequest, Test
 
     @Override
     public void intercept(SecondRequest request, TestServerEntryPointContext entryPoint) {
-
+        //for code generation testing only
     }
 }
 

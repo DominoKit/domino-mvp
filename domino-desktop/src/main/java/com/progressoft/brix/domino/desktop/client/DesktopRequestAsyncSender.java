@@ -36,14 +36,12 @@ public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DesktopRequestAsyncSender.class);
 
-    private final Vertx vertx;
     private final WebClient webClient;
     private String csrfToken;
 
     public DesktopRequestAsyncSender(ServerRequestEventFactory requestEventFactory) {
         super(requestEventFactory);
-        vertx = Vertx.vertx();
-        webClient = WebClient.create(vertx);
+        webClient = WebClient.create(Vertx.vertx());
     }
 
     @Override
@@ -89,8 +87,6 @@ public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
         } catch (ClassNotFoundException e) {
             requestEventFactory.makeFailed(request, e);
         }
-
-
     }
 
     private String buildPath(Path pathAnnotation, ServerRequest arguments) {

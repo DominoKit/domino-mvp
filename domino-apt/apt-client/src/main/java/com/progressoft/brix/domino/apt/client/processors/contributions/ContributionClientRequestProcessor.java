@@ -56,12 +56,11 @@ public class ContributionClientRequestProcessor extends BaseProcessor {
 
     private void generateContributionClientRequest(Element e) {//NOSONAR
         Set<String> presenters = getContributionPresenters(e);
-        String presenterMethod = getMethodName(e);
-        presenters.forEach(p -> generateRequest(newProcessorElement(e), p, presenterMethod));
+        presenters.forEach(p -> generateRequest(newProcessorElement(e), p));
 
     }
 
-    private void generateRequest(ProcessorElement processorElement, String presenterName, String presenterMethod) {
+    private void generateRequest(ProcessorElement processorElement, String presenterName) {
         String contributionName = processorElement.getInterfaceFullQualifiedGenericName(Contribution.class);
         FullClassName fullClassname = new FullClassName(contributionName);
         String contextName = fullClassname.allImports().get(1);

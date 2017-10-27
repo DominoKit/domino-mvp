@@ -19,6 +19,8 @@ import javax.ws.rs.core.MediaType;
 @RequestSender(AnnotatedClassWithHandlerPath.class)
 public class AnnotatedClassWithHandlerPathSender implements RequestRestSender<SomeRequest> {
 
+    private AnnotatedClassWithHandlerPathSenderService service = GWT.create(AnnotatedClassWithHandlerPathSenderService.class);
+
     public interface AnnotatedClassWithHandlerPathSenderService extends RestService {
         @POST
         @Path("somePath")
@@ -26,9 +28,8 @@ public class AnnotatedClassWithHandlerPathSender implements RequestRestSender<So
         @Consumes(MediaType.APPLICATION_JSON)
         void send(SomeRequest request,
                   MethodCallback<SomeResponse> callback);
-    }
 
-    private AnnotatedClassWithHandlerPathSenderService service = GWT.create(AnnotatedClassWithHandlerPathSenderService.class);
+    }
 
     @Override
     public void send(SomeRequest request, ServerRequestCallBack callBack) {

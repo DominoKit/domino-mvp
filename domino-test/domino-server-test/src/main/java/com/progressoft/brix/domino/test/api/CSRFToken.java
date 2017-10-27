@@ -20,7 +20,7 @@ public class CSRFToken {
             mac = Mac.getInstance("HmacSHA256");
             mac.init(new SecretKeySpec(secret.getBytes(), "HmacSHA256"));
         } catch (NoSuchAlgorithmException | InvalidKeyException e) {
-            throw new RuntimeException(e);
+            throw new UnauthorizedRequestException(e);
         }
     }
 
@@ -32,5 +32,11 @@ public class CSRFToken {
         String signature = BASE64.encodeToString(mac.doFinal(saltPlusToken.getBytes()));
 
         return saltPlusToken + "." + signature;
+    }
+
+    public static class UnauthorizedRequestException extends RuntimeException{
+        public UnauthorizedRequestException(Throwable cause) {
+            super(cause);
+        }
     }
 }

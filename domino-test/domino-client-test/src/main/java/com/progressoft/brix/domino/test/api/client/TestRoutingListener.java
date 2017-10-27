@@ -8,10 +8,13 @@ import java.util.Map;
 
 public class TestRoutingListener implements TestServerRouter.RoutingListener {
 
+    private Map<String, RequestResponsePair> receivedRequests = new HashMap<>();
+
     private class RequestResponsePair {
         private ClientServerRequest request;
         private ServerResponse response;
         private int executionsCount;
+
 
         public RequestResponsePair(ClientServerRequest request, ServerResponse response) {
             this.request = request;
@@ -22,15 +25,13 @@ public class TestRoutingListener implements TestServerRouter.RoutingListener {
         public int getExecutionsCount() {
             return executionsCount;
         }
-
         private void increment(ClientServerRequest request, ServerResponse response) {
             this.request = request;
             this.response = response;
             this.executionsCount++;
         }
-    }
 
-    private Map<String, RequestResponsePair> receivedRequests = new HashMap<>();
+    }
 
     @Override
     public void onRouteRequest(ClientServerRequest request, ServerResponse response) {

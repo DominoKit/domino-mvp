@@ -9,5 +9,6 @@ public class AnnotatedClassWithContribution implements Contribution<MainExtensio
 
     @Override
     public void contribute(MainExtensionPoint extensionPoint) {
+        //for code generation testing only
     }
 }

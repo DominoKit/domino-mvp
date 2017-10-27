@@ -8,7 +8,7 @@ public class FirstInterceptor implements RequestInterceptor<FirstRequest, TestSe
 
     @Override
     public void intercept(FirstRequest request, TestServerEntryPointContext entryPoint) {
-
+        //for generation testing only
     }
 }
 

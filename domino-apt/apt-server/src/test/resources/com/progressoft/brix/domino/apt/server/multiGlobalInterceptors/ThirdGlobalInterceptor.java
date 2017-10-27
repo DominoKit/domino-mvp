@@ -9,7 +9,7 @@ public class ThirdGlobalInterceptor implements GlobalRequestInterceptor<TestServ
 
     @Override
     public void intercept(ServerRequest request, TestServerEntryPointContext context) {
-
+        //for code generation testing only
     }
 }
 

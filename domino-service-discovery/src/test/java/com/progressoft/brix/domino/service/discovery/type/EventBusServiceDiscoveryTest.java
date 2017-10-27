@@ -14,7 +14,7 @@ import org.junit.Test;
 
 public class EventBusServiceDiscoveryTest extends BaseVertxServiceDiscoveryTest {
 
-    EventBusServiceConfiguration eventBusConfiguration;
+    private EventBusServiceConfiguration eventBusConfiguration;
 
     @Override
     protected void onSetup() {

@@ -8,7 +8,7 @@ public class ThirdInterceptor implements RequestInterceptor<ThirdRequest, TestSe
 
     @Override
     public void intercept(ThirdRequest request, TestServerEntryPointContext entryPoint) {
-
+        //for code generation testing only
     }
 }
 

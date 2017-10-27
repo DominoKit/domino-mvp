@@ -20,6 +20,8 @@ public class AnnotatedClassWithRequestSender implements RequestRestSender<SomeRe
     public static final String SERVICE_ROOT_KEY="com.progressoft.brix.domino.apt.client.AnnotatedClassWithHandlerPath";
     public static final String SERVICE_ROOT="someServiceRootPath";
 
+    private AnnotatedClassWithRequestSenderService service = GWT.create(AnnotatedClassWithRequestSenderService.class);
+
     public interface AnnotatedClassWithRequestSenderService extends RestService {
         @POST
         @Path("somePath")
@@ -27,9 +29,8 @@ public class AnnotatedClassWithRequestSender implements RequestRestSender<SomeRe
         @Consumes(MediaType.APPLICATION_JSON)
         void send(SomeRequest request,
                   MethodCallback<SomeResponse> callback);
-    }
 
-    private AnnotatedClassWithRequestSenderService service = GWT.create(AnnotatedClassWithRequestSenderService.class);
+    }
 
     @Override
     public void send(SomeRequest request, Map headers, ServerRequestCallBack callBack) {

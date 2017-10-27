@@ -9,7 +9,7 @@ import com.progressoft.brix.domino.api.server.handler.CallbackRequestHandler;
 public class HandlerImplementingRequestHandlerInterface implements CallbackRequestHandler<ServerRequest, ServerResponse>{
     @Override
     public void handleRequest(ServerRequest request, ResponseCallback<ServerResponse> callback) {
-
+        //for generation testing only
     }
 
 }

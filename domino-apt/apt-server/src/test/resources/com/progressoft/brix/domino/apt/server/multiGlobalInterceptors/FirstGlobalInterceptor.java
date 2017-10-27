@@ -9,7 +9,7 @@ public class FirstGlobalInterceptor implements GlobalRequestInterceptor<TestServ
 
     @Override
     public void intercept(ServerRequest request, TestServerEntryPointContext context) {
-
+        //for generation testing only
     }
 }
 

@@ -8,5 +8,6 @@ public class AnnotatedClassWithInitialTask implements ClientStartupTask {
 
     @Override
     public void execute() {
+        //for generation testing only
     }
 }

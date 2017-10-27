@@ -9,7 +9,7 @@ public class SecondGlobalInterceptor implements GlobalRequestInterceptor<TestSer
 
     @Override
     public void intercept(ServerRequest request, TestServerEntryPointContext context) {
-
+        //for generation testing only
     }
 }
 
