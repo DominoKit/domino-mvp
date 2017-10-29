@@ -16,7 +16,7 @@
     <!-- logging -->
     <set-property name="gwt.logging.logLevel" value="INFO"/>
     <set-property name="gwt.logging.enabled" value="TRUE"/>
-    <set-property name="gwt.logging.consoleHandler" value="DISABLED"/>
+    <set-property name="gwt.logging.consoleHandler" value="ENABLED"/>
     <set-property name="compiler.useSourceMaps" value="true"/>
     <set-property name="gwt.logging.simpleRemoteHandler" value="ENABLED"/>
     <set-configuration-property name="includeSourceMapUrl" value="static/app/gwt/extra/app/symbolMaps/__HASH___sourceMap__FRAGMENT__.json"/>
