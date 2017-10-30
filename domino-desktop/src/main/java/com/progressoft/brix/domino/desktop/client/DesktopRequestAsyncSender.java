@@ -35,6 +35,7 @@ import static java.util.Objects.nonNull;
 public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DesktopRequestAsyncSender.class);
+    public static final int RRESPONSE_TYPE_INDEX = 1;
 
     private final WebClient webClient;
     private String csrfToken;
@@ -68,10 +69,10 @@ public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
             httpRequest.putHeader("Accept", "application/json");
 
         ParameterizedType parameterizedType = (ParameterizedType) request.getClass().getGenericSuperclass();
-        Type type = parameterizedType.getActualTypeArguments()[2];
+        Type responseType = parameterizedType.getActualTypeArguments()[RRESPONSE_TYPE_INDEX];
 
         try {
-            Class<? extends ResponseBean> clazz = (Class<? extends ResponseBean>) Class.forName(type.getTypeName());
+            Class<? extends ResponseBean> clazz = (Class<? extends ResponseBean>) Class.forName(responseType.getTypeName());
             httpRequest.sendJson(request.requestBean(), event -> {
                 if (event.succeeded()) {
                     this.csrfToken = event.result().headers().getAll("Set-Cookie")
