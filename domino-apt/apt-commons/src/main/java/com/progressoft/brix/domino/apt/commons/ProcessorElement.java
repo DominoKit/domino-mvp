@@ -3,6 +3,7 @@ package com.progressoft.brix.domino.apt.commons;
 import javax.annotation.processing.Messager;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
@@ -55,6 +56,11 @@ public class ProcessorElement {
     public Stream<Element> fieldsStream() {
         return element.getEnclosedElements().stream().filter(e -> e.getKind() == ElementKind.FIELD)
                 .map(e -> (Element) e);
+    }
+
+    public Stream<ExecutableElement> methodsStream() {
+        return element.getEnclosedElements().stream().filter(e -> e.getKind() == ElementKind.METHOD)
+                .map(e -> (ExecutableElement) e);
     }
 
     public <A extends Annotation> Stream<Element> fieldsAnnotatedWithStream(Class<A> annotationClass) {

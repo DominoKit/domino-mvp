@@ -1,6 +1,7 @@
 package com.progressoft.brix.domino.apt.client;
 
 import com.progressoft.brix.domino.apt.client.processors.contributions.ContributionClientRequestProcessor;
+import com.progressoft.brix.domino.apt.client.processors.group.RequestGroupProcessor;
 import com.progressoft.brix.domino.apt.client.processors.handlers.RequestPathProcessor;
 import com.progressoft.brix.domino.apt.client.processors.inject.InjectContextProcessor;
 import com.progressoft.brix.domino.apt.client.processors.module.client.ClientModuleAnnotationProcessor;
@@ -200,5 +201,15 @@ public class ClientClientModuleAnnotationProcessorTest {
                 .withProcessor(processor())
                 .generates(getExpectedResultFileContent(
                         "RequestSendersRegistrationsModuleConfiguration.java"));
+    }
+
+    @Test
+    public void givenInterfaceAnnotatedWithRequestGroup_whenProcess_shouldGenerateFactory() throws Exception {
+        assertProcessing(BASE_PACKAGE + "AnnotatedInterfaceWithRequestGroup.java",
+                BASE_PACKAGE + "SomeRequest.java",
+                BASE_PACKAGE + "SomeResponse.java")
+                .withProcessor(new RequestGroupProcessor())
+                .generates(getExpectedResultFileContent(
+                        "AnnotatedInterfaceWithRequestGroupFactory.java"));
     }
 }
