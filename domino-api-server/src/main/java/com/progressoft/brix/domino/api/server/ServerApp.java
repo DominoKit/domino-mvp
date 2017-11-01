@@ -16,6 +16,8 @@ import com.progressoft.brix.domino.api.server.request.RequestExecutor;
 import com.progressoft.brix.domino.api.shared.request.RequestBean;
 import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 
+import java.util.function.Supplier;
+
 import static java.util.Objects.isNull;
 
 public class ServerApp implements HandlerRegistry, InterceptorsRegistry, EndpointsRegistry {
@@ -23,12 +25,12 @@ public class ServerApp implements HandlerRegistry, InterceptorsRegistry, Endpoin
     private static AttributeHolder<RequestExecutor> requestExecutorHolder = new AttributeHolder<>();
     private static AttributeHolder<HandlersRepository> handlersRepositoryHolder = new AttributeHolder<>();
     private static AttributeHolder<InterceptorsRepository> interceptorsRepositoryHolder = new AttributeHolder<>();
-    private static AttributeHolder<ServerContext> serverContextHolder=new AttributeHolder<>();
+    private static AttributeHolder<ServerContext> serverContextHolder = new AttributeHolder<>();
 
     private ServerApp() {
     }
 
-    public static ServerApp make(){
+    public static ServerApp make() {
         return new ServerApp();
     }
 
@@ -39,6 +41,7 @@ public class ServerApp implements HandlerRegistry, InterceptorsRegistry, Endpoin
     public ResponseBean executeRequest(RequestBean request, ServerEntryPointContext context) {
         return requestExecutorHolder.attribute.executeRequest(request, context);
     }
+
     public void executeCallbackRequest(RequestBean request, ServerEntryPointContext context, CallbackRequestHandler.ResponseCallback responseCallback) {
         requestExecutorHolder.attribute.executeCallbackRequest(request, context, responseCallback);
     }
@@ -55,7 +58,7 @@ public class ServerApp implements HandlerRegistry, InterceptorsRegistry, Endpoin
     }
 
     @Override
-    public void registerEndpoint(String path, EndpointHandlerFactory factory) {
+    public void registerEndpoint(String path, Supplier<?> factory) {
         serverContextHolder.attribute.publishService(path, factory);
     }
 
@@ -63,7 +66,7 @@ public class ServerApp implements HandlerRegistry, InterceptorsRegistry, Endpoin
         return handlersRepositoryHolder.attribute;
     }
 
-    public ServerContext serverContext(){
+    public ServerContext serverContext() {
         return serverContextHolder.attribute;
     }
 
@@ -84,41 +87,41 @@ public class ServerApp implements HandlerRegistry, InterceptorsRegistry, Endpoin
         configuration.registerEndpoints(this);
     }
 
-    public static class ServerAppBuilder{
+    public static class ServerAppBuilder {
 
         private RequestExecutor requestExecutor;
         private HandlersRepository handlersRepository;
         private InterceptorsRepository interceptorsRepository;
         private ServerContext serverContext;
 
-        public ServerAppBuilder executor(RequestExecutor requestExecutor){
-            this.requestExecutor=requestExecutor;
+        public ServerAppBuilder executor(RequestExecutor requestExecutor) {
+            this.requestExecutor = requestExecutor;
             return this;
         }
 
-        public ServerAppBuilder handlersRepository(HandlersRepository handlersRepository){
-            this.handlersRepository=handlersRepository;
+        public ServerAppBuilder handlersRepository(HandlersRepository handlersRepository) {
+            this.handlersRepository = handlersRepository;
             return this;
         }
 
-        public ServerAppBuilder interceptorsRepository(InterceptorsRepository interceptorsRepository){
-            this.interceptorsRepository=interceptorsRepository;
+        public ServerAppBuilder interceptorsRepository(InterceptorsRepository interceptorsRepository) {
+            this.interceptorsRepository = interceptorsRepository;
             return this;
         }
 
-        public ServerAppBuilder serverContext(ServerContext serverContext){
-            this.serverContext=serverContext;
+        public ServerAppBuilder serverContext(ServerContext serverContext) {
+            this.serverContext = serverContext;
             return this;
         }
 
-        public ServerApp build(){
-            if(isNull(requestExecutor))
+        public ServerApp build() {
+            if (isNull(requestExecutor))
                 throw new RequestExecutorIsRequired();
-            if(isNull(handlersRepository))
+            if (isNull(handlersRepository))
                 throw new HandlersRepositoryIsRequired();
-            if(isNull(interceptorsRepository))
+            if (isNull(interceptorsRepository))
                 throw new InterceptorsRepositoryIsRequired();
-            if(isNull(serverContext))
+            if (isNull(serverContext))
                 throw new ServerContextIsRequired();
 
             ServerApp.requestExecutorHolder.hold(requestExecutor);
@@ -142,11 +145,11 @@ public class ServerApp implements HandlerRegistry, InterceptorsRegistry, Endpoin
         }
     }
 
-    private static final class AttributeHolder<T>{
+    private static final class AttributeHolder<T> {
         private T attribute;
 
-        private void hold(T attribute){
-            this.attribute=attribute;
+        private void hold(T attribute) {
+            this.attribute = attribute;
         }
     }
 }

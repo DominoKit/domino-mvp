@@ -1,12 +1,9 @@
 package com.progressoft.brix.domino.api.server.endpoint;
 
+import java.util.function.Supplier;
+
 @FunctionalInterface
 public interface EndpointsRegistry {
 
-    @FunctionalInterface
-    interface EndpointHandlerFactory {
-        <T> T get();
-    }
-
-    void registerEndpoint(String path, EndpointHandlerFactory factory);
+    void registerEndpoint(String path, Supplier<?> factory);
 }

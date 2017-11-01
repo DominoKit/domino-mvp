@@ -7,9 +7,11 @@ import com.progressoft.brix.domino.apt.commons.FullClassName;
 import com.progressoft.brix.domino.apt.commons.ProcessorElement;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeSpec;
 
 import javax.lang.model.element.Modifier;
+import java.util.function.Supplier;
 
 public class EndpointsRegisterMethodWriter extends AbstractRegisterMethodWriter<EndpointsEntry, ProcessorElement> {
     public EndpointsRegisterMethodWriter(TypeSpec.Builder clientModuleTypeBuilder) {
@@ -38,8 +40,9 @@ public class EndpointsRegisterMethodWriter extends AbstractRegisterMethodWriter<
                 .returns(handlerEndpointType)
                 .addStatement("return new $T()", handlerEndpointType)
                 .build();
+
         TypeSpec factoryType = TypeSpec.anonymousClassBuilder("")
-                .addSuperinterface(EndpointsRegistry.EndpointHandlerFactory.class)
+                .addSuperinterface(ParameterizedTypeName.get(ClassName.get(Supplier.class), handlerEndpointType.box()))
                 .addMethod(getMethod)
                 .build();
         methodBuilder.addStatement("registry.registerEndpoint(\"" + path + "\", $L)", factoryType);

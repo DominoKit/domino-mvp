@@ -5,6 +5,7 @@ import com.progressoft.brix.domino.api.server.config.ServerModuleConfiguration;
 import com.progressoft.brix.domino.api.server.endpoint.EndpointsRegistry;
 import com.progressoft.brix.domino.api.server.handler.HandlerRegistry;
 import com.progressoft.brix.domino.api.shared.request.RequestBean;
+import java.util.function.Supplier;
 import javax.annotation.Generated;
 
 @Generated("com.progressoft.brix.domino.apt.server.ServerModuleAnnotationProcessor")
@@ -18,7 +19,7 @@ public class TestServerModule implements ServerModuleConfiguration{
 
     @Override
     public void registerEndpoints(EndpointsRegistry registry) {
-        registry.registerEndpoint("somePath", new EndpointsRegistry.EndpointHandlerFactory() {
+        registry.registerEndpoint("somePath", new Supplier<HandlerImplementingRequestHandlerInterfaceEndpointHandler>() {
             @Override
             public HandlerImplementingRequestHandlerInterfaceEndpointHandler get() {
                 return new HandlerImplementingRequestHandlerInterfaceEndpointHandler();

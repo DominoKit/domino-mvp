@@ -4,8 +4,12 @@ import com.progressoft.brix.domino.api.server.config.ServerConfiguration;
 import com.progressoft.brix.domino.api.server.endpoint.EndpointsRegistry;
 import com.progressoft.brix.domino.service.discovery.VertxServiceDiscovery;
 import io.vertx.config.ConfigRetriever;
+import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.Router;
+import io.vertx.ext.web.RoutingContext;
+
+import java.util.function.Supplier;
 
 public class VertxContext implements ServerContext {
 
@@ -32,13 +36,13 @@ public class VertxContext implements ServerContext {
     }
 
     @Override
-    public void publishService(String path, EndpointsRegistry.EndpointHandlerFactory factory) {
+    public void publishService(String path, Supplier<?> factory) {
         publishEndPoint("/service/" + path, factory);
     }
 
     @Override
-    public void publishEndPoint(String path, EndpointsRegistry.EndpointHandlerFactory factory) {
-        router.route().path(path).handler(factory.get());
+    public void publishEndPoint(String path, Supplier<?> factory) {
+        router.route().path(path).handler((Handler<RoutingContext>) factory.get());
     }
 
     public Router router() {
