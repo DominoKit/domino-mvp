@@ -1,7 +1,6 @@
 package com.progressoft.brix.domino.apt.client.processors.group;
 
 
-import com.progressoft.brix.domino.api.client.annotations.Classifier;
 import com.progressoft.brix.domino.api.client.annotations.Path;
 import com.progressoft.brix.domino.api.client.annotations.Request;
 import com.progressoft.brix.domino.api.client.annotations.RequestFactory;
@@ -20,15 +19,15 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import java.io.IOException;
 import java.util.List;
+import java.util.function.Function;
 
-import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.toList;
 
-public class RequestGroupSourceWriter extends JavaSourceWriter {
+public class RequestFactorySourceWriter extends JavaSourceWriter {
 
     private final String requestsServiceRoot;
 
-    public RequestGroupSourceWriter(ProcessorElement processorElement) {
+    public RequestFactorySourceWriter(ProcessorElement processorElement) {
         super(processorElement);
         requestsServiceRoot = processorElement.getAnnotation(RequestFactory.class).value();
     }
@@ -44,7 +43,7 @@ public class RequestGroupSourceWriter extends JavaSourceWriter {
         List<TypeSpec> requests = processorElement.methodsStream().map(this::makeRequestClass).collect(toList());
         List<MethodSpec> overrideMethods = processorElement.methodsStream().map(this::makeOverrideMethod).collect(toList());
 
-        TypeSpec factory = DominoTypeBuilder.build(factoryName, RequestGroupProcessor.class)
+        TypeSpec factory = DominoTypeBuilder.build(factoryName, RequestFactoryProcessor.class)
                 .addSuperinterface(ClassName.bestGuess(processorElement.simpleName()))
                 .addField(instanceField)
                 .addTypes(requests)
@@ -66,11 +65,12 @@ public class RequestGroupSourceWriter extends JavaSourceWriter {
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(Override.class);
 
+        String initializeStatement = "return new " + processorElement.simpleName() + "_" + method.getSimpleName();
         if (!method.getParameters().isEmpty()) {
             request.addParameter(requestTypeName, "request");
-            request.addStatement("return new " + processorElement.simpleName() + "_" + method.getSimpleName() + "(request)");
+            request.addStatement(initializeStatement + "(request)");
         } else
-            request.addStatement("return new " + processorElement.simpleName() + "_" + method.getSimpleName() + "($T.VOID_REQUEST)", RequestBean.class);
+            request.addStatement(initializeStatement + "($T.VOID_REQUEST)", RequestBean.class);
 
 
         return request.build();
@@ -83,14 +83,41 @@ public class RequestGroupSourceWriter extends JavaSourceWriter {
         TypeMirror responseBean = responseReturnType.getTypeArguments().get(0);
 
 
-        return TypeSpec.classBuilder(processorElement.simpleName() + "_" + method.getSimpleName())
+        TypeSpec.Builder requestBuilder = TypeSpec.classBuilder(processorElement.simpleName() + "_" + method.getSimpleName())
                 .addModifiers(Modifier.PUBLIC)
                 .superclass(ParameterizedTypeName.get(ClassName.get(ServerRequest.class),
                         requestTypeName,
                         ClassName.get(responseBean)))
-                .addAnnotation(requestAnnotation(method))
-                .addAnnotation(pathAnnotation(method.getAnnotation(Path.class)))
-                .addMethod(constructor(requestTypeName)).build();
+                .addMethod(constructor(requestTypeName));
+
+        requestBuilder.addAnnotation(buildRequestAnnotation(method));
+        requestBuilder.addAnnotation(pathAnnotation(method.getAnnotation(Path.class)));
+
+        return requestBuilder.build();
+    }
+
+    private AnnotationSpec buildRequestAnnotation(ExecutableElement method) {
+        if (needsClassifier(method))
+            return requestAnnotation(method.getSimpleName().toString());
+
+        return requestAnnotation();
+    }
+
+    private boolean needsClassifier(ExecutableElement method) {
+        if (method.getParameters().isEmpty())
+            return needsClassifier(method, m -> m.getParameters().isEmpty());
+
+        return needsClassifier(method, m -> !m.getParameters().isEmpty() && isSameParameterType(method, m));
+    }
+
+    private boolean isSameParameterType(ExecutableElement method, ExecutableElement m) {
+        return m.getParameters().get(0).asType().toString().equals(method.getParameters().get(0).asType().toString());
+    }
+
+    private boolean needsClassifier(ExecutableElement method, Function<ExecutableElement, Boolean> anyMatchFilter) {
+        return processorElement.methodsStream()
+                .filter(m -> !m.getSimpleName().equals(method.getSimpleName()))
+                .anyMatch(anyMatchFilter::apply);
     }
 
     private TypeName getRequestClassName(ExecutableElement method) {
@@ -129,13 +156,15 @@ public class RequestGroupSourceWriter extends JavaSourceWriter {
         blocks.forEach(codeBlock -> newPath.addMember(key, codeBlock));
     }
 
+    private AnnotationSpec requestAnnotation() {
+        return requestAnnotation("");
+    }
 
-    private AnnotationSpec requestAnnotation(ExecutableElement method) {
+    private AnnotationSpec requestAnnotation(String classifier) {
         AnnotationSpec.Builder requestAnnotationBuilder = AnnotationSpec.builder(Request.class);
 
-        Classifier classifierAnnotation = method.getAnnotation(Classifier.class);
-        if (nonNull(classifierAnnotation))
-            requestAnnotationBuilder.addMember("classifier", "\"" + classifierAnnotation.value() + "\"");
+        if (!classifier.isEmpty())
+            requestAnnotationBuilder.addMember("classifier", "\"" + classifier + "\"");
         return requestAnnotationBuilder.build();
     }
 }

@@ -1,9 +1,10 @@
 package com.progressoft.brix.domino.sample.items.client.requests;
 
-import com.progressoft.brix.domino.api.client.annotations.Classifier;
 import com.progressoft.brix.domino.api.client.annotations.Path;
 import com.progressoft.brix.domino.api.client.annotations.RequestFactory;
 import com.progressoft.brix.domino.api.client.request.Response;
+import com.progressoft.brix.domino.api.shared.request.RequestBean;
+import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 import com.progressoft.brix.domino.apt.client.SomeRequest;
 import com.progressoft.brix.domino.apt.client.SomeResponse;
 
@@ -16,12 +17,14 @@ public interface AnnotatedInterfaceWithRequestGroup {
     Response<SomeResponse> something(SomeRequest request);
 
     @Path("somePath2")
-    @Classifier("somePath2")
     Response<SomeResponse> something2(SomeRequest request);
 
     @Path(value = "somePath3", method = HttpMethod.GET)
-    Response<SomeResponse> something3(SomeRequest request);
+    Response<ResponseBean> something3(RequestBean request);
 
     @Path(value = "somePath4")
     Response<SomeResponse> something4();
+
+    @Path(value = "somePath5")
+    Response<SomeResponse> something5();
 }

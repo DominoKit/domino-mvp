@@ -21,13 +21,13 @@ import java.util.logging.Logger;
 
 
 @AutoService(Processor.class)
-public class RequestGroupProcessor extends BaseProcessor {
+public class RequestFactoryProcessor extends BaseProcessor {
 
-    private static final Logger LOGGER = Logger.getLogger(RequestGroupProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(RequestFactoryProcessor.class.getName());
 
     private final Set<String> supportedAnnotations = new HashSet<>();
 
-    public RequestGroupProcessor() {
+    public RequestFactoryProcessor() {
         supportedAnnotations.add(RequestFactory.class.getCanonicalName());
     }
 
@@ -55,7 +55,7 @@ public class RequestGroupProcessor extends BaseProcessor {
         try (Writer sourceWriter = obtainSourceWriter(
                 processorElement.elementPackage(), processorElement.simpleName() + "Factory")) {
             sourceWriter
-                    .write(new RequestGroupSourceWriter(processorElement).write());
+                    .write(new RequestFactorySourceWriter(processorElement).write());
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Could not generate classes : ", e);
             messager.printMessage(Diagnostic.Kind.ERROR, "could not generate class");
