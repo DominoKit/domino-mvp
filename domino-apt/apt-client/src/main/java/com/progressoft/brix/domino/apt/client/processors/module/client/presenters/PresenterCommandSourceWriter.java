@@ -1,6 +1,7 @@
-package com.progressoft.brix.domino.apt.client.processors.contributions;
+package com.progressoft.brix.domino.apt.client.processors.module.client.presenters;
 
 import com.progressoft.brix.domino.api.client.annotations.Command;
+import com.progressoft.brix.domino.api.client.mvp.presenter.Presentable;
 import com.progressoft.brix.domino.api.client.request.PresenterCommand;
 import com.progressoft.brix.domino.apt.commons.DominoTypeBuilder;
 import com.progressoft.brix.domino.apt.commons.JavaSourceWriter;
@@ -10,27 +11,28 @@ import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeSpec;
 
+import javax.lang.model.type.TypeMirror;
 import java.io.IOException;
+import java.util.stream.Collectors;
 
-public class ContributionRequestSourceWriter extends JavaSourceWriter {
+public class PresenterCommandSourceWriter extends JavaSourceWriter {
 
     private final String targetPackage;
-    private final String generatedClassName;
+    private final String className;
     private final ClassName presenterType;
 
 
-    public ContributionRequestSourceWriter(ProcessorElement processorElement, String presenterName,
-                                           String targetPackage, String generatedClassName) {
+    public PresenterCommandSourceWriter(ProcessorElement processorElement, String targetPackage,
+                                        String className, String presenterName) {
         super(processorElement);
         this.targetPackage = targetPackage;
-        this.generatedClassName = generatedClassName;
-        presenterType = ClassName.bestGuess(presenterName);
+        this.className = className;
+        this.presenterType = ClassName.bestGuess(presenterName);
     }
 
     @Override
     public String write() throws IOException {
-
-        TypeSpec contributionRequest = DominoTypeBuilder.build(generatedClassName, ContributionClientRequestProcessor.class)
+        TypeSpec contributionRequest = DominoTypeBuilder.build(className, PresenterCommandProcessor.class)
                 .addAnnotation(Command.class)
                 .superclass(ParameterizedTypeName.get(ClassName.get(PresenterCommand.class), presenterType))
                 .build();
@@ -39,5 +41,4 @@ public class ContributionRequestSourceWriter extends JavaSourceWriter {
         JavaFile.builder(targetPackage, contributionRequest).skipJavaLangImports(true).build().writeTo(asString);
         return asString.toString();
     }
-
 }

@@ -1,11 +1,11 @@
 package com.progressoft.brix.domino.apt.client;
 
-import com.progressoft.brix.domino.apt.client.processors.contributions.ContributionClientRequestProcessor;
 import com.progressoft.brix.domino.apt.client.processors.group.RequestFactoryProcessor;
 import com.progressoft.brix.domino.apt.client.processors.handlers.RequestPathProcessor;
 import com.progressoft.brix.domino.apt.client.processors.inject.InjectContextProcessor;
 import com.progressoft.brix.domino.apt.client.processors.module.client.ClientModuleAnnotationProcessor;
 import com.progressoft.brix.domino.apt.client.processors.module.client.ConfigurationProviderAnnotationProcessor;
+import com.progressoft.brix.domino.apt.client.processors.module.client.presenters.PresenterCommandProcessor;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
@@ -15,7 +15,7 @@ import java.io.InputStream;
 
 import static com.progressoft.brix.domino.test.apt.ProcessorAssert.assertProcessing;
 
-public class ClientClientModuleAnnotationProcessorTest {
+public class ClientModuleAnnotationProcessorTest {
 
     private static final String BASE_PACKAGE = "com/progressoft/brix/domino/apt/client/";
 
@@ -121,22 +121,25 @@ public class ClientClientModuleAnnotationProcessorTest {
                 .generates(getExpectedResultFileContent("ContributionRegistrationsModuleConfiguration.java"));
     }
 
-    @Test
-    public void givenClassAnnotatedWithContribution_WhenProcessWithContributionRequestProcessor_ShouldGenerateContributionClientRequestClass() throws Exception {
-        assertProcessing(BASE_PACKAGE + "AnnotatedClassWithPresentableContribution.java"
-        )
-                .withProcessor(new ContributionClientRequestProcessor())
-
-                .generates(getExpectedResultFileContent("ObtainMainExtensionPointForPresenterInterfacePresenterCommand.java"));
-    }
 
     @Test
     public void givenPresenterMethodAnnotatedWithInjectContext_WhenProcessWithInjectContextProcessor_ShouldGenerateContributionForThatPresenterClass() throws Exception {
-        assertProcessing(BASE_PACKAGE + "InjectContributionPresenterInterface.java"
+        assertProcessing(BASE_PACKAGE + "InjectContributionPresenterInterface.java",
+                BASE_PACKAGE + "InjectContributionPresenterInterfaceCommand.java"
         )
                 .withProcessor(new InjectContextProcessor())
 
                 .generates(getExpectedResultFileContent("InjectContributionPresenterInterfaceContributionToMainExtensionPoint.java"));
+    }
+
+    @Test
+    public void givenPresenter_WhenProcessWithPresenterCommandProcessor_ShouldGeneratePresenterCommandClass() throws Exception {
+        assertProcessing(BASE_PACKAGE + "SomePresenter.java",
+                BASE_PACKAGE + "PresenterInterface.java"
+        )
+                .withProcessor(new PresenterCommandProcessor())
+
+                .generates(getExpectedResultFileContent("PresenterInterfaceCommand.java"));
     }
 
     @Test(expected = RuntimeException.class)

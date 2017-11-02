@@ -44,7 +44,7 @@ public class PresentersCollector {
     private boolean addPresenter(ProcessorElement p) {
         if(!p.isImplementsInterface(Presentable.class)){
             messager.printMessage(Diagnostic.Kind.ERROR, "Not implementing presentable interface", p.getElement());
-            throw new NotImplementingPersentableInterfaceException();
+            throw new NotImplementingPresentableInterfaceException();
         }
         return presenters.add(p.fullQualifiedNoneGenericName() + ":" +
                 getPresentableInterface(p));
@@ -63,6 +63,6 @@ public class PresentersCollector {
     }
 
 
-    public class NotImplementingPersentableInterfaceException extends RuntimeException {
+    public class NotImplementingPresentableInterfaceException extends RuntimeException {
     }
 }

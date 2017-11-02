@@ -62,7 +62,7 @@ public class ServerModuleAnnotationProcessor extends BaseProcessor {
         return true;
     }
 
-    private ProcessorElement getModule(Element element) {//NOSONAR
+    private ProcessorElement getModule(Element element) {
         return newProcessorElement(element);
     }
 

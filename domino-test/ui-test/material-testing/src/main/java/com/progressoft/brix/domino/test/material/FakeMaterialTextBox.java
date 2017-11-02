@@ -6,7 +6,7 @@ import gwt.material.design.client.ui.MaterialLabel;
 import gwt.material.design.client.ui.MaterialTextBox;
 import gwt.material.design.client.ui.MaterialValueBox;
 
-public class FakeMaterialTextBox extends MaterialTextBox {//NOSONAR
+public class FakeMaterialTextBox extends MaterialTextBox {
     private String text;
     private MaterialLabel errorLabel;
 
@@ -46,7 +46,7 @@ public class FakeMaterialTextBox extends MaterialTextBox {//NOSONAR
     }
 
     public static MaterialLabel makeLabel(){
-        return new MaterialLabel(){//NOSONAR
+        return new MaterialLabel(){
 
             private String text;
             @Override
