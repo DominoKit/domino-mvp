@@ -1,7 +1,6 @@
 package com.progressoft.brix.domino.apt.client.processors.module.client.presenters;
 
 import com.progressoft.brix.domino.api.client.annotations.Command;
-import com.progressoft.brix.domino.api.client.mvp.presenter.Presentable;
 import com.progressoft.brix.domino.api.client.request.PresenterCommand;
 import com.progressoft.brix.domino.apt.commons.DominoTypeBuilder;
 import com.progressoft.brix.domino.apt.commons.JavaSourceWriter;
@@ -11,9 +10,7 @@ import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeSpec;
 
-import javax.lang.model.type.TypeMirror;
 import java.io.IOException;
-import java.util.stream.Collectors;
 
 public class PresenterCommandSourceWriter extends JavaSourceWriter {
 
