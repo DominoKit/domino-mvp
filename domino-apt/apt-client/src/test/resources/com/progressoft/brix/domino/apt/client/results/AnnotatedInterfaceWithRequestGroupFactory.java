@@ -12,7 +12,7 @@ import com.progressoft.brix.domino.apt.client.SomeResponse;
 import java.lang.Override;
 import javax.annotation.Generated;
 
-@Generated("com.progressoft.brix.domino.apt.client.processors.group.RequestGroupProcessor")
+@Generated("com.progressoft.brix.domino.apt.client.processors.group.RequestFactoryProcessor")
 public class AnnotatedInterfaceWithRequestGroupFactory implements AnnotatedInterfaceWithRequestGroup {
 
     public static final AnnotatedInterfaceWithRequestGroupFactory INSTANCE = new AnnotatedInterfaceWithRequestGroupFactory();
