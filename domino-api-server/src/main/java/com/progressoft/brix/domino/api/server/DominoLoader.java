@@ -82,21 +82,27 @@ public class DominoLoader {
 
         new ServerConfigurationLoader(vertxContext).loadModules();
 
+        initStaticResourceHandler();
+
+        if (options.result().isSsl())
+            addSecurityHeadersHandler(router);
+        vertx.createHttpServer(options.result()).requestHandler(router::accept)
+                .listen(options.result().getPort(), serverStartupHandler);
+    }
+
+    private void initStaticResourceHandler() {
         StaticHandler staticHandler = StaticHandler.create();
         if (nonNull(System.getProperty("domino.webroot.location"))) {
             staticHandler.setAllowRootFileSystemAccess(true);
             staticHandler.setWebRoot(getWebRoot());
+        }else{
+            staticHandler.setWebRoot(config.getString("webroot", "app"));
         }
 
         router.route("/static/*").handler(staticHandler)
                 .failureHandler(this::serverResource);
 
         router.route("/*").handler(this::serveIndexPage);
-
-        if (options.result().isSsl())
-            addSecurityHeadersHandler(router);
-        vertx.createHttpServer(options.result()).requestHandler(router::accept)
-                .listen(options.result().getPort(), serverStartupHandler);
     }
 
     private void serverResource(RoutingContext context) {
