@@ -5,6 +5,7 @@ import com.progressoft.brix.domino.api.server.logging.RemoteLogger;
 import com.progressoft.brix.domino.api.server.logging.RemoteLoggingHandler;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpMethod;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.*;
@@ -13,7 +14,9 @@ import io.vertx.ext.web.sstore.LocalSessionStore;
 import io.vertx.ext.web.sstore.SessionStore;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.ServiceLoader;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -80,7 +83,11 @@ public class RouterConfigurator {
     }
 
     private void addCSRFHandler(Router router) {
-        router.route().handler(CSRFHandler.create(secret));
+        JsonArray jsonArray = config.getJsonArray("csrf.whitelist", new JsonArray());
+        Set<String> whiteList=new HashSet<>();
+        jsonArray.forEach(o-> whiteList.add(o.toString()));
+
+        router.route().handler(new DominoCSRFHandler(secret,config));
     }
 
     private void addSessionHandler(Vertx vertx, Router router) {

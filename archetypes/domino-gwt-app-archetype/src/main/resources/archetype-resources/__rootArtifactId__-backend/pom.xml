@@ -22,6 +22,10 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-servlet</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-web</artifactId>
             <version>${vertx.version}</version>
@@ -29,68 +33,23 @@
         <dependency>
             <groupId>com.progressoft.brix.domino.api</groupId>
             <artifactId>domino-api-client</artifactId>
-            <version>${domino.version}</version>
         </dependency>
         <dependency>
             <groupId>com.progressoft.brix.domino.api</groupId>
             <artifactId>domino-api-server</artifactId>
-            <version>${domino.version}</version>
         </dependency>
         <dependency>
             <groupId>com.progressoft.brix.domino</groupId>
             <artifactId>domino-remote-logging</artifactId>
-            <version>${domino.version}</version>
         </dependency>
         <dependency>
             <groupId>com.progressoft.brix.domino.logging</groupId>
             <artifactId>domino-log4j-server-logging</artifactId>
-            <version>${domino.version}</version>
         </dependency>
     </dependencies>
 
     <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <includes>
-                    <include>**/*</include>
-                </includes>
-                <excludes>
-                    <exclude>**/gwt-unitCache/*</exclude>
-                </excludes>
-            </resource>
-        </resources>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>create vagrant</id>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <phase>package</phase>
-                        <configuration>
-                            <descriptors>
-                                <descriptor>src/assemply/vagrant-resource.xml</descriptor>
-                            </descriptors>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>create docker</id>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <phase>package</phase>
-                        <configuration>
-                            <descriptors>
-                                <descriptor>src/assemply/docker-resource.xml</descriptor>
-                            </descriptors>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -102,16 +61,6 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <filters>
-                                <tokenFilter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>**/vagrant/*</exclude>
-                                        <exclude>**/vagrant/deploy/*</exclude>
-                                        <exclude>**/docker/*</exclude>
-                                    </excludes>
-                                </tokenFilter>
-                            </filters>
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
@@ -133,30 +82,81 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.6.0</version>
-                <configuration>
-                    <mainClass>com.progressoft.brix.domino.api.server.DominoLauncher</mainClass>
-                    <arguments>
-                        <argument>run</argument>
-                        <argument>com.progressoft.brix.domino.api.server.StartupVerticle</argument>
-                        <argument>-conf</argument>
-                        <argument>target/classes/config.json</argument>
-                    </arguments>
-                    <systemProperties>
-                        <systemProperty>
-                            <key>vertx.options.fileResolverCachingEnabled</key>
-                            <value>false</value>
-                        </systemProperty>
-                        <systemProperty>
-                            <key>domino.webroot.location</key>
-                            <value>../${rootArtifactId}-frontend/target/${rootArtifactId}-frontend-${project.version}/webroot</value>
-                        </systemProperty>
-                    </systemProperties>
-                </configuration>
-            </plugin>
         </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>1.6.0</version>
+                    <configuration>
+                        <mainClass>com.progressoft.brix.domino.api.server.DominoLauncher</mainClass>
+                        <arguments>
+                            <argument>run</argument>
+                            <argument>com.progressoft.brix.domino.api.server.StartupVerticle</argument>
+                            <argument>-conf</argument>
+                            <argument>target/classes/config.json</argument>
+                        </arguments>
+                        <systemProperties>
+                            <systemProperty>
+                                <key>vertx.options.fileResolverCachingEnabled</key>
+                                <value>false</value>
+                            </systemProperty>
+                        </systemProperties>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
+    <profiles>
+        <profile>
+            <id>mode-compiled</id>
+            <activation>
+                <property>
+                    <name>mode</name>
+                    <value>compiled</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <configuration>
+                            <systemProperties>
+                                <systemProperty>
+                                    <key>domino.webroot.location</key>
+                                    <value>${basedir}/../${rootArtifactId}-frontend/target/${rootArtifactId}-frontend-${project.version}/app
+                                    </value>
+                                </systemProperty>
+                            </systemProperties>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>mode-develop</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <configuration>
+                            <systemProperties>
+                                <systemProperty>
+                                    <key>domino.webroot.location</key>
+                                    <value>${basedir}/../target/gwt/launcherDir/app
+                                    </value>
+                                </systemProperty>
+                            </systemProperties>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

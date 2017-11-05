@@ -20,22 +20,18 @@
         <dependency>
             <groupId>com.progressoft.brix.domino.api</groupId>
             <artifactId>domino-api-client</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.progressoft.brix.domino.api</groupId>
             <artifactId>domino-api-shared</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.progressoft.brix.domino.impl</groupId>
             <artifactId>domino-gwt</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.progressoft.brix.domino.api</groupId>
             <artifactId>domino-api-server</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.easymock</groupId>
@@ -50,7 +46,28 @@
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-unit</artifactId>
-            <version>${vertx.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>

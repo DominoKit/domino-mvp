@@ -35,7 +35,7 @@
             <classifier>sources</classifier>
         </dependency>
         <dependency>
-            <groupId>com.progressoft.brix.domino.logger</groupId>
+            <groupId>com.progressoft.brix.domino.logging</groupId>
             <artifactId>domino-gwt-logger</artifactId>
             <version>${domino.version}</version>
         </dependency>

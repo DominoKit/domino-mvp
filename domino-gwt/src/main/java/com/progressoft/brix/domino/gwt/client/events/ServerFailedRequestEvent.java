@@ -8,13 +8,14 @@ import com.progressoft.brix.domino.api.client.request.ServerRequest;
 import com.progressoft.brix.domino.api.client.request.Request;
 import com.progressoft.brix.domino.api.shared.request.FailedResponseBean;
 
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class ServerFailedRequestEvent extends ServerFailedRequestGwtEvent implements Event {
 
     protected final ServerRequest request;
     private final Throwable error;
     private final ClientApp clientApp = ClientApp.make();
 
-    public ServerFailedRequestEvent(ServerRequest request, Throwable error) {
+    ServerFailedRequestEvent(ServerRequest request, Throwable error) {
         this.request = request;
         this.error = error;
     }

@@ -6,7 +6,7 @@
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
     <option name="MAIN_CLASS_NAME" value="com.progressoft.brix.domino.api.server.DominoLauncher" />
     <option name="VM_PARAMETERS" value="" />
-    <option name="PROGRAM_PARAMETERS" value="run com.progressoft.brix.domino.api.server.StartupVerticle -conf target/classes/config.json -Dvertx.options.fileResolverCachingEnabled=false -Ddomino.webroot.location=../${rootArtifactId}-frontend/target/${rootArtifactId}-frontend-${version}/webroot" />
+    <option name="PROGRAM_PARAMETERS" value="run com.progressoft.brix.domino.api.server.StartupVerticle -conf target/classes/config.json -Dvertx.options.fileResolverCachingEnabled=false -Ddomino.webroot.location=../${rootArtifactId}-frontend/target/${rootArtifactId}-frontend-1.0-SNAPSHOT/app"/>
     <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/${rootArtifactId}-backend" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
     <option name="ALTERNATIVE_JRE_PATH" value="1.8" />

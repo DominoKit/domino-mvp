@@ -1,29 +1,54 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>domino</artifactId>
-        <groupId>com.progressoft.brix.domino</groupId>
-        <version>1.0-rc.2-SNAPSHOT</version>
-    </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>com.progressoft.brix.domino</groupId>
+        <artifactId>domino-parent</artifactId>
+        <version>1.0-rc.2-SNAPSHOT</version>
+    </parent>
+
     <artifactId>jks-server-configurator</artifactId>
+    <version>1.0-rc.2-SNAPSHOT</version>
+
     <packaging>jar</packaging>
 
     <name>jks-server-configurator</name>
     <url>https://github.com/GwtDomino/domino</url>
     <description>GWT Domino</description>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>com.progressoft.brix.domino.api</groupId>
             <artifactId>domino-api-server</artifactId>
-            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.auto.service</groupId>
+            <artifactId>auto-service</artifactId>
             <scope>provided</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>

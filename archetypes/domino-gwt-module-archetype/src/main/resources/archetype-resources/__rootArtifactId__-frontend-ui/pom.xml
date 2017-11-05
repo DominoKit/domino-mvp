@@ -12,43 +12,33 @@
     <artifactId>${artifactId}</artifactId>
     <packaging>gwt-lib</packaging>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>
-            <version>${gwt.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.progressoft.brix.domino.api</groupId>
             <artifactId>domino-api-client</artifactId>
-            <version>${domino.version}</version>
         </dependency>
         <dependency>
             <groupId>com.progressoft.brix.domino.api</groupId>
             <artifactId>domino-api-client</artifactId>
-            <version>${domino.version}</version>
             <classifier>sources</classifier>
         </dependency>
         <dependency>
-            <groupId>com.progressoft.brix.domino.logger</groupId>
+            <groupId>com.progressoft.brix.domino.logging</groupId>
             <artifactId>domino-gwt-logger</artifactId>
-            <version>${domino.version}</version>
         </dependency>
         <dependency>
             <groupId>com.progressoft.brix.domino.apt</groupId>
             <artifactId>apt-client</artifactId>
-            <version>${domino.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.progressoft.brix.domino.test</groupId>
             <artifactId>domino-client-test</artifactId>
-            <version>${domino.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -86,10 +76,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.7.0</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
                     <compilerArgument>-Xlint:all</compilerArgument>
                     <showWarnings>true</showWarnings>
                     <showDeprecation>true</showDeprecation>
@@ -98,7 +85,6 @@
             <plugin>
                 <groupId>net.ltgt.gwt.maven</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
-                <version>${gwt.plugin.version}</version>
                 <extensions>true</extensions>
                 <configuration>
                     <moduleName>${package}.${subpackage}.${module}UIClientModule</moduleName>
@@ -107,16 +93,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.bsc.maven</groupId>

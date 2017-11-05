@@ -1,42 +1,36 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>domino</artifactId>
-        <groupId>com.progressoft.brix.domino</groupId>
-        <version>1.0-rc.2-SNAPSHOT</version>
-    </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>com.progressoft.brix.domino</groupId>
+        <artifactId>domino-parent</artifactId>
+        <version>1.0-rc.2-SNAPSHOT</version>
+    </parent>
+
     <artifactId>domino-desktop</artifactId>
+
     <packaging>jar</packaging>
 
     <name>domino-desktop</name>
     <url>http://maven.apache.org</url>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>com.progressoft.brix.domino.api</groupId>
             <artifactId>domino-api-client</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.progressoft.brix.domino.api</groupId>
             <artifactId>domino-api-shared</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.progressoft.brix.domino.api</groupId>
             <artifactId>domino-api-server</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.progressoft.brix.domino</groupId>
             <artifactId>domino-client-commons</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-beanutils</groupId>

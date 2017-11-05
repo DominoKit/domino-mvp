@@ -10,13 +10,12 @@ import org.fusesource.restygwt.client.Defaults;
 
 public class GwtRequestAsyncSender extends AbstractRequestAsyncSender {
 
-    private final DominoRequestDispatcher dispatcher = new DominoRequestDispatcher();
-
     public GwtRequestAsyncSender(ServerRequestEventFactory requestEventFactory) {
         super(requestEventFactory);
-        Defaults.setDispatcher(dispatcher);
+        Defaults.setDispatcher(new DominoRequestDispatcher());
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     protected void sendRequest(ServerRequest request, ServerRequestEventFactory requestEventFactory) {
         ClientApp.make().getRequestRestSendersRepository().get(request.getKey())

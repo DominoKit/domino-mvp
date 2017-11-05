@@ -8,6 +8,7 @@ import com.progressoft.brix.domino.api.client.request.ServerRequest;
 import com.progressoft.brix.domino.api.client.request.Request;
 import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class ServerSuccessRequestEvent extends ServerSuccessRequestGwtEvent implements Event {
 
     protected final ServerRequest request;

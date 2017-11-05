@@ -16,6 +16,7 @@ public abstract class AbstractRequestAsyncSender implements RequestAsyncSender {
         this.requestEventFactory = requestEventFactory;
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public final void send(final ServerRequest request) {
         ClientApp.make().getAsyncRunner().runAsync(new RequestAsyncTask(request));

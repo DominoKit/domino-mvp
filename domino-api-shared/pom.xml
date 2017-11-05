@@ -3,66 +3,24 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.progressoft.brix.domino</groupId>
+        <artifactId>domino-parent</artifactId>
+        <version>1.0-rc.2-SNAPSHOT</version>
+    </parent>
+
     <groupId>com.progressoft.brix.domino.api</groupId>
     <artifactId>domino-api-shared</artifactId>
-    <version>1.0-rc.2-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>domino-api-shared</name>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-    </properties>
-
     <url>https://github.com/GwtDomino/domino</url>
     <description>GWT Domino</description>
-
-    <licenses>
-        <license>
-            <name>Apache 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
-        </license>
-    </licenses>
-
-    <developers>
-        <developer>
-            <name>Ahmad K. Bawaneh</name>
-            <email>akabme@gmail.com</email>
-        </developer>
-        <developer>
-            <name>Rafat J. Al-Barouki</name>
-            <email>rafat.albarouki@gmail.com</email>
-        </developer>
-        <developer>
-            <name>Farah M. Soudani</name>
-            <email>fsoudanii93@gmail.com</email>
-        </developer>
-    </developers>
-
-    <issueManagement>
-        <url>https://github.com/GwtDomino/domino/issues</url>
-        <system>GitHub Issues</system>
-    </issueManagement>
-
-    <scm>
-        <connection>scm:git:https://github.com/GwtDomino/domino.git</connection>
-        <developerConnection>scm:git:git@github.com:GwtDomino/domino.git</developerConnection>
-        <url>https://github.com/GwtDomino/domino</url>
-    </scm>
-
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
 
     <dependencies>
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
-            <version>1.1.0.Final</version>
         </dependency>
     </dependencies>
 
@@ -71,45 +29,18 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.4</version>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.6</version>
             </plugin>
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.8</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <serverId>ossrh</serverId>
-                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>false</autoReleaseAfterClose>
-                </configuration>
             </plugin>
         </plugins>
     </build>

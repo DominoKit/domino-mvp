@@ -15,8 +15,6 @@
     <packaging>gwt-app</packaging>
 
     <properties>
-        <compilation.directory>${project.build.directory}/${project.build.finalName}/webroot</compilation.directory>
-        <code.server.workdir>${project.build.directory}/${project.build.finalName}/codeserver</code.server.workdir>
         <extra.directory>${project.build.directory}/${project.build.finalName}/webroot</extra.directory>
     </properties>
 
@@ -24,46 +22,36 @@
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>
-            <version>${gwt.version}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-dev</artifactId>
-            <version>${gwt.version}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.progressoft.brix.domino.api</groupId>
             <artifactId>domino-api-shared</artifactId>
-            <version>${domino.version}</version>
         </dependency>
         <dependency>
             <groupId>com.progressoft.brix.domino.api</groupId>
             <artifactId>domino-api-shared</artifactId>
-            <version>${domino.version}</version>
             <classifier>sources</classifier>
         </dependency>
         <dependency>
             <groupId>com.progressoft.brix.domino.impl</groupId>
             <artifactId>domino-gwt</artifactId>
-            <version>${domino.version}</version>
         </dependency>
         <dependency>
             <groupId>com.progressoft.brix.domino.impl</groupId>
             <artifactId>domino-gwt</artifactId>
-            <version>${domino.version}</version>
             <classifier>sources</classifier>
         </dependency>
         <dependency>
             <groupId>com.progressoft.brix.domino.api</groupId>
             <artifactId>domino-api-client</artifactId>
-            <version>${domino.version}</version>
         </dependency>
         <dependency>
             <groupId>com.progressoft.brix.domino.api</groupId>
             <artifactId>domino-api-client</artifactId>
-            <version>${domino.version}</version>
             <classifier>sources</classifier>
         </dependency>
     </dependencies>
@@ -72,18 +60,11 @@
             <plugin>
                 <groupId>net.ltgt.gwt.maven</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
-                <version>${gwt.plugin.version}</version>
+                <version>1.0-rc-9</version>
                 <configuration>
                     <moduleName>${package}.AppClientModule</moduleName>
                     <moduleShortName>app</moduleShortName>
-                    <webappDirectory>${compilation.directory}</webappDirectory>
-                    <codeserverWorkDir>${code.server.workdir}</codeserverWorkDir>
-                    <extra>${extra.directory}/app/gwt/extra</extra>
-                    <compilerArgs>
-                        <arg>-saveSource</arg>
-                        <!--<arge>-style</arge>
-                        <arg>PRETTY</arg>-->
-                    </compilerArgs>
+                    <extra>${extra.directory}/gwt/extra</extra>
                     <systemProperties>
                         <gwt.persistentunitcachedir>${project.build.directory}/cacheDir</gwt.persistentunitcachedir>
                     </systemProperties>

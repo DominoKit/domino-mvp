@@ -7,12 +7,13 @@ import com.progressoft.brix.domino.api.client.events.EventsBus;
 import com.progressoft.brix.domino.api.client.request.PresenterCommand;
 import com.progressoft.brix.domino.api.client.request.Request;
 
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class ClientRequestEvent extends ClientRequestGwtEvent implements Event {
 
     protected final PresenterCommand request;
     private final ClientApp clientApp = ClientApp.make();
 
-    public ClientRequestEvent(PresenterCommand request) {
+    ClientRequestEvent(PresenterCommand request) {
         this.request = request;
     }
 
@@ -35,7 +36,7 @@ public class ClientRequestEvent extends ClientRequestGwtEvent implements Event {
 
         private final ClientRequestGwtEvent event;
 
-        public GWTRequestEvent(ClientRequestGwtEvent event) {
+        GWTRequestEvent(ClientRequestGwtEvent event) {
             this.event = event;
         }
 
