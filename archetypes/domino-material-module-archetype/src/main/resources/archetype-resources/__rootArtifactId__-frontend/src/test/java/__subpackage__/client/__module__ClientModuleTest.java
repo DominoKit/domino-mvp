@@ -14,7 +14,6 @@ import static org.junit.Assert.*;
 import com.progressoft.brix.domino.api.client.annotations.ClientModule;
 import com.progressoft.brix.domino.test.api.client.DominoTestClient;
 import com.progressoft.brix.domino.test.api.client.ClientContext;
-import com.progressoft.brix.domino.api.shared.request.FailedServerResponse;
 import ${package}.${subpackage}.client.presenters.${module}Presenter;
 import ${package}.${subpackage}.client.requests.${module}ServerRequest;
 import ${package}.${subpackage}.shared.request.${module}Request;
@@ -48,9 +47,10 @@ public class ${module}ClientModuleTest{
 
     @Test
     public void given${module}ClientModule_when${module}ServerRequestIsSent_thenServerMessageShouldBeRecieved() {
-        clientContext.forRequest(new ${module}ServerRequest().getKey()).returnResponse(new ${module}Response("Server message"));
-        new ${module}ServerRequest().onSuccess(response -> assertEquals("Server message",response.getServerMessage()))
+        clientContext.forRequest(${module}ServerRequest.class).returnResponse(new ${module}Response("Server message"));
+
+        new ${module}ServerRequest(new ${module}Request("client message")).onSuccess(response -> assertEquals("Server message",response.getServerMessage()))
         .onFailed(failedResponse -> fail(failedResponse.getError().getMessage()))
-        .send(new ${module}Request("client message"));
+        .send();
     }
 }

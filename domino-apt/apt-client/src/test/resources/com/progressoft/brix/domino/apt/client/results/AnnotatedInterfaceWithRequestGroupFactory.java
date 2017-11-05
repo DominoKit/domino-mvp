@@ -9,7 +9,6 @@ import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 import com.progressoft.brix.domino.api.shared.request.VoidRequest;
 import com.progressoft.brix.domino.apt.client.SomeRequest;
 import com.progressoft.brix.domino.apt.client.SomeResponse;
-import java.lang.Override;
 import javax.annotation.Generated;
 
 @Generated("com.progressoft.brix.domino.apt.client.processors.group.RequestFactoryProcessor")

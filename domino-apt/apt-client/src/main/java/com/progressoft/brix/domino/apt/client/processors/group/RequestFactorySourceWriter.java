@@ -50,7 +50,7 @@ public class RequestFactorySourceWriter extends JavaSourceWriter {
                 .addMethods(overrideMethods).build();
 
         StringBuilder asString = new StringBuilder();
-        JavaFile.builder(processorElement.elementPackage(), factory).build().writeTo(asString);
+        JavaFile.builder(processorElement.elementPackage(), factory).skipJavaLangImports(true).build().writeTo(asString);
         return asString.toString();
     }
 
