@@ -13,6 +13,7 @@ import io.vertx.ext.web.sstore.LocalSessionStore;
 import io.vertx.ext.web.sstore.SessionStore;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -62,7 +63,7 @@ public class RouterConfigurator {
 
     private void addCorsHandler(Router router) {
         router.route().handler(CorsHandler.create("*")
-                .allowedHeaders(Arrays.asList("Content-Type", "X-HTTP-Method-Override", "X-XSRF-TOKEN").stream().collect(Collectors.toSet()))
+                .allowedHeaders(new HashSet<>(Arrays.asList("Content-Type", "X-HTTP-Method-Override", "X-XSRF-TOKEN")))
                 .allowedMethods(Stream.of(HttpMethod.values()).collect(Collectors.toSet())));
     }
 

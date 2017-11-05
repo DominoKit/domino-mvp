@@ -10,9 +10,10 @@ import com.progressoft.brix.domino.api.client.annotations.Request;
 import com.progressoft.brix.domino.api.client.annotations.Path;
 
 
-
 @Request
 @Path("${module}Request")
 public class ${module}ServerRequest extends ServerRequest<${module}Request, ${module}Response> {
-
+    public ${module}ServerRequest(${module}Request requestBean) {
+        super(requestBean);
+    }
 }
