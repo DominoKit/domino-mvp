@@ -9,6 +9,7 @@ import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.TestContext;
+import io.vertx.ext.web.Route;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.WebClient;
@@ -76,11 +77,11 @@ public class DominoTestServer {
         void handle(DominoTestContext context, HttpServerContext serverContext);
     }
 
-    public final static class DominoTestContext {
+    public static final class DominoTestContext {
         private final Router router;
         private final JsonObject config;
 
-        public DominoTestContext(Router router, JsonObject config) {
+        DominoTestContext(Router router, JsonObject config) {
             this.router = router;
             this.config = config;
         }
@@ -92,6 +93,7 @@ public class DominoTestServer {
         public JsonObject getConfig() {
             return config;
         }
+
     }
 
     public final static class HttpServerContext {

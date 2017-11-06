@@ -45,6 +45,15 @@ public class DominoLoader {
         this.config = config;
     }
 
+    public void start() {
+        start(event -> {
+            if (event.succeeded())
+                LOGGER.info("Server started on port : " + event.result().actualPort());
+            else
+                LOGGER.error("Failed to start server", event.cause());
+        });
+    }
+
     public void start(Handler<AsyncResult<HttpServer>> serverStartupHandler) {
         ImmutableHttpServerOptions immutableHttpServerOptions = new ImmutableHttpServerOptions();
         VertxContext vertxContext = initializeContext(immutableHttpServerOptions);
@@ -55,15 +64,6 @@ public class DominoLoader {
                         serverStartupHandler));
 
         configureHttpServer(vertxContext, future);
-    }
-
-    public void start() {
-        start(event -> {
-            if (event.succeeded())
-                LOGGER.info("Server started on port : " + event.result().actualPort());
-            else
-                LOGGER.error("Failed to start server", event.cause());
-        });
     }
 
     private VertxContext initializeContext(ImmutableHttpServerOptions immutableHttpServerOptions) {
@@ -99,13 +99,14 @@ public class DominoLoader {
             staticHandler.setWebRoot(config.getString("webroot", "app"));
         }
 
-        router.route("/static/*").handler(staticHandler)
-                .failureHandler(this::serverResource);
+        router.route("/").order(Integer.MAX_VALUE-2).handler(this::serveIndexPage);
+        router.route("/*").order(Integer.MAX_VALUE-1).handler(this::serveResource);
+        router.route("/static/*").order(Integer.MAX_VALUE).handler(staticHandler)
+                .failureHandler(this::serveResource);
 
-        router.route("/*").handler(this::serveIndexPage);
     }
 
-    private void serverResource(RoutingContext context) {
+    private void serveResource(RoutingContext context) {
         context.response().sendFile(WEBROOT + context.request().path().replace("/static", ""), event -> {
             if (event.failed()) {
                 context.next();
