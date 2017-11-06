@@ -13,7 +13,6 @@ import com.google.gwtmockito.GwtMockitoTestRunner;
 import com.progressoft.brix.domino.api.client.annotations.ClientModule;
 import com.progressoft.brix.domino.test.api.client.DominoTestClient;
 import com.progressoft.brix.domino.test.api.client.ClientContext;
-import com.progressoft.brix.domino.api.shared.request.FailedServerResponse;
 import ${package}.${subpackage}.client.presenters.${module}Presenter;
 import ${package}.${subpackage}.client.requests.${module}ServerRequest;
 import ${package}.${subpackage}.shared.request.${module}Request;
