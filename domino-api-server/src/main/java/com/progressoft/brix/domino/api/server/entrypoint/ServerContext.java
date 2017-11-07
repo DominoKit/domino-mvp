@@ -1,7 +1,6 @@
 package com.progressoft.brix.domino.api.server.entrypoint;
 
 import com.progressoft.brix.domino.api.server.config.ServerConfiguration;
-import com.progressoft.brix.domino.api.server.endpoint.EndpointsRegistry;
 
 import java.util.function.Supplier;
 

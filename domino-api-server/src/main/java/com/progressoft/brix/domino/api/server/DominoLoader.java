@@ -33,6 +33,7 @@ public class DominoLoader {
     public static final String HTTP_PORT_KEY = "http.port";
     public static final int AROUND_6_MONTHS = 15768000;
     public static final String WEBROOT = "webroot";
+    public static final int NOT_FOUND = 404;
 
     private final Vertx vertx;
     private final Router router;
@@ -115,7 +116,7 @@ public class DominoLoader {
     private void serveResource(RoutingContext context) {
         context.response().sendFile(WEBROOT + context.request().path().replace("/static", ""), event -> {
             if (event.failed()) {
-                context.fail(404);
+                context.fail(NOT_FOUND);
             }
         });
     }

@@ -1,7 +1,6 @@
 package com.progressoft.brix.domino.api.server.entrypoint;
 
 import com.progressoft.brix.domino.api.server.config.ServerConfiguration;
-import com.progressoft.brix.domino.api.server.endpoint.EndpointsRegistry;
 import com.progressoft.brix.domino.service.discovery.VertxServiceDiscovery;
 import io.vertx.config.ConfigRetriever;
 import io.vertx.core.Handler;

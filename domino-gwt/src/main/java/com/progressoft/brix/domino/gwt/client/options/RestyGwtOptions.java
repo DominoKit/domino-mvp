@@ -5,14 +5,9 @@ import com.progressoft.brix.domino.api.client.CanSetDominoOptions;
 import com.progressoft.brix.domino.api.client.DominoOptions;
 import com.progressoft.brix.domino.api.client.DynamicServiceRoot;
 import org.fusesource.restygwt.client.Defaults;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.google.gwt.core.client.GWT.getModuleBaseURL;
-import static com.google.gwt.core.client.GWT.getModuleName;
 
 public class RestyGwtOptions implements DominoOptions{
 
