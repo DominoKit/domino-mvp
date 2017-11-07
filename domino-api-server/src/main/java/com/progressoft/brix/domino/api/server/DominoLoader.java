@@ -99,10 +99,10 @@ public class DominoLoader {
             staticHandler.setWebRoot(config.getString("webroot", "app"));
         }
 
-        router.route("/").order(Integer.MAX_VALUE - 1)
+        router.route("/").order(Integer.MAX_VALUE - 2)
                 .handler(this::serveIndexPage);
 
-        router.route("/static/*").order(Integer.MAX_VALUE-2)
+        router.route("/static/*").order(Integer.MAX_VALUE-1)
                 .handler(staticHandler)
                 .failureHandler(this::serveResource);
 
