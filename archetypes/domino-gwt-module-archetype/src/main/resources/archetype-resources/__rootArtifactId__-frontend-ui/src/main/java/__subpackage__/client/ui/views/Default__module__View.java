@@ -5,6 +5,7 @@ package ${package}.${subpackage}.client.ui.views;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
@@ -29,5 +30,7 @@ public class Default${module}View extends Composite implements ${module}View{
 
     public Default${module}View() {
         initWidget(ourUiBinder.createAndBindUi(this));
+        mainDiv.setInnerHTML("<h1>Hello world!</h1>");
+        Document.get().getBody().appendChild(mainDiv);
     }
 }
