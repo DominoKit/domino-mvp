@@ -115,7 +115,7 @@ public class DominoLoader {
     private void serveResource(RoutingContext context) {
         context.response().sendFile(WEBROOT + context.request().path().replace("/static", ""), event -> {
             if (event.failed()) {
-                context.next();
+                context.fail(404);
             }
         });
     }
