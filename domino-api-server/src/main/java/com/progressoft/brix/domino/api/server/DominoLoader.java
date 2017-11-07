@@ -108,16 +108,14 @@ public class DominoLoader {
                 .failureHandler(this::serveResource);
 
         router.route("/*").order(Integer.MAX_VALUE)
-                .handler(this::serveResource)
-                .failureHandler(this::serveIndexPage);
+                .handler(this::serveResource);
 
     }
 
     private void serveResource(RoutingContext context) {
         context.response().sendFile(WEBROOT + context.request().path().replace("/static", ""), event -> {
-            if (event.failed()) {
-                context.fail(NOT_FOUND);
-            }
+            if (event.failed())
+                serveIndexPage(context);
         });
     }
 
