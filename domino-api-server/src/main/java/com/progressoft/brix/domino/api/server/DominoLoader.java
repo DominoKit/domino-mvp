@@ -95,14 +95,20 @@ public class DominoLoader {
         if (nonNull(System.getProperty("domino.webroot.location"))) {
             staticHandler.setAllowRootFileSystemAccess(true);
             staticHandler.setWebRoot(getWebRoot());
-        }else{
+        } else {
             staticHandler.setWebRoot(config.getString("webroot", "app"));
         }
 
-        router.route("/").order(Integer.MAX_VALUE-2).handler(this::serveIndexPage);
-        router.route("/*").order(Integer.MAX_VALUE-1).handler(this::serveResource);
-        router.route("/static/*").order(Integer.MAX_VALUE).handler(staticHandler)
+        router.route("/static/*").order(Integer.MAX_VALUE-2)
+                .handler(staticHandler)
                 .failureHandler(this::serveResource);
+
+        router.route("/").order(Integer.MAX_VALUE - 1)
+                .handler(this::serveIndexPage);
+
+        router.route("/*").order(Integer.MAX_VALUE)
+                .handler(this::serveResource)
+                .failureHandler(this::serveIndexPage);
 
     }
 
