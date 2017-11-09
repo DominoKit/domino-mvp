@@ -24,7 +24,7 @@
         <dependency>
             <groupId>com.progressoft.brix.domino.apt</groupId>
             <artifactId>apt-server</artifactId>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.progressoft.brix.domino.test</groupId>
