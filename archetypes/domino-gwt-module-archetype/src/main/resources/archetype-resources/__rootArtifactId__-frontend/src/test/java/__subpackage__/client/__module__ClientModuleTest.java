@@ -3,8 +3,6 @@
 #set( $symbol_escape = '\' )
 package ${package}.${subpackage}.client;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.Before;
@@ -19,6 +17,8 @@ import ${package}.${subpackage}.shared.request.${module}Request;
 import ${package}.${subpackage}.shared.response.${module}Response;
 import ${package}.${subpackage}.client.presenters.${module}PresenterSpy;
 import ${package}.${subpackage}.client.views.Fake${module}View;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ClientModule(name="Test${module}")
 @RunWith(GwtMockitoTestRunner.class)
@@ -40,14 +40,14 @@ public class ${module}ClientModuleTest{
 
     @Test
     public void given${module}Module_whenContributingToMainExtensionPoint_thenShouldReceiveMainContext() {
-        assertNotNull(presenterSpy.getMainContext());
+        assertThat(presenterSpy.getMainContext()).isNotNull();
     }
 
     @Test
     public void given${module}ClientModule_when${module}ServerRequestIsSent_thenServerMessageShouldBeRecieved() {
         clientContext.forRequest(${module}ServerRequest.class).returnResponse(new ${module}Response("Server message"));
 
-        new ${module}ServerRequest(new ${module}Request("client message")).onSuccess(response -> assertEquals("Server message",response.getServerMessage()))
+        new ${module}ServerRequest(new ${module}Request("client message")).onSuccess(response -> assertThat(response.getServerMessage()).isEqualTo("Server message")
         .onFailed(failedResponse -> fail(failedResponse.getError().getMessage()))
         .send();
     }
