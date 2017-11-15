@@ -6,8 +6,6 @@ import com.progressoft.brix.domino.api.client.mvp.presenter.Presentable;
 import com.progressoft.brix.domino.apt.commons.BaseProcessor;
 import com.progressoft.brix.domino.apt.commons.FullClassName;
 import com.progressoft.brix.domino.apt.commons.ProcessorElement;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
@@ -24,8 +22,6 @@ import java.util.stream.Collectors;
 
 @AutoService(Processor.class)
 public class PresenterCommandProcessor extends BaseProcessor{
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(PresenterCommandProcessor.class);
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -45,7 +41,6 @@ public class PresenterCommandProcessor extends BaseProcessor{
             sourceWriter
                     .write(new PresenterCommandSourceWriter(processorElement, targetPackage, className, simpleInterfaceName).write());
         } catch (IOException e) {
-            LOGGER.error("Could not generate classes : ", e);
             messager.printMessage(Diagnostic.Kind.ERROR, "could not generate class", presenterElement);
         }
     }
