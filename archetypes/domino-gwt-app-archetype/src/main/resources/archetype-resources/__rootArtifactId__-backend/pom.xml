@@ -71,8 +71,8 @@
                                 </transformer>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
-                                    <resource>webroot</resource>
-                                    <file>webroot</file>
+                                    <resource>app</resource>
+                                    <file>app</file>
                                 </transformer>
                             </transformers>
                             <artifactSet/>

@@ -90,12 +90,10 @@
                     <groupId>net.ltgt.gwt.maven</groupId>
                     <artifactId>gwt-maven-plugin</artifactId>
                     <version>1.0-rc-9</version>
+                    <extensions>true</extensions>
                     <configuration>
+                        <sourceLevel>1.8</sourceLevel>
                         <failOnError>true</failOnError>
-                        <launcherDir>${project.build.directory}/gwt/launcherDir</launcherDir>
-                        <startupUrls>
-                            <url>/</url>
-                        </startupUrls>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -122,7 +120,10 @@
             <plugin>
                 <groupId>net.ltgt.gwt.maven</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
-                <extensions>true</extensions>
+                <inherited>false</inherited>
+                <configuration>
+                    <launcherDir>${project.build.directory}/gwt/launcherDir</launcherDir>
+                </configuration>
             </plugin>
         </plugins>
 

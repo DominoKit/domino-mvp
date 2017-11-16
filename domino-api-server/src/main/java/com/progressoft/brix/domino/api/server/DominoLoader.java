@@ -32,7 +32,7 @@ public class DominoLoader {
     public static final int DEFAULT_PORT = 0;
     public static final String HTTP_PORT_KEY = "http.port";
     public static final int AROUND_6_MONTHS = 15768000;
-    public static final String WEBROOT = "webroot";
+    public String webroot = "app";
     public static final int NOT_FOUND = 404;
 
     private final Vertx vertx;
@@ -44,6 +44,7 @@ public class DominoLoader {
         this.vertx = vertx;
         this.router = router;
         this.config = config;
+        this.webroot=config.getString("webroot", "app");
     }
 
     public void start() {
@@ -95,9 +96,9 @@ public class DominoLoader {
         StaticHandler staticHandler = StaticHandler.create();
         if (nonNull(System.getProperty("domino.webroot.location"))) {
             staticHandler.setAllowRootFileSystemAccess(true);
-            staticHandler.setWebRoot(getWebRoot());
+            staticHandler.setWebRoot(systemWebRoot());
         } else {
-            staticHandler.setWebRoot(config.getString("webroot", "app"));
+            staticHandler.setWebRoot(webroot);
         }
 
         router.route("/").order(Integer.MAX_VALUE - 2)
@@ -113,18 +114,18 @@ public class DominoLoader {
     }
 
     private void serveResource(RoutingContext context) {
-        context.response().sendFile(WEBROOT + context.request().path().replace("/static", ""), event -> {
+        context.response().sendFile(webroot + context.request().path().replace("/static", ""), event -> {
             if (event.failed())
                 serveIndexPage(context);
         });
     }
 
-    private String getWebRoot() {
+    private String systemWebRoot() {
         return Paths.get(System.getProperty("domino.webroot.location")).toAbsolutePath().toString();
     }
 
     private HttpServerResponse serveIndexPage(RoutingContext event) {
-        return event.response().putHeader("Content-type", "text/html").sendFile("webroot/index.html");
+        return event.response().putHeader("Content-type", "text/html").sendFile(webroot+"/index.html");
     }
 
     private void addSecurityHeadersHandler(Router router) {
