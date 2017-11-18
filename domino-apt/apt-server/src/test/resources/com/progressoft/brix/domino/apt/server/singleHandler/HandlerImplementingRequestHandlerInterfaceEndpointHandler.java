@@ -1,24 +1,18 @@
 package com.progressoft.brix.domino.apt.server.singleHandler;
 
-import com.progressoft.brix.domino.api.shared.request.ResponseBean;
-import io.vertx.core.Handler;
-import io.vertx.core.json.Json;
-import io.vertx.ext.web.RoutingContext;
-import com.progressoft.brix.domino.api.server.ServerApp;
+import com.progressoft.brix.domino.api.server.endpoint.AbstractEndpointHandler;
 import com.progressoft.brix.domino.api.shared.request.RequestBean;
-import com.progressoft.brix.domino.api.server.entrypoint.VertxEntryPointContext;
+import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 
-public class HandlerImplementingRequestHandlerInterfaceEndpointHandler implements Handler<RoutingContext> {
+public class HandlerImplementingRequestHandlerInterfaceEndpointHandler extends AbstractEndpointHandler<RequestBean, ResponseBean> {
 
     @Override
-    public void handle(RoutingContext routingContext) {
-        ServerApp serverApp=ServerApp.make();
-        RequestBean requestBody = Json.decodeValue(routingContext.getBodyAsString(), RequestBean.class);
-        ResponseBean response = (ResponseBean) serverApp
-                .executeRequest(requestBody, new VertxEntryPointContext(routingContext, serverApp.serverContext().config(),
-                        routingContext.vertx()));
-        routingContext.response()
-                .putHeader("content-type", "application/json")
-                .end(Json.encode(response));
+    protected RequestBean makeNewRequest() {
+        return new RequestBean();
+    }
+
+    @Override
+    protected Class<RequestBean> getRequestClass() {
+        return RequestBean.class;
     }
 }

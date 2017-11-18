@@ -12,8 +12,8 @@ import com.progressoft.brix.domino.api.server.interceptor.GlobalRequestIntercept
 import com.progressoft.brix.domino.api.server.interceptor.InterceptorsRegistry;
 import com.progressoft.brix.domino.api.server.interceptor.InterceptorsRepository;
 import com.progressoft.brix.domino.api.server.interceptor.RequestInterceptor;
+import com.progressoft.brix.domino.api.server.request.RequestContext;
 import com.progressoft.brix.domino.api.server.request.RequestExecutor;
-import com.progressoft.brix.domino.api.shared.request.RequestBean;
 import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 
 import java.util.function.Supplier;
@@ -38,12 +38,12 @@ public class ServerApp implements HandlerRegistry, InterceptorsRegistry, Endpoin
         return this;
     }
 
-    public ResponseBean executeRequest(RequestBean request, ServerEntryPointContext context) {
-        return requestExecutorHolder.attribute.executeRequest(request, context);
+    public ResponseBean executeRequest(RequestContext requestContext, ServerEntryPointContext context) {
+        return requestExecutorHolder.attribute.executeRequest(requestContext, context);
     }
 
-    public void executeCallbackRequest(RequestBean request, ServerEntryPointContext context, CallbackRequestHandler.ResponseCallback responseCallback) {
-        requestExecutorHolder.attribute.executeCallbackRequest(request, context, responseCallback);
+    public void executeCallbackRequest(RequestContext requestContext, ServerEntryPointContext context, CallbackRequestHandler.ResponseCallback responseCallback) {
+        requestExecutorHolder.attribute.executeCallbackRequest(requestContext, context, responseCallback);
     }
 
 

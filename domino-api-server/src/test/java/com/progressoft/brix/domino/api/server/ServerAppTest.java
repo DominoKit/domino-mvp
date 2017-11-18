@@ -1,6 +1,7 @@
 package com.progressoft.brix.domino.api.server;
 
 import com.progressoft.brix.domino.api.server.handler.HandlersRepository;
+import com.progressoft.brix.domino.api.server.request.RequestContext;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.junit.RunTestOnContext;
@@ -10,6 +11,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -23,13 +26,14 @@ public class ServerAppTest {
     private ServerApp serverApp;
     private TestRequest request;
     private Vertx vertx;
+    private RequestContext<TestRequest> requestContext;
 
     @Before
     public void setUp() throws Exception {
         vertx = rule.vertx();
         JsonObject config = new JsonObject();
         config.put("http.port", 0);
-        String secretKey=SecretKey.generate();
+        String secretKey = SecretKey.generate();
         RouterConfigurator configurator = new RouterConfigurator(vertx, config, secretKey);
         DominoLauncher.routerHolder.router = configurator.configuredRouter();
         DominoLauncher.configHolder.config = config;
@@ -38,6 +42,7 @@ public class ServerAppTest {
         request = new TestRequest();
 
         request.setRequestKey(TestRequest.class.getCanonicalName());
+        requestContext = new RequestContext<>(request, new HashMap<>());
     }
 
     @Test
@@ -62,8 +67,7 @@ public class ServerAppTest {
     @Test
     public void givenServerApp_whenExecutingARequest_theRequestHandlerShouldBeInvoked() throws Exception {
         serverApp.registerHandler(TestRequest.class.getCanonicalName(), new TestRequestHandler());
-        serverApp.executeRequest(request,
-                new TestServerEntryPointContext());
+        serverApp.executeRequest(requestContext, new TestServerEntryPointContext());
         assertEquals("-handled", request.getTestWord());
     }
 
@@ -71,7 +75,7 @@ public class ServerAppTest {
     public void givenServerApp_whenExecutingARequest_thenTheRequestShouldBeInterceptedBeforeCallingTheHandler() throws Exception {
         serverApp.registerHandler(TestRequest.class.getCanonicalName(), new TestRequestHandler());
         serverApp.registerInterceptor(TestRequest.class.getCanonicalName(), TestServerEntryPointContext.class.getCanonicalName(), new TestInterceptor());
-        serverApp.executeRequest(request, new TestServerEntryPointContext());
+        serverApp.executeRequest(requestContext, new TestServerEntryPointContext());
         assertEquals("-intercepted-entry-point-parameter-handled", request.getTestWord());
     }
 
@@ -80,7 +84,7 @@ public class ServerAppTest {
         serverApp.registerHandler(TestRequest.class.getCanonicalName(), new TestRequestHandler());
         serverApp.registerInterceptor(TestRequest.class.getCanonicalName(), TestServerEntryPointContext.class.getCanonicalName(), new TestInterceptor());
         serverApp.registerGlobalInterceptor(TestServerEntryPointContext.class.getCanonicalName(), new TestGlobalRequestInterceptor());
-        serverApp.executeRequest(request, new TestServerEntryPointContext());
+        serverApp.executeRequest(requestContext, new TestServerEntryPointContext());
         assertEquals("-intercepted-entry-point-parameter-globally-intercepted-entry-point-parameter-handled", request.getTestWord());
     }
 

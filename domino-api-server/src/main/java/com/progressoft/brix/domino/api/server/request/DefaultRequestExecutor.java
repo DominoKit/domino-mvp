@@ -6,7 +6,6 @@ import com.progressoft.brix.domino.api.server.handler.HandlersRepository;
 import com.progressoft.brix.domino.api.server.interceptor.GlobalRequestInterceptor;
 import com.progressoft.brix.domino.api.server.interceptor.InterceptorsRepository;
 import com.progressoft.brix.domino.api.server.interceptor.RequestInterceptor;
-import com.progressoft.brix.domino.api.shared.request.RequestBean;
 import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 
 import java.util.Collection;
@@ -23,24 +22,24 @@ public class DefaultRequestExecutor implements RequestExecutor {
     }
 
     @Override
-    public ResponseBean executeRequest(RequestBean request, ServerEntryPointContext context) {
-        callInterceptors(request, context);
-        return handlersRepository.findHandler(request.getRequestKey()).handleRequest(request);
+    public ResponseBean executeRequest(RequestContext requestContext, ServerEntryPointContext context) {
+        callInterceptors(requestContext, context);
+        return handlersRepository.findHandler(requestContext.getRequestBean().getRequestKey()).handleRequest(requestContext);
     }
 
-    private void callInterceptors(RequestBean request, ServerEntryPointContext context) {
-        getInterceptors(request, context).forEach(i -> i.intercept(request, context));
-        getGlobalInterceptors(context).forEach(i -> i.intercept(request, context));
+    private void callInterceptors(RequestContext requestContext, ServerEntryPointContext context) {
+        getInterceptors(requestContext, context).forEach(i -> i.intercept(requestContext, context));
+        getGlobalInterceptors(context).forEach(i -> i.intercept(requestContext, context));
     }
 
     @Override
-    public void executeCallbackRequest(RequestBean request, ServerEntryPointContext context, CallbackRequestHandler.ResponseCallback<ResponseBean> responseCallback) {
-        callInterceptors(request, context);
-        handlersRepository.findCallbackHandler(request.getRequestKey()).handleRequest(request, responseCallback);
+    public void executeCallbackRequest(RequestContext requestContext, ServerEntryPointContext context, CallbackRequestHandler.ResponseCallback<ResponseBean> responseCallback) {
+        callInterceptors(requestContext, context);
+        handlersRepository.findCallbackHandler(requestContext.getRequestBean().getRequestKey()).handleRequest(requestContext, responseCallback);
     }
 
-    private Collection<RequestInterceptor> getInterceptors(RequestBean request, ServerEntryPointContext context) {
-        return interceptorsRepository.findInterceptors(request.getClass().getCanonicalName(), context.getName());
+    private Collection<RequestInterceptor> getInterceptors(RequestContext requestContext, ServerEntryPointContext context) {
+        return interceptorsRepository.findInterceptors(requestContext.getRequestBean().getClass().getCanonicalName(), context.getClass().getCanonicalName());
     }
 
     private Collection<GlobalRequestInterceptor> getGlobalInterceptors(ServerEntryPointContext context) {
