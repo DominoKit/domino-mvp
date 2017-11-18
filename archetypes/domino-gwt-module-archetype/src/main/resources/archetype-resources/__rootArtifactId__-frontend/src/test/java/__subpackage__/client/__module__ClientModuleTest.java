@@ -19,6 +19,7 @@ import ${package}.${subpackage}.client.presenters.${module}PresenterSpy;
 import ${package}.${subpackage}.client.views.Fake${module}View;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 @ClientModule(name="Test${module}")
 @RunWith(GwtMockitoTestRunner.class)
@@ -47,7 +48,7 @@ public class ${module}ClientModuleTest{
     public void given${module}ClientModule_when${module}ServerRequestIsSent_thenServerMessageShouldBeRecieved() {
         clientContext.forRequest(${module}ServerRequest.class).returnResponse(new ${module}Response("Server message"));
 
-        new ${module}ServerRequest(new ${module}Request("client message")).onSuccess(response -> assertThat(response.getServerMessage()).isEqualTo("Server message")
+        new ${module}ServerRequest(new ${module}Request("client message")).onSuccess(response -> assertThat(response.getServerMessage()).isEqualTo("Server message"))
         .onFailed(failedResponse -> fail(failedResponse.getError().getMessage()))
         .send();
     }

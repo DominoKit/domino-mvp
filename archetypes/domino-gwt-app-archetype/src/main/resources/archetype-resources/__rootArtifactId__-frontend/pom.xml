@@ -15,7 +15,7 @@
     <packaging>gwt-app</packaging>
 
     <properties>
-        <extra.directory>${project.build.directory}/${project.build.finalName}/webroot</extra.directory>
+        <extra.directory>${project.build.directory}/${project.build.finalName}/app</extra.directory>
     </properties>
 
     <dependencies>
@@ -60,14 +60,10 @@
             <plugin>
                 <groupId>net.ltgt.gwt.maven</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
-                <version>1.0-rc-9</version>
                 <configuration>
+                    <extra>${extra.directory}/gwt/extra</extra>
                     <moduleName>${package}.AppClientModule</moduleName>
                     <moduleShortName>app</moduleShortName>
-                    <extra>${extra.directory}/gwt/extra</extra>
-                    <systemProperties>
-                        <gwt.persistentunitcachedir>${project.build.directory}/cacheDir</gwt.persistentunitcachedir>
-                    </systemProperties>
                 </configuration>
             </plugin>
             <plugin>
