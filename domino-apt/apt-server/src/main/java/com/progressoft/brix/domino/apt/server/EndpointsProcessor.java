@@ -1,7 +1,6 @@
 package com.progressoft.brix.domino.apt.server;
 
 import com.google.auto.service.AutoService;
-import com.progressoft.brix.domino.api.server.handler.CallbackRequestHandler;
 import com.progressoft.brix.domino.api.server.handler.Handler;
 import com.progressoft.brix.domino.api.server.handler.RequestHandler;
 import com.progressoft.brix.domino.apt.commons.BaseProcessor;
@@ -48,15 +47,15 @@ public class EndpointsProcessor extends BaseProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 
-            getHandlers(roundEnv).forEach(e ->{
-                try {
-                    generateEndpoint(e);
-                }catch (Exception ex){
-                    StringWriter sw=new StringWriter();
-                    ex.printStackTrace(new PrintWriter(sw));
-                    messager.printMessage(Diagnostic.Kind.NOTE, "could not generate source. "+sw.toString() );
-                }
-            });
+        getHandlers(roundEnv).forEach(e -> {
+            try {
+                generateEndpoint(e);
+            } catch (Exception ex) {
+                StringWriter sw = new StringWriter();
+                ex.printStackTrace(new PrintWriter(sw));
+                messager.printMessage(Diagnostic.Kind.NOTE, "could not generate source. " + sw.toString());
+            }
+        });
 
         return false;
     }
@@ -66,7 +65,7 @@ public class EndpointsProcessor extends BaseProcessor {
                 element.simpleName() + "EndpointHandler")) {
             sourceWriter.write(new EndpointHandlerSourceWriter(element).write());
         } catch (IOException e) {
-            
+
             LOGGER.log(Level.SEVERE, "Could not generate classes : ", e);
             messager.printMessage(Diagnostic.Kind.ERROR, "could not generate class");
         }
@@ -79,7 +78,7 @@ public class EndpointsProcessor extends BaseProcessor {
     }
 
     private boolean implementsHandler(ProcessorElement e) {
-        if (e.isImplementsGenericInterface(RequestHandler.class) || e.isImplementsGenericInterface(CallbackRequestHandler.class))
+        if (e.isImplementsGenericInterface(RequestHandler.class))
             return true;
         this.messager.printMessage(Diagnostic.Kind.ERROR,
                 "Classes annotated as Handlers must implement RequestHandler interface.!", e.asTypeElement());

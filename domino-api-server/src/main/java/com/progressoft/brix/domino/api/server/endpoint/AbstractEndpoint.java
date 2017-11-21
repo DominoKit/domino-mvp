@@ -1,7 +1,15 @@
 package com.progressoft.brix.domino.api.server.endpoint;
 
 import com.progressoft.brix.domino.api.server.ServerApp;
+import com.progressoft.brix.domino.api.server.context.DefaultExecutionContext;
+import com.progressoft.brix.domino.api.server.context.ExecutionContext;
+import com.progressoft.brix.domino.api.server.entrypoint.VertxEntryPointContext;
+import com.progressoft.brix.domino.api.server.request.DefaultMultiValuesMap;
+import com.progressoft.brix.domino.api.server.request.DefaultRequestContext;
+import com.progressoft.brix.domino.api.server.request.MultiValuesMap;
 import com.progressoft.brix.domino.api.server.request.RequestContext;
+import com.progressoft.brix.domino.api.server.response.ResponseContext;
+import com.progressoft.brix.domino.api.server.response.VertxResponseContext;
 import com.progressoft.brix.domino.api.shared.request.RequestBean;
 import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 import io.vertx.core.Handler;
@@ -10,12 +18,7 @@ import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.Json;
 import io.vertx.ext.web.RoutingContext;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.stream.Stream;
-
 import static java.util.Objects.nonNull;
-import static java.util.stream.Collectors.toMap;
 
 public abstract class AbstractEndpoint<R extends RequestBean, S extends ResponseBean> implements Handler<RoutingContext> {
     @Override
@@ -23,19 +26,26 @@ public abstract class AbstractEndpoint<R extends RequestBean, S extends Response
         try {
             R requestBody = fetchBody(routingContext, routingContext.request().method());
             processRequestKey(routingContext, requestBody);
-            RequestContext<R> requestContext = new RequestContext<>(requestBody, getMetaData(routingContext));
-            executeRequest(routingContext, ServerApp.make(), requestContext);
+            RequestContext<R> requestContext = new DefaultRequestContext<>(requestBody, getParameters(routingContext), getHeaders(routingContext));
+            ResponseContext<S> responseContext = new VertxResponseContext<>(routingContext);
+            executeRequest(routingContext, ServerApp.make(), new DefaultExecutionContext<>(requestContext, responseContext));
         } catch (Exception e) {
             routingContext.fail(e);
         }
     }
 
-    private Map<String, String> getMetaData(RoutingContext routingContext) {
-        return Stream.of(routingContext.request().headers(), routingContext.request().params())
-                .map(MultiMap::entries)
-                .flatMap(Collection::stream)
-                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue,
-                        (s, s2) -> String.join(s, s2, ",")));
+    private MultiValuesMap<String, String> getParameters(RoutingContext routingContext) {
+        return asMultiValuesMap(routingContext.request().params());
+    }
+
+    private MultiValuesMap<String, String> getHeaders(RoutingContext routingContext) {
+        return asMultiValuesMap(routingContext.request().headers());
+    }
+
+    private MultiValuesMap<String, String> asMultiValuesMap(MultiMap multiMap) {
+        MultiValuesMap<String, String> multiValuesMap = new DefaultMultiValuesMap<>();
+        multiMap.entries().forEach(entry -> multiValuesMap.add(entry.getKey(), entry.getValue()));
+        return multiValuesMap;
     }
 
     private R fetchBody(RoutingContext routingContext, HttpMethod method) {
@@ -57,7 +67,9 @@ public abstract class AbstractEndpoint<R extends RequestBean, S extends Response
         }
     }
 
-    protected abstract void executeRequest(RoutingContext routingContext, ServerApp serverApp, RequestContext<R> requestContext);
+    private void executeRequest(RoutingContext routingContext, ServerApp serverApp, ExecutionContext<R, S> requestContext) {
+        serverApp.executeRequest(requestContext, new VertxEntryPointContext(routingContext, serverApp.serverContext().config(), routingContext.vertx()));
+    }
 
     protected abstract R makeNewRequest();
 

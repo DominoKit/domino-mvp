@@ -5,6 +5,8 @@ import com.progressoft.brix.domino.api.server.config.ServerModuleConfiguration;
 import com.progressoft.brix.domino.api.server.endpoint.EndpointsRegistry;
 import com.progressoft.brix.domino.api.server.handler.HandlerRegistry;
 import com.progressoft.brix.domino.api.shared.request.RequestBean;
+import com.progressoft.brix.domino.apt.server.HandlerImplementingRequestHandlerInterface;
+import com.progressoft.brix.domino.apt.server.HandlerImplementingRequestHandlerInterfaceEndpointHandler;
 import java.util.function.Supplier;
 import javax.annotation.Generated;
 

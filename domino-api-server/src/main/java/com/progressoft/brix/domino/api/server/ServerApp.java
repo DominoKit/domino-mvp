@@ -4,7 +4,6 @@ import com.progressoft.brix.domino.api.server.config.ServerModuleConfiguration;
 import com.progressoft.brix.domino.api.server.endpoint.EndpointsRegistry;
 import com.progressoft.brix.domino.api.server.entrypoint.ServerContext;
 import com.progressoft.brix.domino.api.server.entrypoint.ServerEntryPointContext;
-import com.progressoft.brix.domino.api.server.handler.CallbackRequestHandler;
 import com.progressoft.brix.domino.api.server.handler.HandlerRegistry;
 import com.progressoft.brix.domino.api.server.handler.HandlersRepository;
 import com.progressoft.brix.domino.api.server.handler.RequestHandler;
@@ -12,9 +11,8 @@ import com.progressoft.brix.domino.api.server.interceptor.GlobalRequestIntercept
 import com.progressoft.brix.domino.api.server.interceptor.InterceptorsRegistry;
 import com.progressoft.brix.domino.api.server.interceptor.InterceptorsRepository;
 import com.progressoft.brix.domino.api.server.interceptor.RequestInterceptor;
-import com.progressoft.brix.domino.api.server.request.RequestContext;
+import com.progressoft.brix.domino.api.server.context.ExecutionContext;
 import com.progressoft.brix.domino.api.server.request.RequestExecutor;
-import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 
 import java.util.function.Supplier;
 
@@ -38,23 +36,13 @@ public class ServerApp implements HandlerRegistry, InterceptorsRegistry, Endpoin
         return this;
     }
 
-    public ResponseBean executeRequest(RequestContext requestContext, ServerEntryPointContext context) {
-        return requestExecutorHolder.attribute.executeRequest(requestContext, context);
+    public void executeRequest(ExecutionContext requestContext, ServerEntryPointContext context) {
+        requestExecutorHolder.attribute.executeRequest(requestContext, context);
     }
-
-    public void executeCallbackRequest(RequestContext requestContext, ServerEntryPointContext context, CallbackRequestHandler.ResponseCallback responseCallback) {
-        requestExecutorHolder.attribute.executeCallbackRequest(requestContext, context, responseCallback);
-    }
-
 
     @Override
     public void registerHandler(String request, RequestHandler handler) {
         handlersRepositoryHolder.attribute.registerHandler(request, handler);
-    }
-
-    @Override
-    public void registerCallbackHandler(String request, CallbackRequestHandler handler) {
-        handlersRepositoryHolder.attribute.registerCallbackHandler(request, handler);
     }
 
     @Override

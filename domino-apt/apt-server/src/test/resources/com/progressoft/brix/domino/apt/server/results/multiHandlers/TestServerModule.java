@@ -4,15 +4,24 @@ import com.google.auto.service.AutoService;
 import com.progressoft.brix.domino.api.server.config.ServerModuleConfiguration;
 import com.progressoft.brix.domino.api.server.endpoint.EndpointsRegistry;
 import com.progressoft.brix.domino.api.server.handler.HandlerRegistry;
+import com.progressoft.brix.domino.apt.server.FirstHandler;
+import com.progressoft.brix.domino.apt.server.FirstHandlerEndpointHandler;
+import com.progressoft.brix.domino.apt.server.FirstRequest;
+import com.progressoft.brix.domino.apt.server.SecondHandler;
+import com.progressoft.brix.domino.apt.server.SecondHandlerEndpointHandler;
+import com.progressoft.brix.domino.apt.server.SecondRequest;
+import com.progressoft.brix.domino.apt.server.ThirdHandler;
+import com.progressoft.brix.domino.apt.server.ThirdHandlerEndpointHandler;
+import com.progressoft.brix.domino.apt.server.ThirdRequest;
 import java.util.function.Supplier;
 import javax.annotation.Generated;
 
 @Generated("com.progressoft.brix.domino.apt.server.ServerModuleAnnotationProcessor")
 @AutoService(ServerModuleConfiguration.class)
-public class TestServerModule implements ServerModuleConfiguration{
+public class TestServerModule implements ServerModuleConfiguration {
     @Override
     public void registerHandlers(HandlerRegistry registry) {
-        registry.registerHandler(FirstRequest.class.getCanonicalName()+"_xyz", new FirstHandler());
+        registry.registerHandler(FirstRequest.class.getCanonicalName() + "_xyz", new FirstHandler());
         registry.registerHandler(SecondRequest.class.getCanonicalName(), new SecondHandler());
         registry.registerHandler(ThirdRequest.class.getCanonicalName(), new ThirdHandler());
     }

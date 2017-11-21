@@ -1,9 +1,7 @@
 package com.progressoft.brix.domino.apt.server;
 
 
-import com.progressoft.brix.domino.api.server.endpoint.AbstractEndpointCallBackHandler;
-import com.progressoft.brix.domino.api.server.endpoint.AbstractEndpointHandler;
-import com.progressoft.brix.domino.api.server.handler.CallbackRequestHandler;
+import com.progressoft.brix.domino.api.server.endpoint.AbstractEndpoint;
 import com.progressoft.brix.domino.api.server.handler.RequestHandler;
 import com.progressoft.brix.domino.apt.commons.DominoTypeBuilder;
 import com.progressoft.brix.domino.apt.commons.JavaSourceWriter;
@@ -31,10 +29,7 @@ public class EndpointHandlerSourceWriter extends JavaSourceWriter {
     }
 
     private List<? extends TypeMirror> getHandlerTypeArguments() {
-        if (processorElement.isImplementsGenericInterface(RequestHandler.class))
-            return ((DeclaredType) processorElement.getInterfaceType(RequestHandler.class)).getTypeArguments();
-        return ((DeclaredType) processorElement.getInterfaceType(CallbackRequestHandler.class)).getTypeArguments();
-
+        return ((DeclaredType) processorElement.getInterfaceType(RequestHandler.class)).getTypeArguments();
     }
 
     @Override
@@ -57,12 +52,8 @@ public class EndpointHandlerSourceWriter extends JavaSourceWriter {
     }
 
     private ParameterizedTypeName getSuperclass() {
-        if (processorElement.isImplementsGenericInterface(RequestHandler.class))
-            return ParameterizedTypeName
-                    .get(ClassName.get(AbstractEndpointHandler.class), TypeName.get(requestType),
-                            TypeName.get(responseType));
         return ParameterizedTypeName
-                .get(ClassName.get(AbstractEndpointCallBackHandler.class), TypeName.get(requestType),
+                .get(ClassName.get(AbstractEndpoint.class), TypeName.get(requestType),
                         TypeName.get(responseType));
     }
 

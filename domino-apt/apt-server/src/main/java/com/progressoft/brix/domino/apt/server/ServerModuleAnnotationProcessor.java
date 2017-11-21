@@ -2,7 +2,6 @@ package com.progressoft.brix.domino.apt.server;
 
 import com.google.auto.service.AutoService;
 import com.progressoft.brix.domino.api.server.config.ServerModule;
-import com.progressoft.brix.domino.api.server.handler.CallbackRequestHandler;
 import com.progressoft.brix.domino.api.server.handler.Handler;
 import com.progressoft.brix.domino.api.server.handler.RequestHandler;
 import com.progressoft.brix.domino.api.server.interceptor.GlobalInterceptor;
@@ -82,7 +81,7 @@ public class ServerModuleAnnotationProcessor extends BaseProcessor {
     }
 
     private boolean implementsHandler(ProcessorElement e) {
-        if (e.isImplementsGenericInterface(RequestHandler.class) || e.isImplementsGenericInterface(CallbackRequestHandler.class))
+        if (e.isImplementsGenericInterface(RequestHandler.class))
             return true;
         this.messager.printMessage(Diagnostic.Kind.ERROR, "Classes annotated as Handlers must implement RequestHandler interface.!", e.asTypeElement());
         return false;

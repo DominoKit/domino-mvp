@@ -2,22 +2,10 @@ package com.progressoft.brix.domino.api.server.request;
 
 import com.progressoft.brix.domino.api.shared.request.RequestBean;
 
-import java.util.Map;
+public interface RequestContext<T extends RequestBean> {
+    T getRequestBean();
 
-public class RequestContext<R extends RequestBean> {
-    private final R requestBean;
-    private final Map<String, String> metadata;
+    MultiValuesMap<String, String> headers();
 
-    public RequestContext(R requestBean, Map<String, String> metadata) {
-        this.requestBean = requestBean;
-        this.metadata = metadata;
-    }
-
-    public R getRequestBean() {
-        return requestBean;
-    }
-
-    public Map<String, String> getMetadata() {
-        return metadata;
-    }
+    MultiValuesMap<String, String> parameters();
 }

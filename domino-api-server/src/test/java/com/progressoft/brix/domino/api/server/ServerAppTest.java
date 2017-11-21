@@ -1,6 +1,10 @@
 package com.progressoft.brix.domino.api.server;
 
+import com.progressoft.brix.domino.api.server.context.DefaultExecutionContext;
+import com.progressoft.brix.domino.api.server.context.ExecutionContext;
 import com.progressoft.brix.domino.api.server.handler.HandlersRepository;
+import com.progressoft.brix.domino.api.server.request.DefaultMultiValuesMap;
+import com.progressoft.brix.domino.api.server.request.DefaultRequestContext;
 import com.progressoft.brix.domino.api.server.request.RequestContext;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
@@ -11,8 +15,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -26,7 +28,7 @@ public class ServerAppTest {
     private ServerApp serverApp;
     private TestRequest request;
     private Vertx vertx;
-    private RequestContext<TestRequest> requestContext;
+    private ExecutionContext<TestRequest, TestResponse> routingContext;
 
     @Before
     public void setUp() throws Exception {
@@ -42,7 +44,8 @@ public class ServerAppTest {
         request = new TestRequest();
 
         request.setRequestKey(TestRequest.class.getCanonicalName());
-        requestContext = new RequestContext<>(request, new HashMap<>());
+        RequestContext<TestRequest> requestContext = new DefaultRequestContext<>(request, new DefaultMultiValuesMap<>(), new DefaultMultiValuesMap<>());
+        routingContext = new DefaultExecutionContext<>(requestContext, new FakeResponseContext());
     }
 
     @Test
@@ -67,7 +70,7 @@ public class ServerAppTest {
     @Test
     public void givenServerApp_whenExecutingARequest_theRequestHandlerShouldBeInvoked() throws Exception {
         serverApp.registerHandler(TestRequest.class.getCanonicalName(), new TestRequestHandler());
-        serverApp.executeRequest(requestContext, new TestServerEntryPointContext());
+        serverApp.executeRequest(routingContext, new TestServerEntryPointContext());
         assertEquals("-handled", request.getTestWord());
     }
 
@@ -75,7 +78,7 @@ public class ServerAppTest {
     public void givenServerApp_whenExecutingARequest_thenTheRequestShouldBeInterceptedBeforeCallingTheHandler() throws Exception {
         serverApp.registerHandler(TestRequest.class.getCanonicalName(), new TestRequestHandler());
         serverApp.registerInterceptor(TestRequest.class.getCanonicalName(), TestServerEntryPointContext.class.getCanonicalName(), new TestInterceptor());
-        serverApp.executeRequest(requestContext, new TestServerEntryPointContext());
+        serverApp.executeRequest(routingContext, new TestServerEntryPointContext());
         assertEquals("-intercepted-entry-point-parameter-handled", request.getTestWord());
     }
 
@@ -84,7 +87,7 @@ public class ServerAppTest {
         serverApp.registerHandler(TestRequest.class.getCanonicalName(), new TestRequestHandler());
         serverApp.registerInterceptor(TestRequest.class.getCanonicalName(), TestServerEntryPointContext.class.getCanonicalName(), new TestInterceptor());
         serverApp.registerGlobalInterceptor(TestServerEntryPointContext.class.getCanonicalName(), new TestGlobalRequestInterceptor());
-        serverApp.executeRequest(requestContext, new TestServerEntryPointContext());
+        serverApp.executeRequest(routingContext, new TestServerEntryPointContext());
         assertEquals("-intercepted-entry-point-parameter-globally-intercepted-entry-point-parameter-handled", request.getTestWord());
     }
 

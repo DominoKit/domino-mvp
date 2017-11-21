@@ -8,10 +8,15 @@ import com.progressoft.brix.domino.api.client.request.Request;
 import com.progressoft.brix.domino.api.client.request.RequestRouter;
 import com.progressoft.brix.domino.api.client.request.ServerRequest;
 import com.progressoft.brix.domino.api.server.ServerApp;
+import com.progressoft.brix.domino.api.server.context.DefaultExecutionContext;
+import com.progressoft.brix.domino.api.server.context.ExecutionContext;
 import com.progressoft.brix.domino.api.server.entrypoint.ServerEntryPointContext;
 import com.progressoft.brix.domino.api.server.handler.HandlersRepository;
+import com.progressoft.brix.domino.api.server.request.DefaultMultiValuesMap;
+import com.progressoft.brix.domino.api.server.request.DefaultRequestContext;
 import com.progressoft.brix.domino.api.server.request.RequestContext;
 import com.progressoft.brix.domino.api.shared.request.FailedResponseBean;
+import com.progressoft.brix.domino.api.shared.request.RequestBean;
 import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +47,13 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
 
     private ServerEntryPointContext entryPointContext;
 
-    private final TestServerService service = request -> ServerApp.make().executeRequest(new RequestContext(request, new HashMap<>()), entryPointContext);
+    private final TestServerService service = (request, responseContext) -> {
+        RequestContext<RequestBean> requestContext = new DefaultRequestContext<>(request, new DefaultMultiValuesMap<>(), new DefaultMultiValuesMap<>());
+        ExecutionContext<RequestBean, ResponseBean> executionContext = new DefaultExecutionContext<>(requestContext, responseContext);
+        ServerApp.make().executeRequest(executionContext, entryPointContext);
+    };
+
+    private TestResponseContext<ResponseBean> responseContext = new TestResponseContext<>();
 
     public TestServerRouter(ServerEntryPointContext entryPointContext) {
         this.entryPointContext = entryPointContext;
@@ -63,7 +74,8 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
             if (fakeResponses.containsKey(request.getKey())) {
                 response = fakeResponses.get(request.getKey()).reply();
             } else {
-                response = service.executeRequest(request.requestBean());
+                service.executeRequest(request.requestBean(), responseContext);
+                response = responseContext.getResponseBean();
             }
             listener.onRouteRequest(request, response);
         } catch (HandlersRepository.RequestHandlerNotFound ex) {

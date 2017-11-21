@@ -1,6 +1,5 @@
 package com.progressoft.brix.domino.apt.server.handlers;
 
-import com.progressoft.brix.domino.api.server.handler.CallbackRequestHandler;
 import com.progressoft.brix.domino.api.server.handler.Handler;
 import com.progressoft.brix.domino.api.server.handler.HandlerRegistry;
 import com.progressoft.brix.domino.api.server.handler.RequestHandler;
@@ -31,16 +30,8 @@ public class HandlersRegisterMethodWriter extends AbstractRegisterMethodWriter<H
     protected void registerItem(HandlersEntry entry, MethodSpec.Builder methodBuilder) {
         Handler handlerAnnotation = entry.handler.getAnnotation(Handler.class);
         String classifier = handlerAnnotation.classifier().isEmpty() ? "" : "+\"_" + handlerAnnotation.classifier() + "\"";
-        FullClassName request;
-        String methodName;
-        if (entry.handler.isImplementsGenericInterface(RequestHandler.class)) {
-            methodName = "registerHandler";
-            request = new FullClassName(new FullClassName(entry.handler.getInterfaceFullQualifiedGenericName(RequestHandler.class)).allImports().get(1));
-        } else {
-            methodName = "registerCallbackHandler";
-            request = new FullClassName(new FullClassName(entry.handler.getInterfaceFullQualifiedGenericName(CallbackRequestHandler.class)).allImports().get(1));
-        }
-        methodBuilder.addStatement("registry." + methodName + "($T.class.getCanonicalName()" + classifier + ",new $T())",
+        FullClassName request = new FullClassName(new FullClassName(entry.handler.getInterfaceFullQualifiedGenericName(RequestHandler.class)).allImports().get(1));
+        methodBuilder.addStatement("registry." + "registerHandler" + "($T.class.getCanonicalName()" + classifier + ",new $T())",
                 ClassName.get(request.asPackage(), request.asSimpleName()), ClassName.get(entry.handler.elementPackage(), entry.handler.simpleName()));
     }
 

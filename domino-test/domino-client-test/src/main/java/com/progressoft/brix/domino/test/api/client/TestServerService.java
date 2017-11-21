@@ -6,10 +6,11 @@ import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 @FunctionalInterface
 public interface TestServerService {
 
-    interface RequestExecutionCallBack{
+    interface RequestExecutionCallBack {
         void onSuccess(ResponseBean response);
+
         void onFailed(ResponseBean response);
     }
 
-    ResponseBean executeRequest(RequestBean request);
+    void executeRequest(RequestBean request, TestResponseContext responseContext);
 }
