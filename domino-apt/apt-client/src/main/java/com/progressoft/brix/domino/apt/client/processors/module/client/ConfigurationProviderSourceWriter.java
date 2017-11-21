@@ -2,7 +2,7 @@ package com.progressoft.brix.domino.apt.client.processors.module.client;
 
 import com.google.auto.service.AutoService;
 import com.google.common.annotations.GwtIncompatible;
-import com.progressoft.brix.domino.api.client.ConfigurationProvider;
+import com.progressoft.brix.domino.api.client.ModuleConfigurationProvider;
 import com.progressoft.brix.domino.api.client.ModuleConfiguration;
 import com.progressoft.brix.domino.api.client.annotations.ClientModule;
 import com.progressoft.brix.domino.apt.commons.DominoTypeBuilder;
@@ -24,13 +24,13 @@ public class ConfigurationProviderSourceWriter {
     }
 
     public String write() throws IOException {
-        AnnotationSpec autoService = AnnotationSpec.builder(AutoService.class).addMember("value", "ConfigurationProvider.class").build();
+        AnnotationSpec autoService = AnnotationSpec.builder(AutoService.class).addMember("value", "ModuleConfigurationProvider.class").build();
         AnnotationSpec gwtIncompatible = AnnotationSpec.builder(GwtIncompatible.class).addMember("value", "\"Unused in GWT compilation\"").build();
 
         TypeSpec configurationProvider = DominoTypeBuilder.build(element.getAnnotation(ClientModule.class).name() + "ModuleConfiguration_Provider", ConfigurationProviderAnnotationProcessor.class)
                 .addAnnotation(gwtIncompatible)
                 .addAnnotation(autoService)
-                .addSuperinterface(ConfigurationProvider.class)
+                .addSuperinterface(ModuleConfigurationProvider.class)
                 .addMethod(makeGetMethod())
                 .build();
 

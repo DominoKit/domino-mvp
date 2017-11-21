@@ -19,7 +19,7 @@ public class ${module}UIClientModule implements EntryPoint {
 	private static final Logger LOGGER = LoggerFactory.getLogger(${module}UIClientModule.class);
 
 	public void onModuleLoad() {
-		LOGGER.info("Initializing ${module} client UI module ...");
+		LOGGER.info("Initializing ${module} frontend UI module ...");
 		Bundle.INSTANCE.style().ensureInjected();
 		new ModuleConfigurator().configureModule(new ${module}UIModuleConfiguration());
 	}

@@ -1,9 +1,9 @@
 package com.progressoft.brix.domino.apt.client;
 
 import com.progressoft.brix.domino.api.client.ClientStartupTask;
-import com.progressoft.brix.domino.api.client.annotations.InitialTask;
+import com.progressoft.brix.domino.api.client.annotations.StartupTask;
 
-@InitialTask
+@StartupTask
 public class AnnotatedClassWithInitialTask implements ClientStartupTask {
 
     @Override

@@ -108,7 +108,7 @@ public class ClientModuleAnnotationProcessor extends BaseProcessor {
         annotations.add(Presenter.class.getCanonicalName());
         annotations.add(UiView.class.getCanonicalName());
         annotations.add(Command.class.getCanonicalName());
-        annotations.add(InitialTask.class.getCanonicalName());
+        annotations.add(StartupTask.class.getCanonicalName());
         annotations.add(ClientModule.class.getCanonicalName());
         return annotations;
     }

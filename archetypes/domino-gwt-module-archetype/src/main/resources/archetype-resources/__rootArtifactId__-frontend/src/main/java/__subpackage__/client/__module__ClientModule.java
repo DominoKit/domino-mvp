@@ -16,7 +16,7 @@ public class ${module}ClientModule implements EntryPoint {
 	private static final Logger LOGGER = LoggerFactory.getLogger(${module}ClientModule.class);
 
 	public void onModuleLoad() {
-		LOGGER.info("Initializing ${module} client module ...");
+		LOGGER.info("Initializing ${module} frontend module ...");
 		new ModuleConfigurator().configureModule(new ${module}ModuleConfiguration());
 	}
 }

@@ -19,16 +19,17 @@ public class ClientRouter implements RequestRouter<PresenterCommand> {
     }
 
     @Override
-    public void routeRequest(final PresenterCommand request) {
+    public void routeRequest(final PresenterCommand presenterCommand) {
+
         ClientApp.make().getAsyncRunner().runAsync(new AsyncRunner.AsyncTask() {
             @Override
             public void onSuccess() {
-                requestEventFactory.make(request).fire();
+                requestEventFactory.make(presenterCommand).fire();
             }
 
             @Override
             public void onFailed(Throwable error) {
-                LOGGER.error("Could not RunAsync request [" + request + "]", error);
+                LOGGER.error("Could not RunAsync request [" + presenterCommand + "]", error);
             }
         });
     }

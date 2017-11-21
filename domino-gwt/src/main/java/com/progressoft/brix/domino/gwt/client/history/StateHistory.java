@@ -85,7 +85,29 @@ public class StateHistory implements AppHistory {
     }
 
     private State windowState() {
-        return (State) DomGlobal.self.history.state;
+        if(isNull(DomGlobal.self.history.state))
+            return nullState();
+        JsState jsState=Js.cast(DomGlobal.self.history.state);
+        return new DominoHistoryState(jsState.historyToken, jsState.title, jsState.data);
+    }
+
+    private State nullState() {
+        return new State() {
+            @Override
+            public HistoryToken token() {
+                return new StateHistoryToken(windowToken());
+            }
+
+            @Override
+            public String data() {
+                return "";
+            }
+
+            @Override
+            public String title() {
+                return windowTitle();
+            }
+        };
     }
 
     private String windowTitle() {

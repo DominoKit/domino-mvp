@@ -8,7 +8,7 @@ import static java.util.Objects.nonNull;
 
 public class DominoStackTraceDeobfuscator extends StackTraceDeobfuscator {
 
-    private static final String SYMBOL_MAPS_DIRECTORY = "/webroot/gwt/extra/app/symbolMaps/";
+    private static final String SYMBOL_MAPS_DIRECTORY = "/app/gwt/extra/app/symbolMaps/";
 
     @Override
     protected InputStream getSourceMapInputStream(String permutation, int fragmentNumber) throws IOException {

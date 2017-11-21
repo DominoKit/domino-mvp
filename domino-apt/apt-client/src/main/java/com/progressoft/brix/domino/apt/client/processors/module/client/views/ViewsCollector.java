@@ -32,7 +32,7 @@ public class ViewsCollector {
                 .map(elementFactory::make)
                 .filter(e -> e.validateElementKind(ElementKind.CLASS))
                 .collect(Collectors.toSet())
-                .forEach(v -> addView(v));
+                .forEach(this::addView);
     }
 
     private boolean addView(ProcessorElement v) {
@@ -58,5 +58,4 @@ public class ViewsCollector {
         AnnotationValue value = valueIndex.values().iterator().next();
         return ((DeclaredType) value.getValue()).asElement();
     }
-
 }

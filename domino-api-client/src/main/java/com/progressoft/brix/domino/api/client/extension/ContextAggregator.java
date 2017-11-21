@@ -1,24 +1,17 @@
 package com.progressoft.brix.domino.api.client.extension;
 
 import com.progressoft.brix.domino.api.shared.extension.Context;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import static java.util.Objects.nonNull;
-
 public class ContextAggregator {
 
-    private static final Logger LOGGER= LoggerFactory.getLogger(ContextAggregator.class);
     private Set<ContextWait> contextsSet=new LinkedHashSet<>();
-    private final ReadyHandler handler;
 
     private ContextAggregator(Set<ContextWait> contextSet,
                               ReadyHandler handler) {
         this.contextsSet=contextSet;
-        this.handler = handler;
         this.contextsSet.forEach(c-> c.onReady(() -> {
             this.contextsSet.remove(c);
             if(this.contextsSet.isEmpty())
@@ -65,7 +58,7 @@ public class ContextAggregator {
     }
 
     public static class ContextWait<T extends Context>{
-        private ReadyHandler readyHandler;
+        private Set<ReadyHandler> readyHandlers=new LinkedHashSet<>();
         private T context;
 
         public static <T extends Context> ContextWait<T> create(){
@@ -73,13 +66,12 @@ public class ContextAggregator {
         }
 
         void onReady(ReadyHandler handler){
-            this.readyHandler=handler;
+            this.readyHandlers.add(handler);
         }
 
         public void receiveContext(T context){
             this.context=context;
-            if(nonNull(readyHandler))
-                readyHandler.onReady();
+            readyHandlers.forEach(ReadyHandler::onReady);
         }
 
         public T get(){
