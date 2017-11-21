@@ -23,7 +23,7 @@ public class DefaultRequestExecutor implements RequestExecutor {
     @Override
     public void executeRequest(ExecutionContext requestContext, ServerEntryPointContext context) {
         callInterceptors(requestContext, context);
-        handlersRepository.findHandler(requestContext.request().getRequestBean().getRequestKey()).handleRequest(requestContext);
+        handlersRepository.findHandler(requestContext.request().getRequestKey()).handleRequest(requestContext);
     }
 
     private void callInterceptors(ExecutionContext requestContext, ServerEntryPointContext context) {

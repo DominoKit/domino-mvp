@@ -8,4 +8,6 @@ public interface RequestContext<T extends RequestBean> {
     MultiValuesMap<String, String> headers();
 
     MultiValuesMap<String, String> parameters();
+
+    String getRequestKey();
 }

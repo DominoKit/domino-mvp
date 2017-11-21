@@ -43,8 +43,13 @@ public class ServerAppTest {
         serverApp = ServerApp.make();
         request = new TestRequest();
 
-        request.setRequestKey(TestRequest.class.getCanonicalName());
-        RequestContext<TestRequest> requestContext = new DefaultRequestContext<>(request, new DefaultMultiValuesMap<>(), new DefaultMultiValuesMap<>());
+
+        RequestContext<TestRequest> requestContext = DefaultRequestContext
+                .forRequest(request)
+                .requestKey(TestRequest.class.getCanonicalName())
+                .parameters(new DefaultMultiValuesMap<>())
+                .headers(new DefaultMultiValuesMap<>())
+                .build();
         routingContext = new DefaultExecutionContext<>(requestContext, new FakeResponseContext());
     }
 

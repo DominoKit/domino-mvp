@@ -55,10 +55,11 @@ public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
         String absoluteURI = buildPath(pathAnnotation, request.requestBean());
         HttpRequest<Buffer> httpRequest = webClient.requestAbs(method, absoluteURI);
 
+        String canonicalName = request.requestBean().getClass().getCanonicalName();
         if (classifier.isEmpty())
-            httpRequest.putHeader("REQUEST_KEY", request.requestBean().getRequestKey());
+            httpRequest.putHeader("REQUEST_KEY", canonicalName);
         else
-            httpRequest.putHeader("REQUEST_KEY", request.requestBean().getRequestKey() + "_" + classifier);
+            httpRequest.putHeader("REQUEST_KEY", canonicalName + "_" + classifier);
 
         if (nonNull(csrfToken))
             httpRequest.putHeader(DEFAULT_HEADER_NAME, csrfToken);

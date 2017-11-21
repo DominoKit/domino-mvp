@@ -2,7 +2,7 @@ package com.progressoft.brix.domino.api.server;
 
 import com.progressoft.brix.domino.api.shared.request.RequestBean;
 
-public class TestRequest extends RequestBean {
+public class TestRequest implements RequestBean {
 
     private StringBuilder testWord=new StringBuilder("");
 

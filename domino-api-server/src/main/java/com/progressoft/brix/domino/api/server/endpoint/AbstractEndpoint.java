@@ -18,6 +18,7 @@ import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.Json;
 import io.vertx.ext.web.RoutingContext;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 public abstract class AbstractEndpoint<R extends RequestBean, S extends ResponseBean> implements Handler<RoutingContext> {
@@ -25,13 +26,23 @@ public abstract class AbstractEndpoint<R extends RequestBean, S extends Response
     public void handle(RoutingContext routingContext) {
         try {
             R requestBody = fetchBody(routingContext, routingContext.request().method());
-            processRequestKey(routingContext, requestBody);
-            RequestContext<R> requestContext = new DefaultRequestContext<>(requestBody, getParameters(routingContext), getHeaders(routingContext));
+            RequestContext<R> requestContext = DefaultRequestContext.forRequest(requestBody)
+                    .requestKey(extractRequestKey(routingContext, requestBody))
+                    .headers(getHeaders(routingContext))
+                    .parameters(getParameters(routingContext)).build();
             ResponseContext<S> responseContext = new VertxResponseContext<>(routingContext);
             executeRequest(routingContext, ServerApp.make(), new DefaultExecutionContext<>(requestContext, responseContext));
         } catch (Exception e) {
             routingContext.fail(e);
         }
+    }
+
+    private String extractRequestKey(RoutingContext routingContext, R requestBody) {
+        String requestKey = routingContext.request().getHeader("REQUEST_KEY");
+        if (nonNull(requestKey) && !requestKey.isEmpty())
+            return requestKey;
+
+        return requestBody.getClass().getCanonicalName();
     }
 
     private MultiValuesMap<String, String> getParameters(RoutingContext routingContext) {
@@ -51,20 +62,18 @@ public abstract class AbstractEndpoint<R extends RequestBean, S extends Response
     private R fetchBody(RoutingContext routingContext, HttpMethod method) {
         R requestBody;
         if (HttpMethod.POST.equals(method) || HttpMethod.PUT.equals(method) || HttpMethod.PATCH.equals(method)) {
-            requestBody = Json.decodeValue(routingContext.getBodyAsString(), getRequestClass());
+            requestBody = getRequestBody(routingContext);
         } else {
             requestBody = makeNewRequest();
         }
         return requestBody;
     }
 
-    private void processRequestKey(RoutingContext routingContext, R requestBody) {
-        String requestKey = routingContext.request().getHeader("REQUEST_KEY");
-        if (nonNull(requestKey) && !requestKey.isEmpty()) {
-            requestBody.setRequestKey(requestKey);
-        } else {
-            requestBody.setRequestKey(requestBody.getClass().getCanonicalName());
-        }
+    private R getRequestBody(RoutingContext routingContext) {
+        String bodyAsString = routingContext.getBodyAsString();
+        if (isNull(bodyAsString) || bodyAsString.trim().isEmpty())
+            return makeNewRequest();
+        return Json.decodeValue(bodyAsString, getRequestClass());
     }
 
     private void executeRequest(RoutingContext routingContext, ServerApp serverApp, ExecutionContext<R, S> requestContext) {

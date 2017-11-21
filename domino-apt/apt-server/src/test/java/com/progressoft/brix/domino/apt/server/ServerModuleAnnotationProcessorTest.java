@@ -56,7 +56,8 @@ public class ServerModuleAnnotationProcessorTest {
     public void givenAClassAnnotatedAsHandlerImplementingRequestHandlerInterface_whenCompiling_thenShouldCompileAndGenerateServerModuleWithTheHandlerRegistered()
             throws Exception {
         assertProcessing(
-                BASE_PACKAGE + "HandlerImplementingRequestHandlerInterface.java", BASE_PACKAGE + "singleHandler/package-info.java")
+                BASE_PACKAGE + "HandlerImplementingRequestHandlerInterface.java",
+                BASE_PACKAGE + "singleHandler/package-info.java")
                 .withProcessor(serverModuleAnnotationProcessor)
                 .generates(getExpectedResultFileContent("singleHandler/TestServerModule.java"));
     }

@@ -138,7 +138,7 @@ public class DominoLoader {
                     .putHeader("X-Content-Type-Options", "nosniff")
                     // Strict HTTPS (for about ~6Months)
                     .putHeader("Strict-Transport-Security", "max-age=" + AROUND_6_MONTHS)
-                    // IE8+ do not allow opening of attachments in the context of this resource
+                    // IE8+ do not allow opening forRequest attachments in the context forRequest this resource
                     .putHeader("X-Download-Options", "noopen")
                     // enable XSS for IE
                     .putHeader("X-XSS-Protection", "1; mode=block")

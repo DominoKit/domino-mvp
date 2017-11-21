@@ -48,7 +48,10 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
     private ServerEntryPointContext entryPointContext;
 
     private final TestServerService service = (request, responseContext) -> {
-        RequestContext<RequestBean> requestContext = new DefaultRequestContext<>(request, new DefaultMultiValuesMap<>(), new DefaultMultiValuesMap<>());
+        RequestContext<RequestBean> requestContext = DefaultRequestContext.forRequest(request)
+                .requestKey(request.getClass().getCanonicalName())
+                .parameters(new DefaultMultiValuesMap<>())
+                .headers(new DefaultMultiValuesMap<>()).build();
         ExecutionContext<RequestBean, ResponseBean> executionContext = new DefaultExecutionContext<>(requestContext, responseContext);
         ServerApp.make().executeRequest(executionContext, entryPointContext);
     };

@@ -1,6 +1,6 @@
 package com.progressoft.brix.domino.api.shared.request;
 
-public class FailedResponseBean extends ResponseBean {
+public class FailedResponseBean implements ResponseBean {
 
     private static final long serialVersionUID = 7146258885910449957L;
 

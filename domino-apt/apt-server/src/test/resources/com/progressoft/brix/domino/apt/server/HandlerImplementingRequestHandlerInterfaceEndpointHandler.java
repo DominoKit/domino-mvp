@@ -4,15 +4,15 @@ import com.progressoft.brix.domino.api.server.endpoint.AbstractEndpoint;
 import com.progressoft.brix.domino.api.shared.request.RequestBean;
 import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 
-public class HandlerImplementingRequestHandlerInterfaceEndpointHandler extends AbstractEndpoint<RequestBean, ResponseBean> {
+public class HandlerImplementingRequestHandlerInterfaceEndpointHandler extends AbstractEndpoint<FirstRequest, ResponseBean> {
 
     @Override
-    protected RequestBean makeNewRequest() {
-        return new RequestBean();
+    protected FirstRequest makeNewRequest() {
+        return new FirstRequest();
     }
 
     @Override
-    protected Class<RequestBean> getRequestClass() {
-        return RequestBean.class;
+    protected Class<FirstRequest> getRequestClass() {
+        return FirstRequest.class;
     }
 }
