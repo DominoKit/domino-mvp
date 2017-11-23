@@ -1,5 +1,6 @@
 package com.progressoft.brix.domino.desktop.client;
 
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.progressoft.brix.domino.api.client.ServiceRootMatcher;
 import com.progressoft.brix.domino.api.client.annotations.Path;
 import com.progressoft.brix.domino.api.client.events.ServerRequestEventFactory;
@@ -36,6 +37,10 @@ public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DesktopRequestAsyncSender.class);
     public static final int RRESPONSE_TYPE_INDEX = 1;
+
+    static {
+        Json.mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    }
 
     private final WebClient webClient;
     private String csrfToken;
