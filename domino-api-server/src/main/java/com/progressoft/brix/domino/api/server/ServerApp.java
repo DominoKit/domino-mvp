@@ -1,6 +1,7 @@
 package com.progressoft.brix.domino.api.server;
 
 import com.progressoft.brix.domino.api.server.config.ServerModuleConfiguration;
+import com.progressoft.brix.domino.api.server.context.ExecutionContext;
 import com.progressoft.brix.domino.api.server.endpoint.EndpointsRegistry;
 import com.progressoft.brix.domino.api.server.entrypoint.ServerContext;
 import com.progressoft.brix.domino.api.server.entrypoint.ServerEntryPointContext;
@@ -11,7 +12,6 @@ import com.progressoft.brix.domino.api.server.interceptor.GlobalRequestIntercept
 import com.progressoft.brix.domino.api.server.interceptor.InterceptorsRegistry;
 import com.progressoft.brix.domino.api.server.interceptor.InterceptorsRepository;
 import com.progressoft.brix.domino.api.server.interceptor.RequestInterceptor;
-import com.progressoft.brix.domino.api.server.context.ExecutionContext;
 import com.progressoft.brix.domino.api.server.request.RequestExecutor;
 
 import java.util.function.Supplier;
@@ -41,8 +41,8 @@ public class ServerApp implements HandlerRegistry, InterceptorsRegistry, Endpoin
     }
 
     @Override
-    public void registerHandler(String request, RequestHandler handler) {
-        handlersRepositoryHolder.attribute.registerHandler(request, handler);
+    public void registerHandler(String path, RequestHandler handler) {
+        handlersRepositoryHolder.attribute.registerHandler("/service/" + path, handler);
     }
 
     @Override
@@ -59,8 +59,8 @@ public class ServerApp implements HandlerRegistry, InterceptorsRegistry, Endpoin
     }
 
     @Override
-    public void registerInterceptor(String requestName, String entryPointName, RequestInterceptor interceptor) {
-        interceptorsRepositoryHolder.attribute.addInterceptor(requestName, entryPointName, interceptor);
+    public void registerInterceptor(String handlerName, String entryPointName, RequestInterceptor interceptor) {
+        interceptorsRepositoryHolder.attribute.addInterceptor(handlerName, entryPointName, interceptor);
     }
 
     @Override

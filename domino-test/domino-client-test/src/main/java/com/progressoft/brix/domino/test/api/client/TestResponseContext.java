@@ -1,7 +1,7 @@
 package com.progressoft.brix.domino.test.api.client;
 
-import com.progressoft.brix.domino.api.server.request.DefaultMultiValuesMap;
-import com.progressoft.brix.domino.api.server.request.MultiValuesMap;
+import com.progressoft.brix.domino.api.server.request.DefaultMultiMap;
+import com.progressoft.brix.domino.api.server.request.MultiMap;
 import com.progressoft.brix.domino.api.server.response.ResponseContext;
 import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 
@@ -10,7 +10,7 @@ public class TestResponseContext<S extends ResponseBean> implements ResponseCont
     private String bodyString;
     private boolean ended;
     private int statusCode;
-    private MultiValuesMap<String, String> headers = new DefaultMultiValuesMap<>();
+    private MultiMap<String, String> headers = new DefaultMultiMap<>();
 
     @Override
     public ResponseContext<S> putHeader(String name, String value) {
@@ -55,7 +55,7 @@ public class TestResponseContext<S extends ResponseBean> implements ResponseCont
         return ended;
     }
 
-    public MultiValuesMap<String, String> getHeaders() {
+    public MultiMap<String, String> getHeaders() {
         return headers;
     }
 

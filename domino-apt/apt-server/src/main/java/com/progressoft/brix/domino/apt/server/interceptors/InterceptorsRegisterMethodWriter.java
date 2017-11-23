@@ -1,5 +1,8 @@
 package com.progressoft.brix.domino.apt.server.interceptors;
 
+import com.google.auto.common.MoreElements;
+import com.progressoft.brix.domino.api.server.handler.RequestHandler;
+import com.progressoft.brix.domino.api.server.interceptor.Interceptor;
 import com.progressoft.brix.domino.api.server.interceptor.InterceptorsRegistry;
 import com.progressoft.brix.domino.api.server.interceptor.RequestInterceptor;
 import com.progressoft.brix.domino.apt.commons.AbstractRegisterMethodWriter;
@@ -8,6 +11,13 @@ import com.progressoft.brix.domino.apt.commons.ProcessorElement;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
+
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.AnnotationValue;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
+import java.util.Map;
 
 public class InterceptorsRegisterMethodWriter extends AbstractRegisterMethodWriter<InterceptorsEntry, ProcessorElement> {
     public InterceptorsRegisterMethodWriter(TypeSpec.Builder clientModuleTypeBuilder) {
@@ -26,10 +36,28 @@ public class InterceptorsRegisterMethodWriter extends AbstractRegisterMethodWrit
 
     @Override
     protected void registerItem(InterceptorsEntry entry, MethodSpec.Builder methodBuilder) {
-        FullClassName request = new FullClassName(new FullClassName(entry.element.getInterfaceFullQualifiedGenericName(RequestInterceptor.class)).allImports().get(1));
         FullClassName entryPoint = new FullClassName(new FullClassName(entry.element.getInterfaceFullQualifiedGenericName(RequestInterceptor.class)).allImports().get(2));
         methodBuilder.addStatement("registry.registerInterceptor($T.class.getCanonicalName(), $T.class.getCanonicalName(), new $T())",
-                ClassName.get(request.asPackage(), request.asSimpleGenericName()), ClassName.get(entryPoint.asPackage(), entryPoint.asSimpleGenericName()), ClassName.get(entry.element.elementPackage(), entry.element.simpleName()));
+                ClassName.bestGuess(getHandler(entry)), ClassName.get(entryPoint.asPackage(), entryPoint.asSimpleGenericName()), ClassName.get(entry.element.elementPackage(), entry.element.simpleName()));
+    }
+
+    private String getHandler(InterceptorsEntry entry) {
+        AnnotationMirror
+                providerAnnotation = MoreElements.getAnnotationMirror(entry.element.asTypeElement(), Interceptor.class).get();
+        DeclaredType providerInterface = this.getProviderInterface(providerAnnotation);
+        TypeElement typeElement = asTypeElement(providerInterface);
+        return typeElement.getQualifiedName().toString();
+
+    }
+
+    private TypeElement asTypeElement(DeclaredType p) {
+        return (TypeElement) p.asElement();
+    }
+
+    private DeclaredType getProviderInterface(AnnotationMirror providerAnnotation) {
+        Map valueIndex = providerAnnotation.getElementValues();
+        AnnotationValue value = (AnnotationValue) valueIndex.values().iterator().next();
+        return (DeclaredType) value.getValue();
     }
 
     @Override

@@ -12,7 +12,7 @@ import com.progressoft.brix.domino.api.server.context.DefaultExecutionContext;
 import com.progressoft.brix.domino.api.server.context.ExecutionContext;
 import com.progressoft.brix.domino.api.server.entrypoint.ServerEntryPointContext;
 import com.progressoft.brix.domino.api.server.handler.HandlersRepository;
-import com.progressoft.brix.domino.api.server.request.DefaultMultiValuesMap;
+import com.progressoft.brix.domino.api.server.request.DefaultMultiMap;
 import com.progressoft.brix.domino.api.server.request.DefaultRequestContext;
 import com.progressoft.brix.domino.api.server.request.RequestContext;
 import com.progressoft.brix.domino.api.shared.request.FailedResponseBean;
@@ -49,9 +49,9 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
 
     private final TestServerService service = (request, responseContext) -> {
         RequestContext<RequestBean> requestContext = DefaultRequestContext.forRequest(request)
-                .requestKey(request.getClass().getCanonicalName())
-                .parameters(new DefaultMultiValuesMap<>())
-                .headers(new DefaultMultiValuesMap<>()).build();
+                .requestPath(request.getClass().getCanonicalName())
+                .parameters(new DefaultMultiMap<>())
+                .headers(new DefaultMultiMap<>()).build();
         ExecutionContext<RequestBean, ResponseBean> executionContext = new DefaultExecutionContext<>(requestContext, responseContext);
         ServerApp.make().executeRequest(executionContext, entryPointContext);
     };

@@ -29,7 +29,6 @@ public class AnnotatedClassWithHandlerPathWithServiceRootSender implements Reque
 
     @Override
     public void send(SomeRequest request, Map<String, String> headers, ServerRequestCallBack callBack) {
-        headers.put("REQUEST_KEY", request.getClass().getCanonicalName()+"_xyz");
         ((RestServiceProxy)service).setResource(new Resource(SERVICE_ROOT, headers));
         service.send(request, request, new MethodCallback<SomeResponse>() {
             @Override

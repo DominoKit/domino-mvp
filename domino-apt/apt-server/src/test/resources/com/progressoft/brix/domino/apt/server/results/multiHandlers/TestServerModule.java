@@ -6,13 +6,10 @@ import com.progressoft.brix.domino.api.server.endpoint.EndpointsRegistry;
 import com.progressoft.brix.domino.api.server.handler.HandlerRegistry;
 import com.progressoft.brix.domino.apt.server.FirstHandler;
 import com.progressoft.brix.domino.apt.server.FirstHandlerEndpointHandler;
-import com.progressoft.brix.domino.apt.server.FirstRequest;
 import com.progressoft.brix.domino.apt.server.SecondHandler;
 import com.progressoft.brix.domino.apt.server.SecondHandlerEndpointHandler;
-import com.progressoft.brix.domino.apt.server.SecondRequest;
 import com.progressoft.brix.domino.apt.server.ThirdHandler;
 import com.progressoft.brix.domino.apt.server.ThirdHandlerEndpointHandler;
-import com.progressoft.brix.domino.apt.server.ThirdRequest;
 import java.util.function.Supplier;
 import javax.annotation.Generated;
 
@@ -21,9 +18,9 @@ import javax.annotation.Generated;
 public class TestServerModule implements ServerModuleConfiguration {
     @Override
     public void registerHandlers(HandlerRegistry registry) {
-        registry.registerHandler(FirstRequest.class.getCanonicalName() + "_xyz", new FirstHandler());
-        registry.registerHandler(SecondRequest.class.getCanonicalName(), new SecondHandler());
-        registry.registerHandler(ThirdRequest.class.getCanonicalName(), new ThirdHandler());
+        registry.registerHandler("somePath", new FirstHandler());
+        registry.registerHandler("somePath2", new SecondHandler());
+        registry.registerHandler("somePath3", new ThirdHandler());
     }
 
     @Override

@@ -3,7 +3,8 @@ package com.progressoft.brix.domino.api.server;
 import com.progressoft.brix.domino.api.server.context.DefaultExecutionContext;
 import com.progressoft.brix.domino.api.server.context.ExecutionContext;
 import com.progressoft.brix.domino.api.server.handler.HandlersRepository;
-import com.progressoft.brix.domino.api.server.request.DefaultMultiValuesMap;
+import com.progressoft.brix.domino.api.server.handler.RequestHandler;
+import com.progressoft.brix.domino.api.server.request.DefaultMultiMap;
 import com.progressoft.brix.domino.api.server.request.DefaultRequestContext;
 import com.progressoft.brix.domino.api.server.request.RequestContext;
 import io.vertx.core.Vertx;
@@ -46,51 +47,59 @@ public class ServerAppTest {
 
         RequestContext<TestRequest> requestContext = DefaultRequestContext
                 .forRequest(request)
-                .requestKey(TestRequest.class.getCanonicalName())
-                .parameters(new DefaultMultiValuesMap<>())
-                .headers(new DefaultMultiValuesMap<>())
+                .requestPath("/service/" + getPath())
+                .parameters(new DefaultMultiMap<>())
+                .headers(new DefaultMultiMap<>())
                 .build();
         routingContext = new DefaultExecutionContext<>(requestContext, new FakeResponseContext());
     }
 
+    private String getPath() {
+        return "test/path";
+    }
+
     @Test
     public void canRegisterRequestHandler() throws Exception {
-        serverApp.registerHandler(TestRequest.class.getCanonicalName(), new TestRequestHandler());
-        assertNotNull(serverApp.handlersRepository().findHandler(TestRequest.class.getCanonicalName()));
+        serverApp.registerHandler(getPath(), new TestRequestHandler());
+        assertNotNull(findHandler(getPath()));
+    }
+
+    private RequestHandler findHandler(String path) {
+        return serverApp.handlersRepository().findHandler("/service/" + path);
     }
 
     @Test(expected = HandlersRepository.RequestHandlerHaveAlreadyBeenRegistered.class)
     public void givenServerApp_whenRegisteringRequestHandlerMoreThanOnce_shouldThrowException()
             throws Exception {
-        serverApp.registerHandler(TestRequest.class.getCanonicalName(), new TestRequestHandler());
-        serverApp.registerHandler(TestRequest.class.getCanonicalName(), new TestRequestHandler());
+        serverApp.registerHandler(getPath(), new TestRequestHandler());
+        serverApp.registerHandler(getPath(), new TestRequestHandler());
     }
 
     @Test(expected = HandlersRepository.RequestHandlerNotFound.class)
     public void givenServerApp_whenTryingToFindARequestHandlerThatHaveNotBeenRegistered_shouldThrowException()
             throws Exception {
-        serverApp.handlersRepository().findHandler(TestRequest.class.getCanonicalName());
+        findHandler(getPath());
     }
 
     @Test
     public void givenServerApp_whenExecutingARequest_theRequestHandlerShouldBeInvoked() throws Exception {
-        serverApp.registerHandler(TestRequest.class.getCanonicalName(), new TestRequestHandler());
+        serverApp.registerHandler(getPath(), new TestRequestHandler());
         serverApp.executeRequest(routingContext, new TestServerEntryPointContext());
         assertEquals("-handled", request.getTestWord());
     }
 
     @Test
     public void givenServerApp_whenExecutingARequest_thenTheRequestShouldBeInterceptedBeforeCallingTheHandler() throws Exception {
-        serverApp.registerHandler(TestRequest.class.getCanonicalName(), new TestRequestHandler());
-        serverApp.registerInterceptor(TestRequest.class.getCanonicalName(), TestServerEntryPointContext.class.getCanonicalName(), new TestInterceptor());
+        serverApp.registerHandler(getPath(), new TestRequestHandler());
+        serverApp.registerInterceptor(TestRequestHandler.class.getCanonicalName(), TestServerEntryPointContext.class.getCanonicalName(), new TestInterceptor());
         serverApp.executeRequest(routingContext, new TestServerEntryPointContext());
         assertEquals("-intercepted-entry-point-parameter-handled", request.getTestWord());
     }
 
     @Test
     public void givenServerApp_whenExecutingARequest_thenTheRequestShouldBeInterceptedByTheGlobalInterceptorsBeforeCallingTheHandler() throws Exception {
-        serverApp.registerHandler(TestRequest.class.getCanonicalName(), new TestRequestHandler());
-        serverApp.registerInterceptor(TestRequest.class.getCanonicalName(), TestServerEntryPointContext.class.getCanonicalName(), new TestInterceptor());
+        serverApp.registerHandler(getPath(), new TestRequestHandler());
+        serverApp.registerInterceptor(TestRequestHandler.class.getCanonicalName(), TestServerEntryPointContext.class.getCanonicalName(), new TestInterceptor());
         serverApp.registerGlobalInterceptor(TestServerEntryPointContext.class.getCanonicalName(), new TestGlobalRequestInterceptor());
         serverApp.executeRequest(routingContext, new TestServerEntryPointContext());
         assertEquals("-intercepted-entry-point-parameter-globally-intercepted-entry-point-parameter-handled", request.getTestWord());

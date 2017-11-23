@@ -9,30 +9,27 @@ import com.progressoft.brix.domino.apt.server.FirstGlobalInterceptor;
 import com.progressoft.brix.domino.apt.server.FirstHandler;
 import com.progressoft.brix.domino.apt.server.FirstHandlerEndpointHandler;
 import com.progressoft.brix.domino.apt.server.FirstInterceptor;
-import com.progressoft.brix.domino.apt.server.FirstRequest;
 import com.progressoft.brix.domino.apt.server.SecondGlobalInterceptor;
 import com.progressoft.brix.domino.apt.server.SecondHandler;
 import com.progressoft.brix.domino.apt.server.SecondHandlerEndpointHandler;
 import com.progressoft.brix.domino.apt.server.SecondInterceptor;
-import com.progressoft.brix.domino.apt.server.SecondRequest;
 import com.progressoft.brix.domino.apt.server.TestServerEntryPointContext;
 import com.progressoft.brix.domino.apt.server.ThirdGlobalInterceptor;
 import com.progressoft.brix.domino.apt.server.ThirdHandler;
 import com.progressoft.brix.domino.apt.server.ThirdHandlerEndpointHandler;
 import com.progressoft.brix.domino.apt.server.ThirdInterceptor;
-import com.progressoft.brix.domino.apt.server.ThirdRequest;
 import java.util.function.Supplier;
 import javax.annotation.Generated;
 
 @Generated("com.progressoft.brix.domino.apt.server.ServerModuleAnnotationProcessor")
 @AutoService(ServerModuleConfiguration.class)
-public class TestServerModule implements ServerModuleConfiguration{
+public class TestServerModule implements ServerModuleConfiguration {
 
     @Override
     public void registerHandlers(HandlerRegistry registry) {
-        registry.registerHandler(FirstRequest.class.getCanonicalName()+"_xyz", new FirstHandler());
-        registry.registerHandler(SecondRequest.class.getCanonicalName(), new SecondHandler());
-        registry.registerHandler(ThirdRequest.class.getCanonicalName(), new ThirdHandler());
+        registry.registerHandler("somePath", new FirstHandler());
+        registry.registerHandler("somePath2", new SecondHandler());
+        registry.registerHandler("somePath3", new ThirdHandler());
     }
 
     @Override
@@ -59,9 +56,9 @@ public class TestServerModule implements ServerModuleConfiguration{
 
     @Override
     public void registerInterceptors(InterceptorsRegistry registry) {
-        registry.registerInterceptor(FirstRequest.class.getCanonicalName(), TestServerEntryPointContext.class.getCanonicalName(), new FirstInterceptor());
-        registry.registerInterceptor(SecondRequest.class.getCanonicalName(), TestServerEntryPointContext.class.getCanonicalName(), new SecondInterceptor());
-        registry.registerInterceptor(ThirdRequest.class.getCanonicalName(), TestServerEntryPointContext.class.getCanonicalName(), new ThirdInterceptor());
+        registry.registerInterceptor(FirstHandler.class.getCanonicalName(), TestServerEntryPointContext.class.getCanonicalName(), new FirstInterceptor());
+        registry.registerInterceptor(SecondHandler.class.getCanonicalName(), TestServerEntryPointContext.class.getCanonicalName(), new SecondInterceptor());
+        registry.registerInterceptor(ThirdHandler.class.getCanonicalName(), TestServerEntryPointContext.class.getCanonicalName(), new ThirdInterceptor());
     }
 
     @Override

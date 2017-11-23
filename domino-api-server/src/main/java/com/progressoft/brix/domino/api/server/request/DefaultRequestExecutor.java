@@ -3,6 +3,7 @@ package com.progressoft.brix.domino.api.server.request;
 import com.progressoft.brix.domino.api.server.context.ExecutionContext;
 import com.progressoft.brix.domino.api.server.entrypoint.ServerEntryPointContext;
 import com.progressoft.brix.domino.api.server.handler.HandlersRepository;
+import com.progressoft.brix.domino.api.server.handler.RequestHandler;
 import com.progressoft.brix.domino.api.server.interceptor.GlobalRequestInterceptor;
 import com.progressoft.brix.domino.api.server.interceptor.InterceptorsRepository;
 import com.progressoft.brix.domino.api.server.interceptor.RequestInterceptor;
@@ -22,17 +23,18 @@ public class DefaultRequestExecutor implements RequestExecutor {
 
     @Override
     public void executeRequest(ExecutionContext requestContext, ServerEntryPointContext context) {
-        callInterceptors(requestContext, context);
-        handlersRepository.findHandler(requestContext.request().getRequestKey()).handleRequest(requestContext);
+        RequestHandler handler = handlersRepository.findHandler(requestContext.request().getRequestPath());
+        callInterceptors(handler, requestContext.request(), context);
+        handler.handleRequest(requestContext);
     }
 
-    private void callInterceptors(ExecutionContext requestContext, ServerEntryPointContext context) {
-        getInterceptors(requestContext, context).forEach(i -> i.intercept(requestContext.request(), context));
-        getGlobalInterceptors(context).forEach(i -> i.intercept(requestContext.request(), context));
+    private void callInterceptors(RequestHandler handler, RequestContext requestContext, ServerEntryPointContext context) {
+        getInterceptors(handler, context).forEach(i -> i.intercept(requestContext, context));
+        getGlobalInterceptors(context).forEach(i -> i.intercept(requestContext, context));
     }
 
-    private Collection<RequestInterceptor> getInterceptors(ExecutionContext requestContext, ServerEntryPointContext context) {
-        return interceptorsRepository.findInterceptors(requestContext.request().getRequestBean().getClass().getCanonicalName(), context.getClass().getCanonicalName());
+    private Collection<RequestInterceptor> getInterceptors(RequestHandler handler, ServerEntryPointContext context) {
+        return interceptorsRepository.findInterceptors(handler.getClass().getCanonicalName(), context.getClass().getCanonicalName());
     }
 
     private Collection<GlobalRequestInterceptor> getGlobalInterceptors(ServerEntryPointContext context) {

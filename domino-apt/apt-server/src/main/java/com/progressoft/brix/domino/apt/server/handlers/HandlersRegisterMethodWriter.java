@@ -29,10 +29,8 @@ public class HandlersRegisterMethodWriter extends AbstractRegisterMethodWriter<H
     @Override
     protected void registerItem(HandlersEntry entry, MethodSpec.Builder methodBuilder) {
         Handler handlerAnnotation = entry.handler.getAnnotation(Handler.class);
-        String classifier = handlerAnnotation.classifier().isEmpty() ? "" : "+\"_" + handlerAnnotation.classifier() + "\"";
         FullClassName request = new FullClassName(new FullClassName(entry.handler.getInterfaceFullQualifiedGenericName(RequestHandler.class)).allImports().get(1));
-        methodBuilder.addStatement("registry." + "registerHandler" + "($T.class.getCanonicalName()" + classifier + ",new $T())",
-                ClassName.get(request.asPackage(), request.asSimpleName()), ClassName.get(entry.handler.elementPackage(), entry.handler.simpleName()));
+        methodBuilder.addStatement("registry.registerHandler(\"" + handlerAnnotation.value() + "\",new $T())", ClassName.get(entry.handler.elementPackage(), entry.handler.simpleName()));
     }
 
     @Override

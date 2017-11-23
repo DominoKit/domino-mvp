@@ -2,8 +2,8 @@ package com.progressoft.brix.domino.api.server.handler;
 
 public interface HandlersRepository {
 
-    void registerHandler(String request, RequestHandler handler);
-    RequestHandler findHandler(String request);
+    void registerHandler(String path, RequestHandler handler);
+    RequestHandler findHandler(String path);
 
     class RequestHandlerHaveAlreadyBeenRegistered extends RuntimeException {
         public RequestHandlerHaveAlreadyBeenRegistered(String message) {

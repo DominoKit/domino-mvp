@@ -4,7 +4,7 @@ import com.progressoft.brix.domino.api.server.interceptor.Interceptor;
 import com.progressoft.brix.domino.api.server.interceptor.RequestInterceptor;
 import com.progressoft.brix.domino.api.server.request.RequestContext;
 
-@Interceptor
+@Interceptor(ThirdHandler.class)
 public class ThirdInterceptor implements RequestInterceptor<ThirdRequest, TestServerEntryPointContext> {
 
     @Override

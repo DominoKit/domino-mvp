@@ -6,7 +6,7 @@ import com.progressoft.brix.domino.api.client.annotations.Request;
 
 import javax.ws.rs.HttpMethod;
 
-@Request(classifier="xyz")
+@Request
 @Path(value="somePath/{id}/{code}", serviceRoot ="someServiceRootPath", method=HttpMethod.GET)
 public class AnnotatedClassWithHandlerPathWithServiceRoot extends ServerRequest<SomeRequest, SomeResponse> {
 }

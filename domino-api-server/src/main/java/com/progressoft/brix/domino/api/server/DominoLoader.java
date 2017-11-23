@@ -29,11 +29,10 @@ public class DominoLoader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DominoLoader.class);
 
-    public static final int DEFAULT_PORT = 0;
-    public static final String HTTP_PORT_KEY = "http.port";
-    public static final int AROUND_6_MONTHS = 15768000;
-    public String webroot = "app";
-    public static final int NOT_FOUND = 404;
+    private static final int DEFAULT_PORT = 0;
+    private static final String HTTP_PORT_KEY = "http.port";
+    private static final int AROUND_6_MONTHS = 15768000;
+    private String webroot = "app";
 
     private final Vertx vertx;
     private final Router router;
@@ -44,7 +43,7 @@ public class DominoLoader {
         this.vertx = vertx;
         this.router = router;
         this.config = config;
-        this.webroot=config.getString("webroot", "app");
+        this.webroot = config.getString("webroot", "app");
     }
 
     public void start() {
@@ -104,7 +103,7 @@ public class DominoLoader {
         router.route("/").order(Integer.MAX_VALUE - 2)
                 .handler(this::serveIndexPage);
 
-        router.route("/static/*").order(Integer.MAX_VALUE-1)
+        router.route("/static/*").order(Integer.MAX_VALUE - 1)
                 .handler(staticHandler)
                 .failureHandler(this::serveResource);
 
@@ -125,7 +124,7 @@ public class DominoLoader {
     }
 
     private HttpServerResponse serveIndexPage(RoutingContext event) {
-        return event.response().putHeader("Content-type", "text/html").sendFile(webroot+"/index.html");
+        return event.response().putHeader("Content-type", "text/html").sendFile(webroot + "/index.html");
     }
 
     private void addSecurityHeadersHandler(Router router) {

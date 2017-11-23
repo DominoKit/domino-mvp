@@ -19,7 +19,6 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import java.io.IOException;
 import java.util.List;
-import java.util.function.Function;
 
 import static java.util.stream.Collectors.toList;
 
@@ -90,34 +89,10 @@ public class RequestFactorySourceWriter extends JavaSourceWriter {
                         ClassName.get(responseBean)))
                 .addMethod(constructor(requestTypeName));
 
-        requestBuilder.addAnnotation(buildRequestAnnotation(method));
+        requestBuilder.addAnnotation(AnnotationSpec.builder(Request.class).build());
         requestBuilder.addAnnotation(pathAnnotation(method.getAnnotation(Path.class)));
 
         return requestBuilder.build();
-    }
-
-    private AnnotationSpec buildRequestAnnotation(ExecutableElement method) {
-        if (needsClassifier(method))
-            return requestAnnotation(method.getSimpleName().toString());
-
-        return requestAnnotation();
-    }
-
-    private boolean needsClassifier(ExecutableElement method) {
-        if (method.getParameters().isEmpty())
-            return needsClassifier(method, m -> m.getParameters().isEmpty());
-
-        return needsClassifier(method, m -> !m.getParameters().isEmpty() && isSameParameterType(method, m));
-    }
-
-    private boolean isSameParameterType(ExecutableElement method, ExecutableElement m) {
-        return m.getParameters().get(0).asType().toString().equals(method.getParameters().get(0).asType().toString());
-    }
-
-    private boolean needsClassifier(ExecutableElement method, Function<ExecutableElement, Boolean> anyMatchFilter) {
-        return processorElement.methodsStream()
-                .filter(m -> !m.getSimpleName().equals(method.getSimpleName()))
-                .anyMatch(anyMatchFilter::apply);
     }
 
     private TypeName getRequestClassName(ExecutableElement method) {
@@ -156,15 +131,4 @@ public class RequestFactorySourceWriter extends JavaSourceWriter {
         blocks.forEach(codeBlock -> newPath.addMember(key, codeBlock));
     }
 
-    private AnnotationSpec requestAnnotation() {
-        return requestAnnotation("");
-    }
-
-    private AnnotationSpec requestAnnotation(String classifier) {
-        AnnotationSpec.Builder requestAnnotationBuilder = AnnotationSpec.builder(Request.class);
-
-        if (!classifier.isEmpty())
-            requestAnnotationBuilder.addMember("classifier", "\"" + classifier + "\"");
-        return requestAnnotationBuilder.build();
-    }
 }

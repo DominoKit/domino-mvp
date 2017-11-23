@@ -175,19 +175,9 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
                     .addParameter(ParameterizedTypeName.get(ClassName.get(Map.class), ClassName.get(String.class), ClassName.get(String.class)), "headers")
                     .addParameter(ServerRequestCallBack.class, "callBack");
 
-            sendMethodBuilder.addStatement(makeHeadersStatement() + ")");
             addServiceRootStatement(sendMethodBuilder);
 
             return sendMethodBuilder.addStatement("service.send(" + makeParameters() + ", $L)", makeMethodCallback()).build();
-        }
-
-        private String makeHeadersStatement() {
-            Request requestAnnotation = processorElement.getAnnotation(Request.class);
-            String headersStatement = "headers.put(\"REQUEST_KEY\", request.getClass().getCanonicalName()";
-            if (nonNull(requestAnnotation) && !requestAnnotation.classifier().isEmpty()) {
-                headersStatement += "+\"_" + requestAnnotation.classifier() + "\"";
-            }
-            return headersStatement;
         }
 
         private void addServiceRootStatement(MethodSpec.Builder sendMethodBuilder) {

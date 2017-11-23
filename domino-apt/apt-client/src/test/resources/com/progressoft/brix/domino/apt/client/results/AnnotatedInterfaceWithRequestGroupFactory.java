@@ -41,7 +41,7 @@ public class AnnotatedInterfaceWithRequestGroupFactory implements AnnotatedInter
         return new AnnotatedInterfaceWithRequestGroup_something5(RequestBean.VOID_REQUEST);
     }
 
-    @Request(classifier = "something")
+    @Request
     @Path("testRoot/somePath")
     public class AnnotatedInterfaceWithRequestGroup_something extends ServerRequest<SomeRequest, SomeResponse> {
         AnnotatedInterfaceWithRequestGroup_something(SomeRequest request) {
@@ -49,7 +49,7 @@ public class AnnotatedInterfaceWithRequestGroupFactory implements AnnotatedInter
         }
     }
 
-    @Request(classifier = "something2")
+    @Request
     @Path("testRoot/somePath2")
     public class AnnotatedInterfaceWithRequestGroup_something2 extends ServerRequest<SomeRequest, SomeResponse> {
         AnnotatedInterfaceWithRequestGroup_something2(SomeRequest request) {
@@ -65,7 +65,7 @@ public class AnnotatedInterfaceWithRequestGroupFactory implements AnnotatedInter
         }
     }
 
-    @Request(classifier = "something4")
+    @Request
     @Path("testRoot/somePath4")
     public class AnnotatedInterfaceWithRequestGroup_something4 extends ServerRequest<VoidRequest, SomeResponse> {
         AnnotatedInterfaceWithRequestGroup_something4(VoidRequest request) {
@@ -73,7 +73,7 @@ public class AnnotatedInterfaceWithRequestGroupFactory implements AnnotatedInter
         }
     }
 
-    @Request(classifier = "something5")
+    @Request
     @Path("testRoot/somePath5")
     public class AnnotatedInterfaceWithRequestGroup_something5 extends ServerRequest<VoidRequest, SomeResponse> {
         AnnotatedInterfaceWithRequestGroup_something5(VoidRequest request) {

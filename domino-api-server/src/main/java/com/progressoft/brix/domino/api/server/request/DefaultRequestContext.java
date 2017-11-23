@@ -5,12 +5,12 @@ import com.progressoft.brix.domino.api.shared.request.RequestBean;
 public class DefaultRequestContext<T extends RequestBean> implements RequestContext<T> {
 
     private final T requestBean;
-    private final MultiValuesMap<String, String> parameters;
-    private final MultiValuesMap<String, String> headers;
-    private final String requestKey;
+    private final MultiMap<String, String> parameters;
+    private final MultiMap<String, String> headers;
+    private final String requestPath;
 
-    public DefaultRequestContext(String requestKey, T requestBean, MultiValuesMap<String, String> parameters, MultiValuesMap<String, String> headers) {
-        this.requestKey = requestKey;
+    public DefaultRequestContext(String requestPath, T requestBean, MultiMap<String, String> parameters, MultiMap<String, String> headers) {
+        this.requestPath = requestPath;
         this.requestBean = requestBean;
         this.parameters = parameters;
         this.headers = headers;
@@ -22,18 +22,18 @@ public class DefaultRequestContext<T extends RequestBean> implements RequestCont
     }
 
     @Override
-    public MultiValuesMap<String, String> headers() {
+    public MultiMap<String, String> headers() {
         return headers;
     }
 
     @Override
-    public MultiValuesMap<String, String> parameters() {
+    public MultiMap<String, String> parameters() {
         return parameters;
     }
 
     @Override
-    public String getRequestKey() {
-        return requestKey;
+    public String getRequestPath() {
+        return requestPath;
     }
 
     public static <S extends RequestBean> RequestContextBuilder<S> forRequest(S requestBean) {
@@ -42,32 +42,32 @@ public class DefaultRequestContext<T extends RequestBean> implements RequestCont
 
     public static class RequestContextBuilder<S extends RequestBean> {
 
-        private String requestKey;
+        private String requestPath;
         private S requestBean;
-        private MultiValuesMap<String, String> parameters;
-        private MultiValuesMap<String, String> headers;
+        private MultiMap<String, String> parameters;
+        private MultiMap<String, String> headers;
 
         public RequestContextBuilder(S requestBean) {
             this.requestBean = requestBean;
         }
 
-        public RequestContextBuilder<S> requestKey(String requestKey) {
-            this.requestKey = requestKey;
+        public RequestContextBuilder<S> requestPath(String requestPath) {
+            this.requestPath = requestPath;
             return this;
         }
 
-        public RequestContextBuilder<S> parameters(MultiValuesMap<String, String> parameters) {
+        public RequestContextBuilder<S> parameters(MultiMap<String, String> parameters) {
             this.parameters = parameters;
             return this;
         }
 
-        public RequestContextBuilder<S> headers(MultiValuesMap<String, String> headers) {
+        public RequestContextBuilder<S> headers(MultiMap<String, String> headers) {
             this.headers = headers;
             return this;
         }
 
         public RequestContext<S> build() {
-            return new DefaultRequestContext<>(requestKey, requestBean, parameters, headers);
+            return new DefaultRequestContext<>(requestPath, requestBean, parameters, headers);
         }
     }
 }

@@ -49,17 +49,10 @@ public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
     protected void sendRequest(ServerRequest request, ServerRequestEventFactory requestEventFactory) {
         Path pathAnnotation = request.getClass().getAnnotation(Path.class);
         HttpMethod method = HttpMethod.valueOf(pathAnnotation.method());
-        String classifier = request.getClass().getAnnotation(com.progressoft.brix.domino.api.client.annotations.Request.class).classifier();
 
 
         String absoluteURI = buildPath(pathAnnotation, request.requestBean());
         HttpRequest<Buffer> httpRequest = webClient.requestAbs(method, absoluteURI);
-
-        String canonicalName = request.requestBean().getClass().getCanonicalName();
-        if (classifier.isEmpty())
-            httpRequest.putHeader("REQUEST_KEY", canonicalName);
-        else
-            httpRequest.putHeader("REQUEST_KEY", canonicalName + "_" + classifier);
 
         if (nonNull(csrfToken))
             httpRequest.putHeader(DEFAULT_HEADER_NAME, csrfToken);

@@ -78,7 +78,8 @@ public class ServerModuleAnnotationProcessorTest {
     public void givenAClassAnnotatedAsInterceptorImplementingInterceptorInterface_whenCompiling_thenShouldCompileAndGenerateServerModuleWithTheInterceptorRegistered()
             throws Exception {
         assertProcessing(
-                BASE_PACKAGE + "FirstInterceptor.java", BASE_PACKAGE + "singleInterceptor/package-info.java")
+                BASE_PACKAGE + "FirstInterceptor.java",
+                BASE_PACKAGE + "singleInterceptor/package-info.java")
                 .withProcessor(serverModuleAnnotationProcessor)
                 .generates(getExpectedResultFileContent("singleInterceptor/TestServerModule.java"));
     }

@@ -6,7 +6,7 @@ import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toCollection;
 
-public class DefaultMultiValuesMap<K, V> implements MultiValuesMap<K, V> {
+public class DefaultMultiMap<K, V> implements MultiMap<K, V> {
 
     protected Map<K, List<V>> values = new LinkedHashMap<>();
 
@@ -54,7 +54,7 @@ public class DefaultMultiValuesMap<K, V> implements MultiValuesMap<K, V> {
     }
 
     @Override
-    public MultiValuesMap<K, V> add(K name, V value) {
+    public MultiMap<K, V> add(K name, V value) {
         requireNonNull(name);
         requireNonNull(value);
         if (!contains(name))
@@ -64,28 +64,28 @@ public class DefaultMultiValuesMap<K, V> implements MultiValuesMap<K, V> {
     }
 
     @Override
-    public MultiValuesMap<K, V> add(K name, Iterable<V> values) {
+    public MultiMap<K, V> add(K name, Iterable<V> values) {
         requireNonNull(values);
         values.forEach(value -> add(name, value));
         return this;
     }
 
     @Override
-    public MultiValuesMap<K, V> addAll(MultiValuesMap<K, V> map) {
+    public MultiMap<K, V> addAll(MultiMap<K, V> map) {
         requireNonNull(map);
         map.entries().forEach(entry -> this.add(entry.getKey(), entry.getValue()));
         return this;
     }
 
     @Override
-    public MultiValuesMap<K, V> addAll(Map<K, V> values) {
+    public MultiMap<K, V> addAll(Map<K, V> values) {
         requireNonNull(values);
         values.forEach(this::add);
         return this;
     }
 
     @Override
-    public MultiValuesMap<K, V> set(K name, V value) {
+    public MultiMap<K, V> set(K name, V value) {
         requireNonNull(name);
         requireNonNull(value);
         clearItem(name);
@@ -94,7 +94,7 @@ public class DefaultMultiValuesMap<K, V> implements MultiValuesMap<K, V> {
     }
 
     @Override
-    public MultiValuesMap<K, V> set(K name, Iterable<V> values) {
+    public MultiMap<K, V> set(K name, Iterable<V> values) {
         clearItem(name);
         add(name, values);
         return this;
@@ -105,7 +105,7 @@ public class DefaultMultiValuesMap<K, V> implements MultiValuesMap<K, V> {
     }
 
     @Override
-    public MultiValuesMap<K, V> setAll(MultiValuesMap<K, V> map) {
+    public MultiMap<K, V> setAll(MultiMap<K, V> map) {
         requireNonNull(map);
         clear();
         addAll(map);
@@ -113,7 +113,7 @@ public class DefaultMultiValuesMap<K, V> implements MultiValuesMap<K, V> {
     }
 
     @Override
-    public MultiValuesMap<K, V> setAll(Map<K, V> values) {
+    public MultiMap<K, V> setAll(Map<K, V> values) {
         requireNonNull(values);
         clear();
         addAll(values);
@@ -121,14 +121,14 @@ public class DefaultMultiValuesMap<K, V> implements MultiValuesMap<K, V> {
     }
 
     @Override
-    public MultiValuesMap<K, V> remove(K name) {
+    public MultiMap<K, V> remove(K name) {
         requireNonNull(name);
         values.remove(name);
         return this;
     }
 
     @Override
-    public MultiValuesMap<K, V> clear() {
+    public MultiMap<K, V> clear() {
         values = new LinkedHashMap<>();
         return this;
     }

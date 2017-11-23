@@ -4,19 +4,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class InMemoryHandlersRepository implements HandlersRepository {
-    private final Map<String, RequestHandler> handlers = new HashMap<>();
+    private final Map<PathMatcher, RequestHandler> handlers = new HashMap<>();
 
     @Override
-    public void registerHandler(String request, RequestHandler handler) {
-        if (handlers.containsKey(request))
-            throw new RequestHandlerHaveAlreadyBeenRegistered("Request  : " + request);
-        handlers.put(request, handler);
+    public void registerHandler(String path, RequestHandler handler) {
+        if (isPathExist(path))
+            throw new RequestHandlerHaveAlreadyBeenRegistered("Path  : " + path);
+        handlers.put(new PathMatcher(path), handler);
+    }
+
+    private boolean isPathExist(String path) {
+        return handlers.entrySet().stream()
+                .anyMatch(entry -> isMatchPath(path, entry));
     }
 
     @Override
-    public RequestHandler findHandler(String request) {
-        if (handlers.containsKey(request))
-            return handlers.get(request);
-        throw new RequestHandlerNotFound("Request : " + request);
+    public RequestHandler findHandler(String path) {
+        return handlers.entrySet().stream()
+                .filter(entry -> isMatchPath(path, entry))
+                .findFirst()
+                .orElseThrow(() -> new RequestHandlerNotFound("Request : " + path))
+                .getValue();
+    }
+
+    private boolean isMatchPath(String request, Map.Entry<PathMatcher, RequestHandler> entry) {
+        return entry.getKey().isMatch(request);
     }
 }

@@ -5,7 +5,7 @@ import com.progressoft.brix.domino.api.server.handler.RequestHandler;
 import com.progressoft.brix.domino.api.server.context.ExecutionContext;
 import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 
-@Handler(value = "somePath", classifier = "xyz")
+@Handler(value = "somePath")
 public class FirstHandler implements RequestHandler<FirstRequest, ResponseBean> {
     @Override
     public void handleRequest(ExecutionContext<FirstRequest, ResponseBean> executionContext) {

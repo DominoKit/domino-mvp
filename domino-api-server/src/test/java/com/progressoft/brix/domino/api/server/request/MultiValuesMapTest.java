@@ -17,11 +17,11 @@ public class MultiValuesMapTest {
     private static final String VALUE_2 = "value2";
     private static final String VALUE_12 = "value12";
 
-    private DefaultMultiValuesMap<String, String> map;
+    private DefaultMultiMap<String, String> map;
 
     @Before
     public void setUp() throws Exception {
-        map = new DefaultMultiValuesMap<>();
+        map = new DefaultMultiMap<>();
     }
 
     @Test
@@ -137,7 +137,7 @@ public class MultiValuesMapTest {
 
     @Test
     public void givenMap_whenAddingAnotherMultiValueMap_shouldMergeTheTwoMaps() throws Exception {
-        MultiValuesMap<String, String> otherMap = new DefaultMultiValuesMap<>();
+        MultiMap<String, String> otherMap = new DefaultMultiMap<>();
         otherMap.add(KEY_2, VALUE_2);
         map.add(KEY, VALUE_1);
 
@@ -148,7 +148,7 @@ public class MultiValuesMapTest {
 
     @Test
     public void givenMap_whenAddingAnotherMultiValueMapThatHasSameKey_shouldMergeTheTwoMaps() throws Exception {
-        MultiValuesMap<String, String> otherMap = new DefaultMultiValuesMap<>();
+        MultiMap<String, String> otherMap = new DefaultMultiMap<>();
         otherMap.add(KEY, VALUE_2);
         map.add(KEY, VALUE_1);
 
@@ -159,7 +159,7 @@ public class MultiValuesMapTest {
 
     @Test(expected = NullPointerException.class)
     public void givenMap_whenAddingAnotherMultiValueMapPassingNull_shouldThrowException() throws Exception {
-        map.addAll((MultiValuesMap<String, String>) null);
+        map.addAll((MultiMap<String, String>) null);
     }
 
     @Test
@@ -215,7 +215,7 @@ public class MultiValuesMapTest {
 
     @Test
     public void givenMap_whenSettingOtherMultiValuesMap_shouldClearAndAddNewItems() throws Exception {
-        MultiValuesMap<String, String> otherMap = new DefaultMultiValuesMap<>();
+        MultiMap<String, String> otherMap = new DefaultMultiMap<>();
         otherMap.add(KEY, Arrays.asList(VALUE_1, VALUE_2));
         map.setAll(otherMap);
 
@@ -224,7 +224,7 @@ public class MultiValuesMapTest {
 
     @Test(expected = NullPointerException.class)
     public void givenMap_whenSettingOtherMultiValuesMapPassingNull_shouldThrowException() throws Exception {
-        map.setAll((MultiValuesMap<String, String>) null);
+        map.setAll((MultiMap<String, String>) null);
     }
 
     @Test
