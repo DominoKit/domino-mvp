@@ -4,6 +4,7 @@ package com.progressoft.brix.domino.test.api.client;
 import com.progressoft.brix.domino.api.client.ClientApp;
 import com.progressoft.brix.domino.api.server.entrypoint.ServerEntryPointContext;
 import com.progressoft.brix.domino.api.shared.extension.MainContext;
+import com.progressoft.brix.domino.api.shared.extension.MainExtensionPoint;
 import com.progressoft.brix.domino.api.shared.history.DominoHistory;
 import com.progressoft.brix.domino.client.commons.request.InMemoryCommandsRepository;
 import com.progressoft.brix.domino.client.commons.request.InMemoryRequestRestSendersRepository;
@@ -48,15 +49,9 @@ public class TestClientAppFactory {
                 .requestSendersRepository(new InMemoryRequestRestSendersRepository())
                 .history(history)
                 .asyncRunner(new TestAsyncRunner())
-                .mainExtensionPoint(TestMainContext::new)
+                .mainExtensionPoint(() -> new MainContext() {
+                })
                 .dominoOptions(new FakeDominoOptions())
                 .build();
-    }
-
-    private static class TestMainContext implements MainContext {
-        @Override
-        public DominoHistory history() {
-            return history;
-        }
     }
 }

@@ -6,7 +6,7 @@ import com.progressoft.brix.domino.api.server.handler.RequestHandler;
 public class TestRequestHandler implements RequestHandler<TestRequest, TestResponse> {
     @Override
     public void handleRequest(ExecutionContext<TestRequest, TestResponse> executionContext) {
-        executionContext.request().getRequestBean().appendTestWord("-handled");
-        executionContext.response().end(new TestResponse());
+        executionContext.getRequestBean().appendTestWord("-handled");
+        executionContext.end(new TestResponse());
     }
 }

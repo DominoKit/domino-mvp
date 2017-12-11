@@ -1,5 +1,6 @@
 package com.progressoft.brix.domino.api.server.context;
 
+import com.progressoft.brix.domino.api.server.request.MultiMap;
 import com.progressoft.brix.domino.api.server.request.RequestContext;
 import com.progressoft.brix.domino.api.server.response.ResponseContext;
 import com.progressoft.brix.domino.api.shared.request.RequestBean;
@@ -16,12 +17,52 @@ public class DefaultExecutionContext<T extends RequestBean, S extends ResponseBe
     }
 
     @Override
-    public RequestContext<T> request() {
-        return requestContext;
+    public T getRequestBean() {
+        return requestContext.getRequestBean();
     }
 
     @Override
-    public ResponseContext<S> response() {
-        return responseContext;
+    public MultiMap<String, String> headers() {
+        return requestContext.headers();
+    }
+
+    @Override
+    public MultiMap<String, String> parameters() {
+        return requestContext.parameters();
+    }
+
+    @Override
+    public String getRequestPath() {
+        return requestContext.getRequestPath();
+    }
+
+    @Override
+    public ResponseContext<S> putHeader(String name, String value) {
+        return responseContext.putHeader(name, value);
+    }
+
+    @Override
+    public ResponseContext<S> putHeader(String name, Iterable<String> values) {
+        return responseContext.putHeader(name, values);
+    }
+
+    @Override
+    public ResponseContext<S> statusCode(int statusCode) {
+        return responseContext.statusCode(statusCode);
+    }
+
+    @Override
+    public void end() {
+        responseContext.end();
+    }
+
+    @Override
+    public void end(S body) {
+        responseContext.end(body);
+    }
+
+    @Override
+    public void end(String body) {
+        responseContext.end(body);
     }
 }

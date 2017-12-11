@@ -74,6 +74,11 @@ public class DesktopStateHistory implements AppHistory {
     }
 
     @Override
+    public void pushState(String token) {
+        //not implemented for desktop
+    }
+
+    @Override
     public void replaceState(String token, String title, String data) {
         //not implemented for desktop
     }

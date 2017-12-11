@@ -11,6 +11,7 @@ public interface DominoHistory {
     void forward();
 
     void pushState(String token, String title, String data);
+    void pushState(String token);
 
     void replaceState(String token, String title, String data);
 

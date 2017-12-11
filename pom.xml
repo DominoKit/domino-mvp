@@ -78,7 +78,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <vertx.version>3.4.2</vertx.version>
-        <elemental.version>1.0.0-beta-1</elemental.version>
+        <elemental.version>1.0.0-beta-3</elemental.version>
     </properties>
 
     <dependencyManagement>

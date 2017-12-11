@@ -69,6 +69,11 @@ public class TestDominoHistory implements AppHistory {
     }
 
     @Override
+    public void pushState(String token) {
+        push(token, "");
+    }
+
+    @Override
     public void replaceState(String token, String title, String data) {
         forwards.pop();
         push(token, data);

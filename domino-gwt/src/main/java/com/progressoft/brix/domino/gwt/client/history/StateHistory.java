@@ -64,6 +64,12 @@ public class StateHistory implements AppHistory {
     }
 
     @Override
+    public void pushState(String token) {
+        if (nonNull(currentToken().value()) && !currentToken().value().equals(token))
+            history.pushState(JsState.state(token, windowTitle(), ""), windowTitle(), "/" + token);
+    }
+
+    @Override
     public void replaceState(String token, String title, String data) {
         history.replaceState(
                 JsState.state(token, data), title, "/" + token);

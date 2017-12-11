@@ -5,6 +5,7 @@ import com.progressoft.brix.domino.api.client.async.AsyncRunner;
 import com.progressoft.brix.domino.api.client.extension.Contributions;
 import com.progressoft.brix.domino.api.client.mvp.view.View;
 import com.progressoft.brix.domino.api.shared.extension.ExtensionPoint;
+import com.progressoft.brix.domino.api.shared.history.DominoHistory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,5 +58,9 @@ public abstract class BaseClientPresenter<V extends View> implements ClientPrese
 
     private String getName() {
         return ClientApp.make().getPresentersRepository().getNameFromConcreteName(getConcrete());
+    }
+
+    protected DominoHistory history(){
+        return ClientApp.make().getHistory();
     }
 }

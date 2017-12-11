@@ -11,7 +11,7 @@ import java.util.List;
 
 public class RestyGwtOptions implements DominoOptions{
 
-    private String defaultServiceRoot= GWT.getHostPageBaseURL() + "service";
+    private String defaultServiceRoot= GWT.getModuleBaseURL().replace("static", "service");
     private String defaultJsonDateFormat =null;
     private List<DynamicServiceRoot> dynamicServiceRoots=new ArrayList<>();
 
