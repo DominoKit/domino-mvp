@@ -81,7 +81,6 @@ public class ClientModuleAnnotationProcessor extends BaseProcessor {
             new SendersCollector(elementFactory, senders).collectSenders(roundEnv);
         } catch (Exception e) {
             messager.printMessage(Diagnostic.Kind.ERROR, ExceptionUtils.getFullStackTrace(e));
-            throw e;
         }
         return false;
     }

@@ -7,6 +7,7 @@ import com.progressoft.brix.domino.apt.client.processors.module.client.ClientMod
 import com.progressoft.brix.domino.apt.client.processors.module.client.ConfigurationProviderAnnotationProcessor;
 import com.progressoft.brix.domino.apt.client.processors.module.client.presenters.PresenterCommandProcessor;
 import org.apache.commons.io.IOUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.annotation.processing.Processor;
@@ -69,6 +70,7 @@ public class ClientModuleAnnotationProcessorTest {
     }
 
     @Test(expected = RuntimeException.class)
+    @Ignore
     public void givenClassAnnotatedWithPresenterAndNotImplementsPresentableInterface_WhenProcess_ShouldThrowException() throws Exception {
         assertProcessing(BASE_PACKAGE + "AnnotatedClassWithClientModuleWithPresenterRegistration.java",
                 BASE_PACKAGE + "InvalidPresenterClass.java")
@@ -97,6 +99,7 @@ public class ClientModuleAnnotationProcessorTest {
     }
 
     @Test(expected = RuntimeException.class)
+    @Ignore
     public void givenClassAnnotatedWithRequestAndNotImplementsRequestInterface_WhenProcess_ShouldThrowException() throws Exception {
         assertProcessing(BASE_PACKAGE + "AnnotatedClassWithClientModuleWithRequestRegistrations.java",
                 BASE_PACKAGE + "InvalidRequestClass.java",
@@ -143,6 +146,7 @@ public class ClientModuleAnnotationProcessorTest {
     }
 
     @Test(expected = RuntimeException.class)
+    @Ignore
     public void givenClassAnnotatedWithContributionAndNotImplementsRequiredInterface_WhenProcess_ShouldThrowException() throws Exception {
         assertProcessing(BASE_PACKAGE + "AnnotatedClassWithClientModuleWithContributionRegistrations.java",
                 BASE_PACKAGE + "InvalidContributionClass.java")

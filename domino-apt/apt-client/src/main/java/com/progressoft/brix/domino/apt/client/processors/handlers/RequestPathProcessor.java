@@ -59,7 +59,6 @@ public class RequestPathProcessor extends BaseProcessor {
         FullClassName fullClassName=new FullClassName(((TypeElement)e).getSuperclass().toString());
         if(!ServerRequest.class.getCanonicalName().equals(fullClassName.asImport())){
             messager.printMessage(Diagnostic.Kind.ERROR, "Class does not extends RequestBean", e);
-            throw new ProcessingException(e, "Class is not a valid Server Request");
         }
         return true;
     }

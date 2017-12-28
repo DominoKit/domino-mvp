@@ -57,7 +57,6 @@ public class RequestFactoryProcessor extends BaseProcessor {
             sourceWriter
                     .write(new RequestFactorySourceWriter(processorElement).write());
         } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Could not generate classes : ", e);
             messager.printMessage(Diagnostic.Kind.ERROR, "could not generate class");
         }
     }

@@ -40,7 +40,6 @@ public class ConfigurationProviderAnnotationProcessor extends BaseProcessor {
             sourceWriter.flush();
             sourceWriter.close();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "could not generate class ", e);
             messager.printMessage(Diagnostic.Kind.ERROR,
                     "could not generate class " + ExceptionUtils.getFullStackTrace(e));
         }
