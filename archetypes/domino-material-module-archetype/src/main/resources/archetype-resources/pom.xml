@@ -47,30 +47,5 @@
                 <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
         </plugins>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.bsc.maven</groupId>
-                    <artifactId>maven-processor-plugin</artifactId>
-                    <version>3.3.2</version>
-                    <executions>
-                        <execution>
-                            <id>generate-app-code</id>
-                            <goals>
-                                <goal>process</goal>
-                            </goals>
-                            <phase>generate-sources</phase>
-                            <configuration>
-                                <options>
-                                </options>
-                                <defaultOutputDirectory>${project.build.directory}/generated-sources/annotations
-                                </defaultOutputDirectory>
-                                <failOnError>true</failOnError>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement>
     </build>
 </project>
