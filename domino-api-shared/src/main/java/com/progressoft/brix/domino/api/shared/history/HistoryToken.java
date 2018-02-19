@@ -7,11 +7,19 @@ public interface HistoryToken {
 
     boolean startsWithPath(String path);
 
+    boolean fragmentsStartsWith(String fragment);
+
     boolean endsWithPath(String path);
+
+    boolean endsWithFragment(String fragment);
 
     boolean containsPath(String path);
 
+    boolean containsFragment(String fragment);
+
     List<String> paths();
+
+    List<String> fragments();
 
     String path();
 
@@ -21,9 +29,13 @@ public interface HistoryToken {
 
     HistoryToken replaceLastPath(String replacement);
 
+    HistoryToken replaceLastFragment(String replacement);
+
     HistoryToken replaceAllPaths(String newPath);
 
     HistoryToken clearPaths();
+
+    HistoryToken clearFragments();
 
     HistoryToken removePath(String path);
 
@@ -33,11 +45,17 @@ public interface HistoryToken {
 
     String parameterValue(String name);
 
+    HistoryToken appendFragment(String fragment);
+
     HistoryToken appendParameter(String name, String value);
+
+    HistoryToken replaceFragment(String fragment, String replacement);
 
     HistoryToken replaceParameter(String name, String replacementName, String replacementValue);
 
     HistoryToken removeParameter(String name);
+
+    HistoryToken replaceAllFragments(String newFragment);
 
     HistoryToken replaceQuery(String newQuery);
 
@@ -45,11 +63,9 @@ public interface HistoryToken {
 
     String query();
 
-    HistoryToken setFragment(String fragment);
-
-    HistoryToken removeFragment();
-
     String fragment();
+
+    HistoryToken removeFragment(String fragment);
 
     HistoryToken clear();
 

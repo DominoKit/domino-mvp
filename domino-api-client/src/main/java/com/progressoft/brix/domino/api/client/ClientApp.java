@@ -323,8 +323,6 @@ public class ClientApp
             ClientApp.ASYNC_RUNNER_HOLDER.hold(asyncRunner);
             ClientApp.DOMINO_OPTIONS_HOLDER.hold(dominoOptions);
         }
-
-
     }
 
     private static final class AttributeHolder<T> {

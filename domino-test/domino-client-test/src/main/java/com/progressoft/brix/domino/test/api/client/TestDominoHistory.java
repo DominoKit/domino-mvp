@@ -1,5 +1,6 @@
 package com.progressoft.brix.domino.test.api.client;
 
+import com.progressoft.brix.domino.api.client.ClientApp;
 import com.progressoft.brix.domino.api.shared.history.AppHistory;
 import com.progressoft.brix.domino.api.shared.history.HistoryToken;
 import com.progressoft.brix.domino.api.shared.history.TokenFilter;
@@ -41,7 +42,7 @@ public class TestDominoHistory implements AppHistory {
     }
 
     private void inform(HistoryState state) {
-        listeners.stream().filter(l -> l.tokenFilter.filter(state.token))
+        listeners.stream().filter(l -> l.tokenFilter.filter(new StateHistoryToken(state.token)))
                 .forEach(l -> l.listener.onPopState(new TestState(state)));
     }
 

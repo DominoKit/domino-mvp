@@ -17,20 +17,26 @@ public class StateHistoryToken implements HistoryToken {
     private static final int VALUE_INDEX = 1;
     private List<String> paths = new LinkedList<>();
     private Map<String, String> queryParameters = new HashMap<>();
-    private String fragment;
+    private List<String> fragments = new LinkedList<>();
 
     public StateHistoryToken(String token) {
         if (isNull(token))
             throw new TokenCannotBeNullException();
         this.paths.addAll(asPathsList(token));
         this.queryParameters.putAll(asQueryParameters(token));
-        this.fragment = parseFragment(token);
+        this.fragments.addAll(parseFragments(token));
     }
 
-    private String parseFragment(String token) {
+    private String getPathToRoot(String token, String root) {
+        if (token.isEmpty())
+            return root;
+        return token.endsWith("/") ? token + root : token + "/" + root;
+    }
+
+    private List<String> parseFragments(String token) {
         if (token.contains("#"))
-            return token.split(FRAGMENT_REGEX)[1];
-        return "";
+            return asPathsList(token.split(FRAGMENT_REGEX)[1]);
+        return new LinkedList<>();
     }
 
     @Override
@@ -38,6 +44,13 @@ public class StateHistoryToken implements HistoryToken {
         if (isEmpty(path))
             return false;
         return startsWith(paths(), asPathsList(path));
+    }
+
+    @Override
+    public boolean fragmentsStartsWith(String fragment) {
+        if (isEmpty(fragment))
+            return false;
+        return startsWith(fragments(), asPathsList(fragment));
     }
 
     private boolean startsWith(List<String> paths, List<String> targets) {
@@ -52,6 +65,13 @@ public class StateHistoryToken implements HistoryToken {
         if (isEmpty(path))
             return false;
         return endsWith(paths(), asPathsList(path));
+    }
+
+    @Override
+    public boolean endsWithFragment(String fragment) {
+        if (isEmpty(fragment))
+            return false;
+        return endsWith(fragments(), asPathsList(fragment));
     }
 
     private boolean endsWith(List<String> paths, List<String> targets) {
@@ -73,6 +93,13 @@ public class StateHistoryToken implements HistoryToken {
         return contains(paths(), asPathsList(path));
     }
 
+    @Override
+    public boolean containsFragment(String fragment) {
+        if (isEmpty(fragment))
+            return false;
+        return contains(fragments(), asPathsList(fragment));
+    }
+
     private boolean contains(List<String> paths, List<String> targets) {
         return IntStream.rangeClosed(0, paths.size() - targets.size())
                 .anyMatch(i -> isOrderedEquals(paths.subList(i, i + targets.size()), targets));
@@ -85,6 +112,11 @@ public class StateHistoryToken implements HistoryToken {
     @Override
     public List<String> paths() {
         return paths;
+    }
+
+    @Override
+    public List<String> fragments() {
+        return fragments;
     }
 
     @Override
@@ -119,6 +151,12 @@ public class StateHistoryToken implements HistoryToken {
     }
 
     @Override
+    public HistoryToken appendFragment(String fragment) {
+        fragments.addAll(asPathsList(fragment));
+        return this;
+    }
+
+    @Override
     public HistoryToken appendParameter(String name, String value) {
         this.queryParameters.put(isNull(name) ? "null" : name, isNull(value) ? "null" : value);
         return this;
@@ -127,6 +165,12 @@ public class StateHistoryToken implements HistoryToken {
     @Override
     public HistoryToken replacePath(String path, String replacement) {
         this.paths = asPathsList(path().replace(path, replacement));
+        return this;
+    }
+
+    @Override
+    public HistoryToken replaceFragment(String fragment, String replacement) {
+        this.paths = asPathsList(fragment().replace(fragment, replacement));
         return this;
     }
 
@@ -149,8 +193,23 @@ public class StateHistoryToken implements HistoryToken {
     }
 
     @Override
+    public HistoryToken replaceLastFragment(String replacement) {
+        if (!this.fragments.isEmpty()) {
+            this.fragments.remove(fragments.size() - 1);
+            this.fragments.add(replacement);
+        }
+        return this;
+    }
+
+    @Override
     public HistoryToken replaceAllPaths(String newPath) {
         this.paths = asPathsList(newPath);
+        return this;
+    }
+
+    @Override
+    public HistoryToken replaceAllFragments(String newFragment) {
+        this.fragments = asPathsList(newFragment);
         return this;
     }
 
@@ -179,8 +238,20 @@ public class StateHistoryToken implements HistoryToken {
     }
 
     @Override
+    public HistoryToken clearFragments() {
+        this.fragments.clear();
+        return this;
+    }
+
+    @Override
     public HistoryToken removePath(String path) {
         this.paths.removeAll(asPathsList(path));
+        return this;
+    }
+
+    @Override
+    public HistoryToken removeFragment(String fragment) {
+        this.fragments.removeAll(asPathsList(fragment));
         return this;
     }
 
@@ -188,25 +259,13 @@ public class StateHistoryToken implements HistoryToken {
     public HistoryToken clear() {
         clearPaths();
         clearQuery();
-        removeFragment();
-        return this;
-    }
-
-    @Override
-    public HistoryToken setFragment(String fragment) {
-        this.fragment = fragment;
-        return this;
-    }
-
-    @Override
-    public HistoryToken removeFragment() {
-        this.fragment = "";
+        clearFragments();
         return this;
     }
 
     @Override
     public String fragment() {
-        return fragment;
+        return String.join("/", fragments());
     }
 
     @Override
@@ -214,8 +273,9 @@ public class StateHistoryToken implements HistoryToken {
         return path() + appendQuery(query()) + appendFragment();
     }
 
+
     private String appendFragment() {
-        return isEmpty(fragment) ? "" : "#" + fragment;
+        return isEmpty(fragment()) ? "" : "#" + fragment();
     }
 
     private String appendQuery(String query) {
@@ -230,7 +290,11 @@ public class StateHistoryToken implements HistoryToken {
     }
 
     private String[] splittedPaths(String pathString) {
-        return pathString.replace("!", "").split(QUERY_REGEX)[0].split(FRAGMENT_REGEX)[0].split("/");
+        return parsePathPart(pathString).split("/");
+    }
+
+    private String parsePathPart(String pathString) {
+        return pathString.replace("!", "").split(QUERY_REGEX)[0].split(FRAGMENT_REGEX)[0];
     }
 
     private boolean isEmpty(String path) {

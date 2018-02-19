@@ -1,7 +1,14 @@
 package com.progressoft.brix.domino.api.shared.history;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static java.util.Objects.nonNull;
+
 public interface TokenFilter {
-    boolean filter(String token);
+
+    static final Logger LOGGER= LoggerFactory.getLogger(TokenFilter.class);
+    boolean filter(HistoryToken token);
 
     static TokenFilter exactMatch(String matchingToken) {
         return new TokenFilter.ExactMatchFilter(matchingToken);
@@ -23,9 +30,29 @@ public interface TokenFilter {
         return new TokenFilter.AnyFilter();
     }
 
+    static TokenFilter exactFragmentMatch(String matchingToken) {
+        return new TokenFilter.ExactFragmentFilter(matchingToken);
+    }
+
+    static TokenFilter startsWithFragment(String prefix) {
+        return new TokenFilter.StartsWithFragmentFilter(prefix);
+    }
+
+    static TokenFilter endsWithFragment(String postfix) {
+        return new TokenFilter.EndsWithFragmentFilter(postfix);
+    }
+
+    static TokenFilter containsFragment(String part) {
+        return new TokenFilter.ContainsFragmentFilter(part);
+    }
+
+    static TokenFilter anyFragment(){
+        return new TokenFilter.AnyFragmentFilter();
+    }
+
     class AnyFilter implements TokenFilter {
         @Override
-        public boolean filter(String token) {
+        public boolean filter(HistoryToken token) {
             return true;
         }
     }
@@ -38,8 +65,8 @@ public interface TokenFilter {
         }
 
         @Override
-        public boolean filter(String token) {
-            return token.equals(matchingToken);
+        public boolean filter(HistoryToken token) {
+            return token.value().equals(matchingToken);
         }
     }
 
@@ -51,8 +78,8 @@ public interface TokenFilter {
         }
 
         @Override
-        public boolean filter(String token) {
-            return token.startsWith(prefix);
+        public boolean filter(HistoryToken token) {
+            return token.value().startsWith(prefix);
         }
     }
 
@@ -64,8 +91,8 @@ public interface TokenFilter {
         }
 
         @Override
-        public boolean filter(String token) {
-            return token.endsWith(postfix);
+        public boolean filter(HistoryToken token) {
+            return token.value().endsWith(postfix);
         }
     }
 
@@ -77,8 +104,70 @@ public interface TokenFilter {
         }
 
         @Override
-        public boolean filter(String token) {
-            return token.contains(matchingPart);
+        public boolean filter(HistoryToken token) {
+            return token.value().contains(matchingPart);
         }
     }
+
+    class ContainsFragmentFilter implements TokenFilter {
+        private final String matchingPart;
+
+        ContainsFragmentFilter(String matchingPart) {
+            this.matchingPart = matchingPart;
+        }
+
+        @Override
+        public boolean filter(HistoryToken token) {
+            return token.fragment().contains(matchingPart);
+        }
+    }
+
+    class ExactFragmentFilter implements TokenFilter {
+        private final String matchingPart;
+
+        ExactFragmentFilter(String matchingPart) {
+            this.matchingPart = matchingPart;
+        }
+
+        @Override
+        public boolean filter(HistoryToken token) {
+            return token.fragment().equals(matchingPart);
+        }
+    }
+
+    class StartsWithFragmentFilter implements TokenFilter {
+        private final String prefix;
+
+        StartsWithFragmentFilter(String prefix) {
+            this.prefix = prefix;
+        }
+
+        @Override
+        public boolean filter(HistoryToken token) {
+            LOGGER.info("token.fragment() : "+token.fragment()+" -> "+prefix);
+            return token.fragment().startsWith(prefix);
+        }
+    }
+
+    class EndsWithFragmentFilter implements TokenFilter {
+        private final String postfix;
+
+        EndsWithFragmentFilter(String postfix) {
+            this.postfix = postfix;
+        }
+
+        @Override
+        public boolean filter(HistoryToken token) {
+            return token.fragment().endsWith(postfix);
+        }
+    }
+
+    class AnyFragmentFilter implements TokenFilter {
+
+        @Override
+        public boolean filter(HistoryToken token) {
+            return nonNull(token.fragment()) && !token.fragment().isEmpty();
+        }
+    }
+
 }

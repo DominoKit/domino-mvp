@@ -1,5 +1,6 @@
 package com.progressoft.brix.domino.desktop.client;
 
+import com.progressoft.brix.domino.api.client.ClientApp;
 import com.progressoft.brix.domino.api.shared.history.AppHistory;
 import com.progressoft.brix.domino.api.shared.history.HistoryToken;
 import com.progressoft.brix.domino.api.shared.history.TokenFilter;

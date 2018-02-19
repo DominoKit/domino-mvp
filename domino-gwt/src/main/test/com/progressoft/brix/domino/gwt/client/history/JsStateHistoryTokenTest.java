@@ -192,7 +192,7 @@ public class JsStateHistoryTokenTest {
 
     @Test
     public void givenSinglePathStateHistoryToken_thenPathsShouldBeTheFirstPathEntry() {
-//        assertThat(make("firstPath").paths()).containsExactly("firstPath");
+        assertThat(make("firstPath").paths()).containsExactly("firstPath");
         assertThat(make("/firstPath").paths()).containsExactly("firstPath");
         assertThat(make("/firstPath/").paths()).containsExactly("firstPath");
         assertThat(make("firstPath/").paths()).containsExactly("firstPath");
@@ -358,14 +358,14 @@ public class JsStateHistoryTokenTest {
 
     @Test
     public void givenStateHistoryToken_whenRemovingFragment_thenTheFragmentShouldBeRemoved() throws Exception {
-        assertThat(make("").removeFragment().fragment()).isEmpty();
-        assertThat(make("#fragment").removeFragment().fragment()).isEmpty();
+        assertThat(make("").clearFragments().fragment()).isEmpty();
+        assertThat(make("#fragment").clearFragments().fragment()).isEmpty();
     }
 
     @Test
     public void givenStateHistoryToken_whenSettingFragment_thenTheFragmentShouldBeReplacedWithTheNewValue() throws Exception {
-        assertThat(make("").setFragment("fragment").fragment()).isEqualTo("fragment");
-        assertThat(make("#fragment").setFragment("newFragment").fragment()).isEqualTo("newFragment");
+        assertThat(make("").appendFragment("fragment").fragment()).isEqualTo("fragment");
+        assertThat(make("#fragment").appendFragment("newFragment").fragment()).isEqualTo("fragment/newFragment");
     }
 
     @Test

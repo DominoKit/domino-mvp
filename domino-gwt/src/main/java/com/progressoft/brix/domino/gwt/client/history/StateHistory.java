@@ -31,7 +31,9 @@ public class StateHistory implements AppHistory {
     }
 
     private void inform(String token, String title, String stateJson) {
-        listeners.stream().filter(l -> l.tokenFilter.filter(token))
+        listeners.stream().filter(l -> {
+            return l.tokenFilter.filter(new DominoHistoryState(token, title, stateJson).token);
+        })
                 .forEach(l -> ClientApp.make().getAsyncRunner().runAsync(() ->
                         l.listener.onPopState(new DominoHistoryState(token, title, stateJson))));
     }
@@ -122,7 +124,7 @@ public class StateHistory implements AppHistory {
 
     private String windowToken() {
        Location location= Js.cast(DomGlobal.location);
-        return location.getPathname().substring(1) + location.getSearch();
+        return location.getPathname().substring(1) + location.getSearch() + location.getHash();
     }
 
     private State currentState() {

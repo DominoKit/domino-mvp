@@ -16,7 +16,7 @@ public class DominoDirectState implements DirectState {
 
     @Override
     public void onDirectUrl(DirectUrlHandler handler) {
-        if (tokenFilter.filter(state.token().value()))
+        if (tokenFilter.filter(state.token()))
             handler.handle(state);
     }
 }
