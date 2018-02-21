@@ -3,7 +3,7 @@
 
     <groupId>com.progressoft.brix.domino.archetypes</groupId>
     <artifactId>archetypes</artifactId>
-    <version>1.0-rc.2-SNAPSHOT</version>
+    <version>1.0-rc.2</version>
     <modelVersion>4.0.0</modelVersion>
 
 
@@ -91,6 +91,15 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>

@@ -5,7 +5,7 @@ package ${package}.${subpackage}.shared.request;
 
 import com.progressoft.brix.domino.api.shared.request.RequestBean;
 
-public class ${module}Request extends RequestBean {
+public class ${module}Request implements RequestBean {
 
     private String message;
 

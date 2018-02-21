@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.progressoft.brix.domino.test</groupId>
         <artifactId>domino-test</artifactId>
-        <version>1.0-rc.2-SNAPSHOT</version>
+        <version>1.0-rc.2</version>
     </parent>
     <packaging>jar</packaging>
 

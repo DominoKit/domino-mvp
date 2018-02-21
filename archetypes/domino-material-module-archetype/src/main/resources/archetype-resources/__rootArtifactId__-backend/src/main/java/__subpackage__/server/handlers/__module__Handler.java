@@ -19,7 +19,7 @@ public class ${module}Handler implements RequestHandler<${module}Request, ${modu
     private static final Logger LOGGER= Logger.getLogger(${module}Handler.class.getName());
     @Override
     public void handleRequest(ExecutionContext<${module}Request, ${module}Response> executionContext) {
-        LOGGER.info("message recieved from client : "+request.getMessage());
-        executionContext.response().end(new ${module}Response("Server message"));
+        LOGGER.info("message recieved from client : "+executionContext.getRequestBean().getMessage());
+        executionContext.end(new ${module}Response("Server message"));
     }
 }

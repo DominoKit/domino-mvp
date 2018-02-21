@@ -1,7 +1,7 @@
 package com.progressoft.brix.domino.apt.client;
 
 import com.google.auto.service.AutoService;
-import com.google.common.annotations.GwtIncompatible;
+import com.google.gwt.core.shared.GwtIncompatible;
 import com.progressoft.brix.domino.api.client.ModuleConfiguration;
 import com.progressoft.brix.domino.api.client.ModuleConfigurationProvider;
 

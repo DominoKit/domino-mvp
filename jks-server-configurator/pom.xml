@@ -5,11 +5,11 @@
     <parent>
         <groupId>com.progressoft.brix.domino</groupId>
         <artifactId>domino-parent</artifactId>
-        <version>1.0-rc.2-SNAPSHOT</version>
+        <version>1.0-rc.2</version>
     </parent>
 
     <artifactId>jks-server-configurator</artifactId>
-    <version>1.0-rc.2-SNAPSHOT</version>
+    <version>1.0-rc.2</version>
 
     <packaging>jar</packaging>
 

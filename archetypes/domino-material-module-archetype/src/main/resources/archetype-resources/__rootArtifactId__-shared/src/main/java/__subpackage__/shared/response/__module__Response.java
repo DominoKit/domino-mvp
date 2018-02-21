@@ -5,7 +5,7 @@ package ${package}.${subpackage}.shared.response;
 
 import com.progressoft.brix.domino.api.shared.request.ResponseBean;
 
-public class ${module}Response extends ResponseBean {
+public class ${module}Response implements ResponseBean {
 
     private String serverMessage;
 

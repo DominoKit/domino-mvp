@@ -39,7 +39,7 @@
             <artifactId>domino-api-server</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.progressoft.brix.domino</groupId>
+            <groupId>com.progressoft.brix.domino.logging</groupId>
             <artifactId>domino-remote-logging</artifactId>
         </dependency>
         <dependency>
