@@ -3,10 +3,11 @@
 #set( $symbol_escape = '\' )
 package ${package}.${subpackage}.client;
 
+import com.google.gwtmockito.GwtMockitoTestRunner;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.Before;
-import com.google.gwtmockito.GwtMockitoTestRunner;
 
 import com.progressoft.brix.domino.api.client.annotations.ClientModule;
 import com.progressoft.brix.domino.test.api.client.DominoTestClient;
@@ -21,6 +22,7 @@ import ${package}.${subpackage}.client.views.Fake${module}View;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
+
 @ClientModule(name="Test${module}")
 @RunWith(GwtMockitoTestRunner.class)
 public class ${module}ClientModuleTest{
@@ -33,14 +35,14 @@ public class ${module}ClientModuleTest{
     public void setUp() {
         presenterSpy = new ${module}PresenterSpy();
         DominoTestClient.useModules(new ${module}ModuleConfiguration(), new Test${module}ModuleConfiguration())
-        .replacePresenter(${module}Presenter.class, presenterSpy)
-        .viewOf(${module}Presenter.class, view -> fakeView= (Fake${module}View) view)
-        .onStartCompleted(clientContext -> this.clientContext = clientContext)
-        .start();
+                .replacePresenter(${module}Presenter.class, presenterSpy)
+                .viewOf(${module}Presenter.class, view -> fakeView= (Fake${module}View) view)
+                .onStartCompleted(clientContext -> this.clientContext = clientContext)
+                .start();
     }
 
     @Test
-    public void given${module}Module_whenContributingToMainExtensionPoint_thenShouldReceiveMainContext() {
+    public void given${module}Module_whenContributingToMainExtensionPoint_thenShouldReceiveMainContext() throws Exception {
         assertThat(presenterSpy.getMainContext()).isNotNull();
     }
 
