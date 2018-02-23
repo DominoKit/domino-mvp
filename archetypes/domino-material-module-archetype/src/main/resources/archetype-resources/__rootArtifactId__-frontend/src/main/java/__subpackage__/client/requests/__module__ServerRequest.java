@@ -3,16 +3,14 @@
 #set( $symbol_escape = '\' )
 package ${package}.${subpackage}.client.requests;
 
-import com.progressoft.brix.domino.api.client.request.ServerRequest;
+import com.progressoft.brix.domino.api.client.annotations.Path;
+import com.progressoft.brix.domino.api.client.annotations.RequestFactory;
+import com.progressoft.brix.domino.api.client.request.Response;
 import ${package}.${subpackage}.shared.response.${module}Response;
 import ${package}.${subpackage}.shared.request.${module}Request;
-import com.progressoft.brix.domino.api.client.annotations.Request;
-import com.progressoft.brix.domino.api.client.annotations.Path;
 
-@Request
-@Path("${module}Request")
-public class ${module}ServerRequest extends ServerRequest<${module}Request, ${module}Response> {
-    public ${module}ServerRequest(${module}Request requestBean) {
-        super(requestBean);
-    }
+@RequestFactory
+public interface ${module}Requests {
+    @Path("${module}Request")
+    Response<${module}Response> request(${module}Request request);
 }
