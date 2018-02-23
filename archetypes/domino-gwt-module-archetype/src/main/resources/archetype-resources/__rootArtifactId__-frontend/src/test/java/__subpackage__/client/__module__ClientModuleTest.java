@@ -12,7 +12,7 @@ import com.progressoft.brix.domino.api.client.annotations.ClientModule;
 import com.progressoft.brix.domino.test.api.client.DominoTestClient;
 import com.progressoft.brix.domino.test.api.client.ClientContext;
 import ${package}.${subpackage}.client.presenters.${module}Presenter;
-import ${package}.${subpackage}.client.requests.${module}ServerRequest;
+import ${package}.${subpackage}.client.requests.${module}RequestsFactory;
 import ${package}.${subpackage}.shared.request.${module}Request;
 import ${package}.${subpackage}.shared.response.${module}Response;
 import ${package}.${subpackage}.client.presenters.${module}PresenterSpy;
@@ -46,9 +46,10 @@ public class ${module}ClientModuleTest{
 
     @Test
     public void given${module}ClientModule_when${module}ServerRequestIsSent_thenServerMessageShouldBeRecieved() {
-        clientContext.forRequest(${module}ServerRequest.class).returnResponse(new ${module}Response("Server message"));
+        clientContext.forRequest(${module}RequestsFactory.${module}Requests_request.class)
+            .returnResponse(new ${module}Response("Server message"));
 
-        new ${module}ServerRequest(new ${module}Request("client message")).onSuccess(response -> assertThat(response.getServerMessage()).isEqualTo("Server message"))
+        ${module}RequestsFactory.INSTANCE.request(new ${module}Request("client message")).onSuccess(response -> assertThat(response.getServerMessage()).isEqualTo("Server message"))
         .onFailed(failedResponse -> fail(failedResponse.getError().getMessage()))
         .send();
     }
