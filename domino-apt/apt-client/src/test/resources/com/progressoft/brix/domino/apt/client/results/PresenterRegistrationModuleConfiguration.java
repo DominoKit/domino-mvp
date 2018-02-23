@@ -11,7 +11,7 @@ public class PresenterRegistrationModuleConfiguration implements ModuleConfigura
 
     @Override
     public void registerPresenters(PresenterRegistry registry) {
-        registry.registerPresenter(new LazyPresenterLoader(PresenterInterface.class.getCanonicalName(), DefaultAnnotatedClassWithPresenter.class.getCanonicalName()) {
+        registry.registerPresenter(new LazyPresenterLoader(DefaultAnnotatedClassWithPresenter.class.getCanonicalName(), DefaultAnnotatedClassWithPresenter.class.getCanonicalName()) {
             @Override
             protected Presentable make() {
                 return new DefaultAnnotatedClassWithPresenter();

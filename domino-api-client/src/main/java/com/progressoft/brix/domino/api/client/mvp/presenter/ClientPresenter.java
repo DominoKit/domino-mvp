@@ -2,10 +2,10 @@ package com.progressoft.brix.domino.api.client.mvp.presenter;
 
 import com.progressoft.brix.domino.api.client.mvp.view.View;
 
-public interface ClientPresenter<V extends View> {
-    default void initView(V view) {
+public abstract class ClientPresenter<V extends View> {
+    protected void initView(V view) {
         // Default empty implementation
     }
 
-    ClientPresenter<V> prepare();
+    protected  abstract ClientPresenter<V> prepare();
 }

@@ -32,10 +32,10 @@ public class RegisterPresentersMethodWriter extends AbstractRegisterMethodWriter
                 .addModifiers(Modifier.PROTECTED)
                 .addAnnotation(Override.class)
                 .returns(Presentable.class)
-                .addStatement("return new $T()", ClassName.bestGuess(entry.impl))
+                .addStatement("return new $T()", ClassName.bestGuess(entry.name))
                 .build();
         TypeSpec lazyLoaderType = TypeSpec.anonymousClassBuilder("$T.class.getCanonicalName(), $T.class.getCanonicalName()"
-                , ClassName.bestGuess(entry.name), ClassName.bestGuess(entry.impl))
+                , ClassName.bestGuess(entry.name), ClassName.bestGuess(entry.name))
                 .superclass(LazyPresenterLoader.class)
                 .addMethod(makeMethod)
                 .build();
@@ -44,8 +44,7 @@ public class RegisterPresentersMethodWriter extends AbstractRegisterMethodWriter
 
     @Override
     protected PresenterEntry parseEntry(String presenter) {
-        String[] presenterPair = presenter.split(":");
-        return new PresenterEntry(presenterPair[0], presenterPair[1]);
+        return new PresenterEntry(presenter);
     }
 
 }

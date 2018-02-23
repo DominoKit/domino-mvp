@@ -18,17 +18,17 @@ import ${package}.${subpackage}.client.presenters.${module}Presenter;
 import ${package}.${subpackage}.client.views.${module}View;
 
 @UiView(presentable = ${module}Presenter.class)
-public class Default${module}View extends Composite implements ${module}View{
+public class ${module}ViewImpl extends Composite implements ${module}View{
 
-    interface Default${module}ViewUiBinder extends UiBinder<HTMLPanel, Default${module}View> {
+    interface ${module}ViewImplUiBinder extends UiBinder<HTMLPanel, ${module}ViewImpl> {
     }
 
-    private static Default${module}ViewUiBinder ourUiBinder = GWT.create(Default${module}ViewUiBinder.class);
+    private static ${module}ViewImplUiBinder ourUiBinder = GWT.create(${module}ViewImplUiBinder.class);
 
     @UiField
     DivElement mainDiv;
 
-    public Default${module}View() {
+    public ${module}ViewImpl() {
         initWidget(ourUiBinder.createAndBindUi(this));
         mainDiv.setInnerHTML("<h1>Hello world!</h1>");
         Document.get().getBody().appendChild(mainDiv);

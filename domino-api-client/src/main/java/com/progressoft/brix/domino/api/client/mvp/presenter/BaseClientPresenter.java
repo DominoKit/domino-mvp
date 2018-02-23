@@ -9,7 +9,7 @@ import com.progressoft.brix.domino.api.shared.history.DominoHistory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class BaseClientPresenter<V extends View> implements ClientPresenter<V>, Presentable {
+public abstract class BaseClientPresenter<V extends View> extends ClientPresenter<V> implements Presentable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseClientPresenter.class);
 

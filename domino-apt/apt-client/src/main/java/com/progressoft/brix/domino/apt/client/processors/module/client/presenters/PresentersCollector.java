@@ -46,16 +46,15 @@ public class PresentersCollector {
             messager.printMessage(Diagnostic.Kind.ERROR, "Not implementing presentable interface", p.getElement());
             throw new NotImplementingPresentableInterfaceException();
         }
-        return presenters.add(p.fullQualifiedNoneGenericName() + ":" +
-                getPresentableInterface(p));
+        return presenters.add(p.fullQualifiedNoneGenericName());
     }
 
-    private String getPresentableInterface(ProcessorElement element) {
-        TypeMirror typeMirror = element.asTypeElement().getInterfaces().stream().filter(this::isPresentableInterface)
-                .collect(Collectors.toSet()).stream().findFirst().orElseThrow(IllegalArgumentException::new);
-
-        return typeMirror.toString();
-    }
+//    private String getPresentableInterface(ProcessorElement element) {
+//        TypeMirror typeMirror = element.asTypeElement().getInterfaces().stream().filter(this::isPresentableInterface)
+//                .collect(Collectors.toSet()).stream().findFirst().orElseThrow(IllegalArgumentException::new);
+//
+//        return typeMirror.toString();
+//    }
 
     private boolean isPresentableInterface(TypeMirror implementedInterface) {
         return typeUtils.isAssignable(implementedInterface,

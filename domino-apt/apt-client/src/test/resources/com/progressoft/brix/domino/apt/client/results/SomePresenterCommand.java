@@ -9,5 +9,5 @@ import javax.annotation.Generated;
  */
 @Generated("com.progressoft.brix.domino.apt.client.processors.module.client.presenters.PresenterCommandProcessor")
 @Command
-public class PresenterInterfaceCommand extends PresenterCommand<PresenterInterface> {
+public class SomePresenterCommand extends PresenterCommand<SomePresenter> {
 }

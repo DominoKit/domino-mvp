@@ -52,8 +52,7 @@ public class ClientModuleAnnotationProcessorTest {
     @Test
     public void givenClassAnnotatedWithPresenter_ShouldAppendPresenterRegistrationToModuleConfiguration() throws Exception {
         assertProcessing(BASE_PACKAGE + "AnnotatedClassWithClientModuleWithPresenterRegistration.java",
-                BASE_PACKAGE + "DefaultAnnotatedClassWithPresenter.java",
-                BASE_PACKAGE + "PresenterInterface.java")
+                BASE_PACKAGE + "DefaultAnnotatedClassWithPresenter.java")
                 .withProcessor(processor())
                 .generates(getExpectedResultFileContent("PresenterRegistrationModuleConfiguration.java"));
     }
@@ -62,9 +61,7 @@ public class ClientModuleAnnotationProcessorTest {
     public void givenTwoClassesAnnotatedWithPresenter_ShouldAppendPresentersRegistrationsToModuleConfiguration() throws Exception {
         assertProcessing(BASE_PACKAGE + "AnnotatedClassWithClientModuleWithPresentersRegistrations.java",
                 BASE_PACKAGE + "FirstAnnotatedClassWithPresenter.java",
-                BASE_PACKAGE + "SecondAnnotatedClassWithPresenter.java",
-                BASE_PACKAGE + "FirstPresenterInterface.java",
-                BASE_PACKAGE + "SecondPresenterInterface.java")
+                BASE_PACKAGE + "SecondAnnotatedClassWithPresenter.java")
                 .withProcessor(processor())
                 .generates(getExpectedResultFileContent("PresentersRegistrationsModuleConfiguration.java"));
     }
@@ -82,8 +79,7 @@ public class ClientModuleAnnotationProcessorTest {
     @Test
     public void givenClassAnnotatedWithUiView_WhenProcess_ShouldAddRegistrationLineToModuleConfiguration() throws Exception {
         assertProcessing(BASE_PACKAGE + "AnnotatedClassWithUiView.java",
-                BASE_PACKAGE + "AnnotatedClassWithClientModuleWithUiViewRegistration.java",
-                BASE_PACKAGE + "PresenterInterface.java")
+                BASE_PACKAGE + "AnnotatedClassWithClientModuleWithUiViewRegistration.java")
                 .withProcessor(processor())
                 .generates(getExpectedResultFileContent("UiViewRegistrationModuleConfiguration.java"));
 
@@ -92,8 +88,7 @@ public class ClientModuleAnnotationProcessorTest {
     @Test
     public void givenClassAnnotatedWithRequest_WhenProcess_ShouldAddRegistrationLineToModuleConfiguration() throws Exception {
         assertProcessing(BASE_PACKAGE + "AnnotatedClassWithRequest.java",
-                BASE_PACKAGE + "AnnotatedClassWithClientModuleWithRequestRegistrations.java",
-                BASE_PACKAGE + "PresenterInterface.java")
+                BASE_PACKAGE + "AnnotatedClassWithClientModuleWithRequestRegistrations.java")
                 .withProcessor(processor())
                 .generates(getExpectedResultFileContent("RequestRegistrationsModuleConfiguration.java"));
     }
@@ -137,12 +132,9 @@ public class ClientModuleAnnotationProcessorTest {
 
     @Test
     public void givenPresenter_WhenProcessWithPresenterCommandProcessor_ShouldGeneratePresenterCommandClass() throws Exception {
-        assertProcessing(BASE_PACKAGE + "SomePresenter.java",
-                BASE_PACKAGE + "PresenterInterface.java"
-        )
+        assertProcessing(BASE_PACKAGE + "SomePresenter.java")
                 .withProcessor(new PresenterCommandProcessor())
-
-                .generates(getExpectedResultFileContent("PresenterInterfaceCommand.java"));
+                .generates(getExpectedResultFileContent("SomePresenterCommand.java"));
     }
 
     @Test(expected = RuntimeException.class)
@@ -166,8 +158,7 @@ public class ClientModuleAnnotationProcessorTest {
     @Test
     public void givenClassAnnotatedWithHandlerPath_whenProcess_shouldCompileWithoutErrors()
             throws Exception {
-        assertProcessing(BASE_PACKAGE + "PresenterInterface.java",
-                BASE_PACKAGE + "SomeRequest.java",
+        assertProcessing(BASE_PACKAGE + "SomeRequest.java",
                 BASE_PACKAGE + "SomeResponse.java",
                 BASE_PACKAGE + "AnnotatedClassWithHandlerPath.java")
                 .withProcessor(new RequestPathProcessor())
@@ -177,8 +168,7 @@ public class ClientModuleAnnotationProcessorTest {
     @Test
     public void givenClassAnnotatedWithHandlerPath_whenProcess_shouldGenerateSenderWithServiceRootEntry()
             throws Exception {
-        assertProcessing(BASE_PACKAGE + "PresenterInterface.java",
-                BASE_PACKAGE + "SomeRequest.java",
+        assertProcessing(BASE_PACKAGE + "SomeRequest.java",
                 BASE_PACKAGE + "SomeResponse.java",
                 BASE_PACKAGE + "AnnotatedClassWithHandlerPathWithServiceRoot.java")
                 .withProcessor(new RequestPathProcessor())
@@ -189,8 +179,7 @@ public class ClientModuleAnnotationProcessorTest {
     @Test
     public void givenClassAnnotatedWithHandlerPathAndNoServiceRoot_whenProcess_shouldGenerateSenderServiceRootMatcher()
             throws Exception {
-        assertProcessing(BASE_PACKAGE + "PresenterInterface.java",
-                BASE_PACKAGE + "SomeRequest.java",
+        assertProcessing(BASE_PACKAGE + "SomeRequest.java",
                 BASE_PACKAGE + "SomeResponse.java",
                 BASE_PACKAGE + "AnnotatedClassWithHandlerPathWithoutServiceRoot.java")
                 .withProcessor(new RequestPathProcessor())

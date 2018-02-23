@@ -9,6 +9,6 @@ public class RequestRegistrationsModuleConfiguration implements ModuleConfigurat
     @Override
     public void registerRequests(CommandRegistry registry) {
         registry.registerCommand(AnnotatedClassWithRequest.class.getCanonicalName(),
-                PresenterInterface.class.getCanonicalName());
+                DefaultAnnotatedClassWithPresenter.class.getCanonicalName());
     }
 }

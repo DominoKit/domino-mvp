@@ -10,13 +10,13 @@ import javax.annotation.Generated;
 public class PresentersRegistrationsModuleConfiguration implements ModuleConfiguration {
     @Override
     public void registerPresenters(PresenterRegistry registry) {
-        registry.registerPresenter(new LazyPresenterLoader(FirstPresenterInterface.class.getCanonicalName(), FirstAnnotatedClassWithPresenter.class.getCanonicalName()) {
+        registry.registerPresenter(new LazyPresenterLoader(FirstAnnotatedClassWithPresenter.class.getCanonicalName(), FirstAnnotatedClassWithPresenter.class.getCanonicalName()) {
             @Override
             protected Presentable make() {
                 return new FirstAnnotatedClassWithPresenter();
             }
         });
-        registry.registerPresenter(new LazyPresenterLoader(SecondPresenterInterface.class.getCanonicalName(), SecondAnnotatedClassWithPresenter.class.getCanonicalName()) {
+        registry.registerPresenter(new LazyPresenterLoader(SecondAnnotatedClassWithPresenter.class.getCanonicalName(), SecondAnnotatedClassWithPresenter.class.getCanonicalName()) {
             @Override
             protected Presentable make() {
                 return new SecondAnnotatedClassWithPresenter();

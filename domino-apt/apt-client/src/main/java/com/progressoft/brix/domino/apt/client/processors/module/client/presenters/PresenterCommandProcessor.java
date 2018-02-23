@@ -33,23 +33,15 @@ public class PresenterCommandProcessor extends BaseProcessor{
     private void generateCommand(Element presenterElement) {
         final ProcessorElement processorElement = newProcessorElement(presenterElement);
         final String targetPackage = processorElement.elementPackage();
-        final String presentableInterface = getPresentableInterface(processorElement);
-        final String simpleInterfaceName = new FullClassName(presentableInterface).asSimpleName();
-        final String className = simpleInterfaceName + "Command";
+        final String presenterName = processorElement.simpleName();
+        final String className = presenterName + "Command";
         try (Writer sourceWriter = obtainSourceWriter(
                 targetPackage, className)) {
             sourceWriter
-                    .write(new PresenterCommandSourceWriter(processorElement, targetPackage, className, simpleInterfaceName).write());
+                    .write(new PresenterCommandSourceWriter(processorElement, targetPackage, className, presenterName).write());
         } catch (IOException e) {
             messager.printMessage(Diagnostic.Kind.ERROR, "could not generate class", presenterElement);
         }
-    }
-
-    private String getPresentableInterface(ProcessorElement element) {
-        TypeMirror typeMirror = element.asTypeElement().getInterfaces().stream().filter(this::isPresentableInterface)
-                .collect(Collectors.toSet()).stream().findFirst().orElseThrow(IllegalArgumentException::new);
-
-        return typeMirror.toString();
     }
 
     private boolean isPresentableInterface(TypeMirror implementedInterface) {

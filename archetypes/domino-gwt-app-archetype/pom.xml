@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.progressoft.brix.domino.archetypes</groupId>
         <artifactId>archetypes</artifactId>
-        <version>1.0-rc.2</version>
+        <version>1.0-rc.3-SNAPSHOT</version>
     </parent>
 
     <artifactId>domino-gwt-app-archetype</artifactId>

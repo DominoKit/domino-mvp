@@ -11,7 +11,7 @@ public class UiViewRegistrationModuleConfiguration implements ModuleConfiguratio
 
     @Override
     public void registerViews(ViewRegistry registry) {
-        registry.registerView(new LazyViewLoader(PresenterInterface.class.getCanonicalName()) {
+        registry.registerView(new LazyViewLoader(DefaultAnnotatedClassWithPresenter.class.getCanonicalName()) {
             @Override
             protected View make() {
                 return new AnnotatedClassWithUiView();

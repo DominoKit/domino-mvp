@@ -3,7 +3,7 @@
 
     <groupId>com.progressoft.brix.domino.archetypes</groupId>
     <artifactId>archetypes</artifactId>
-    <version>1.0-rc.2</version>
+    <version>1.0-rc.3-SNAPSHOT</version>
     <modelVersion>4.0.0</modelVersion>
 
 
@@ -119,6 +119,5 @@
     <modules>
         <module>domino-gwt-app-archetype</module>
         <module>domino-gwt-module-archetype</module>
-        <module>domino-material-module-archetype</module>
     </modules>
 </project>
