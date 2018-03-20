@@ -18,16 +18,16 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.progressoft.brix.domino.api</groupId>
+            <groupId>org.dominokit.domino.api</groupId>
             <artifactId>domino-api-server</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.progressoft.brix.domino.apt</groupId>
+            <groupId>org.dominokit.domino.apt</groupId>
             <artifactId>apt-server</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.progressoft.brix.domino.test</groupId>
+            <groupId>org.dominokit.domino.test</groupId>
             <artifactId>domino-server-test</artifactId>
             <scope>test</scope>
         </dependency>

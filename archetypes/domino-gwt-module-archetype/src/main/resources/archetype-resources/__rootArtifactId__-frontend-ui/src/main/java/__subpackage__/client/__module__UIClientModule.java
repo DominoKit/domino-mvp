@@ -4,8 +4,8 @@
 package ${package}.${subpackage}.client;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.progressoft.brix.domino.api.client.ModuleConfigurator;
-import com.progressoft.brix.domino.api.client.annotations.ClientModule;
+import org.dominokit.domino.api.client.ModuleConfigurator;
+import org.dominokit.domino.api.client.annotations.ClientModule;
 import ${package}.${subpackage}.client.ui.views.Bundle;
 
 import org.slf4j.Logger;

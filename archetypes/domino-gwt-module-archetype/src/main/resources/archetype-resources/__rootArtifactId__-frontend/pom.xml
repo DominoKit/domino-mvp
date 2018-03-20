@@ -19,25 +19,25 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.progressoft.brix.domino.api</groupId>
+            <groupId>org.dominokit.domino.api</groupId>
             <artifactId>domino-api-client</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.progressoft.brix.domino.api</groupId>
+            <groupId>org.dominokit.domino.api</groupId>
             <artifactId>domino-api-client</artifactId>
             <classifier>sources</classifier>
         </dependency>
         <dependency>
-            <groupId>com.progressoft.brix.domino.logging</groupId>
+            <groupId>org.dominokit.domino.logging</groupId>
             <artifactId>domino-gwt-logger</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.progressoft.brix.domino.apt</groupId>
+            <groupId>org.dominokit.domino.apt</groupId>
             <artifactId>apt-client</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.progressoft.brix.domino.test</groupId>
+            <groupId>org.dominokit.domino.test</groupId>
             <artifactId>domino-client-test</artifactId>
             <scope>test</scope>
         </dependency>

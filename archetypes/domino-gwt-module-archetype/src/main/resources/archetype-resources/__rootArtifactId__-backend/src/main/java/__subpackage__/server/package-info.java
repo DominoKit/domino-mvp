@@ -4,4 +4,4 @@
 @ServerModule(name="${module}")
 package ${package}.${subpackage}.server;
 
-import com.progressoft.brix.domino.api.server.config.ServerModule;
+import org.dominokit.domino.api.server.config.ServerModule;

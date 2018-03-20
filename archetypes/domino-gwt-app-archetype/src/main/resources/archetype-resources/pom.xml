@@ -33,7 +33,7 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.progressoft.brix.domino</groupId>
+                <groupId>org.dominokit.domino</groupId>
                 <artifactId>domino</artifactId>
                 <version>1.0-rc.3-SNAPSHOT</version>
                 <type>pom</type>

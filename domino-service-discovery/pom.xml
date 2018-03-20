@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.progressoft.brix.domino</groupId>
+        <groupId>org.dominokit.domino</groupId>
         <artifactId>domino-parent</artifactId>
         <version>1.0-rc.3-SNAPSHOT</version>
     </parent>
@@ -12,7 +12,7 @@
     <packaging>jar</packaging>
 
     <name>domino-service-discovery</name>
-    <url>https://github.com/GwtDomino/domino</url>
+    <url>https://github.com/DominoKit/domino</url>
     <description>Domino Service Discovery</description>
 
     <dependencies>

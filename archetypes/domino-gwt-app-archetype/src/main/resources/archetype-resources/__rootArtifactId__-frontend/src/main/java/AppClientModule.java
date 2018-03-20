@@ -4,8 +4,7 @@
 package ${package};
 
 import com.google.gwt.core.client.EntryPoint;
-import com.progressoft.brix.domino.api.client.ClientApp;
-import com.google.gwt.user.client.History;
+import org.dominokit.domino.api.client.ClientApp;
 
 import java.util.logging.Logger;
 

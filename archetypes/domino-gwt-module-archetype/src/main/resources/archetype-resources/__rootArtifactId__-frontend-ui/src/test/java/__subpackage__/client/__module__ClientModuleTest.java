@@ -16,7 +16,7 @@ import org.junit.Before;
 import static org.junit.Assert.*;
 
 import ${package}.${subpackage}.client.presenters.${module}Presenter;
-import com.progressoft.brix.domino.test.api.client.DominoTestClient;
+import org.dominokit.domino.test.api.client.DominoTestClient;
 
 @RunWith(GwtMockitoTestRunner.class)
 @WithClassesToStub(RootPanel.class)

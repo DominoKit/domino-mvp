@@ -8,9 +8,9 @@ import org.junit.runner.RunWith;
 import org.junit.Before;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 
-import com.progressoft.brix.domino.api.client.annotations.ClientModule;
-import com.progressoft.brix.domino.test.api.client.DominoTestClient;
-import com.progressoft.brix.domino.test.api.client.ClientContext;
+import org.dominokit.domino.api.client.annotations.ClientModule;
+import org.dominokit.domino.test.api.client.DominoTestClient;
+import org.dominokit.domino.test.api.client.ClientContext;
 import ${package}.${subpackage}.client.presenters.${module}Presenter;
 import ${package}.${subpackage}.client.requests.${module}RequestsFactory;
 import ${package}.${subpackage}.shared.request.${module}Request;

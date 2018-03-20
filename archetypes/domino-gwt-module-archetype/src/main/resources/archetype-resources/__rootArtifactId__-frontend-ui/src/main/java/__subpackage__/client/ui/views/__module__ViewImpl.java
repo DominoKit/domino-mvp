@@ -12,7 +12,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 
-import com.progressoft.brix.domino.api.client.annotations.UiView;
+import org.dominokit.domino.api.client.annotations.UiView;
 
 import ${package}.${subpackage}.client.presenters.${module}Presenter;
 import ${package}.${subpackage}.client.views.${module}View;

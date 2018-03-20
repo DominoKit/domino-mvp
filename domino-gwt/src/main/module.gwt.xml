@@ -3,11 +3,11 @@
 <module rename-to='core'>
     <inherits name="com.google.gwt.logging.Logging"/>
     <inherits name="org.fusesource.restygwt.RestyGWT"/>
-    <inherits name="com.progressoft.brix.domino.logger.Logging"/>
+    <inherits name="org.dominokit.domino.logger.Logging"/>
     <inherits name="elemental2.core.Core"/>
     <inherits name="elemental2.dom.Dom"/>
 
-    <entry-point class='com.progressoft.brix.domino.gwt.client.Core'/>
+    <entry-point class='org.dominokit.domino.gwt.client.Core'/>
 
     <source path='client'/>
     <source path='shared'/>

@@ -3,17 +3,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.progressoft.brix.domino</groupId>
+        <groupId>org.dominokit.domino</groupId>
         <artifactId>domino-parent</artifactId>
         <version>1.0-rc.3-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.progressoft.brix.domino.test</groupId>
+    <groupId>org.dominokit.domino.test</groupId>
     <artifactId>domino-test</artifactId>
     <packaging>pom</packaging>
     <name>domino-test</name>
 
-    <url>https://github.com/GwtDomino/domino</url>
+    <url>https://github.com/DominoKit/domino</url>
     <description>GWT Domino</description>
 
     <modules>

@@ -4,12 +4,12 @@
 
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.progressoft.brix.domino</groupId>
+        <groupId>org.dominokit.domino</groupId>
         <artifactId>domino-parent</artifactId>
         <version>1.0-rc.3-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.progressoft.brix.domino.api</groupId>
+    <groupId>org.dominokit.domino.api</groupId>
     <artifactId>domino-api-client</artifactId>
     <packaging>gwt-lib</packaging>
 
@@ -20,16 +20,16 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
-    <url>https://github.com/GwtDomino/domino</url>
+    <url>https://github.com/DominoKit/domino</url>
     <description>GWT Domino</description>
 
     <dependencies>
         <dependency>
-            <groupId>com.progressoft.brix.domino.api</groupId>
+            <groupId>org.dominokit.domino.api</groupId>
             <artifactId>domino-api-shared</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.progressoft.brix.domino.api</groupId>
+            <groupId>org.dominokit.domino.api</groupId>
             <artifactId>domino-api-shared</artifactId>
             <classifier>sources</classifier>
         </dependency>
@@ -42,7 +42,7 @@
                 <artifactId>gwt-maven-plugin</artifactId>
                 <extensions>true</extensions>
                 <configuration>
-                    <moduleName>com.progressoft.brix.domino.api.Domino</moduleName>
+                    <moduleName>org.dominokit.domino.api.Domino</moduleName>
                 </configuration>
             </plugin>
             <plugin>

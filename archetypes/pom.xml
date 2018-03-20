@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <groupId>com.progressoft.brix.domino.archetypes</groupId>
+    <groupId>org.dominokit.domino.archetypes</groupId>
     <artifactId>archetypes</artifactId>
     <version>1.0-rc.3-SNAPSHOT</version>
     <modelVersion>4.0.0</modelVersion>
@@ -10,7 +10,7 @@
     <packaging>pom</packaging>
 
     <name>archetypes</name>
-    <url>https://github.com/GwtDomino/domino</url>
+    <url>https://github.com/DominoKit/domino</url>
     <description>GWT Domino</description>
 
     <properties>
@@ -42,14 +42,14 @@
     </developers>
 
     <issueManagement>
-        <url>https://github.com/GwtDomino/domino/issues</url>
+        <url>https://github.com/DominoKit/domino/issues</url>
         <system>GitHub Issues</system>
     </issueManagement>
 
     <scm>
-        <connection>scm:git:https://github.com/GwtDomino/domino.git</connection>
-        <developerConnection>scm:git:git@github.com:GwtDomino/domino.git</developerConnection>
-        <url>https://github.com/GwtDomino/domino</url>
+        <connection>scm:git:https://github.com/DominoKit/domino.git</connection>
+        <developerConnection>scm:git:git@github.com:DominoKit/domino.git</developerConnection>
+        <url>https://github.com/DominoKit/domino</url>
     </scm>
 
     <distributionManagement>
@@ -119,5 +119,6 @@
     <modules>
         <module>domino-gwt-app-archetype</module>
         <module>domino-gwt-module-archetype</module>
+        <module>domino-gwt-single-module-archetype</module>
     </modules>
 </project>

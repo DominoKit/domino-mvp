@@ -28,29 +28,29 @@
             <artifactId>gwt-dev</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.progressoft.brix.domino.api</groupId>
+            <groupId>org.dominokit.domino.api</groupId>
             <artifactId>domino-api-shared</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.progressoft.brix.domino.api</groupId>
+            <groupId>org.dominokit.domino.api</groupId>
             <artifactId>domino-api-shared</artifactId>
             <classifier>sources</classifier>
         </dependency>
         <dependency>
-            <groupId>com.progressoft.brix.domino.impl</groupId>
+            <groupId>org.dominokit.domino.impl</groupId>
             <artifactId>domino-gwt</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.progressoft.brix.domino.impl</groupId>
+            <groupId>org.dominokit.domino.impl</groupId>
             <artifactId>domino-gwt</artifactId>
             <classifier>sources</classifier>
         </dependency>
         <dependency>
-            <groupId>com.progressoft.brix.domino.api</groupId>
+            <groupId>org.dominokit.domino.api</groupId>
             <artifactId>domino-api-client</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.progressoft.brix.domino.api</groupId>
+            <groupId>org.dominokit.domino.api</groupId>
             <artifactId>domino-api-client</artifactId>
             <classifier>sources</classifier>
         </dependency>

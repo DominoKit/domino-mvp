@@ -5,7 +5,7 @@
 
 <a title="Gitter" href="https://gitter.im/domino-gwt/Domino"><img src="https://badges.gitter.im/Join%20Chat.svg"></a>
 [![Build Status](https://travis-ci.org/GwtDomino/domino.svg?branch=master)](https://travis-ci.org/GwtDomino/domino)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.progressoft.brix.domino/domino/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.progressoft.brix.domino/domino)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.dominokit.domino/domino/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.dominokit.domino/domino)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/bfdb8283919a4adab6cbfeeb3a22e53a)](https://www.codacy.com/app/akabme/domino?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=GwtDomino/domino&amp;utm_campaign=Badge_Grade)
 
 Our Domino is a small, simple and a very light framework for building applications using [GWT](http://www.gwtproject.org/) and [Vertx](http://vertx.io/), it introduce the concept of extension points and contributions allowing developers to write a modular application and shared components with any other domino application. The main benefit of using Vertx as a back-end, it gives the ability of choosing either to build one monolithic but yet a modular application, or a large application built as micro-services, moreover allows building the application using TDD approach with practices offering an easy and fast way to debug for both client and service side.
@@ -26,7 +26,7 @@ Our Domino is a small, simple and a very light framework for building applicatio
 
 ### Domino Application:
 
- Gruop Id : `com.progressoft.brix.domino.archetypes`  
+ Gruop Id : `org.dominokit.domino.archetypes`  
 
  Artifact Id  : `domino-gwt-app-archetype`  
 
@@ -34,7 +34,7 @@ Our Domino is a small, simple and a very light framework for building applicatio
 
 ### Domino Module:
 
- Gruop Id : `com.progressoft.brix.domino.archetypes`  
+ Gruop Id : `org.dominokit.domino.archetypes`  
 
  Artifact Id  : `domino-gwt-module-archetype`  
 
@@ -42,7 +42,7 @@ Our Domino is a small, simple and a very light framework for building applicatio
 
 ### Domino module with GMD:
 
- Gruop Id : `com.progressoft.brix.domino.archetypes`  
+ Gruop Id : `org.dominokit.domino.archetypes`  
 
  Artifact Id  : `domino-material-module-archetype`  
 
@@ -75,7 +75,7 @@ Let's start by creating a new project.
 
 - After clicking on add archetype button, another window will pop up fill it with the below values,
 
-  - GroupId: `com.progressoft.brix.domino.archetypes`
+  - GroupId: `org.dominokit.domino.archetypes`
   - ArtifactId: `domino-gwt-app-archetype`
   - Version: `1.0-rc.1`
 
@@ -132,8 +132,8 @@ Before running the application we need to build it, open a terminal in Intellij 
 - Another window will pop up fill it as below,
 
     - Fill a name for the configuration.
-    - Fill the Main class with : `com.progressoft.brix.domino.api.server.DominoLauncher`
-    - Fill the program arguments with : `run com.progressoft.brix.domino.api.server.StartupVerticle -conf target/classes/config.json`
+    - Fill the Main class with : `org.dominokit.domino.api.server.DominoLauncher`
+    - Fill the program arguments with : `run org.dominokit.domino.api.server.StartupVerticle -conf target/classes/config.json`
     - Select the Working directory as `domino-demo-backend` module folder.
     - Select the Use class path of module as `domino-demo-backend`
     - Make sure the JRE is 1.8.
@@ -148,7 +148,7 @@ When the application is ready you should see the below message on the run consol
 this means that the application is now up and running,  open any browser and visit **`http://localhost:8080`**
 The browser page will be a blank page which is normal since we had only created an empty application we didn't add any module yet, hit **`F12`**  and look at the console the below logs will appear :
 
-> Sun May 21 01:23:58 GMT+300 2017 com.progressoft.brix.domino.gwt.client.Core
+> Sun May 21 01:23:58 GMT+300 2017 Core
 INFO: Initialize domino module...
 Sun May 21 01:23:58 GMT+300 2017 domino.tutorial.AppClientModule
 INFO: Application frontend have been initialized.
@@ -168,7 +168,7 @@ Below steps will help you to add a new domino module with a simple layout,
 *Note: make sure you have picked maven module and the create from archetype checkbox is checked as described above task.*
 - A window will pop up fill it with the following values: 
 
-  - GroupId: com.progressoft.brix.domino.archetypes
+  - GroupId: org.dominokit.domino.archetypes
   - ArtifactId: domino-material-module-archetype
   - Version: 1.0-rc.1
 
@@ -223,7 +223,7 @@ Open the module you will notice a few already created classes, in some cases thi
 	
 	![image22](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/031.png)
 	
-* Also remove the import *com.progressoft.domino.sample.layout.client.requests.LayoutServerRequest;*.
+* Also remove the import *org.dominokit..domino.sample.layout.client.requests.LayoutServerRequest;*.
 
 * Open the layout-frontend `pom.xml` file and remove the dependency on the layout-backend with the test scope.
 
@@ -300,7 +300,7 @@ We are done, now we can test our application and see if the module is working, l
  
 Again the browser page will be a blank page which is normal since we had only add an empty module we didn't add any UI, hit **`F12`**  and look at the console the below logs will appear :
 
-> Sun May 21 12:57:15 GMT+300 2017 com.progressoft.brix.domino.gwt.client.Core
+> Sun May 21 12:57:15 GMT+300 2017 Core
 INFO: Initialize domino module...
 Sun May 21 12:57:15 GMT+300 2017 domino.tutorial.layout.client.LayoutClientModule
 INFO: Initializing Layout frontend module ...

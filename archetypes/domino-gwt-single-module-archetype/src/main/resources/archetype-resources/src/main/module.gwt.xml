@@ -1,0 +1,15 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+  <inherits name="com.google.gwt.user.User" />
+  <inherits name="com.google.gwt.resources.Resources" />
+
+  <source path="" />
+
+  <entry-point class="${package}.${subpackage}.client.${module}ClientModule" />
+
+  <set-configuration-property name="CssResource.enableGss" value="true"/>
+
+</module>

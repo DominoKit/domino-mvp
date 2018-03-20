@@ -31,19 +31,19 @@
             <version>${vertx.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.progressoft.brix.domino.api</groupId>
+            <groupId>org.dominokit.domino.api</groupId>
             <artifactId>domino-api-client</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.progressoft.brix.domino.api</groupId>
+            <groupId>org.dominokit.domino.api</groupId>
             <artifactId>domino-api-server</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.progressoft.brix.domino.logging</groupId>
+            <groupId>org.dominokit.domino.logging</groupId>
             <artifactId>domino-remote-logging</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.progressoft.brix.domino.logging</groupId>
+            <groupId>org.dominokit.domino.logging</groupId>
             <artifactId>domino-log4j-server-logging</artifactId>
         </dependency>
     </dependencies>
@@ -65,8 +65,8 @@
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
-                                        <Main-Class>com.progressoft.brix.domino.api.server.DominoLauncher</Main-Class>
-                                        <Main-Verticle>com.progressoft.brix.domino.api.server.StartupVerticle</Main-Verticle>
+                                        <Main-Class>org.dominokit.domino.api.server.DominoLauncher</Main-Class>
+                                        <Main-Verticle>org.dominokit.domino.api.server.StartupVerticle</Main-Verticle>
                                     </manifestEntries>
                                 </transformer>
                                 <transformer
@@ -90,10 +90,10 @@
                     <artifactId>exec-maven-plugin</artifactId>
                     <version>1.6.0</version>
                     <configuration>
-                        <mainClass>com.progressoft.brix.domino.api.server.DominoLauncher</mainClass>
+                        <mainClass>org.dominokit.domino.api.server.DominoLauncher</mainClass>
                         <arguments>
                             <argument>run</argument>
-                            <argument>com.progressoft.brix.domino.api.server.StartupVerticle</argument>
+                            <argument>org.dominokit.domino.api.server.StartupVerticle</argument>
                             <argument>-conf</argument>
                             <argument>target/classes/config.json</argument>
                         </arguments>

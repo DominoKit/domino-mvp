@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.progressoft.brix.domino</groupId>
+    <groupId>org.dominokit.domino</groupId>
     <artifactId>domino</artifactId>
     <version>1.0-rc.3-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -17,7 +17,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
-    <url>https://github.com/GwtDomino/domino</url>
+    <url>https://github.com/DominoKit/domino</url>
     <description>GWT Domino</description>
 
     <licenses>
@@ -43,14 +43,14 @@
     </developers>
 
     <issueManagement>
-        <url>https://github.com/GwtDomino/domino/issues</url>
+        <url>https://github.com/DominoKit/domino/issues</url>
         <system>GitHub Issues</system>
     </issueManagement>
 
     <scm>
-        <connection>scm:git:https://github.com/GwtDomino/domino.git</connection>
-        <developerConnection>scm:git:git@github.com:GwtDomino/domino.git</developerConnection>
-        <url>https://github.com/GwtDomino/domino</url>
+        <connection>scm:git:https://github.com/DominoKit/domino.git</connection>
+        <developerConnection>scm:git:git@github.com:DominoKit/domino.git</developerConnection>
+        <url>https://github.com/DominoKit/domino</url>
     </scm>
 
     <distributionManagement>
@@ -63,97 +63,97 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.progressoft.brix.domino.apt</groupId>
+                <groupId>org.dominokit.domino.apt</groupId>
                 <artifactId>apt-client</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.progressoft.brix.domino.apt</groupId>
+                <groupId>org.dominokit.domino.apt</groupId>
                 <artifactId>apt-server</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.progressoft.brix.domino.api</groupId>
+                <groupId>org.dominokit.domino.api</groupId>
                 <artifactId>domino-api-client</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.progressoft.brix.domino.api</groupId>
+                <groupId>org.dominokit.domino.api</groupId>
                 <artifactId>domino-api-client</artifactId>
                 <version>${project.version}</version>
                 <classifier>sources</classifier>
             </dependency>
             <dependency>
-                <groupId>com.progressoft.brix.domino.api</groupId>
+                <groupId>org.dominokit.domino.api</groupId>
                 <artifactId>domino-api-server</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.progressoft.brix.domino.api</groupId>
+                <groupId>org.dominokit.domino.api</groupId>
                 <artifactId>domino-api-shared</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.progressoft.brix.domino.api</groupId>
+                <groupId>org.dominokit.domino.api</groupId>
                 <artifactId>domino-api-shared</artifactId>
                 <version>${project.version}</version>
                 <classifier>sources</classifier>
             </dependency>
             <dependency>
-                <groupId>com.progressoft.brix.domino</groupId>
+                <groupId>org.dominokit.domino</groupId>
                 <artifactId>domino-client-commons</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.progressoft.brix.domino.logging</groupId>
+                <groupId>org.dominokit.domino.logging</groupId>
                 <artifactId>domino-gwt-logger</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.progressoft.brix.domino.logging</groupId>
+                <groupId>org.dominokit.domino.logging</groupId>
                 <artifactId>domino-log4j-server-logging</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.progressoft.brix.domino.logging</groupId>
+                <groupId>org.dominokit.domino.logging</groupId>
                 <artifactId>domino-remote-logging</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.progressoft.brix.domino.test</groupId>
+                <groupId>org.dominokit.domino.test</groupId>
                 <artifactId>domino-client-test</artifactId>
                 <version>${project.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>com.progressoft.brix.domino</groupId>
+                <groupId>org.dominokit.domino</groupId>
                 <artifactId>jks-server-cofigurator</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.progressoft.brix.domino</groupId>
+                <groupId>org.dominokit.domino</groupId>
                 <artifactId>domino-service-discovery</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.progressoft.brix.domino.test</groupId>
+                <groupId>org.dominokit.domino.test</groupId>
                 <artifactId>domino-server-test</artifactId>
                 <version>${project.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>com.progressoft.brix.domino.impl</groupId>
+                <groupId>org.dominokit.domino.impl</groupId>
                 <artifactId>domino-gwt</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.progressoft.brix.domino.impl</groupId>
+                <groupId>org.dominokit.domino.impl</groupId>
                 <artifactId>domino-gwt</artifactId>
                 <version>${project.version}</version>
                 <classifier>sources</classifier>
             </dependency>
             <dependency>
-                <groupId>com.progressoft.brix.domino</groupId>
+                <groupId>org.dominokit.domino</groupId>
                 <artifactId>domino-desktop</artifactId>
                 <version>${project.version}</version>
             </dependency>

@@ -3,10 +3,10 @@
 #set( $symbol_escape = '\' )
 package ${package}.${subpackage}.client.presenters;
 
-import ${package}.${subpackage}.client.presenters.Default${module}Presenter;
-import com.progressoft.brix.domino.api.shared.extension.MainContext;
+import ${package}.${subpackage}.client.presenters.${module}Presenter;
+import org.dominokit.domino.api.shared.extension.MainContext;
 
-public class ${module}PresenterSpy extends Default${module}Presenter{
+public class ${module}PresenterSpy extends ${module}Presenter{
 
     private MainContext mainContext;
 
@@ -22,6 +22,6 @@ public class ${module}PresenterSpy extends Default${module}Presenter{
 
     @Override
     protected String getConcrete() {
-        return Default${module}Presenter.class.getCanonicalName();
+        return ${module}Presenter.class.getCanonicalName();
     }
 }

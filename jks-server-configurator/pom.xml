@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.progressoft.brix.domino</groupId>
+        <groupId>org.dominokit.domino</groupId>
         <artifactId>domino-parent</artifactId>
         <version>1.0-rc.3-SNAPSHOT</version>
     </parent>
@@ -14,12 +14,12 @@
     <packaging>jar</packaging>
 
     <name>jks-server-configurator</name>
-    <url>https://github.com/GwtDomino/domino</url>
+    <url>https://github.com/DominoKit/domino</url>
     <description>GWT Domino</description>
 
     <dependencies>
         <dependency>
-            <groupId>com.progressoft.brix.domino.api</groupId>
+            <groupId>org.dominokit.domino.api</groupId>
             <artifactId>domino-api-server</artifactId>
             <scope>provided</scope>
         </dependency>

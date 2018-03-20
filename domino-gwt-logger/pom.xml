@@ -3,17 +3,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.progressoft.brix.domino</groupId>
+        <groupId>org.dominokit.domino</groupId>
         <artifactId>domino-parent</artifactId>
         <version>1.0-rc.3-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.progressoft.brix.domino.logging</groupId>
+    <groupId>org.dominokit.domino.logging</groupId>
     <artifactId>domino-gwt-logger</artifactId>
     <packaging>gwt-lib</packaging>
     <name>domino-gwt-logger</name>
 
-    <url>https://github.com/GwtDomino/domino</url>
+    <url>https://github.com/DominoKit/domino</url>
     <description>GWT Domino</description>
 
     <build>
@@ -23,7 +23,7 @@
                 <artifactId>gwt-maven-plugin</artifactId>
                 <extensions>true</extensions>
                 <configuration>
-                    <moduleName>com.progressoft.brix.domino.logger.Logging</moduleName>
+                    <moduleName>org.dominokit.domino.logger.Logging</moduleName>
                 </configuration>
             </plugin>
             <plugin>

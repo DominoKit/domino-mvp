@@ -3,12 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.progressoft.brix.domino</groupId>
+        <groupId>org.dominokit.domino</groupId>
         <artifactId>domino-parent</artifactId>
         <version>1.0-rc.3-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.progressoft.brix.domino.logging</groupId>
+    <groupId>org.dominokit.domino.logging</groupId>
     <artifactId>domino-log4j-server-logging</artifactId>
     <packaging>jar</packaging>
 

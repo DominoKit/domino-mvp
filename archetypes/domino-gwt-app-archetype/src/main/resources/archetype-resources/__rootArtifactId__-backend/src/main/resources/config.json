@@ -1,4 +1,4 @@
 {
   "http.port": 8080,
-  "remote.logger": "com.progressoft.brix.domino.remote.logging.DeobfuscatorRemoteLogger"
+  "remote.logger": "org.dominokit.domino.remote.logging.DeobfuscatorRemoteLogger"
 }
