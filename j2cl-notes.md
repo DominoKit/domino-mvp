@@ -1,0 +1,8 @@
+- [ ] replace `GWT.setUncaughtExceptionHandler(throwable -> LOGGER.error("Uncaught Exception", throwable));`
+- [ ] replace `GWT.runAsync(new RunAsyncCallback() {`
+- [ ] replace `import com.google.gwt.event.shared.GwtEvent; import com.google.web.bindery.event.shared.Event;`
+- [ ] replace `import com.google.gwt.event.shared.EventHandler;`
+- [ ] replace `import com.google.gwt.event.shared.EventBus; import com.google.gwt.event.shared.SimpleEventBus; import com.google.web.bindery.event.shared.Event;`
+- [ ] replace slf4j super source startegy with a proper module.
+- [ ] remove/replace RestfulRemoteLogHandler
+- [ ] wrap resty options RestyGwtOptions

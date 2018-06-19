@@ -33,7 +33,7 @@ import java.util.Iterator;
  * are used, if at all. In particular, many conforming logging systems ignore
  * marker data.
  * 
- * <p>
+ *
  * Markers can contain references to other markers, which in turn may contain 
  * references of their own.
  * 

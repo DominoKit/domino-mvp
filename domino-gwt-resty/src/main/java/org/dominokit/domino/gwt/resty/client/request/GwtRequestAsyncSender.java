@@ -1,4 +1,4 @@
-package org.dominokit.domino.gwt.client.request;
+package org.dominokit.domino.gwt.resty.client.request;
 
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.events.ServerRequestEventFactory;

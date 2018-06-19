@@ -16,7 +16,6 @@ import org.dominokit.domino.api.shared.extension.ExtensionPoint;
 import org.dominokit.domino.api.shared.extension.MainExtensionPoint;
 import org.dominokit.domino.api.shared.history.AppHistory;
 import org.dominokit.domino.api.shared.history.DominoHistory;
-import org.dominokit.domino.api.client.request.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -41,6 +40,7 @@ public class ClientApp
     private static final AttributeHolder<List<ClientStartupTask>> INITIAL_TASKS_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<AsyncRunner> ASYNC_RUNNER_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<DominoOptions> DOMINO_OPTIONS_HOLDER = new AttributeHolder<>();
+    private static boolean initialized=false;
 
     private static ClientApp instance=new ClientApp();
 
@@ -122,6 +122,7 @@ public class ClientApp
     }
 
     public void configureModule(ModuleConfiguration configuration) {
+
         configuration.registerPresenters(this);
         configuration.registerRequests(this);
         configuration.registerViews(this);
@@ -137,6 +138,13 @@ public class ClientApp
 
     public void run(DominoOptionsHandler dominoOptionsHandler) {
         dominoOptionsHandler.onBeforeRun(dominoOptions());
+        dominoOptions().applyOptions();
+        INITIAL_TASKS_HOLDER.attribute.forEach(ClientStartupTask::execute);
+        applyContributions(MainExtensionPoint.class, MAIN_EXTENSION_POINT_HOLDER.attribute);
+    }
+
+    public void run(DominoOptions dominoOptions) {
+        DOMINO_OPTIONS_HOLDER.attribute=dominoOptions;
         dominoOptions().applyOptions();
         INITIAL_TASKS_HOLDER.attribute.forEach(ClientStartupTask::execute);
         applyContributions(MainExtensionPoint.class, MAIN_EXTENSION_POINT_HOLDER.attribute);

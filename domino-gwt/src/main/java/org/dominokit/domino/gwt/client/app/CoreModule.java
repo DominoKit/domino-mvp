@@ -1,6 +1,6 @@
 package org.dominokit.domino.gwt.client.app;
 
-import com.google.gwt.core.client.GWT;
+//import com.google.gwt.core.client.GWT;
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.client.commons.extensions.CoreMainExtensionPoint;
 import org.dominokit.domino.client.commons.extensions.InMemoryContributionRepository;
@@ -16,8 +16,8 @@ import org.dominokit.domino.gwt.client.events.RequestEventProcessor;
 import org.dominokit.domino.gwt.client.events.ServerEventFactory;
 import org.dominokit.domino.gwt.client.events.SimpleEventsBus;
 import org.dominokit.domino.gwt.client.history.StateHistory;
-import org.dominokit.domino.gwt.client.options.RestyGwtOptions;
-import org.dominokit.domino.gwt.client.request.GwtRequestAsyncSender;
+import org.dominokit.domino.gwt.client.options.DefaultOptions;
+import org.dominokit.domino.gwt.client.request.DefaultRequestAsyncSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,9 +29,9 @@ public class CoreModule {
     }
 
     public static void init() {
-        GWT.setUncaughtExceptionHandler(throwable -> LOGGER.error("Uncaught Exception", throwable));
+//        GWT.setUncaughtExceptionHandler(throwable -> LOGGER.error("Uncaught Exception", throwable));
         ClientRouter clientRouter = new ClientRouter(new ClientEventFactory());
-        ServerRouter serverRouter = new ServerRouter(new GwtRequestAsyncSender(new ServerEventFactory()));
+        ServerRouter serverRouter = new ServerRouter(new DefaultRequestAsyncSender(new ServerEventFactory()));
         RequestEventProcessor requestEventProcessor = new RequestEventProcessor();
         SimpleEventsBus eventBus = new SimpleEventsBus(requestEventProcessor);
         ClientApp.ClientAppBuilder
@@ -46,7 +46,7 @@ public class CoreModule {
                 .history(new StateHistory())
                 .asyncRunner(new GwtAsyncRunner())
                 .mainExtensionPoint(new CoreMainExtensionPoint())
-                .dominoOptions(new RestyGwtOptions())
+                .dominoOptions(new DefaultOptions())
                 .build();
     }
 }

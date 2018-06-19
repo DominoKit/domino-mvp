@@ -24,7 +24,7 @@
  */
 package org.slf4j.helpers;
 
-import com.google.gwt.core.client.GWT;
+//import com.google.gwt.core.client.GWT;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -36,7 +36,7 @@ import java.util.Set;
  * Formats messages according to very simple substitution rules. Substitutions
  * can be made 1, 2 or more arguments.
  *
- * <p>
+ *
  * For example,
  *
  * <pre>
@@ -44,11 +44,11 @@ import java.util.Set;
  * </pre>
  *
  * will return the string "Hi there.".
- * <p>
+ *
  * The {} pair is called the <em>formatting anchor</em>. It serves to designate
  * the location where arguments need to be substituted within the message
  * pattern.
- * <p>
+ *
  * In case your message contains the '{' or the '}' character, you do not have
  * to do anything special unless the '}' character immediately follows '{'. For
  * example,
@@ -59,7 +59,7 @@ import java.util.Set;
  *
  * will return the string "Set {1,2,3} is not equal to 1,2.".
  *
- * <p>
+ *
  * If for whatever reason you need to place the string "{}" in the message
  * without its <em>formatting anchor</em> meaning, then you need to escape the
  * '{' character with '\', that is the backslash character. Only the '{'
@@ -72,7 +72,7 @@ import java.util.Set;
  *
  * will return the string "Set {} is not equal to 1,2.".
  *
- * <p>
+ *
  * The escaping behavior just described can be overridden by escaping the escape
  * character '\'. Calling
  *
@@ -82,14 +82,14 @@ import java.util.Set;
  *
  * will return the string "File name is C:\file.zip".
  *
- * <p>
+ *
  * The formatting conventions are different than those of {@link java.text.MessageFormat}
  * which ships with the Java platform. This is justified by the fact that
  * SLF4J's implementation is 10 times faster than that of {@link java.text.MessageFormat}.
  * This local performance difference is both measurable and significant in the
  * larger context of the complete logging processing chain.
  *
- * <p>
+ *
  * See also {@link #format(String, Object)},
  * {@link #format(String, Object, Object)} and
  * {@link #arrayFormat(String, Object[])} methods for more details.
@@ -305,14 +305,8 @@ public class MessageFormatter {
         try {
             sbuf.append(o.toString());
         } catch (Throwable t) {
-            GWT.log("SLF4J: Failed toString() invocation on an object of type ["
-                    + o.getClass().getName() + "]", t);
-/*
-            System.err
-                    .println("SLF4J: Failed toString() invocation on an object of type ["
-                            + o.getClass().getName() + "]");
-            t.printStackTrace();
-*/
+//            GWT.log("SLF4J: Failed toString() invocation on an object of type ["
+//                    + o.getClass().getName() + "]", t);
             sbuf.append("[FAILED toString()]");
         }
 

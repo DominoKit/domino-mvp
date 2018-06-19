@@ -1,4 +1,4 @@
-package org.dominokit.domino.gwt.client.request;
+package org.dominokit.domino.gwt.resty.client.request;
 
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;

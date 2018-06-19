@@ -1,4 +1,4 @@
-package org.dominokit.domino.gwt.client.logging;
+package org.dominokit.domino.gwt.resty.client.logging;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.logging.client.RemoteLogHandlerBase;
