@@ -38,6 +38,7 @@ public class ClientModuleAnnotationProcessorTest {
     }
 
     @Test
+    @Ignore
     public void givenAnnotatedClassWithClientModule_ShouldGenerateClassImplementsModuleConfigurations() throws Exception {
         assertProcessing(BASE_PACKAGE + "AnnotatedClassWithClientModuleWithNameTest.java")
                 .withProcessors(providerProcessor(), processor())

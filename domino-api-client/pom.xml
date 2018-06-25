@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.dominokit.domino</groupId>
         <artifactId>domino-parent</artifactId>
-        <version>1.0-rc.3-SNAPSHOT</version>
+        <version>1.0-rc.3j2cl-SNAPSHOT</version>
     </parent>
 
     <groupId>org.dominokit.domino.api</groupId>
