@@ -4,7 +4,7 @@
 ## Welcome to ![logoimage](https://raw.githubusercontent.com/GwtDomino/domino/master/documents/projectavatar.png) Domino
 
 <a title="Gitter" href="https://gitter.im/domino-gwt/Domino"><img src="https://badges.gitter.im/Join%20Chat.svg"></a>
-[![Build Status](https://travis-ci.org/GwtDomino/domino.svg?branch=master)](https://travis-ci.org/GwtDomino/domino)
+[![Build Status](https://travis-ci.org/DominoKit/domino.svg?branch=master)](https://travis-ci.org/DominoKit/domino)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.dominokit.domino/domino/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.dominokit.domino/domino)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/bfdb8283919a4adab6cbfeeb3a22e53a)](https://www.codacy.com/app/akabme/domino?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=GwtDomino/domino&amp;utm_campaign=Badge_Grade)
 
