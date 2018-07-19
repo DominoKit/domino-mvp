@@ -1,14 +1,14 @@
 package org.dominokit.domino.gwt.client.history;
 
+import elemental2.dom.DomGlobal;
+import elemental2.dom.PopStateEvent;
+import jsinterop.base.Js;
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.shared.history.AppHistory;
 import org.dominokit.domino.api.shared.history.HistoryToken;
 import org.dominokit.domino.api.shared.history.TokenFilter;
 import org.dominokit.domino.client.commons.history.DominoDirectState;
 import org.dominokit.domino.client.commons.history.StateHistoryToken;
-import elemental2.dom.DomGlobal;
-import elemental2.dom.PopStateEvent;
-import jsinterop.base.Js;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -23,8 +23,8 @@ public class StateHistory implements AppHistory {
 
     public StateHistory() {
         DomGlobal.self.addEventListener("popstate", event -> {
-            PopStateEvent popStateEvent=Js.cast(event);
-            JsState state=Js.cast(popStateEvent.state);
+            PopStateEvent popStateEvent = Js.cast(event);
+            JsState state = Js.cast(popStateEvent.state);
             if (nonNull(state))
                 inform(state.historyToken, state.title, state.data);
         });
@@ -93,10 +93,24 @@ public class StateHistory implements AppHistory {
     }
 
     private State windowState() {
-        if(isNull(DomGlobal.self.history.state))
+        if (isNullState() || isNullToken()) {
             return nullState();
-        JsState jsState=Js.cast(DomGlobal.self.history.state);
+        }
+        JsState jsState = getJsState();
         return new DominoHistoryState(jsState.historyToken, jsState.title, jsState.data);
+    }
+
+    private boolean isNullToken() {
+        JsState jsState = getJsState();
+        return isNull(jsState.historyToken);
+    }
+
+    private JsState getJsState() {
+        return Js.uncheckedCast(DomGlobal.self.history.state);
+    }
+
+    private boolean isNullState() {
+        return isNull(DomGlobal.self.history.state);
     }
 
     private State nullState() {
@@ -123,7 +137,7 @@ public class StateHistory implements AppHistory {
     }
 
     private String windowToken() {
-       Location location= Js.cast(DomGlobal.location);
+        Location location = Js.cast(DomGlobal.location);
         return location.getPathname().substring(1) + location.getSearch() + location.getHash();
     }
 

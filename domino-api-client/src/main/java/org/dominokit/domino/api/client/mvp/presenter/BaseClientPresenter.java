@@ -3,29 +3,25 @@ package org.dominokit.domino.api.client.mvp.presenter;
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.async.AsyncRunner;
 import org.dominokit.domino.api.client.extension.Contributions;
-import org.dominokit.domino.api.client.mvp.view.View;
 import org.dominokit.domino.api.shared.extension.ExtensionPoint;
 import org.dominokit.domino.api.shared.history.DominoHistory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class BaseClientPresenter<V extends View> extends ClientPresenter<V> implements Presentable {
+public abstract class BaseClientPresenter extends ClientPresenter implements Presentable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseClientPresenter.class);
 
     private final PresenterState initialized = () ->
             LOGGER.info("Presenter " + BaseClientPresenter.this.getClass() + " Have already been initialized.");
 
+    private final PresenterState uninitialized = this::initialize;
 
-    private final PresenterState uninitialized = () -> {
-        view = loadView();
-        initView(BaseClientPresenter.this.view);
+    protected void initialize() {
         state = initialized;
-    };
+    }
 
     private PresenterState state;
-
-    protected V view;
 
     @Override
     public Presentable init() {
@@ -35,13 +31,9 @@ public abstract class BaseClientPresenter<V extends View> extends ClientPresente
     }
 
     @Override
-    public ClientPresenter<V> prepare() {
+    public ClientPresenter prepare() {
         state.process();
         return this;
-    }
-
-    private V loadView() {
-        return (V) ClientApp.make().getViewsRepository().getView(getName());
     }
 
     protected String getConcrete() {
@@ -56,11 +48,11 @@ public abstract class BaseClientPresenter<V extends View> extends ClientPresente
         ClientApp.make().getAsyncRunner().runAsync(asyncTask);
     }
 
-    private String getName() {
+    protected String getName() {
         return ClientApp.make().getPresentersRepository().getNameFromConcreteName(getConcrete());
     }
 
-    protected DominoHistory history(){
+    protected DominoHistory history() {
         return ClientApp.make().getHistory();
     }
 }
