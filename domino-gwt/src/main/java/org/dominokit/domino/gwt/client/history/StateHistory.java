@@ -137,7 +137,7 @@ public class StateHistory implements AppHistory {
     }
 
     private String windowToken() {
-        Location location = Js.cast(DomGlobal.location);
+        Location location = Js.uncheckedCast(DomGlobal.location);
         return location.getPathname().substring(1) + location.getSearch() + location.getHash();
     }
 
