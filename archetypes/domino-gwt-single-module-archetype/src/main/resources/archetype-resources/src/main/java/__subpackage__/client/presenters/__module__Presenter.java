@@ -3,12 +3,12 @@
 #set( $symbol_escape = '\' )
 package ${package}.${subpackage}.client.presenters;
 
-import org.dominokit.domino.api.client.annotations.InjectContext;
+import org.dominokit.domino.api.client.annotations.ListenTo;
 import org.dominokit.domino.api.client.annotations.Presenter;
 import org.dominokit.domino.api.client.mvp.presenter.ViewBaseClientPresenter;
 import ${package}.${subpackage}.client.views.${module}View;
-import org.dominokit.domino.api.shared.extension.MainExtensionPoint;
-import org.dominokit.domino.api.shared.extension.MainContext;
+import org.dominokit.domino.api.shared.extension.MainDominoEvent;
+import org.dominokit.domino.api.shared.extension.MainEventContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,8 +17,8 @@ public class ${module}Presenter extends ViewBaseClientPresenter<${module}View> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(${module}Presenter.class);
 
-    @InjectContext(extensionPoint=MainExtensionPoint.class)
-    public void contributeToMainModule(MainContext context) {
+    @ListenTo(event=MainDominoEvent.class)
+    public void listenToMainEvent(MainEventContext context) {
         LOGGER.info("Main context received at presenter " + ${module}Presenter.class.getSimpleName());
     }
 }

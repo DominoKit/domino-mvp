@@ -2,8 +2,8 @@ package org.dominokit.domino.api.client.mvp.presenter;
 
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.async.AsyncRunner;
-import org.dominokit.domino.api.client.extension.Contributions;
-import org.dominokit.domino.api.shared.extension.ExtensionPoint;
+import org.dominokit.domino.api.client.extension.DominoEvents;
+import org.dominokit.domino.api.shared.extension.DominoEvent;
 import org.dominokit.domino.api.shared.history.DominoHistory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,8 +40,8 @@ public abstract class BaseClientPresenter extends ClientPresenter implements Pre
         return this.getClass().getCanonicalName();
     }
 
-    protected <E extends ExtensionPoint> void applyContributions(Class<E> extensionPointInterface, E extensionPoint) {
-        Contributions.apply(extensionPointInterface, extensionPoint);
+    protected <E extends DominoEvent> void fireEvent(Class<E> extensionPointInterface, E extensionPoint) {
+        DominoEvents.fire(extensionPointInterface, extensionPoint);
     }
 
     protected void runAsync(AsyncRunner.AsyncTask asyncTask) {

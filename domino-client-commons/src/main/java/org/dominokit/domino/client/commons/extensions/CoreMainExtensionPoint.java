@@ -1,12 +1,12 @@
 package org.dominokit.domino.client.commons.extensions;
 
-import org.dominokit.domino.api.shared.extension.MainContext;
-import org.dominokit.domino.api.shared.extension.MainExtensionPoint;
+import org.dominokit.domino.api.shared.extension.MainEventContext;
+import org.dominokit.domino.api.shared.extension.MainDominoEvent;
 
-public class CoreMainExtensionPoint implements MainExtensionPoint {
+public class CoreMainExtensionPoint implements MainDominoEvent {
     @Override
-    public MainContext context() {
-        return new MainContext() {
+    public MainEventContext context() {
+        return new MainEventContext() {
         };
     }
 }

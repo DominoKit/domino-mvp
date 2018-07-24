@@ -3,7 +3,7 @@ package org.dominokit.domino.desktop.client;
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.async.AsyncRunner;
 import org.dominokit.domino.client.commons.extensions.CoreMainExtensionPoint;
-import org.dominokit.domino.client.commons.extensions.InMemoryContributionRepository;
+import org.dominokit.domino.client.commons.extensions.InMemoryDominoEventsListenerRepository;
 import org.dominokit.domino.client.commons.mvp.presenter.InMemoryPresentersRepository;
 import org.dominokit.domino.client.commons.mvp.view.InMemoryViewRepository;
 import org.dominokit.domino.client.commons.request.ClientRouter;
@@ -28,7 +28,7 @@ public class CoreModule {
                 .requestRepository(new InMemoryCommandsRepository())
                 .presentersRepository(new InMemoryPresentersRepository())
                 .viewsRepository(new InMemoryViewRepository())
-                .contributionsRepository(new InMemoryContributionRepository())
+                .eventsListenersRepository(new InMemoryDominoEventsListenerRepository())
                 .requestSendersRepository(new InMemoryRequestRestSendersRepository())
                 .history(new DesktopStateHistory())
                 .asyncRunner(AsyncRunner.AsyncTask::onSuccess).mainExtensionPoint(new CoreMainExtensionPoint())

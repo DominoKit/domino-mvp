@@ -1,12 +1,12 @@
 package org.dominokit.domino.apt.client;
 
+import org.apache.commons.io.IOUtils;
 import org.dominokit.domino.apt.client.processors.group.RequestFactoryProcessor;
 import org.dominokit.domino.apt.client.processors.handlers.RequestPathProcessor;
-import org.dominokit.domino.apt.client.processors.inject.InjectContextProcessor;
+import org.dominokit.domino.apt.client.processors.inject.ListenToDominoEventProcessor;
 import org.dominokit.domino.apt.client.processors.module.client.ClientModuleAnnotationProcessor;
 import org.dominokit.domino.apt.client.processors.module.client.ConfigurationProviderAnnotationProcessor;
 import org.dominokit.domino.apt.client.processors.module.client.presenters.PresenterCommandProcessor;
-import org.apache.commons.io.IOUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -112,22 +112,22 @@ public class ClientModuleAnnotationProcessorTest {
     }
 
     @Test
-    public void givenClassAnnotatedWithContribution_WhenProcess_ShouldAddRegistrationLineToModuleConfiguration() throws Exception {
-        assertProcessing(BASE_PACKAGE + "AnnotatedClassWithContribution.java",
-                BASE_PACKAGE + "AnnotatedClassWithClientModuleWithContributionRegistrations.java")
+    public void givenClassAnnotatedWithListener_WhenProcess_ShouldAddRegistrationLineToModuleConfiguration() throws Exception {
+        assertProcessing(BASE_PACKAGE + "AnnotatedClassWithListener.java",
+                BASE_PACKAGE + "AnnotatedClassWithClientModuleWithListenerRegistrations.java")
                 .withProcessor(processor())
-                .generates(getExpectedResultFileContent("ContributionRegistrationsModuleConfiguration.java"));
+                .generates(getExpectedResultFileContent("ListenersRegistrationsModuleConfiguration.java"));
     }
 
 
     @Test
-    public void givenPresenterMethodAnnotatedWithInjectContext_WhenProcessWithInjectContextProcessor_ShouldGenerateContributionForThatPresenterClass() throws Exception {
-        assertProcessing(BASE_PACKAGE + "InjectContributionPresenterInterface.java",
-                BASE_PACKAGE + "InjectContributionPresenterInterfaceCommand.java"
+    public void givenPresenterMethodAnnotatedWithInjectContext_WhenProcessWithInjectContextProcessor_ShouldGenerateListenerForThatPresenterClass() throws Exception {
+        assertProcessing(BASE_PACKAGE + "PresenterInterface.java",
+                BASE_PACKAGE + "PresenterInterfaceCommand.java"
         )
-                .withProcessor(new InjectContextProcessor())
+                .withProcessor(new ListenToDominoEventProcessor())
 
-                .generates(getExpectedResultFileContent("InjectContributionPresenterInterfaceContributionToMainExtensionPoint.java"));
+                .generates(getExpectedResultFileContent("PresenterInterfaceListenerForMainDominoEvent.java"));
     }
 
     @Test
@@ -139,9 +139,9 @@ public class ClientModuleAnnotationProcessorTest {
 
     @Test(expected = RuntimeException.class)
     @Ignore
-    public void givenClassAnnotatedWithContributionAndNotImplementsRequiredInterface_WhenProcess_ShouldThrowException() throws Exception {
-        assertProcessing(BASE_PACKAGE + "AnnotatedClassWithClientModuleWithContributionRegistrations.java",
-                BASE_PACKAGE + "InvalidContributionClass.java")
+    public void givenClassAnnotatedWithListenerAndNotImplementsRequiredInterface_WhenProcess_ShouldThrowException() throws Exception {
+        assertProcessing(BASE_PACKAGE + "AnnotatedClassWithClientModuleWithListenerRegistrations.java",
+                BASE_PACKAGE + "InvalidListenerClass.java")
                 .withProcessor(processor()).failsToCompile();
     }
 

@@ -2,7 +2,7 @@ package org.dominokit.domino.test.api.client;
 
 import org.dominokit.domino.api.client.mvp.presenter.Presentable;
 import org.dominokit.domino.api.client.mvp.view.View;
-import org.dominokit.domino.api.shared.extension.Contribution;
+import org.dominokit.domino.api.shared.extension.DominoEventListener;
 
 public interface CanCustomizeClient extends CanStartClient {
     CanCustomizeClient replacePresenter(Class<? extends Presentable> original, Presentable replacement);
@@ -11,8 +11,8 @@ public interface CanCustomizeClient extends CanStartClient {
 
     CanCustomizeClient viewOf(Class<? extends Presentable> presenter, ViewHandler handler);
 
-    <C extends Contribution> CanCustomizeClient contributionOf(Class<C> contribution,
-                                                               ContributionHandler<C> handler);
+    <L extends DominoEventListener> CanCustomizeClient listenerOf(Class<L> listenerType,
+                                                                  ListenerHandler<L> handler);
 
     CanCustomizeClient onBeforeStart(BeforeStarted beforeStarted);
 

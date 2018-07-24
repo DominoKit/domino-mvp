@@ -1,7 +1,7 @@
 package org.dominokit.domino.apt.client.processors.module.client;
 
 import com.google.auto.service.AutoService;
-import org.dominokit.domino.apt.client.processors.module.client.contributions.ContributionsCollector;
+import org.dominokit.domino.apt.client.processors.module.client.listeners.ListenersCollector;
 import org.dominokit.domino.apt.client.processors.module.client.initialtasks.InitialTasksCollector;
 import org.dominokit.domino.apt.client.processors.module.client.presenters.PresentersCollector;
 import org.dominokit.domino.apt.client.processors.module.client.requests.CommandsCollector;
@@ -35,7 +35,7 @@ public class ClientModuleAnnotationProcessor extends BaseProcessor {
     private Set<String> views;
     private Set<String> commands;
     private Set<String> initialTasks;
-    private Set<String> contributions;
+    private Set<String> listeners;
     private Set<String> senders;
     private Set<Element> clientModules = new HashSet<>();
 
@@ -49,14 +49,14 @@ public class ClientModuleAnnotationProcessor extends BaseProcessor {
             Register viewsRegister = new Register("views", views, messager, processingEnv);
             Register commandsRegister = new Register("commands", commands, messager, processingEnv);
             Register initialTasksRegister = new Register("initialTasks", initialTasks, messager, processingEnv);
-            Register contributionsRegister = new Register("contributions", contributions, messager, processingEnv);
+            Register listenersRegister = new Register("listeners", listeners, messager, processingEnv);
             Register sendersRegister = new Register("senders", senders, messager, processingEnv);
 
             presenters = presentersRegister.readItems();
             views = viewsRegister.readItems();
             commands = commandsRegister.readItems();
             initialTasks = initialTasksRegister.readItems();
-            contributions = contributionsRegister.readItems();
+            listeners = listenersRegister.readItems();
             senders = sendersRegister.readItems();
 
             if (roundEnv.processingOver()) {
@@ -64,7 +64,7 @@ public class ClientModuleAnnotationProcessor extends BaseProcessor {
                 viewsRegister.writeItems();
                 commandsRegister.writeItems();
                 initialTasksRegister.writeItems();
-                contributionsRegister.writeItems();
+                listenersRegister.writeItems();
                 sendersRegister.writeItems();
                 if (roundEnv.processingOver())
                     clientModules.stream()
@@ -77,7 +77,7 @@ public class ClientModuleAnnotationProcessor extends BaseProcessor {
             new ViewsCollector(messager, elementFactory, views).collectViews(roundEnv);
             new CommandsCollector(messager, typeUtils, elementFactory, commands).collectCommands(roundEnv);
             new InitialTasksCollector(elementFactory, initialTasks).collectInitialTasks(roundEnv);
-            new ContributionsCollector(messager, elementFactory, contributions).collectContributions(roundEnv);
+            new ListenersCollector(messager, elementFactory, listeners).collectListeners(roundEnv);
             new SendersCollector(elementFactory, senders).collectSenders(roundEnv);
         } catch (Exception e) {
             messager.printMessage(Diagnostic.Kind.ERROR, ExceptionUtils.getFullStackTrace(e));
@@ -90,7 +90,7 @@ public class ClientModuleAnnotationProcessor extends BaseProcessor {
                 element.getAnnotation(ClientModule.class).name() + "ModuleConfiguration")) {
 
             String clazz = new ModuleConfigurationSourceWriter(element, presenters, views, commands, initialTasks,
-                    contributions, senders).write();
+                    listeners, senders).write();
             sourceWriter.write(clazz);
             sourceWriter.flush();
             sourceWriter.close();

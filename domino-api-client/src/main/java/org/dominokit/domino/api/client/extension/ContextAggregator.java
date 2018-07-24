@@ -1,6 +1,6 @@
 package org.dominokit.domino.api.client.extension;
 
-import org.dominokit.domino.api.shared.extension.Context;
+import org.dominokit.domino.api.shared.extension.EventContext;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -57,11 +57,11 @@ public class ContextAggregator {
         }
     }
 
-    public static class ContextWait<T extends Context>{
+    public static class ContextWait<T extends EventContext>{
         private Set<ReadyHandler> readyHandlers=new LinkedHashSet<>();
         private T context;
 
-        public static <T extends Context> ContextWait<T> create(){
+        public static <T extends EventContext> ContextWait<T> create(){
             return new ContextWait<>();
         }
 

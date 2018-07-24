@@ -4,19 +4,19 @@
 package ${package}.${subpackage}.client.presenters;
 
 import ${package}.${subpackage}.client.presenters.${module}Presenter;
-import org.dominokit.domino.api.shared.extension.MainContext;
+import org.dominokit.domino.api.shared.extension.MainEventContext;
 
 public class ${module}PresenterSpy extends ${module}Presenter{
 
-    private MainContext mainContext;
+    private MainEventContext mainContext;
 
     @Override
-    public void contributeToMainModule(MainContext context) {
+    public void listenToMainEvent(MainEventContext context) {
         super.contributeToMainModule(context);
         this.mainContext=context;
     }
 
-    public MainContext getMainContext() {
+    public MainEventContext getMainContext() {
         return mainContext;
     }
 

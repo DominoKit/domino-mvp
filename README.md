@@ -8,7 +8,7 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.dominokit.domino/domino/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.dominokit.domino/domino)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/bfdb8283919a4adab6cbfeeb3a22e53a)](https://www.codacy.com/app/akabme/domino?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=DominoKit/domino&amp;utm_campaign=Badge_Grade)
 
-Our Domino is a small, simple and a very light framework for building applications using [GWT](http://www.gwtproject.org/) and [Vertx](http://vertx.io/), it introduce the concept of extension points and contributions allowing developers to write a modular application and shared components with any other domino application. The main benefit of using Vertx as a back-end, it gives the ability of choosing either to build one monolithic but yet a modular application, or a large application built as micro-services, moreover allows building the application using TDD approach with practices offering an easy and fast way to debug for both client and service side.
+Our Domino is a small, simple and a very light framework for building applications using [GWT](http://www.gwtproject.org/) and [Vertx](http://vertx.io/), it introduce the concept of extension points and listeners allowing developers to write a modular application and shared components with any other domino application. The main benefit of using Vertx as a back-end, it gives the ability of choosing either to build one monolithic but yet a modular application, or a large application built as micro-services, moreover allows building the application using TDD approach with practices offering an easy and fast way to debug for both client and service side.
 
 **We are still not done yet!** Domino comes with ready to use archetypes, one is for creating a domino application, and the other two creates the modules within a domino application.
 
@@ -208,7 +208,7 @@ layout-backend module is not needed for this sample, can be deleted easily as li
 		     <module>layout-backend</module> <!-- remove this line -->
 		</modules> 
 		 
-- **layout-frontend** : this is where all the client side flow goes in, in this module we use APT to generate a client module configuration, the interaction with other modules, contributions to extension points, sending requests, all client side logic starts from here. Never add any UI rendering code, we don't force you but in this module you should never have buttons, text fields, check boxes etc ... 
+- **layout-frontend** : this is where all the client side flow goes in, in this module we use APT to generate a client module configuration, the interaction with other modules, listeners to extension points, sending requests, all client side logic starts from here. Never add any UI rendering code, we don't force you but in this module you should never have buttons, text fields, check boxes etc ... 
 
 *We encourage that your flow should be independent from any UI presentation.*
 
@@ -322,7 +322,7 @@ INFO: Main context received at presenter DefaultLayoutPresenter
 Above lines tells us two things, the layout-frontend and layout-frontend-ui modules were initialized, and once the application completed the initialization a context is received at a presenter.
 
 #### A blank page?
-When running an empty domino application and the result would be a blank page, it doesn't mean that the application is completely empty, any domino application starts with one and only one extension point, which is the **Main Extension Point** and this extension point provides a context, this context is surprisingly empty, it does nothing , it's just an empty interface but an important one, you start building your application by adding modules that contributes to this extension point and these modules might also provide additional extension points allowing modules to make more contributions, receiving the main context when contributing to the main extension point also means that all other modules in the application have already been initialized and configured.
+When running an empty domino application and the result would be a blank page, it doesn't mean that the application is completely empty, any domino application starts with one and only one extension point, which is the **Main Extension Point** and this extension point provides a context, this context is surprisingly empty, it does nothing , it's just an empty interface but an important one, you start building your application by adding modules that contributes to this extension point and these modules might also provide additional extension points allowing modules to make more listeners, receiving the main context when contributing to the main extension point also means that all other modules in the application have already been initialized and configured.
 
 #### Extension point and Extension point context?
 The extension point is nothing but a simple interface and it's only job is to provide a context to the contributors, it's simply a type that represent a point at the application that can be extended. The important part is the extension point context, both the extension point and the extension point context interfaces lives inside the **-shared module** in our case **layout-shared**, the implementation of these interfaces goes into the  **-frontend module** in our case **layout-frontend** and it's the frontend module responsibility to deliver the context implementation to the contributing modules within an API in the right time, this API is specifically made for this action , will see these details later on in this tutorial.
@@ -333,7 +333,7 @@ Contribution is the process of obtaining an extension point context, as simple a
 - Open the interface **LayoutPresenter**, you are going to find it as shown below,
 
 ```java
-    @InjectContext(extensionPoint=MainExtensionPoint.class)
+    @InjectContext(dominoEvent=MainExtensionPoint.class)
     void contributeToMainModule(MainContext context);
 ```
 The above method only needs a MainContext from the MainExtensionPoint in order to inject it, this method should be implemented within our presenter and we will receive the context at the write time, in our case the context will be provided when all modules finish initialization, this is defined by the domino core.
@@ -349,7 +349,7 @@ The above method only needs a MainContext from the MainExtensionPoint in order t
 
 Well! by default we do nothing, we only log that we had received the context, but this is where we start to add our logic.
 
-By now you might be wondering if we have any test cases to verify that our code is tested and working in the right way, yes we do we have a test for this contribution, as long as this test passes you should know that this code is right and will work on the browser too, have a look at the below test,
+By now you might be wondering if we have any test cases to verify that our code is tested and working in the right way, yes we do we have a test for this listener, as long as this test passes you should know that this code is right and will work on the browser too, have a look at the below test,
 
 - Open the **LayoutClientModuleTest** class, below is the test case,
 
@@ -536,7 +536,7 @@ public void givenLayoutModule_whenContributingToLayoutExtensionPoint_shouldObtai
     assertNotNull(fakeContribution.getLayoutContext());
 }
 ```
-The fakeContribution is to confirm that there is a contribution from a module to the layout extension point in which it will receive a layout context, notice that the fakeContribution does not compile because we didn't create a fake contribution yet, below steps will guide you through creating a fake contributor, 
+The fakeContribution is to confirm that there is a listener from a module to the layout extension point in which it will receive a layout context, notice that the fakeContribution does not compile because we didn't create a fake listener yet, below steps will guide you through creating a fake contributor, 
 
 - Create a new class in the test source folder that implements `Contribution` interface under the **layout-frontend** module as shown below,
 ```java
@@ -546,8 +546,8 @@ public class FakeLayoutContribution implements Contribution<LayoutExtensionPoint
     private LayoutContext layoutContext;
 
     @Override
-    public void contribute(LayoutExtensionPoint extensionPoint) {
-        this.layoutContext=extensionPoint.context();
+    public void contribute(LayoutExtensionPoint dominoEvent) {
+        this.layoutContext=dominoEvent.context();
     }
 
     public LayoutContext getLayoutContext() {

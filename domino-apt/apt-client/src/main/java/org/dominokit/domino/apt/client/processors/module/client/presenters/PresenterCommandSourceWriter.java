@@ -29,13 +29,13 @@ public class PresenterCommandSourceWriter extends JavaSourceWriter {
 
     @Override
     public String write() throws IOException {
-        TypeSpec contributionRequest = DominoTypeBuilder.build(className, PresenterCommandProcessor.class)
+        TypeSpec listenerRequest = DominoTypeBuilder.build(className, PresenterCommandProcessor.class)
                 .addAnnotation(Command.class)
                 .superclass(ParameterizedTypeName.get(ClassName.get(PresenterCommand.class), presenterType))
                 .build();
 
         StringBuilder asString = new StringBuilder();
-        JavaFile.builder(targetPackage, contributionRequest).skipJavaLangImports(true).build().writeTo(asString);
+        JavaFile.builder(targetPackage, listenerRequest).skipJavaLangImports(true).build().writeTo(asString);
         return asString.toString();
     }
 }

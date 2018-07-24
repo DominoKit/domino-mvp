@@ -41,19 +41,19 @@ public class TestRoutingListener implements TestServerRouter.RoutingListener {
             receivedRequests.put(request.getClass().getCanonicalName(), new RequestResponsePair(request, response));
     }
 
-    public <C extends ServerRequest> boolean isSent(Class<C> request) {
+    public <R extends ServerRequest> boolean isSent(Class<R> request) {
         return receivedRequests.containsKey(request.getCanonicalName());
     }
 
-    public <C extends ServerRequest> boolean isSent(Class<C> request, int executionCount) {
+    public <R extends ServerRequest> boolean isSent(Class<R> request, int executionCount) {
         return receivedRequests.containsKey(request.getCanonicalName()) && receivedRequests.get(request.getCanonicalName()).executionsCount==executionCount;
     }
 
-    public <S extends ResponseBean, C extends ServerRequest> S getResponse(Class<C> request) {
+    public <S extends ResponseBean, R extends ServerRequest> S getResponse(Class<R> request) {
         return (S) receivedRequests.get(request.getCanonicalName()).response;
     }
 
-    public <C extends ServerRequest> C getRequest(Class<C> request) {
-        return (C) receivedRequests.get(request.getCanonicalName()).request;
+    public <R extends ServerRequest> R getRequest(Class<R> request) {
+        return (R) receivedRequests.get(request.getCanonicalName()).request;
     }
 }

@@ -2,8 +2,8 @@ package org.dominokit.domino.api.client;
 
 import org.dominokit.domino.api.client.async.AsyncRunner;
 import org.dominokit.domino.api.client.events.EventsBus;
-import org.dominokit.domino.api.client.extension.ContributionsRegistry;
-import org.dominokit.domino.api.client.extension.ContributionsRepository;
+import org.dominokit.domino.api.client.extension.DominoEventsRegistry;
+import org.dominokit.domino.api.client.extension.DominoEventsListenersRepository;
 import org.dominokit.domino.api.client.mvp.PresenterRegistry;
 import org.dominokit.domino.api.client.mvp.ViewRegistry;
 import org.dominokit.domino.api.client.mvp.presenter.LazyPresenterLoader;
@@ -11,18 +11,17 @@ import org.dominokit.domino.api.client.mvp.presenter.PresentersRepository;
 import org.dominokit.domino.api.client.mvp.view.LazyViewLoader;
 import org.dominokit.domino.api.client.mvp.view.ViewsRepository;
 import org.dominokit.domino.api.client.request.*;
-import org.dominokit.domino.api.shared.extension.Contribution;
-import org.dominokit.domino.api.shared.extension.ExtensionPoint;
-import org.dominokit.domino.api.shared.extension.MainExtensionPoint;
+import org.dominokit.domino.api.shared.extension.DominoEventListener;
+import org.dominokit.domino.api.shared.extension.DominoEvent;
+import org.dominokit.domino.api.shared.extension.MainDominoEvent;
 import org.dominokit.domino.api.shared.history.AppHistory;
 import org.dominokit.domino.api.shared.history.DominoHistory;
-import org.dominokit.domino.api.client.request.*;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class ClientApp
-        implements PresenterRegistry, CommandRegistry, ViewRegistry, InitialTaskRegistry, ContributionsRegistry,
+        implements PresenterRegistry, CommandRegistry, ViewRegistry, InitialTaskRegistry, DominoEventsRegistry,
         RequestRestSendersRegistry {
 
     private static final AttributeHolder<RequestRouter<PresenterCommand>> CLIENT_ROUTER_HOLDER = new AttributeHolder<>();
@@ -32,11 +31,11 @@ public class ClientApp
     private static final AttributeHolder<CommandsRepository> COMMANDS_REPOSITORY_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<PresentersRepository> PRESENTERS_REPOSITORY_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<ViewsRepository> VIEWS_REPOSITORY_HOLDER = new AttributeHolder<>();
-    private static final AttributeHolder<ContributionsRepository> CONTRIBUTIONS_REPOSITORY_HOLDER =
+    private static final AttributeHolder<DominoEventsListenersRepository> LISTENERS_REPOSITORY_HOLDER =
             new AttributeHolder<>();
     private static final AttributeHolder<RequestRestSendersRepository> REQUEST_REST_SENDERS_REPOSITORY_HOLDER =
             new AttributeHolder<>();
-    private static final AttributeHolder<MainExtensionPoint> MAIN_EXTENSION_POINT_HOLDER = new AttributeHolder<>();
+    private static final AttributeHolder<MainDominoEvent> MAIN_EXTENSION_POINT_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<AppHistory> HISTORY_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<List<ClientStartupTask>> INITIAL_TASKS_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<AsyncRunner> ASYNC_RUNNER_HOLDER = new AttributeHolder<>();
@@ -63,8 +62,8 @@ public class ClientApp
     }
 
     @Override
-    public void registerContribution(Class<? extends ExtensionPoint> extensionPoint, Contribution contribution) {
-        CONTRIBUTIONS_REPOSITORY_HOLDER.attribute.registerContribution(extensionPoint, contribution);
+    public void addListener(Class<? extends DominoEvent> event, DominoEventListener dominoEventListener) {
+        LISTENERS_REPOSITORY_HOLDER.attribute.addListener(event, dominoEventListener);
     }
 
     @Override
@@ -125,7 +124,7 @@ public class ClientApp
         configuration.registerPresenters(this);
         configuration.registerRequests(this);
         configuration.registerViews(this);
-        configuration.registerContributions(this);
+        configuration.registerListeners(this);
         configuration.registerInitialTasks(this);
         configuration.registerRequestRestSenders(this);
     }
@@ -139,14 +138,14 @@ public class ClientApp
         dominoOptionsHandler.onBeforeRun(dominoOptions());
         dominoOptions().applyOptions();
         INITIAL_TASKS_HOLDER.attribute.forEach(ClientStartupTask::execute);
-        applyContributions(MainExtensionPoint.class, MAIN_EXTENSION_POINT_HOLDER.attribute);
+        fireEvent(MainDominoEvent.class, MAIN_EXTENSION_POINT_HOLDER.attribute);
     }
 
-    public void applyContributions(Class<? extends ExtensionPoint> extensionPointInterface,
-                                   ExtensionPoint extensionPoint) {
-        CONTRIBUTIONS_REPOSITORY_HOLDER.attribute.findExtensionPointContributions(extensionPointInterface)
+    public void fireEvent(Class<? extends DominoEvent> extensionPointInterface,
+                          DominoEvent dominoEvent) {
+        LISTENERS_REPOSITORY_HOLDER.attribute.getEventListeners(extensionPointInterface)
                 .forEach(c ->
-                getAsyncRunner().runAsync(() -> c.contribute(extensionPoint)));
+                getAsyncRunner().runAsync(() -> c.listen(dominoEvent)));
     }
 
     @FunctionalInterface
@@ -176,11 +175,11 @@ public class ClientApp
 
     @FunctionalInterface
     public interface HasViewRepository {
-        HasContributionsRepository contributionsRepository(ContributionsRepository contributionsRepository);
+        HasDominoEventListenersRepository eventsListenersRepository(DominoEventsListenersRepository dominoEventsListenersRepository);
     }
 
     @FunctionalInterface
-    public interface HasContributionsRepository {
+    public interface HasDominoEventListenersRepository {
         HasRequestRestSendersRepository requestSendersRepository(
                 RequestRestSendersRepository requestRestSendersRepository);
     }
@@ -197,7 +196,7 @@ public class ClientApp
 
     @FunctionalInterface
     public interface HasAsyncRunner {
-        HasOptions mainExtensionPoint(MainExtensionPoint mainExtensionPoint);
+        HasOptions mainExtensionPoint(MainDominoEvent mainDominoEvent);
     }
 
     @FunctionalInterface
@@ -212,7 +211,7 @@ public class ClientApp
 
     public static class ClientAppBuilder
             implements HasClientRouter, HasServerRouter, HasEventBus, HasRequestRepository, HasPresentersRepository,
-            HasViewRepository, HasContributionsRepository, HasRequestRestSendersRepository,
+            HasViewRepository, HasDominoEventListenersRepository, HasRequestRestSendersRepository,
             HasHistory, HasAsyncRunner, HasOptions, CanBuildClientApp {
 
         private RequestRouter<PresenterCommand> clientRouter;
@@ -221,9 +220,9 @@ public class ClientApp
         private CommandsRepository requestRepository;
         private PresentersRepository presentersRepository;
         private ViewsRepository viewsRepository;
-        private ContributionsRepository contributionsRepository;
+        private DominoEventsListenersRepository dominoEventsListenersRepository;
         private RequestRestSendersRepository requestRestSendersRepository;
-        private MainExtensionPoint mainExtensionPoint;
+        private MainDominoEvent mainDominoEvent;
         private AppHistory history;
         private AsyncRunner asyncRunner;
         private DominoOptions dominoOptions;
@@ -267,8 +266,8 @@ public class ClientApp
         }
 
         @Override
-        public HasContributionsRepository contributionsRepository(ContributionsRepository contributionsRepository) {
-            this.contributionsRepository = contributionsRepository;
+        public HasDominoEventListenersRepository eventsListenersRepository(DominoEventsListenersRepository dominoEventsListenersRepository) {
+            this.dominoEventsListenersRepository = dominoEventsListenersRepository;
             return this;
         }
 
@@ -292,8 +291,8 @@ public class ClientApp
         }
 
         @Override
-        public HasOptions mainExtensionPoint(MainExtensionPoint mainExtensionPoint) {
-            this.mainExtensionPoint = mainExtensionPoint;
+        public HasOptions mainExtensionPoint(MainDominoEvent mainDominoEvent) {
+            this.mainDominoEvent = mainDominoEvent;
             return this;
         }
 
@@ -316,9 +315,9 @@ public class ClientApp
             ClientApp.COMMANDS_REPOSITORY_HOLDER.hold(requestRepository);
             ClientApp.PRESENTERS_REPOSITORY_HOLDER.hold(presentersRepository);
             ClientApp.VIEWS_REPOSITORY_HOLDER.hold(viewsRepository);
-            ClientApp.CONTRIBUTIONS_REPOSITORY_HOLDER.hold(contributionsRepository);
+            ClientApp.LISTENERS_REPOSITORY_HOLDER.hold(dominoEventsListenersRepository);
             ClientApp.REQUEST_REST_SENDERS_REPOSITORY_HOLDER.hold(requestRestSendersRepository);
-            ClientApp.MAIN_EXTENSION_POINT_HOLDER.hold(mainExtensionPoint);
+            ClientApp.MAIN_EXTENSION_POINT_HOLDER.hold(mainDominoEvent);
             ClientApp.HISTORY_HOLDER.hold(history);
             ClientApp.INITIAL_TASKS_HOLDER.hold(new LinkedList<>());
             ClientApp.ASYNC_RUNNER_HOLDER.hold(asyncRunner);

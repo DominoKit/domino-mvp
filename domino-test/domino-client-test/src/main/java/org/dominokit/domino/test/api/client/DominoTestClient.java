@@ -11,7 +11,7 @@ import org.dominokit.domino.api.server.config.VertxConfiguration;
 import org.dominokit.domino.api.server.entrypoint.ServerEntryPointContext;
 import org.dominokit.domino.api.server.entrypoint.VertxContext;
 import org.dominokit.domino.api.server.entrypoint.VertxEntryPointContext;
-import org.dominokit.domino.api.shared.extension.Contribution;
+import org.dominokit.domino.api.shared.extension.DominoEventListener;
 import org.dominokit.domino.api.shared.request.ResponseBean;
 import org.dominokit.domino.service.discovery.VertxServiceDiscovery;
 import io.vertx.core.Vertx;
@@ -32,7 +32,7 @@ public class DominoTestClient
     private Map<String, Presentable> presentersReplacements = new HashMap<>();
     private Map<String, View> viewsReplacements = new HashMap<>();
     private List<ViewOf> viewsOf = new ArrayList<>();
-    private List<ContributionOf> contributionsOf = new ArrayList<>();
+    private List<ListenerOf> listenersOf = new ArrayList<>();
 
     private VertxEntryPointContext testEntryPointContext;
     private Vertx vertx = Vertx.vertx();
@@ -66,9 +66,9 @@ public class DominoTestClient
     }
 
     @Override
-    public <C extends Contribution> CanCustomizeClient contributionOf(Class<C> contributionName,
-                                                                      ContributionHandler<C> handler) {
-        this.contributionsOf.add(new ContributionOf(contributionName, handler));
+    public <L extends DominoEventListener> CanCustomizeClient listenerOf(Class<L> listenerType,
+                                                                         ListenerHandler<L> handler) {
+        this.listenersOf.add(new ListenerOf(listenerType, handler));
         return this;
     }
 
@@ -102,7 +102,7 @@ public class DominoTestClient
         viewsReplacements.forEach((key, value) -> replaceView(key, () -> value));
 
         viewsOf.forEach(v -> v.handler.handle(getView(v.presenterName)));
-        contributionsOf.forEach(c -> c.handler.handle(getContribution(c.contributionName)));
+        listenersOf.forEach(c -> c.handler.handle(getListener(c.listenerName)));
 
         beforeStarted.onBeforeStart(this);
         make().run();
@@ -130,8 +130,8 @@ public class DominoTestClient
         return (T) make().getViewsRepository().getView(presenterName);
     }
 
-    public <C extends Contribution> C getContribution(Class<C> contributionClass) {
-        return TestClientAppFactory.contributionsRepository.getContribution(contributionClass);
+    public <L extends DominoEventListener> L getListener(Class<L> listenerType) {
+        return TestClientAppFactory.listenersRepository.getListener(listenerType);
     }
 
     @Override
@@ -184,12 +184,12 @@ public class DominoTestClient
         }
     }
 
-    private static class ContributionOf {
-        private final Class<? extends Contribution> contributionName;
-        private final ContributionHandler handler;
+    private static class ListenerOf {
+        private final Class<? extends DominoEventListener> listenerName;
+        private final ListenerHandler handler;
 
-        private ContributionOf(Class<? extends Contribution> contributionName, ContributionHandler handler) {
-            this.contributionName = contributionName;
+        private ListenerOf(Class<? extends DominoEventListener> listenerName, ListenerHandler handler) {
+            this.listenerName = listenerName;
             this.handler = handler;
         }
     }

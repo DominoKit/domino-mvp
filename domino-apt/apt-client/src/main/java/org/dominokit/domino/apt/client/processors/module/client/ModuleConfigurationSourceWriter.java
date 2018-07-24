@@ -2,7 +2,7 @@ package org.dominokit.domino.apt.client.processors.module.client;
 
 import org.dominokit.domino.api.client.ModuleConfiguration;
 import org.dominokit.domino.api.client.annotations.ClientModule;
-import org.dominokit.domino.apt.client.processors.module.client.contributions.RegisterContributionsMethodWriter;
+import org.dominokit.domino.apt.client.processors.module.client.listeners.RegisterListenersMethodWriter;
 import org.dominokit.domino.apt.client.processors.module.client.initialtasks.RegisterInitialTasksMethodWriter;
 import org.dominokit.domino.apt.client.processors.module.client.presenters.RegisterPresentersMethodWriter;
 import org.dominokit.domino.apt.client.processors.module.client.requests.RegisterRequestsMethodWriter;
@@ -20,7 +20,7 @@ import java.util.Set;
 public class ModuleConfigurationSourceWriter extends JavaSourceWriter {
 
     private final Set<String> senders;
-    private final Set<String> contributions;
+    private final Set<String> listeners;
     private final Set<String> initialTasks;
     private final Set<String> requests;
     private final Set<String> presenters;
@@ -28,14 +28,14 @@ public class ModuleConfigurationSourceWriter extends JavaSourceWriter {
 
     public ModuleConfigurationSourceWriter(ProcessorElement processorElement,
                                            Set<String> presenters, Set<String> views, Set<String> requests,
-                                           Set<String> initialTasks, Set<String> contributions,
+                                           Set<String> initialTasks, Set<String> listeners,
                                            Set<String> senders) {
         super(processorElement);
         this.presenters = presenters;
         this.views = views;
         this.requests = requests;
         this.initialTasks = initialTasks;
-        this.contributions = contributions;
+        this.listeners = listeners;
         this.senders = senders;
     }
 
@@ -55,7 +55,7 @@ public class ModuleConfigurationSourceWriter extends JavaSourceWriter {
         new RegisterViewsMethodWriter(clientModuleTypeBuilder).write(views);
         new RegisterRequestsMethodWriter(clientModuleTypeBuilder).write(requests);
         new RegisterInitialTasksMethodWriter(clientModuleTypeBuilder).write(initialTasks);
-        new RegisterContributionsMethodWriter(clientModuleTypeBuilder).write(contributions);
+        new RegisterListenersMethodWriter(clientModuleTypeBuilder).write(listeners);
         new RegisterSendersMethodWriter(clientModuleTypeBuilder).write(senders);
     }
 

@@ -1,6 +1,6 @@
 package org.dominokit.domino.api.client;
 
-import org.dominokit.domino.api.client.extension.ContributionsRegistry;
+import org.dominokit.domino.api.client.extension.DominoEventsRegistry;
 import org.dominokit.domino.api.client.mvp.PresenterRegistry;
 import org.dominokit.domino.api.client.mvp.ViewRegistry;
 import org.dominokit.domino.api.client.request.CommandRegistry;
@@ -20,7 +20,7 @@ public interface ModuleConfiguration {
         // Default implementation
     }
 
-    default void registerContributions(ContributionsRegistry registry) {
+    default void registerListeners(DominoEventsRegistry registry) {
         // Default implementation
     }
 

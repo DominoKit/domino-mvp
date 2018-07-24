@@ -3,11 +3,10 @@ package org.dominokit.domino.test.api.client;
 
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.server.entrypoint.ServerEntryPointContext;
-import org.dominokit.domino.api.shared.extension.MainContext;
+import org.dominokit.domino.api.shared.extension.MainEventContext;
 import org.dominokit.domino.client.commons.request.InMemoryCommandsRepository;
 import org.dominokit.domino.client.commons.request.InMemoryRequestRestSendersRepository;
 import org.dominokit.domino.gwt.client.events.RequestEventProcessor;
-import org.dominokit.domino.test.api.client.TestInMemoryViewRepository;
 
 public class TestClientAppFactory {
 
@@ -15,7 +14,7 @@ public class TestClientAppFactory {
     protected static InMemoryCommandsRepository commandsRepository;
     protected static TestInMemoryViewRepository viewsRepository;
     protected static TestServerRouter serverRouter;
-    protected static TestInMemoryContributionsRepository contributionsRepository;
+    protected static TestInMemoryEventsListenersRepository listenersRepository;
     protected static TestDominoHistory history;
     protected static TestClientRouter clientRouter;
     protected static RequestEventProcessor requestEventProcessor;
@@ -34,7 +33,7 @@ public class TestClientAppFactory {
         presentersRepository = new TestInMemoryPresenterRepository();
         commandsRepository = new InMemoryCommandsRepository();
         viewsRepository = new TestInMemoryViewRepository();
-        contributionsRepository = new TestInMemoryContributionsRepository();
+        listenersRepository = new TestInMemoryEventsListenersRepository();
         history = new TestDominoHistory();
 
         return ClientApp.ClientAppBuilder
@@ -44,11 +43,11 @@ public class TestClientAppFactory {
                 .requestRepository(commandsRepository)
                 .presentersRepository(presentersRepository)
                 .viewsRepository(viewsRepository)
-                .contributionsRepository(contributionsRepository)
+                .eventsListenersRepository(listenersRepository)
                 .requestSendersRepository(new InMemoryRequestRestSendersRepository())
                 .history(history)
                 .asyncRunner(new TestAsyncRunner())
-                .mainExtensionPoint(() -> new MainContext() {
+                .mainExtensionPoint(() -> new MainEventContext() {
                 })
                 .dominoOptions(new FakeDominoOptions())
                 .build();
