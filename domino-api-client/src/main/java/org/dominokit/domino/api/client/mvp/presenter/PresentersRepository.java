@@ -2,7 +2,7 @@ package org.dominokit.domino.api.client.mvp.presenter;
 
 public interface PresentersRepository {
 
-    void registerPresenter(LazyPresenterLoader lazyPresenterLoader);
+    void registerPresenter(PresenterLoader presenterLoader);
 
     Presentable getPresenter(String presenterName);
     String getNameFromConcreteName(String concreteName);

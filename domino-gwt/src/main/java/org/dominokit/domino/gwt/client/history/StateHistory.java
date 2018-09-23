@@ -1,5 +1,6 @@
 package org.dominokit.domino.gwt.client.history;
 
+import com.google.gwt.core.client.GWT;
 import elemental2.dom.DomGlobal;
 import elemental2.dom.PopStateEvent;
 import jsinterop.base.Js;

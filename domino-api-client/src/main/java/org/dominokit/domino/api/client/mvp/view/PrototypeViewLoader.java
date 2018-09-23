@@ -1,24 +1,21 @@
 package org.dominokit.domino.api.client.mvp.view;
 
-import static java.util.Objects.isNull;
-
-public abstract class LazyViewLoader {
+public abstract class PrototypeViewLoader implements ViewLoader {
 
     private final String presenterName;
-    private View view;
 
-    public LazyViewLoader(String presenterName) {
+    public PrototypeViewLoader(String presenterName) {
         this.presenterName = presenterName;
     }
 
+    @Override
     public String getPresenterName() {
         return presenterName;
     }
 
+    @Override
     public View getView() {
-        if(isNull(view))
-            view=make();
-        return view;
+        return make();
     }
 
     protected abstract View make();

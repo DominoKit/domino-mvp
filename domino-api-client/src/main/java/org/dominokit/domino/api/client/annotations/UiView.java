@@ -14,4 +14,7 @@ public @interface UiView {
 
     @NotNull
     Class<? extends Presentable> presentable();
+
+    @NotNull
+    boolean singleton() default false;
 }

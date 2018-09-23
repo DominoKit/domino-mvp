@@ -3,8 +3,8 @@ package org.dominokit.domino.apt.client;
 import javax.annotation.Generated;
 import org.dominokit.domino.api.client.ModuleConfiguration;
 import org.dominokit.domino.api.client.mvp.PresenterRegistry;
-import org.dominokit.domino.api.client.mvp.presenter.LazyPresenterLoader;
 import org.dominokit.domino.api.client.mvp.presenter.Presentable;
+import org.dominokit.domino.api.client.mvp.presenter.PrototypePresenter;
 
 /**
  * This is generated class, please don't modify
@@ -14,7 +14,7 @@ public class PresenterRegistrationModuleConfiguration implements ModuleConfigura
 
     @Override
     public void registerPresenters(PresenterRegistry registry) {
-        registry.registerPresenter(new LazyPresenterLoader(DefaultAnnotatedClassWithPresenter.class.getCanonicalName(), DefaultAnnotatedClassWithPresenter.class.getCanonicalName()) {
+        registry.registerPresenter(new PrototypePresenter(DefaultAnnotatedClassWithPresenter.class.getCanonicalName(), DefaultAnnotatedClassWithPresenter.class.getCanonicalName()) {
             @Override
             protected Presentable make() {
                 return new DefaultAnnotatedClassWithPresenter();

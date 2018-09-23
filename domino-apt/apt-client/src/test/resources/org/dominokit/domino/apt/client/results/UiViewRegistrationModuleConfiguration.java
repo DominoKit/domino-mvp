@@ -3,7 +3,7 @@ package org.dominokit.domino.apt.client;
 import javax.annotation.Generated;
 import org.dominokit.domino.api.client.ModuleConfiguration;
 import org.dominokit.domino.api.client.mvp.ViewRegistry;
-import org.dominokit.domino.api.client.mvp.view.LazyViewLoader;
+import org.dominokit.domino.api.client.mvp.view.PrototypeViewLoader;
 import org.dominokit.domino.api.client.mvp.view.View;
 
 /**
@@ -14,7 +14,7 @@ public class UiViewRegistrationModuleConfiguration implements ModuleConfiguratio
 
     @Override
     public void registerViews(ViewRegistry registry) {
-        registry.registerView(new LazyViewLoader(DefaultAnnotatedClassWithPresenter.class.getCanonicalName()) {
+        registry.registerView(new PrototypeViewLoader(DefaultAnnotatedClassWithPresenter.class.getCanonicalName()) {
             @Override
             protected View make() {
                 return new AnnotatedClassWithUiView();

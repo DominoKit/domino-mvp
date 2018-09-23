@@ -1,8 +1,8 @@
 package org.dominokit.domino.api.client.mvp;
 
-import org.dominokit.domino.api.client.mvp.view.LazyViewLoader;
+import org.dominokit.domino.api.client.mvp.view.ViewLoader;
 
 @FunctionalInterface
 public interface ViewRegistry{
-    void registerView(LazyViewLoader lazyViewLoader);
+    void registerView(ViewLoader viewLoader);
 }

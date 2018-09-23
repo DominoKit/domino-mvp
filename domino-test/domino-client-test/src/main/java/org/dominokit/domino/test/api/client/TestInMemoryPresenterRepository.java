@@ -1,6 +1,7 @@
 package org.dominokit.domino.test.api.client;
 
-import org.dominokit.domino.api.client.mvp.presenter.LazyPresenterLoader;
+import org.dominokit.domino.api.client.mvp.presenter.PresenterLoader;
+import org.dominokit.domino.api.client.mvp.presenter.SingletonPresenter;
 import org.dominokit.domino.api.client.mvp.presenter.Presentable;
 import org.dominokit.domino.client.commons.mvp.presenter.InMemoryPresentersRepository;
 
@@ -10,7 +11,7 @@ import java.util.Objects;
 
 public class TestInMemoryPresenterRepository extends InMemoryPresentersRepository {
 
-    private final HashMap<String, LazyPresenterLoader> replacedPresenters = new HashMap<>();
+    private final HashMap<String, PresenterLoader> replacedPresenters = new HashMap<>();
 
     @Override
     public void clear() {
@@ -30,27 +31,27 @@ public class TestInMemoryPresenterRepository extends InMemoryPresentersRepositor
                 new TestPresenterLoader(super.getPresenterLoader(presenterName), presenterFactory));
     }
 
-    private class TestPresenterLoader extends LazyPresenterLoader {
+    private class TestPresenterLoader extends SingletonPresenter {
 
         public static final int HASH_NUMBER = 31;
-        private final LazyPresenterLoader lazyPresenterLoader;
+        private final PresenterLoader presenterLoader;
         private final TestPresenterFactory presenterFactory;
         private Presentable presenter;
 
-        public TestPresenterLoader(LazyPresenterLoader lazyPresenterLoader, TestPresenterFactory presenterFactory) {
-            super(lazyPresenterLoader.getName(), lazyPresenterLoader.getConcreteName());
-            this.lazyPresenterLoader = lazyPresenterLoader;
+        public TestPresenterLoader(PresenterLoader presenterLoader, TestPresenterFactory presenterFactory) {
+            super(presenterLoader.getName(), presenterLoader.getConcreteName());
+            this.presenterLoader = presenterLoader;
             this.presenterFactory = presenterFactory;
         }
 
         @Override
         public String getName() {
-            return lazyPresenterLoader.getName();
+            return presenterLoader.getName();
         }
 
         @Override
         public String getConcreteName() {
-            return lazyPresenterLoader.getConcreteName();
+            return presenterLoader.getConcreteName();
         }
 
         @Override
@@ -73,7 +74,7 @@ public class TestInMemoryPresenterRepository extends InMemoryPresentersRepositor
         @Override
         public int hashCode() {
             int result = super.hashCode();
-            result = HASH_NUMBER * result + (lazyPresenterLoader != null ? lazyPresenterLoader.hashCode() : 0);
+            result = HASH_NUMBER * result + (presenterLoader != null ? presenterLoader.hashCode() : 0);
             result = HASH_NUMBER * result + (presenterFactory != null ? presenterFactory.hashCode() : 0);
             result = HASH_NUMBER * result + (presenter != null ? presenter.hashCode() : 0);
             return result;

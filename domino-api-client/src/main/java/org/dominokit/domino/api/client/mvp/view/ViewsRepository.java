@@ -3,7 +3,7 @@ package org.dominokit.domino.api.client.mvp.view;
 
 public interface ViewsRepository {
 
-    void registerView(LazyViewLoader lazyViewLoader);
+    void registerView(ViewLoader singletonViewLoader);
 
     View getView(String presenterName);
 

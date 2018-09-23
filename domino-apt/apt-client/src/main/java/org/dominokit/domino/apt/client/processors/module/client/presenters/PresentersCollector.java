@@ -8,10 +8,10 @@ import org.dominokit.domino.apt.commons.ProcessorElement;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.ElementKind;
-import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -42,23 +42,17 @@ public class PresentersCollector {
     }
 
     private boolean addPresenter(ProcessorElement p) {
-        if(!p.isImplementsInterface(Presentable.class)){
+        if (!p.isImplementsInterface(Presentable.class)) {
             messager.printMessage(Diagnostic.Kind.ERROR, "Not implementing presentable interface", p.getElement());
             throw new NotImplementingPresentableInterfaceException();
         }
-        return presenters.add(p.fullQualifiedNoneGenericName());
-    }
 
-//    private String getPresentableInterface(ProcessorElement element) {
-//        TypeMirror typeMirror = element.asTypeElement().getInterfaces().stream().filter(this::isPresentableInterface)
-//                .collect(Collectors.toSet()).stream().findFirst().orElseThrow(IllegalArgumentException::new);
-//
-//        return typeMirror.toString();
-//    }
+        Presenter annotation = p.getAnnotation(Presenter.class);
 
-    private boolean isPresentableInterface(TypeMirror implementedInterface) {
-        return typeUtils.isAssignable(implementedInterface,
-                elementUtils.getTypeElement(Presentable.class.getCanonicalName()).asType());
+        List<String> alreadyAdded = presenters.stream().filter(s -> s.startsWith(p.fullQualifiedNoneGenericName())).collect(Collectors.toList());
+        presenters.removeAll(alreadyAdded);
+
+        return presenters.add(p.fullQualifiedNoneGenericName() + ":" + annotation.singleton());
     }
 
 

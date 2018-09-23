@@ -1,8 +1,8 @@
 package org.dominokit.domino.api.client.mvp;
 
-import org.dominokit.domino.api.client.mvp.presenter.LazyPresenterLoader;
+import org.dominokit.domino.api.client.mvp.presenter.PresenterLoader;
 
 @FunctionalInterface
 public interface PresenterRegistry{
-    void registerPresenter(LazyPresenterLoader lazyPresenterLoader);
+    void registerPresenter(PresenterLoader presenterLoader);
 }

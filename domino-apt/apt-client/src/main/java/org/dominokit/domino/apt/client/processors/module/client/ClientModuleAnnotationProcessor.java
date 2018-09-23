@@ -93,7 +93,6 @@ public class ClientModuleAnnotationProcessor extends BaseProcessor {
                     listeners, senders).write();
             sourceWriter.write(clazz);
             sourceWriter.flush();
-            sourceWriter.close();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "could not generate class ", e);
             messager.printMessage(Diagnostic.Kind.ERROR,

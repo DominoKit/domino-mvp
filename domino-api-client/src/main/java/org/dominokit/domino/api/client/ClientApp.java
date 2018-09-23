@@ -2,17 +2,17 @@ package org.dominokit.domino.api.client;
 
 import org.dominokit.domino.api.client.async.AsyncRunner;
 import org.dominokit.domino.api.client.events.EventsBus;
-import org.dominokit.domino.api.client.extension.DominoEventsRegistry;
 import org.dominokit.domino.api.client.extension.DominoEventsListenersRepository;
+import org.dominokit.domino.api.client.extension.DominoEventsRegistry;
 import org.dominokit.domino.api.client.mvp.PresenterRegistry;
 import org.dominokit.domino.api.client.mvp.ViewRegistry;
-import org.dominokit.domino.api.client.mvp.presenter.LazyPresenterLoader;
+import org.dominokit.domino.api.client.mvp.presenter.PresenterLoader;
 import org.dominokit.domino.api.client.mvp.presenter.PresentersRepository;
-import org.dominokit.domino.api.client.mvp.view.LazyViewLoader;
+import org.dominokit.domino.api.client.mvp.view.ViewLoader;
 import org.dominokit.domino.api.client.mvp.view.ViewsRepository;
 import org.dominokit.domino.api.client.request.*;
-import org.dominokit.domino.api.shared.extension.DominoEventListener;
 import org.dominokit.domino.api.shared.extension.DominoEvent;
+import org.dominokit.domino.api.shared.extension.DominoEventListener;
 import org.dominokit.domino.api.shared.extension.MainDominoEvent;
 import org.dominokit.domino.api.shared.history.AppHistory;
 import org.dominokit.domino.api.shared.history.DominoHistory;
@@ -47,8 +47,8 @@ public class ClientApp
     }
 
     @Override
-    public void registerPresenter(LazyPresenterLoader lazyPresenterLoader) {
-        PRESENTERS_REPOSITORY_HOLDER.attribute.registerPresenter(lazyPresenterLoader);
+    public void registerPresenter(PresenterLoader presenterLoader) {
+        PRESENTERS_REPOSITORY_HOLDER.attribute.registerPresenter(presenterLoader);
     }
 
     @Override
@@ -57,8 +57,8 @@ public class ClientApp
     }
 
     @Override
-    public void registerView(LazyViewLoader lazyViewLoader) {
-        VIEWS_REPOSITORY_HOLDER.attribute.registerView(lazyViewLoader);
+    public void registerView(ViewLoader viewLoader) {
+        VIEWS_REPOSITORY_HOLDER.attribute.registerView(viewLoader);
     }
 
     @Override

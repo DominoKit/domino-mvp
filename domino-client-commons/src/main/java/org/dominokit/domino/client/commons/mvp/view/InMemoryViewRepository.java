@@ -1,20 +1,20 @@
 package org.dominokit.domino.client.commons.mvp.view;
 
-import org.dominokit.domino.api.client.mvp.view.LazyViewLoader;
 import org.dominokit.domino.api.client.mvp.view.View;
+import org.dominokit.domino.api.client.mvp.view.ViewLoader;
 import org.dominokit.domino.api.client.mvp.view.ViewsRepository;
 
 import java.util.HashMap;
 
 public class InMemoryViewRepository implements ViewsRepository {
 
-    private final HashMap<String, LazyViewLoader> views=new HashMap<>();
+    private final HashMap<String, ViewLoader> views=new HashMap<>();
 
     @Override
-    public void registerView(LazyViewLoader lazyViewLoader) {
-        if(isRegisteredPresenterView(lazyViewLoader.getPresenterName()))
-            throw new ViewsRepository.ViewCannotBeRegisteredMoreThanOnce(lazyViewLoader.getPresenterName());
-        views.put(lazyViewLoader.getPresenterName(), lazyViewLoader);
+    public void registerView(ViewLoader viewLoader) {
+        if(isRegisteredPresenterView(viewLoader.getPresenterName()))
+            throw new ViewsRepository.ViewCannotBeRegisteredMoreThanOnce(viewLoader.getPresenterName());
+        views.put(viewLoader.getPresenterName(), viewLoader);
     }
 
     @Override
@@ -24,7 +24,7 @@ public class InMemoryViewRepository implements ViewsRepository {
         throw new ViewsRepository.ViewNotFoundException(presenterName);
     }
 
-    protected LazyViewLoader getViewLoader(String presenterName){
+    protected ViewLoader getViewLoader(String presenterName){
         if(isRegisteredPresenterView(presenterName))
             return views.get(presenterName);
         throw new ViewsRepository.ViewNotFoundException(presenterName);

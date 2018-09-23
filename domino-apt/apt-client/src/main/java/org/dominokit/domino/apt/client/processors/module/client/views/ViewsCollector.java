@@ -11,6 +11,7 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.*;
 import javax.lang.model.type.DeclaredType;
 import javax.tools.Diagnostic;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -37,12 +38,15 @@ public class ViewsCollector {
 
     private boolean addView(ProcessorElement v) {
         isView(v);
+        List<String> alreadyAdded = views.stream().filter(s -> s.startsWith(v.fullQualifiedNoneGenericName())).collect(Collectors.toList());
+        views.removeAll(alreadyAdded);
+        UiView annotation = v.getAnnotation(UiView.class);
         return views.add(v.fullQualifiedNoneGenericName() + ":" +
-                getViewPresenter(v.asTypeElement()));
+                getViewPresenter(v.asTypeElement()) + ":" + annotation.singleton());
     }
 
     private void isView(ProcessorElement element) {
-        if(element.isImplementsGenericInterface(View.class))
+        if (element.isImplementsGenericInterface(View.class))
             messager.printMessage(Diagnostic.Kind.WARNING, "Class is annotated as View while it is not implementing view interface.!");
 
     }

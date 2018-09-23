@@ -1,12 +1,13 @@
 package org.dominokit.domino.apt.client.processors.module.client.views;
 
-import org.dominokit.domino.api.client.mvp.ViewRegistry;
-import org.dominokit.domino.api.client.mvp.view.LazyViewLoader;
-import org.dominokit.domino.api.client.mvp.view.View;
-import org.dominokit.domino.apt.commons.AbstractRegisterMethodWriter;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
+import org.dominokit.domino.api.client.mvp.ViewRegistry;
+import org.dominokit.domino.api.client.mvp.view.PrototypeViewLoader;
+import org.dominokit.domino.api.client.mvp.view.SingletonViewLoader;
+import org.dominokit.domino.api.client.mvp.view.View;
+import org.dominokit.domino.apt.commons.AbstractRegisterMethodWriter;
 
 import javax.lang.model.element.Modifier;
 
@@ -36,7 +37,7 @@ public class RegisterViewsMethodWriter extends AbstractRegisterMethodWriter<View
                 .build();
         TypeSpec lazyLoaderType = TypeSpec.anonymousClassBuilder("$T.class.getCanonicalName()",
                 ClassName.bestGuess(entry.presenter))
-                .superclass(LazyViewLoader.class)
+                .superclass(entry.singleton ? SingletonViewLoader.class : PrototypeViewLoader.class)
                 .addMethod(makeMethod)
                 .build();
         methodBuilder.addStatement("registry.registerView($L)", lazyLoaderType);
@@ -45,7 +46,7 @@ public class RegisterViewsMethodWriter extends AbstractRegisterMethodWriter<View
     @Override
     protected ViewEntry parseEntry(String presenter) {
         String[] viewPair = presenter.split(":");
-        return new ViewEntry(viewPair[0], viewPair[1]);
+        return new ViewEntry(viewPair[0], viewPair[1], Boolean.valueOf(viewPair[2]));
     }
 
 }

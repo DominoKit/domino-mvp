@@ -22,4 +22,7 @@ public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter
         return (V) ClientApp.make().getViewsRepository().getView(getName());
     }
 
+    public void onAttach(){}
+    public void onDetach(){}
+
 }
