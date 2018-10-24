@@ -74,6 +74,8 @@
                                     <resource>app</resource>
                                     <file>app</file>
                                 </transformer>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                             </transformers>
                             <artifactSet/>
                             <shadedArtifactAttached>true</shadedArtifactAttached>
@@ -126,7 +128,8 @@
                             <systemProperties>
                                 <systemProperty>
                                     <key>domino.webroot.location</key>
-                                    <value>${basedir}/../${rootArtifactId}-frontend/target/${rootArtifactId}-frontend-${project.version}/app
+                                    <value>
+                                        ${basedir}/../${rootArtifactId}-frontend/target/${rootArtifactId}-frontend-${project.version}/app
                                     </value>
                                 </systemProperty>
                             </systemProperties>
