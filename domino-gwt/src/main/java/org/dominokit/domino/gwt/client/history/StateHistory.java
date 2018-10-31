@@ -25,8 +25,11 @@ public class StateHistory implements AppHistory {
         DomGlobal.self.addEventListener("popstate", event -> {
             PopStateEvent popStateEvent = Js.cast(event);
             JsState state = Js.cast(popStateEvent.state);
-            if (nonNull(state))
+            if (nonNull(state) && nonNull(state.historyToken)) {
                 inform(state.historyToken, state.title, state.data);
+            }else{
+                inform(windowToken(), state.title, state.data);
+            }
         });
     }
 
