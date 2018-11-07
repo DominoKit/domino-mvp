@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Development" type="CompoundRunConfigurationType" factoryName="Compound Run Configuration">
-    <toRun type="Application" name="ui-demo-dev" />
+    <toRun type="Application" name="${rootArtifactId}-dev" />
     <toRun type="MavenRunConfiguration" name="super-dev-mode" />
     <method />
   </configuration>
