@@ -37,6 +37,7 @@ public class VertxResponseContext<S extends ResponseBean> implements ResponseCon
 
     @Override
     public void end(S body) {
+        putHeader("Content-Type","application/json");
         end(Json.encode(body));
     }
 
