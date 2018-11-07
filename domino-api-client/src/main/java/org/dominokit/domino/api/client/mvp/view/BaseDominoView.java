@@ -2,6 +2,8 @@ package org.dominokit.domino.api.client.mvp.view;
 
 import org.dominokit.domino.api.shared.extension.Content;
 
+import static java.util.Objects.nonNull;
+
 public abstract class BaseDominoView<T> implements DominoView<T> {
 
     private boolean initialized = false;
@@ -22,15 +24,24 @@ public abstract class BaseDominoView<T> implements DominoView<T> {
 
     @Override
     public Content getContent() {
-        if(!initialized || !isSingleton()){
+        return this.getContent(null);
+    }
+
+    @Override
+    public Content getContent(CreateHandler createHandler) {
+        if (!initialized || !isSingleton()) {
             root = createRoot();
             initRoot(root);
             init(root);
+            if (nonNull(createHandler)) {
+                createHandler.onCreated();
+            }
         }
-        return (Content<T>)() -> root;
+        return (Content<T>) () -> root;
     }
 
     protected abstract void initRoot(T root);
+
     public abstract void init(T root);
 
     @Override
