@@ -1,6 +1,6 @@
 package org.dominokit.domino.api.client.mvp.view;
 
-public interface DominoView<T> extends View {
+public interface DominoView<T> extends ContentView {
 
     boolean isInitialized();
     boolean isSingleton();
