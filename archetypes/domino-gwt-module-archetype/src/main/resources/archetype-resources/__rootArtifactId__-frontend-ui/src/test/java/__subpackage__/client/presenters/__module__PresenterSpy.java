@@ -12,7 +12,7 @@ public class ${module}PresenterSpy extends ${module}Presenter{
 
     @Override
     public void listenToMainEvent(MainEventContext context) {
-        super.contributeToMainModule(context);
+        super.listenToMainEvent(context);
         this.mainContext=context;
     }
 
