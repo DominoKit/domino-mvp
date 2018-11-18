@@ -1,33 +1,34 @@
 package org.dominokit.domino.apt.client.processors.handlers;
 
 
-import com.google.gwt.core.client.GWT;
+import com.squareup.javapoet.*;
 import org.dominokit.domino.api.client.ServiceRootMatcher;
 import org.dominokit.domino.api.client.annotations.Path;
 import org.dominokit.domino.api.client.annotations.RequestSender;
 import org.dominokit.domino.api.client.request.RequestRestSender;
 import org.dominokit.domino.api.client.request.ServerRequestCallBack;
+import org.dominokit.domino.api.shared.request.ArrayResponse;
 import org.dominokit.domino.apt.commons.DominoTypeBuilder;
 import org.dominokit.domino.apt.commons.FullClassName;
 import org.dominokit.domino.apt.commons.JavaSourceWriter;
 import org.dominokit.domino.apt.commons.ProcessorElement;
-import com.squareup.javapoet.*;
-import org.fusesource.restygwt.client.*;
+import org.dominokit.rest.client.FailedResponse;
+import org.dominokit.rest.shared.RestfulRequest;
+//import org.fusesource.restygwt.client.*;
 
 import javax.lang.model.element.Modifier;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.HttpMethod;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+//import javax.tools.Diagnostic;
+//import javax.ws.rs.Consumes;
+//import javax.ws.rs.HttpMethod;
+//import javax.ws.rs.PathParam;
+//import javax.ws.rs.Produces;
+//import javax.ws.rs.core.MediaType;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.toList;
 
@@ -35,13 +36,13 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
 
     private static final Map<String, AnnotationSpec> CONSUMES_ANNOTATIONS = new HashMap<>();
 
-    static {
-        AnnotationSpec consumesAnnotation = AnnotationSpec.builder(Consumes.class)
-                .addMember("value", "$T.APPLICATION_JSON", MediaType.class).build();
-        CONSUMES_ANNOTATIONS.put(HttpMethod.POST, consumesAnnotation);
-        CONSUMES_ANNOTATIONS.put(HttpMethod.PUT, consumesAnnotation);
-        CONSUMES_ANNOTATIONS.put("PATCH", consumesAnnotation);
-    }
+//    static {
+//        AnnotationSpec consumesAnnotation = AnnotationSpec.builder(Consumes.class)
+//                .addMember("value", "$T.APPLICATION_JSON", MediaType.class).build();
+//        CONSUMES_ANNOTATIONS.put(HttpMethod.POST, consumesAnnotation);
+//        CONSUMES_ANNOTATIONS.put(HttpMethod.PUT, consumesAnnotation);
+//        CONSUMES_ANNOTATIONS.put("PATCH", consumesAnnotation);
+//    }
 
     private final String serviceRoot;
     private final String method;
@@ -49,15 +50,27 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
     private final String path;
     private final ClassName requestType;
     private final ClassName responseType;
+    private final int[] successCodes;
+    private final boolean arrayResponse;
 
 
-    public RequestSenderSourceWriter(ProcessorElement processorElement, FullClassName request, FullClassName response) {
+    public RequestSenderSourceWriter(ProcessorElement processorElement, FullClassName request, FullClassName response, FullClassName fullSuperClassName) {
         super(processorElement);
         this.path = processorElement.getAnnotation(Path.class).value();
         this.serviceRoot = processorElement.getAnnotation(Path.class).serviceRoot();
         this.method = processorElement.getAnnotation(Path.class).method();
+        this.successCodes = processorElement.getAnnotation(Path.class).successCodes();
         requestType = ClassName.get(request.asPackage(), request.asSimpleName());
-        responseType = ClassName.get(response.asPackage(), response.asSimpleName());
+
+        if(response.asImport().equals(new FullClassName(ArrayResponse.class.getCanonicalName()).asImport())) {
+            FullClassName actualResponse=new FullClassName(fullSuperClassName.allImports().get(3));
+            responseType = ClassName.get(actualResponse.asPackage(), actualResponse.asSimpleName());
+            this.arrayResponse = true;
+        }else{
+            responseType = ClassName.get(response.asPackage(), response.asSimpleName());
+            this.arrayResponse = false;
+        }
+
         fillPathParameters(path);
     }
 
@@ -71,20 +84,12 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
     @Override
     public String write() throws IOException {
         TypeSpec.Builder senderBuilder = makeSenderBuilder();
-        if (hasServiceRoot())
+        if (hasServiceRoot()) {
             senderBuilder.addField(addServiceRoot());
-        senderBuilder.addField(addPathField());
-        TypeSpec serviceInterface = new ServiceInterfaceBuilder().build();
-        senderBuilder.addType(serviceInterface);
+        }
 
-
-        ClassName serviceInterfaceType = ClassName.bestGuess(serviceInterface.name);
-        FieldSpec serviceInterfaceField = FieldSpec.builder(serviceInterfaceType, "service")
-                .addModifiers(Modifier.PRIVATE)
-                .initializer("$T.create($T.class)", GWT.class, serviceInterfaceType)
-                .build();
-
-        senderBuilder.addField(serviceInterfaceField);
+        senderBuilder.addField(addPathField())
+        .addField(addSuccessCodesField());
 
         senderBuilder.addMethod(new SendMethodBuilder().build());
 
@@ -117,52 +122,39 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
                 .initializer("\"" + path + "\"").build();
     }
 
-    private Iterable<ParameterSpec> pathParameters() {
-        return pathParams.stream().map(this::asParameterSpec).collect(toList());
+    private FieldSpec addSuccessCodesField() {
+        return FieldSpec.builder(Integer[].class, "SUCCESS_CODES")
+                .addModifiers(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
+                .initializer("new Integer[]{"+getSuccessCodesString(successCodes)+"}").build();
     }
 
-    private ParameterSpec asParameterSpec(String pathParam) {
-        AnnotationSpec pathParamAnnotation = AnnotationSpec.builder(PathParam.class)
-                .addMember("value", "\"" + pathParam + "\"").build();
-        AnnotationSpec attributeParamAnnotation = AnnotationSpec.builder(Attribute.class)
-                .addMember("value", "\"" + pathParam + "\"").build();
-        return ParameterSpec.builder(requestType, pathParam.replace(".", ""))
-                .addAnnotation(pathParamAnnotation)
-                .addAnnotation(attributeParamAnnotation)
-                .build();
+    private String getSuccessCodesString(int[] sucessCodes) {
+        return IntStream.of(successCodes)
+                .mapToObj(operand -> operand+"")
+                .collect(Collectors.joining(","));
     }
+
+//    private Iterable<ParameterSpec> pathParameters() {
+//        return pathParams.stream().map(this::asParameterSpec).collect(toList());
+//    }
+
+//    private ParameterSpec asParameterSpec(String pathParam) {
+//        AnnotationSpec pathParamAnnotation = AnnotationSpec.builder(PathParam.class)
+//                .addMember("value", "\"" + pathParam + "\"").build();
+//        AnnotationSpec attributeParamAnnotation = AnnotationSpec.builder(Attribute.class)
+//                .addMember("value", "\"" + pathParam + "\"").build();
+//        return ParameterSpec.builder(requestType, pathParam.replace(".", ""))
+//                .addAnnotation(pathParamAnnotation)
+//                .addAnnotation(attributeParamAnnotation)
+//                .build();
+//    }
 
     private boolean hasServiceRoot() {
         return !serviceRoot.trim().isEmpty();
     }
 
 
-    private class ServiceInterfaceBuilder {
-        private TypeSpec build() {
-            MethodSpec.Builder sendMethodBuilder = MethodSpec.methodBuilder("send").addModifiers(Modifier.ABSTRACT, Modifier.PUBLIC);
 
-            if (pathParams.isEmpty()) {
-                sendMethodBuilder.addParameter(requestType, "request");
-            } else {
-                sendMethodBuilder.addParameters(pathParameters());
-            }
-
-            sendMethodBuilder.addParameter(ParameterizedTypeName.get(ClassName.get(MethodCallback.class), responseType), "callback");
-
-            sendMethodBuilder.addAnnotation(AnnotationSpec.builder(ClassName.get("javax.ws.rs", method)).build())
-                    .addAnnotation(AnnotationSpec.builder(javax.ws.rs.Path.class).addMember("value", "PATH").build())
-                    .addAnnotation(AnnotationSpec.builder(Produces.class).addMember("value", "$T.APPLICATION_JSON", MediaType.class).build());
-
-            if (CONSUMES_ANNOTATIONS.containsKey(method))
-                sendMethodBuilder.addAnnotation(CONSUMES_ANNOTATIONS.get(method));
-
-            return TypeSpec.interfaceBuilder(processorElement.simpleName() + "Service")
-                    .addSuperinterface(RestService.class)
-                    .addModifiers(Modifier.PUBLIC)
-                    .addMethod(sendMethodBuilder.build())
-                    .build();
-        }
-    }
 
     private class SendMethodBuilder {
         private MethodSpec build() {
@@ -173,17 +165,35 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
                     .addParameter(ParameterizedTypeName.get(ClassName.get(Map.class), ClassName.get(String.class), ClassName.get(String.class)), "headers")
                     .addParameter(ServerRequestCallBack.class, "callBack");
 
-            addServiceRootStatement(sendMethodBuilder);
 
-            return sendMethodBuilder.addStatement("service.send(" + makeParameters() + ", $L)", makeMethodCallback()).build();
+            return sendMethodBuilder
+                    .addCode(CodeBlock.builder()
+                    .add("$T.post($T.matchedServiceRoot(PATH) + PATH)\n", RestfulRequest.class, ServiceRootMatcher.class)
+                    .add(".putHeaders(headers)\n")
+                    .add(".onSuccess(response ->")
+                    .add(CodeBlock.builder().beginControlFlow("")
+                            .beginControlFlow("if($T.stream(SUCCESS_CODES).anyMatch(code -> code.equals(response.getStatusCode())))", Arrays.class)
+                            .add(getSuccessBlock())
+                            .endControlFlow()
+                            .beginControlFlow("else")
+                            .addStatement("callBack.onFailure(new $T(response.getStatusCode(), response.getBodyAsString()))", FailedResponse.class)
+                            .endControlFlow()
+                            .endControlFlow()
+                            .add(")")
+                            .add(".onError(callBack::onFailure)\n")
+                            .addStatement(".sendJson($T.INSTANCE.write(request))", ClassName.get(requestType.packageName(), requestType.simpleName()+"_MapperImpl"))
+                            .build()).build())
+                    .build();
         }
 
-        private void addServiceRootStatement(MethodSpec.Builder sendMethodBuilder) {
-            if (hasServiceRoot())
-                sendMethodBuilder.addStatement("(($T)service).setResource(new $T(SERVICE_ROOT, headers))", RestServiceProxy.class, Resource.class);
-            else
-                sendMethodBuilder.addStatement("(($T)service).setResource(new $T($T.matchedServiceRoot(PATH), headers))", RestServiceProxy.class, Resource.class, ServiceRootMatcher.class);
-        }
+
+//
+//        private void addServiceRootStatement(MethodSpec.Builder sendMethodBuilder) {
+//            if (hasServiceRoot())
+//                sendMethodBuilder.addStatement("(($T)service).setResource(new $T(SERVICE_ROOT, headers))", RestServiceProxy.class, Resource.class);
+//            else
+//                sendMethodBuilder.addStatement("(($T)service).setResource(new $T($T.matchedServiceRoot(PATH), headers))", RestServiceProxy.class, Resource.class, ServiceRootMatcher.class);
+//        }
 
         private String makeParameters() {
             String params = "request";
@@ -192,33 +202,49 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
             return params;
         }
 
-        private TypeSpec makeMethodCallback() {
-            return TypeSpec.anonymousClassBuilder("")
-                    .addSuperinterface(ParameterizedTypeName.get(ClassName.get(MethodCallback.class), responseType))
-                    .addMethod(makeOnFailureMethod())
-                    .addMethod(makeOnSuccessMethod())
-                    .build();
+//        private TypeSpec makeMethodCallback() {
+//            return TypeSpec.anonymousClassBuilder("")
+//                    .addSuperinterface(ParameterizedTypeName.get(ClassName.get(MethodCallback.class), responseType))
+//                    .addMethod(makeOnFailureMethod())
+//                    .addMethod(makeOnSuccessMethod())
+//                    .build();
+//        }
+
+//        private MethodSpec makeOnFailureMethod() {
+//            return MethodSpec.methodBuilder("onFailure")
+//                    .addModifiers(Modifier.PUBLIC)
+//                    .addAnnotation(Override.class)
+//                    .addParameter(Method.class, "method")
+//                    .addParameter(Throwable.class, "throwable")
+//                    .addStatement("callBack.onFailure(throwable)")
+//                    .build();
+//        }
+//
+//        private MethodSpec makeOnSuccessMethod() {
+//            return MethodSpec.methodBuilder("onSuccess")
+//                    .addModifiers(Modifier.PUBLIC)
+//                    .addAnnotation(Override.class)
+//                    .addParameter(Method.class, "method")
+//                    .addParameter(responseType, "response")
+//                    .addStatement("callBack.onSuccess(response)")
+//                    .build();
+//        }
+
+    }
+
+    private CodeBlock getSuccessBlock() {
+
+
+        CodeBlock.Builder builder = CodeBlock.builder();
+
+        if(arrayResponse){
+            builder
+                    .addStatement("$T[] items = $T.INSTANCE.readArray(response.getBodyAsString(), length -> new $T[length])", responseType, ClassName.get(responseType.packageName(), responseType.simpleName()+"_MapperImpl"), responseType)
+                    .addStatement("callBack.onSuccess(new $T<>(items))", ArrayResponse.class);
+        }else {
+            builder.addStatement("callBack.onSuccess($T.INSTANCE.read(response.getBodyAsString()))", ClassName.get(responseType.packageName(), responseType.simpleName()+"_MapperImpl"));
         }
 
-        private MethodSpec makeOnFailureMethod() {
-            return MethodSpec.methodBuilder("onFailure")
-                    .addModifiers(Modifier.PUBLIC)
-                    .addAnnotation(Override.class)
-                    .addParameter(Method.class, "method")
-                    .addParameter(Throwable.class, "throwable")
-                    .addStatement("callBack.onFailure(throwable)")
-                    .build();
-        }
-
-        private MethodSpec makeOnSuccessMethod() {
-            return MethodSpec.methodBuilder("onSuccess")
-                    .addModifiers(Modifier.PUBLIC)
-                    .addAnnotation(Override.class)
-                    .addParameter(Method.class, "method")
-                    .addParameter(responseType, "response")
-                    .addStatement("callBack.onSuccess(response)")
-                    .build();
-        }
-
+        return builder.build();
     }
 }

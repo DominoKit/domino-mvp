@@ -1,10 +1,10 @@
 package org.dominokit.domino.apt.client;
 
 import com.google.auto.service.AutoService;
-import com.google.gwt.core.shared.GwtIncompatible;
 import javax.annotation.Generated;
 import org.dominokit.domino.api.client.ModuleConfiguration;
 import org.dominokit.domino.api.client.ModuleConfigurationProvider;
+import org.dominokit.domino.api.client.annotations.GwtIncompatible;
 
 /**
  * This is generated class, please don't modify

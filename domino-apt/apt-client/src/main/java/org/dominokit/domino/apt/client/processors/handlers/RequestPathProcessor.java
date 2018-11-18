@@ -71,7 +71,7 @@ public class RequestPathProcessor extends BaseProcessor {
         try (Writer sourceWriter = obtainSourceWriter(
                 processorElement.elementPackage(),processorElement.simpleName()+"Sender")) {
             sourceWriter
-                    .write(new RequestSenderSourceWriter(processorElement, fullRequestClassName, fullResponseClassName).write());
+                    .write(new RequestSenderSourceWriter(processorElement, fullRequestClassName, fullResponseClassName, fullSuperClassName).write());
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Could not generate classes : ", e);
             messager.printMessage(Diagnostic.Kind.ERROR, "could not generate class");

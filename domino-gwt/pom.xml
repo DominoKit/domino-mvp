@@ -25,29 +25,35 @@
     <description>GWT Domino</description>
 
     <dependencies>
-        <dependency>
-            <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-servlet</artifactId>
-            <scope>runtime</scope>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.google.gwt</groupId>-->
+            <!--<artifactId>gwt-servlet</artifactId>-->
+            <!--<scope>runtime</scope>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+            <!--<groupId>com.google.gwt</groupId>-->
+            <!--<artifactId>gwt-user</artifactId>-->
+            <!--<scope>provided</scope>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+            <!--<groupId>com.google.gwt</groupId>-->
+            <!--<artifactId>gwt-dev</artifactId>-->
+            <!--<scope>provided</scope>-->
+        <!--</dependency>-->
 
         <dependency>
-            <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-user</artifactId>
-            <scope>provided</scope>
+            <groupId>org.gwtproject.event</groupId>
+            <artifactId>gwt-event</artifactId>
+            <version>HEAD-SNAPSHOT</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-dev</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-codeserver</artifactId>
-            <scope>provided</scope>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.google.gwt</groupId>-->
+            <!--<artifactId>gwt-codeserver</artifactId>-->
+            <!--<scope>provided</scope>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>org.dominokit.domino.api</groupId>
@@ -71,14 +77,19 @@
             <classifier>sources</classifier>
         </dependency>
 
-        <dependency>
-            <groupId>org.dominokit.domino.api</groupId>
-            <artifactId>domino-api-server</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.dominokit.domino.api</groupId>-->
+            <!--<artifactId>domino-api-server</artifactId>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>org.dominokit.domino.logging</groupId>
             <artifactId>domino-gwt-logger</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.dominokit</groupId>
+            <artifactId>domino-rest</artifactId>
         </dependency>
 
         <dependency>
@@ -89,33 +100,27 @@
         <dependency>
             <groupId>com.google.elemental2</groupId>
             <artifactId>elemental2-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.elemental2</groupId>
-            <artifactId>elemental2-dom</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.fusesource.restygwt</groupId>
-            <artifactId>restygwt</artifactId>
             <exclusions>
                 <exclusion>
-                    <groupId>com.squareup</groupId>
-                    <artifactId>javapoet</artifactId>
+                    <groupId>com.google.jsinterop</groupId>
+                    <artifactId>base</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
 
         <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
-            <version>3.0.0</version>
+            <groupId>com.google.elemental2</groupId>
+            <artifactId>elemental2-dom</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.jsinterop</groupId>
+                    <artifactId>base</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
-
         <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
+            <groupId>com.vertispan.jsinterop</groupId>
+            <artifactId>base</artifactId>
         </dependency>
 
     </dependencies>
@@ -158,4 +163,24 @@
             </plugin>
         </plugins>
     </build>
+    <repositories>
+        <repository>
+            <id>jboss-developer-repository-group</id>
+            <name>JBoss Developer Maven Repository Group</name>
+            <url>https://repository.jboss.org/nexus/content/repositories/developer/</url>
+        </repository>
+        <repository>
+            <id>vertispan-snapshots</id>
+            <name>Vertispan Snapshots</name>
+            <url>https://repo.vertispan.com/gwt-snapshot/</url>
+        </repository>
+        <repository>
+            <id>vertispan-releases</id>
+            <name>Vertispan hosted artifacts-releases</name>
+            <url>https://repo.vertispan.com/j2cl</url>
+            <releases><enabled>true</enabled></releases>
+            <snapshots><enabled>true</enabled></snapshots>
+        </repository>
+    </repositories>
+
 </project>

@@ -1,10 +1,10 @@
 package org.dominokit.domino.apt.client.processors.module.client;
 
 import com.google.auto.service.AutoService;
-import com.google.gwt.core.shared.GwtIncompatible;
 import org.dominokit.domino.api.client.ModuleConfigurationProvider;
 import org.dominokit.domino.api.client.ModuleConfiguration;
 import org.dominokit.domino.api.client.annotations.ClientModule;
+import org.dominokit.domino.api.client.annotations.GwtIncompatible;
 import org.dominokit.domino.apt.commons.DominoTypeBuilder;
 import org.dominokit.domino.apt.commons.ProcessorElement;
 import com.squareup.javapoet.AnnotationSpec;

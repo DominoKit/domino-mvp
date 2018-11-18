@@ -28,6 +28,7 @@
         <module>domino-gwt-view</module>
         <module>domino-log4j-server-logging</module>
         <module>domino</module>
+        <module>domino-slf4j-super</module>
     </modules>
 
     <url>https://github.com/DominoKit/domino</url>
@@ -202,14 +203,15 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>org.fusesource.restygwt</groupId>
-                <artifactId>restygwt</artifactId>
-                <version>2.2.0</version>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-rest</artifactId>
+                <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>javax.ws.rs</groupId>
-                <artifactId>javax.ws.rs-api</artifactId>
-                <version>2.0.1</version>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-rest</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <classifier>sources</classifier>
             </dependency>
             <dependency>
                 <groupId>io.vertx</groupId>
@@ -271,11 +273,28 @@
                 <groupId>com.google.elemental2</groupId>
                 <artifactId>elemental2-core</artifactId>
                 <version>${elemental.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.google.jsinterop</groupId>
+                        <artifactId>base</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>com.google.elemental2</groupId>
                 <artifactId>elemental2-dom</artifactId>
                 <version>${elemental.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.google.jsinterop</groupId>
+                        <artifactId>base</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>com.vertispan.jsinterop</groupId>
+                <artifactId>base</artifactId>
+                <version>1.0.0-SNAPSHOT</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

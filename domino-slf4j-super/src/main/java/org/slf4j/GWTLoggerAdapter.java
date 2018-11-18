@@ -1,4 +1,4 @@
-package org.dominokit.domino.logger;
+package org.slf4j;
 
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MarkerIgnoringBase;

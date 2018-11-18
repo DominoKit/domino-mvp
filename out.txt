@@ -1,0 +1,1025 @@
+[INFO] Scanning for projects...
+[INFO] Inspecting build with total of 27 modules...
+[INFO] Installing Nexus Staging features:
+[INFO]   ... total of 27 executions of maven-deploy-plugin replaced with nexus-staging-maven-plugin
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] domino-parent                                                      [pom]
+[INFO] domino-api-shared                                                  [jar]
+[INFO] domino-api-client                                              [gwt-lib]
+[INFO] domino-service-discovery                                           [jar]
+[INFO] domino-api-server                                                  [jar]
+[INFO] domino-slf4j-super                                                 [jar]
+[INFO] domino-gwt-logger                                              [gwt-lib]
+[INFO] domino-client-commons                                          [gwt-lib]
+[INFO] domino-gwt                                                     [gwt-lib]
+[INFO] domino-test                                                        [pom]
+[INFO] domino-client-test                                                 [jar]
+[INFO] domino-server-test                                                 [jar]
+[INFO] apt-test                                                           [jar]
+[INFO] domino-apt                                                         [pom]
+[INFO] apt-commons                                                        [jar]
+[INFO] apt-client                                                         [jar]
+[INFO] apt-server                                                         [jar]
+[INFO] archetypes                                                         [pom]
+[INFO] domino-gwt-app-archetype                               [maven-archetype]
+[INFO] domino-gwt-module-archetype                            [maven-archetype]
+[INFO] domino-gwt-single-module-archetype                     [maven-archetype]
+[INFO] jks-server-configurator                                            [jar]
+[INFO] domino-remote-logging                                              [jar]
+[INFO] domino-desktop                                                     [jar]
+[INFO] domino-gwt-view                                                [gwt-lib]
+[INFO] domino-log4j-server-logging                                        [jar]
+[INFO] domino                                                             [pom]
+[INFO] 
+[INFO] -----------------< org.dominokit.domino:domino-parent >-----------------
+[INFO] Building domino-parent 1.0-rc.3-SNAPSHOT                          [1/27]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-parent ---
+[INFO] org.dominokit.domino:domino-parent:pom:1.0-rc.3-SNAPSHOT
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] +- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] 
+[INFO] -------------< org.dominokit.domino.api:domino-api-shared >-------------
+[INFO] Building domino-api-shared 1.0-rc.3-SNAPSHOT                      [2/27]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-api-shared ---
+[INFO] org.dominokit.domino.api:domino-api-shared:jar:1.0-rc.3-SNAPSHOT
+[INFO] +- javax.validation:validation-api:jar:1.1.0.Final:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] +- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] 
+[INFO] -------------< org.dominokit.domino.api:domino-api-client >-------------
+[INFO] Building domino-api-client 1.0-rc.3-SNAPSHOT                      [3/27]
+[INFO] ------------------------------[ gwt-lib ]-------------------------------
+Downloading from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/dominokit/domino/api/domino-api-shared/1.0-rc.3-SNAPSHOT/maven-metadata.xml
+Progress (1): 1.2 kB                    Downloaded from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/dominokit/domino/api/domino-api-shared/1.0-rc.3-SNAPSHOT/maven-metadata.xml (1.2 kB at 769 B/s)
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-api-client ---
+[INFO] org.dominokit.domino.api:domino-api-client:gwt-lib:1.0-rc.3-SNAPSHOT
+[INFO] +- org.dominokit.domino.api:domino-api-shared:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  \- javax.validation:validation-api:jar:1.1.0.Final:compile
+[INFO] +- org.dominokit.domino.api:domino-api-shared:jar:sources:1.0-rc.3-SNAPSHOT:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] +- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] 
+[INFO] -----------< org.dominokit.domino:domino-service-discovery >------------
+[INFO] Building domino-service-discovery 1.0-rc.3-SNAPSHOT               [4/27]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-service-discovery ---
+[INFO] org.dominokit.domino:domino-service-discovery:jar:1.0-rc.3-SNAPSHOT
+[INFO] +- io.vertx:vertx-service-discovery:jar:3.4.2:compile
+[INFO] |  \- io.vertx:vertx-core:jar:3.4.2:compile
+[INFO] |     +- io.netty:netty-common:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-buffer:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-transport:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-handler:jar:4.1.8.Final:compile
+[INFO] |     |  \- io.netty:netty-codec:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-handler-proxy:jar:4.1.8.Final:compile
+[INFO] |     |  \- io.netty:netty-codec-socks:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-codec-http:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-codec-http2:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-resolver:jar:4.1.8.Final:compile
+[INFO] |     \- io.netty:netty-resolver-dns:jar:4.1.8.Final:compile
+[INFO] |        \- io.netty:netty-codec-dns:jar:4.1.8.Final:compile
+[INFO] +- io.vertx:vertx-unit:jar:3.4.2:test
+[INFO] +- io.vertx:vertx-web-client:jar:3.4.2:compile
+[INFO] |  \- io.vertx:vertx-web-common:jar:3.4.2:compile
+[INFO] +- io.vertx:vertx-service-proxy:jar:3.4.2:compile
+[INFO] |  \- io.vertx:vertx-lang-js:jar:3.4.2:compile
+[INFO] +- io.vertx:vertx-codegen:jar:3.4.2:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-core:jar:2.7.4:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.7.4:compile
+[INFO] |  |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.7.0:compile
+[INFO] |  \- org.mvel:mvel2:jar:2.2.8.Final:compile
+[INFO] +- io.vertx:vertx-service-proxy:jar:processor:3.4.2:compile
+[INFO] +- io.vertx:vertx-jdbc-client:jar:3.4.2:compile
+[INFO] |  +- io.vertx:vertx-sql-common:jar:3.4.2:compile
+[INFO] |  \- com.mchange:c3p0:jar:0.9.5.2:compile
+[INFO] |     \- com.mchange:mchange-commons-java:jar:0.2.11:compile
+[INFO] +- io.vertx:vertx-redis-client:jar:3.4.2:compile
+[INFO] +- io.vertx:vertx-mongo-client:jar:3.4.2:compile
+[INFO] |  \- org.mongodb:mongodb-driver-async:jar:3.4.1:compile
+[INFO] |     +- org.mongodb:mongodb-driver-core:jar:3.4.1:compile
+[INFO] |     \- org.mongodb:bson:jar:3.4.1:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] +- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] 
+[INFO] -------------< org.dominokit.domino.api:domino-api-server >-------------
+[INFO] Building domino-api-server 1.0-rc.3-SNAPSHOT                      [5/27]
+[INFO] --------------------------------[ jar ]---------------------------------
+Downloading from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/dominokit/domino/domino-service-discovery/1.0-rc.3-SNAPSHOT/maven-metadata.xml
+Progress (1): 1.2 kB                    Downloaded from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/dominokit/domino/domino-service-discovery/1.0-rc.3-SNAPSHOT/maven-metadata.xml (1.2 kB at 2.7 kB/s)
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-api-server ---
+[INFO] org.dominokit.domino.api:domino-api-server:jar:1.0-rc.3-SNAPSHOT
+[INFO] +- com.google.auto.service:auto-service:jar:1.0-rc3:provided
+[INFO] |  \- com.google.auto:auto-common:jar:0.3:provided
+[INFO] +- org.dominokit.domino.api:domino-api-shared:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  \- javax.validation:validation-api:jar:1.1.0.Final:compile
+[INFO] +- org.dominokit.domino:domino-service-discovery:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  +- io.vertx:vertx-service-discovery:jar:3.4.2:compile
+[INFO] |  +- io.vertx:vertx-web-client:jar:3.4.2:compile
+[INFO] |  |  \- io.vertx:vertx-web-common:jar:3.4.2:compile
+[INFO] |  +- io.vertx:vertx-service-proxy:jar:3.4.2:compile
+[INFO] |  |  \- io.vertx:vertx-lang-js:jar:3.4.2:compile
+[INFO] |  +- io.vertx:vertx-codegen:jar:3.4.2:compile
+[INFO] |  |  +- com.fasterxml.jackson.core:jackson-core:jar:2.7.4:compile
+[INFO] |  |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.7.4:compile
+[INFO] |  |  |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.7.0:compile
+[INFO] |  |  \- org.mvel:mvel2:jar:2.2.8.Final:compile
+[INFO] |  +- io.vertx:vertx-service-proxy:jar:processor:3.4.2:compile
+[INFO] |  +- io.vertx:vertx-jdbc-client:jar:3.4.2:compile
+[INFO] |  |  +- io.vertx:vertx-sql-common:jar:3.4.2:compile
+[INFO] |  |  \- com.mchange:c3p0:jar:0.9.5.2:compile
+[INFO] |  |     \- com.mchange:mchange-commons-java:jar:0.2.11:compile
+[INFO] |  +- io.vertx:vertx-redis-client:jar:3.4.2:compile
+[INFO] |  \- io.vertx:vertx-mongo-client:jar:3.4.2:compile
+[INFO] |     \- org.mongodb:mongodb-driver-async:jar:3.4.1:compile
+[INFO] |        +- org.mongodb:mongodb-driver-core:jar:3.4.1:compile
+[INFO] |        \- org.mongodb:bson:jar:3.4.1:compile
+[INFO] +- io.vertx:vertx-web:jar:3.4.2:compile
+[INFO] |  +- io.vertx:vertx-auth-common:jar:3.4.2:compile
+[INFO] |  \- io.vertx:vertx-core:jar:3.4.2:compile
+[INFO] |     +- io.netty:netty-common:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-buffer:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-transport:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-handler:jar:4.1.8.Final:compile
+[INFO] |     |  \- io.netty:netty-codec:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-handler-proxy:jar:4.1.8.Final:compile
+[INFO] |     |  \- io.netty:netty-codec-socks:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-codec-http:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-codec-http2:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-resolver:jar:4.1.8.Final:compile
+[INFO] |     \- io.netty:netty-resolver-dns:jar:4.1.8.Final:compile
+[INFO] |        \- io.netty:netty-codec-dns:jar:4.1.8.Final:compile
+[INFO] +- io.vertx:vertx-config:jar:3.4.2:compile
+[INFO] +- io.vertx:vertx-unit:jar:3.4.2:test
+[INFO] +- com.google.guava:guava:jar:23.4-jre:compile
+[INFO] |  +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO] |  +- com.google.errorprone:error_prone_annotations:jar:2.0.18:compile
+[INFO] |  +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |  \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] +- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] 
+[INFO] --------------< org.dominokit.domino:domino-slf4j-super >---------------
+[INFO] Building domino-slf4j-super 1.0-rc.3-SNAPSHOT                     [6/27]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-slf4j-super ---
+[INFO] org.dominokit.domino:domino-slf4j-super:jar:1.0-rc.3-SNAPSHOT
+[INFO] +- org.slf4j:slf4j-api:jar:1.7.25:provided
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] \- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] 
+[INFO] -----------< org.dominokit.domino.logging:domino-gwt-logger >-----------
+[INFO] Building domino-gwt-logger 1.0-rc.3-SNAPSHOT                      [7/27]
+[INFO] ------------------------------[ gwt-lib ]-------------------------------
+Downloading from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/dominokit/domino/domino-slf4j-super/1.0-rc.3-SNAPSHOT/maven-metadata.xml
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-gwt-logger ---
+[INFO] org.dominokit.domino.logging:domino-gwt-logger:gwt-lib:1.0-rc.3-SNAPSHOT
+[INFO] +- org.dominokit.domino:domino-slf4j-super:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] +- org.dominokit.domino:domino-slf4j-super:jar:sources:1.0-rc.3-SNAPSHOT:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] +- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] 
+[INFO] -------------< org.dominokit.domino:domino-client-commons >-------------
+[INFO] Building domino-client-commons 1.0-rc.3-SNAPSHOT                  [8/27]
+[INFO] ------------------------------[ gwt-lib ]-------------------------------
+Downloading from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/dominokit/domino/api/domino-api-client/1.0-rc.3-SNAPSHOT/maven-metadata.xml
+Progress (1): 1.2 kB                    Downloaded from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/dominokit/domino/api/domino-api-client/1.0-rc.3-SNAPSHOT/maven-metadata.xml (1.2 kB at 1.2 kB/s)
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-client-commons ---
+[INFO] org.dominokit.domino:domino-client-commons:gwt-lib:1.0-rc.3-SNAPSHOT
+[INFO] +- org.dominokit.domino.api:domino-api-shared:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  \- javax.validation:validation-api:jar:1.1.0.Final:compile
+[INFO] +- org.dominokit.domino.api:domino-api-client:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  \- org.dominokit.domino.api:domino-api-shared:jar:sources:1.0-rc.3-SNAPSHOT:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] +- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] 
+[INFO] ----------------< org.dominokit.domino.impl:domino-gwt >----------------
+[INFO] Building domino-gwt 1.0-rc.3-SNAPSHOT                             [9/27]
+[INFO] ------------------------------[ gwt-lib ]-------------------------------
+Downloading from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/gwtproject/event/gwt-event/HEAD-SNAPSHOT/maven-metadata.xml
+Downloading from vertispan-releases: https://repo.vertispan.com/j2cl/org/gwtproject/event/gwt-event/HEAD-SNAPSHOT/maven-metadata.xml
+Progress (1): 1.2 kB                    Downloaded from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/gwtproject/event/gwt-event/HEAD-SNAPSHOT/maven-metadata.xml (1.2 kB at 2.6 kB/s)
+[WARNING] Could not transfer metadata org.gwtproject.event:gwt-event:HEAD-SNAPSHOT/maven-metadata.xml from/to vertispan-releases (https://repo.vertispan.com/j2cl): Not authorized
+[WARNING] Failure to transfer org.gwtproject.event:gwt-event:HEAD-SNAPSHOT/maven-metadata.xml from https://repo.vertispan.com/j2cl was cached in the local repository, resolution will not be reattempted until the update interval of vertispan-releases has elapsed or updates are forced. Original error: Could not transfer metadata org.gwtproject.event:gwt-event:HEAD-SNAPSHOT/maven-metadata.xml from/to vertispan-releases (https://repo.vertispan.com/j2cl): Not authorized
+Downloading from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/dominokit/domino/api/domino-api-server/1.0-rc.3-SNAPSHOT/maven-metadata.xml
+Progress (1): 1.2 kB                    Downloaded from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/dominokit/domino/api/domino-api-server/1.0-rc.3-SNAPSHOT/maven-metadata.xml (1.2 kB at 3.2 kB/s)
+Downloading from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/dominokit/domino/logging/domino-gwt-logger/1.0-rc.3-SNAPSHOT/maven-metadata.xml
+Progress (1): 1.2 kB                    Downloaded from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/dominokit/domino/logging/domino-gwt-logger/1.0-rc.3-SNAPSHOT/maven-metadata.xml (1.2 kB at 2.5 kB/s)
+Downloading from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/dominokit/domino-rest/1.0-SNAPSHOT/maven-metadata.xml
+Progress (1): 1.2 kB                    Downloaded from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/dominokit/domino-rest/1.0-SNAPSHOT/maven-metadata.xml (1.2 kB at 2.9 kB/s)
+Downloading from vertispan-releases: https://repo.vertispan.com/j2cl/org/gwtproject/timer/gwt-timer/1.0-SNAPSHOT/maven-metadata.xml
+Downloading from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/gwtproject/timer/gwt-timer/1.0-SNAPSHOT/maven-metadata.xml
+[WARNING] Could not transfer metadata org.gwtproject.timer:gwt-timer:1.0-SNAPSHOT/maven-metadata.xml from/to vertispan-releases (https://repo.vertispan.com/j2cl): Not authorized
+[WARNING] Failure to transfer org.gwtproject.timer:gwt-timer:1.0-SNAPSHOT/maven-metadata.xml from https://repo.vertispan.com/j2cl was cached in the local repository, resolution will not be reattempted until the update interval of vertispan-releases has elapsed or updates are forced. Original error: Could not transfer metadata org.gwtproject.timer:gwt-timer:1.0-SNAPSHOT/maven-metadata.xml from/to vertispan-releases (https://repo.vertispan.com/j2cl): Not authorized
+Downloading from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/gwtproject/xhr/1.0-SNAPSHOT/maven-metadata.xml
+Downloading from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/dominokit/domino/domino-client-commons/1.0-rc.3-SNAPSHOT/maven-metadata.xml
+Progress (1): 1.2 kB                    Downloaded from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/dominokit/domino/domino-client-commons/1.0-rc.3-SNAPSHOT/maven-metadata.xml (1.2 kB at 1.1 kB/s)
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-gwt ---
+[INFO] org.dominokit.domino.impl:domino-gwt:gwt-lib:1.0-rc.3-SNAPSHOT
+[INFO] +- org.gwtproject.event:gwt-event:jar:HEAD-SNAPSHOT:compile
+[INFO] +- org.dominokit.domino.api:domino-api-client:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] +- org.dominokit.domino.api:domino-api-client:jar:sources:1.0-rc.3-SNAPSHOT:compile
+[INFO] +- org.dominokit.domino.api:domino-api-shared:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  \- javax.validation:validation-api:jar:1.1.0.Final:compile
+[INFO] +- org.dominokit.domino.api:domino-api-shared:jar:sources:1.0-rc.3-SNAPSHOT:compile
+[INFO] +- org.dominokit.domino.api:domino-api-server:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  +- org.dominokit.domino:domino-service-discovery:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  |  +- io.vertx:vertx-service-discovery:jar:3.4.2:compile
+[INFO] |  |  +- io.vertx:vertx-service-proxy:jar:3.4.2:compile
+[INFO] |  |  |  \- io.vertx:vertx-lang-js:jar:3.4.2:compile
+[INFO] |  |  +- io.vertx:vertx-codegen:jar:3.4.2:compile
+[INFO] |  |  |  +- com.fasterxml.jackson.core:jackson-core:jar:2.7.4:compile
+[INFO] |  |  |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.7.4:compile
+[INFO] |  |  |  |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.7.0:compile
+[INFO] |  |  |  \- org.mvel:mvel2:jar:2.2.8.Final:compile
+[INFO] |  |  +- io.vertx:vertx-service-proxy:jar:processor:3.4.2:compile
+[INFO] |  |  +- io.vertx:vertx-jdbc-client:jar:3.4.2:compile
+[INFO] |  |  |  +- io.vertx:vertx-sql-common:jar:3.4.2:compile
+[INFO] |  |  |  \- com.mchange:c3p0:jar:0.9.5.2:compile
+[INFO] |  |  |     \- com.mchange:mchange-commons-java:jar:0.2.11:compile
+[INFO] |  |  +- io.vertx:vertx-redis-client:jar:3.4.2:compile
+[INFO] |  |  \- io.vertx:vertx-mongo-client:jar:3.4.2:compile
+[INFO] |  |     \- org.mongodb:mongodb-driver-async:jar:3.4.1:compile
+[INFO] |  |        +- org.mongodb:mongodb-driver-core:jar:3.4.1:compile
+[INFO] |  |        \- org.mongodb:bson:jar:3.4.1:compile
+[INFO] |  +- io.vertx:vertx-web:jar:3.4.2:compile
+[INFO] |  |  +- io.vertx:vertx-auth-common:jar:3.4.2:compile
+[INFO] |  |  \- io.vertx:vertx-core:jar:3.4.2:compile
+[INFO] |  |     +- io.netty:netty-common:jar:4.1.8.Final:compile
+[INFO] |  |     +- io.netty:netty-buffer:jar:4.1.8.Final:compile
+[INFO] |  |     +- io.netty:netty-transport:jar:4.1.8.Final:compile
+[INFO] |  |     +- io.netty:netty-handler:jar:4.1.8.Final:compile
+[INFO] |  |     |  \- io.netty:netty-codec:jar:4.1.8.Final:compile
+[INFO] |  |     +- io.netty:netty-handler-proxy:jar:4.1.8.Final:compile
+[INFO] |  |     |  \- io.netty:netty-codec-socks:jar:4.1.8.Final:compile
+[INFO] |  |     +- io.netty:netty-codec-http:jar:4.1.8.Final:compile
+[INFO] |  |     +- io.netty:netty-codec-http2:jar:4.1.8.Final:compile
+[INFO] |  |     +- io.netty:netty-resolver:jar:4.1.8.Final:compile
+[INFO] |  |     \- io.netty:netty-resolver-dns:jar:4.1.8.Final:compile
+[INFO] |  |        \- io.netty:netty-codec-dns:jar:4.1.8.Final:compile
+[INFO] |  +- io.vertx:vertx-config:jar:3.4.2:compile
+[INFO] |  \- com.google.guava:guava:jar:23.4-jre:compile
+[INFO] |     +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO] |     +- com.google.errorprone:error_prone_annotations:jar:2.0.18:compile
+[INFO] |     +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |     \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:compile
+[INFO] +- org.dominokit.domino.logging:domino-gwt-logger:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  +- org.dominokit.domino:domino-slf4j-super:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  \- org.dominokit.domino:domino-slf4j-super:jar:sources:1.0-rc.3-SNAPSHOT:compile
+[INFO] +- org.dominokit:domino-rest:jar:1.0-SNAPSHOT:compile
+[INFO] |  +- org.gwtproject.timer:gwt-timer:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  \- com.google.elemental2:elemental2-dom:jar:sources:1.0.0-RC1:compile
+[INFO] |  +- org.gwtproject:xhr:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  \- com.google.elemental2:elemental2-core:jar:sources:1.0.0-RC1:compile
+[INFO] |  \- io.vertx:vertx-web-client:jar:3.4.2:compile
+[INFO] |     \- io.vertx:vertx-web-common:jar:3.4.2:compile
+[INFO] +- org.dominokit.domino:domino-client-commons:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] +- com.google.elemental2:elemental2-core:jar:1.0.0-RC1:compile
+[INFO] |  +- com.google.jsinterop:jsinterop-annotations:jar:1.0.2:compile
+[INFO] |  \- com.google.jsinterop:base:jar:1.0.0-RC1:compile
+[INFO] +- com.google.elemental2:elemental2-dom:jar:1.0.0-RC1:compile
+[INFO] |  \- com.google.elemental2:elemental2-promise:jar:1.0.0-RC1:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] +- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] 
+[INFO] ---------------< org.dominokit.domino.test:domino-test >----------------
+[INFO] Building domino-test 1.0-rc.3-SNAPSHOT                           [10/27]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-test ---
+[INFO] org.dominokit.domino.test:domino-test:pom:1.0-rc.3-SNAPSHOT
+[INFO] +- org.apache.logging.log4j:log4j-api:jar:2.8.2:compile
+[INFO] +- org.apache.logging.log4j:log4j-core:jar:2.8.2:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] +- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] 
+[INFO] ------------< org.dominokit.domino.test:domino-client-test >------------
+[INFO] Building domino-client-test 1.0-rc.3-SNAPSHOT                    [11/27]
+[INFO] --------------------------------[ jar ]---------------------------------
+Downloading from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/dominokit/domino/impl/domino-gwt/1.0-rc.3-SNAPSHOT/maven-metadata.xml
+Progress (1): 1.2 kB                    Downloaded from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/dominokit/domino/impl/domino-gwt/1.0-rc.3-SNAPSHOT/maven-metadata.xml (1.2 kB at 3.0 kB/s)
+[WARNING] Failure to transfer org.gwtproject.event:gwt-event:HEAD-SNAPSHOT/maven-metadata.xml from https://repo.vertispan.com/j2cl was cached in the local repository, resolution will not be reattempted until the update interval of vertispan-releases has elapsed or updates are forced. Original error: Could not transfer metadata org.gwtproject.event:gwt-event:HEAD-SNAPSHOT/maven-metadata.xml from/to vertispan-releases (https://repo.vertispan.com/j2cl): Not authorized
+[WARNING] Failure to transfer org.gwtproject.timer:gwt-timer:1.0-SNAPSHOT/maven-metadata.xml from https://repo.vertispan.com/j2cl was cached in the local repository, resolution will not be reattempted until the update interval of vertispan-releases has elapsed or updates are forced. Original error: Could not transfer metadata org.gwtproject.timer:gwt-timer:1.0-SNAPSHOT/maven-metadata.xml from/to vertispan-releases (https://repo.vertispan.com/j2cl): Not authorized
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-client-test ---
+[INFO] org.dominokit.domino.test:domino-client-test:jar:1.0-rc.3-SNAPSHOT
+[INFO] +- com.google.gwt.gwtmockito:gwtmockito:jar:1.1.6:compile
+[INFO] |  +- com.google.gwt:gwt-dev:jar:2.8.2:compile
+[INFO] |  |  +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO] |  |  +- com.google.code.gson:gson:jar:2.6.2:compile
+[INFO] |  |  +- org.ow2.asm:asm:jar:5.0.3:compile
+[INFO] |  |  +- org.ow2.asm:asm-util:jar:5.0.3:compile
+[INFO] |  |  |  \- org.ow2.asm:asm-tree:jar:5.0.3:compile
+[INFO] |  |  +- org.ow2.asm:asm-commons:jar:5.0.3:compile
+[INFO] |  |  +- colt:colt:jar:1.2.0:compile
+[INFO] |  |  +- ant:ant:jar:1.6.5:compile
+[INFO] |  |  +- commons-io:commons-io:jar:2.4:compile
+[INFO] |  |  +- com.ibm.icu:icu4j:jar:50.1.1:compile
+[INFO] |  |  +- tapestry:tapestry:jar:4.0.2:compile
+[INFO] |  |  +- net.sourceforge.htmlunit:htmlunit:jar:2.19:compile
+[INFO] |  |  |  +- xalan:xalan:jar:2.7.2:compile
+[INFO] |  |  |  |  \- xalan:serializer:jar:2.7.2:compile
+[INFO] |  |  |  +- org.apache.commons:commons-lang3:jar:3.4:compile
+[INFO] |  |  |  +- org.apache.httpcomponents:httpclient:jar:4.5.1:compile
+[INFO] |  |  |  |  \- org.apache.httpcomponents:httpcore:jar:4.4.3:compile
+[INFO] |  |  |  +- org.apache.httpcomponents:httpmime:jar:4.5.1:compile
+[INFO] |  |  |  +- commons-codec:commons-codec:jar:1.10:compile
+[INFO] |  |  |  +- net.sourceforge.htmlunit:htmlunit-core-js:jar:2.17:compile
+[INFO] |  |  |  +- xerces:xercesImpl:jar:2.11.0:compile
+[INFO] |  |  |  |  \- xml-apis:xml-apis:jar:1.4.01:compile
+[INFO] |  |  |  +- net.sourceforge.nekohtml:nekohtml:jar:1.9.22:compile
+[INFO] |  |  |  +- net.sourceforge.cssparser:cssparser:jar:0.9.18:compile
+[INFO] |  |  |  +- commons-logging:commons-logging:jar:1.2:compile
+[INFO] |  |  |  \- org.eclipse.jetty.websocket:websocket-client:jar:9.2.13.v20150730:compile
+[INFO] |  |  |     \- org.eclipse.jetty.websocket:websocket-common:jar:9.2.14.v20151106:compile
+[INFO] |  |  |        \- org.eclipse.jetty.websocket:websocket-api:jar:9.2.14.v20151106:compile
+[INFO] |  |  +- org.eclipse.jetty:jetty-webapp:jar:9.2.14.v20151106:compile
+[INFO] |  |  |  +- org.eclipse.jetty:jetty-xml:jar:9.2.14.v20151106:compile
+[INFO] |  |  |  \- org.eclipse.jetty:jetty-servlet:jar:9.2.14.v20151106:compile
+[INFO] |  |  |     \- org.eclipse.jetty:jetty-security:jar:9.2.14.v20151106:compile
+[INFO] |  |  +- org.eclipse.jetty:jetty-servlets:jar:9.2.14.v20151106:compile
+[INFO] |  |  |  +- org.eclipse.jetty:jetty-continuation:jar:9.2.14.v20151106:compile
+[INFO] |  |  |  +- org.eclipse.jetty:jetty-http:jar:9.2.14.v20151106:compile
+[INFO] |  |  |  +- org.eclipse.jetty:jetty-util:jar:9.2.14.v20151106:compile
+[INFO] |  |  |  \- org.eclipse.jetty:jetty-io:jar:9.2.14.v20151106:compile
+[INFO] |  |  +- org.eclipse.jetty:jetty-annotations:jar:9.2.14.v20151106:compile
+[INFO] |  |  |  +- org.eclipse.jetty:jetty-plus:jar:9.2.14.v20151106:compile
+[INFO] |  |  |  |  \- org.eclipse.jetty:jetty-jndi:jar:9.2.14.v20151106:compile
+[INFO] |  |  |  \- javax.annotation:javax.annotation-api:jar:1.2:compile
+[INFO] |  |  \- org.eclipse.jetty:apache-jsp:jar:9.2.14.v20151106:compile
+[INFO] |  |     +- org.eclipse.jetty:jetty-server:jar:9.2.14.v20151106:compile
+[INFO] |  |     +- org.eclipse.jetty.toolchain:jetty-schemas:jar:3.1.M0:compile
+[INFO] |  |     \- org.mortbay.jasper:apache-jsp:jar:8.0.9.M3:compile
+[INFO] |  |        \- org.mortbay.jasper:apache-el:jar:8.0.9.M3:compile
+[INFO] |  +- com.google.gwt:gwt-user:jar:2.8.2:compile
+[INFO] |  |  +- com.google.jsinterop:jsinterop-annotations:jar:1.0.2:compile
+[INFO] |  |  +- com.google.jsinterop:jsinterop-annotations:jar:sources:1.0.2:compile
+[INFO] |  |  +- javax.validation:validation-api:jar:sources:1.0.0.GA:compile
+[INFO] |  |  +- javax.servlet:javax.servlet-api:jar:3.1.0:compile
+[INFO] |  |  \- org.w3c.css:sac:jar:1.3:compile
+[INFO] |  +- org.mockito:mockito-core:jar:1.9.5:compile
+[INFO] |  \- org.javassist:javassist:jar:3.17.1-GA:compile
+[INFO] +- org.dominokit.domino.api:domino-api-client:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  \- org.dominokit.domino.api:domino-api-shared:jar:sources:1.0-rc.3-SNAPSHOT:compile
+[INFO] +- org.dominokit.domino.api:domino-api-shared:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  \- javax.validation:validation-api:jar:1.1.0.Final:compile
+[INFO] +- org.dominokit.domino.impl:domino-gwt:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  +- org.gwtproject.event:gwt-event:jar:HEAD-SNAPSHOT:compile
+[INFO] |  +- org.dominokit.domino.api:domino-api-client:jar:sources:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  +- org.dominokit.domino.logging:domino-gwt-logger:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  |  +- org.dominokit.domino:domino-slf4j-super:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  |  \- org.dominokit.domino:domino-slf4j-super:jar:sources:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  +- org.dominokit:domino-rest:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  +- org.gwtproject.timer:gwt-timer:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  |  \- com.google.elemental2:elemental2-dom:jar:sources:1.0.0-RC1:compile
+[INFO] |  |  +- org.gwtproject:xhr:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  |  \- com.google.elemental2:elemental2-core:jar:sources:1.0.0-RC1:compile
+[INFO] |  |  \- io.vertx:vertx-web-client:jar:3.4.2:compile
+[INFO] |  |     \- io.vertx:vertx-web-common:jar:3.4.2:compile
+[INFO] |  +- org.dominokit.domino:domino-client-commons:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  +- com.google.elemental2:elemental2-core:jar:1.0.0-RC1:compile
+[INFO] |  |  \- com.google.jsinterop:base:jar:1.0.0-RC1:compile
+[INFO] |  \- com.google.elemental2:elemental2-dom:jar:1.0.0-RC1:compile
+[INFO] |     \- com.google.elemental2:elemental2-promise:jar:1.0.0-RC1:compile
+[INFO] +- org.dominokit.domino.api:domino-api-server:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  +- org.dominokit.domino:domino-service-discovery:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  |  +- io.vertx:vertx-service-discovery:jar:3.4.2:compile
+[INFO] |  |  +- io.vertx:vertx-service-proxy:jar:3.4.2:compile
+[INFO] |  |  |  \- io.vertx:vertx-lang-js:jar:3.4.2:compile
+[INFO] |  |  +- io.vertx:vertx-codegen:jar:3.4.2:compile
+[INFO] |  |  |  \- org.mvel:mvel2:jar:2.2.8.Final:compile
+[INFO] |  |  +- io.vertx:vertx-service-proxy:jar:processor:3.4.2:compile
+[INFO] |  |  +- io.vertx:vertx-jdbc-client:jar:3.4.2:compile
+[INFO] |  |  |  +- io.vertx:vertx-sql-common:jar:3.4.2:compile
+[INFO] |  |  |  \- com.mchange:c3p0:jar:0.9.5.2:compile
+[INFO] |  |  |     \- com.mchange:mchange-commons-java:jar:0.2.11:compile
+[INFO] |  |  +- io.vertx:vertx-redis-client:jar:3.4.2:compile
+[INFO] |  |  \- io.vertx:vertx-mongo-client:jar:3.4.2:compile
+[INFO] |  |     \- org.mongodb:mongodb-driver-async:jar:3.4.1:compile
+[INFO] |  |        +- org.mongodb:mongodb-driver-core:jar:3.4.1:compile
+[INFO] |  |        \- org.mongodb:bson:jar:3.4.1:compile
+[INFO] |  +- io.vertx:vertx-web:jar:3.4.2:compile
+[INFO] |  |  \- io.vertx:vertx-auth-common:jar:3.4.2:compile
+[INFO] |  +- io.vertx:vertx-config:jar:3.4.2:compile
+[INFO] |  \- com.google.guava:guava:jar:23.4-jre:compile
+[INFO] |     +- com.google.errorprone:error_prone_annotations:jar:2.0.18:compile
+[INFO] |     +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |     \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:compile
+[INFO] +- org.easymock:easymock:jar:3.4:compile
+[INFO] |  \- org.objenesis:objenesis:jar:2.2:compile
+[INFO] +- commons-collections:commons-collections:jar:3.2.2:compile
+[INFO] +- io.vertx:vertx-unit:jar:3.4.2:test
+[INFO] |  \- io.vertx:vertx-core:jar:3.4.2:compile
+[INFO] |     +- io.netty:netty-common:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-buffer:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-transport:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-handler:jar:4.1.8.Final:compile
+[INFO] |     |  \- io.netty:netty-codec:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-handler-proxy:jar:4.1.8.Final:compile
+[INFO] |     |  \- io.netty:netty-codec-socks:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-codec-http:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-codec-http2:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-resolver:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-resolver-dns:jar:4.1.8.Final:compile
+[INFO] |     |  \- io.netty:netty-codec-dns:jar:4.1.8.Final:compile
+[INFO] |     +- com.fasterxml.jackson.core:jackson-core:jar:2.7.4:compile
+[INFO] |     \- com.fasterxml.jackson.core:jackson-databind:jar:2.7.4:compile
+[INFO] |        \- com.fasterxml.jackson.core:jackson-annotations:jar:2.7.0:compile
+[INFO] +- org.apache.logging.log4j:log4j-api:jar:2.8.2:compile
+[INFO] +- org.apache.logging.log4j:log4j-core:jar:2.8.2:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:compile
+[INFO] +- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] 
+[INFO] ------------< org.dominokit.domino.test:domino-server-test >------------
+[INFO] Building domino-server-test 1.0-rc.3-SNAPSHOT                    [12/27]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-server-test ---
+[INFO] org.dominokit.domino.test:domino-server-test:jar:1.0-rc.3-SNAPSHOT
+[INFO] +- org.dominokit.domino.api:domino-api-shared:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  \- javax.validation:validation-api:jar:1.1.0.Final:compile
+[INFO] +- org.dominokit.domino.api:domino-api-server:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  +- org.dominokit.domino:domino-service-discovery:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  |  +- io.vertx:vertx-service-discovery:jar:3.4.2:compile
+[INFO] |  |  +- io.vertx:vertx-service-proxy:jar:3.4.2:compile
+[INFO] |  |  |  \- io.vertx:vertx-lang-js:jar:3.4.2:compile
+[INFO] |  |  +- io.vertx:vertx-codegen:jar:3.4.2:compile
+[INFO] |  |  |  \- org.mvel:mvel2:jar:2.2.8.Final:compile
+[INFO] |  |  +- io.vertx:vertx-service-proxy:jar:processor:3.4.2:compile
+[INFO] |  |  +- io.vertx:vertx-jdbc-client:jar:3.4.2:compile
+[INFO] |  |  |  +- io.vertx:vertx-sql-common:jar:3.4.2:compile
+[INFO] |  |  |  \- com.mchange:c3p0:jar:0.9.5.2:compile
+[INFO] |  |  |     \- com.mchange:mchange-commons-java:jar:0.2.11:compile
+[INFO] |  |  +- io.vertx:vertx-redis-client:jar:3.4.2:compile
+[INFO] |  |  \- io.vertx:vertx-mongo-client:jar:3.4.2:compile
+[INFO] |  |     \- org.mongodb:mongodb-driver-async:jar:3.4.1:compile
+[INFO] |  |        +- org.mongodb:mongodb-driver-core:jar:3.4.1:compile
+[INFO] |  |        \- org.mongodb:bson:jar:3.4.1:compile
+[INFO] |  +- io.vertx:vertx-config:jar:3.4.2:compile
+[INFO] |  \- com.google.guava:guava:jar:23.4-jre:compile
+[INFO] |     +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO] |     +- com.google.errorprone:error_prone_annotations:jar:2.0.18:compile
+[INFO] |     +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |     \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:compile
+[INFO] +- io.vertx:vertx-unit:jar:3.4.2:compile
+[INFO] |  \- io.vertx:vertx-core:jar:3.4.2:compile
+[INFO] |     +- io.netty:netty-common:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-buffer:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-transport:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-handler:jar:4.1.8.Final:compile
+[INFO] |     |  \- io.netty:netty-codec:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-handler-proxy:jar:4.1.8.Final:compile
+[INFO] |     |  \- io.netty:netty-codec-socks:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-codec-http:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-codec-http2:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-resolver:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-resolver-dns:jar:4.1.8.Final:compile
+[INFO] |     |  \- io.netty:netty-codec-dns:jar:4.1.8.Final:compile
+[INFO] |     +- com.fasterxml.jackson.core:jackson-core:jar:2.7.4:compile
+[INFO] |     \- com.fasterxml.jackson.core:jackson-databind:jar:2.7.4:compile
+[INFO] |        \- com.fasterxml.jackson.core:jackson-annotations:jar:2.7.0:compile
+[INFO] +- io.vertx:vertx-web-client:jar:3.4.2:compile
+[INFO] |  \- io.vertx:vertx-web-common:jar:3.4.2:compile
+[INFO] +- io.vertx:vertx-web:jar:3.4.2:compile
+[INFO] |  \- io.vertx:vertx-auth-common:jar:3.4.2:compile
+[INFO] +- org.apache.logging.log4j:log4j-api:jar:2.8.2:compile
+[INFO] +- org.apache.logging.log4j:log4j-core:jar:2.8.2:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] +- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] 
+[INFO] -----------------< org.dominokit.domino.test:apt-test >-----------------
+[INFO] Building apt-test 1.0-rc.3-SNAPSHOT                              [13/27]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ apt-test ---
+[INFO] org.dominokit.domino.test:apt-test:jar:1.0-rc.3-SNAPSHOT
+[INFO] +- com.google.testing.compile:compile-testing:jar:0.9:compile
+[INFO] |  +- com.google.truth:truth:jar:0.28:compile
+[INFO] |  +- com.google.guava:guava:jar:19.0:compile
+[INFO] |  \- com.sun:tools:jar:1.8.0_191:system
+[INFO] +- org.apache.logging.log4j:log4j-api:jar:2.8.2:compile
+[INFO] +- org.apache.logging.log4j:log4j-core:jar:2.8.2:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] +- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] 
+[INFO] ----------------< org.dominokit.domino.apt:domino-apt >-----------------
+[INFO] Building domino-apt 1.0-rc.3-SNAPSHOT                            [14/27]
+[INFO] --------------------------------[ pom ]---------------------------------
+Downloading from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/dominokit/domino/test/apt-test/1.0-rc.3-SNAPSHOT/maven-metadata.xml
+Progress (1): 1.2 kB                    Downloaded from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/dominokit/domino/test/apt-test/1.0-rc.3-SNAPSHOT/maven-metadata.xml (1.2 kB at 2.6 kB/s)
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-apt ---
+[INFO] org.dominokit.domino.apt:domino-apt:pom:1.0-rc.3-SNAPSHOT
+[INFO] +- org.dominokit.domino.test:apt-test:jar:1.0-rc.3-SNAPSHOT:test
+[INFO] |  +- com.google.testing.compile:compile-testing:jar:0.9:test
+[INFO] |  |  +- com.google.truth:truth:jar:0.28:test
+[INFO] |  |  \- com.sun:tools:jar:1.8.0_191:system
+[INFO] |  +- org.apache.logging.log4j:log4j-api:jar:2.8.2:test
+[INFO] |  \- org.apache.logging.log4j:log4j-core:jar:2.8.2:test
+[INFO] +- commons-io:commons-io:jar:2.5:test
+[INFO] +- com.google.auto.service:auto-service:jar:1.0-rc3:provided
+[INFO] |  +- com.google.auto:auto-common:jar:0.3:provided
+[INFO] |  \- com.google.guava:guava:jar:19.0:provided
+[INFO] +- com.squareup:javapoet:jar:1.9.0:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] +- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] 
+[INFO] ----------------< org.dominokit.domino.apt:apt-commons >----------------
+[INFO] Building apt-commons 1.0-rc.3-SNAPSHOT                           [15/27]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ apt-commons ---
+[INFO] org.dominokit.domino.apt:apt-commons:jar:1.0-rc.3-SNAPSHOT
+[INFO] +- commons-lang:commons-lang:jar:2.6:compile
+[INFO] +- org.dominokit.domino.test:apt-test:jar:1.0-rc.3-SNAPSHOT:test
+[INFO] |  +- com.google.testing.compile:compile-testing:jar:0.9:test
+[INFO] |  |  +- com.google.truth:truth:jar:0.28:test
+[INFO] |  |  \- com.sun:tools:jar:1.8.0_191:system
+[INFO] |  +- org.apache.logging.log4j:log4j-api:jar:2.8.2:test
+[INFO] |  \- org.apache.logging.log4j:log4j-core:jar:2.8.2:test
+[INFO] +- commons-io:commons-io:jar:2.5:compile
+[INFO] +- com.google.auto.service:auto-service:jar:1.0-rc3:provided
+[INFO] |  +- com.google.auto:auto-common:jar:0.3:provided
+[INFO] |  \- com.google.guava:guava:jar:19.0:provided
+[INFO] +- com.squareup:javapoet:jar:1.9.0:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] +- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] 
+[INFO] ----------------< org.dominokit.domino.apt:apt-client >-----------------
+[INFO] Building apt-client 1.0-rc.3-SNAPSHOT                            [16/27]
+[INFO] --------------------------------[ jar ]---------------------------------
+Downloading from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/dominokit/domino/apt/apt-commons/1.0-rc.3-SNAPSHOT/maven-metadata.xml
+Progress (1): 1.2 kB                    Downloaded from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/dominokit/domino/apt/apt-commons/1.0-rc.3-SNAPSHOT/maven-metadata.xml (1.2 kB at 2.7 kB/s)
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ apt-client ---
+[INFO] org.dominokit.domino.apt:apt-client:jar:1.0-rc.3-SNAPSHOT
+[INFO] +- org.dominokit.domino.apt:apt-commons:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  \- commons-lang:commons-lang:jar:2.6:compile
+[INFO] +- org.dominokit.domino.api:domino-api-client:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  +- org.dominokit.domino.api:domino-api-shared:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  |  \- javax.validation:validation-api:jar:1.1.0.Final:compile
+[INFO] |  \- org.dominokit.domino.api:domino-api-shared:jar:sources:1.0-rc.3-SNAPSHOT:compile
+[INFO] +- org.dominokit:domino-rest:jar:1.0-SNAPSHOT:compile
+[INFO] |  +- org.gwtproject.timer:gwt-timer:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  +- com.google.elemental2:elemental2-dom:jar:1.0.0-RC1:compile
+[INFO] |  |  |  +- com.google.jsinterop:jsinterop-annotations:jar:1.0.2:compile
+[INFO] |  |  |  +- com.google.jsinterop:base:jar:1.0.0-RC1:compile
+[INFO] |  |  |  \- com.google.elemental2:elemental2-promise:jar:1.0.0-RC1:compile
+[INFO] |  |  \- com.google.elemental2:elemental2-dom:jar:sources:1.0.0-RC1:compile
+[INFO] |  +- org.gwtproject:xhr:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  +- com.google.elemental2:elemental2-core:jar:1.0.0-RC1:compile
+[INFO] |  |  \- com.google.elemental2:elemental2-core:jar:sources:1.0.0-RC1:compile
+[INFO] |  \- io.vertx:vertx-web-client:jar:3.4.2:compile
+[INFO] |     +- io.vertx:vertx-web-common:jar:3.4.2:compile
+[INFO] |     \- io.vertx:vertx-core:jar:3.4.2:compile
+[INFO] |        +- io.netty:netty-common:jar:4.1.8.Final:compile
+[INFO] |        +- io.netty:netty-buffer:jar:4.1.8.Final:compile
+[INFO] |        +- io.netty:netty-transport:jar:4.1.8.Final:compile
+[INFO] |        +- io.netty:netty-handler:jar:4.1.8.Final:compile
+[INFO] |        |  \- io.netty:netty-codec:jar:4.1.8.Final:compile
+[INFO] |        +- io.netty:netty-handler-proxy:jar:4.1.8.Final:compile
+[INFO] |        |  \- io.netty:netty-codec-socks:jar:4.1.8.Final:compile
+[INFO] |        +- io.netty:netty-codec-http:jar:4.1.8.Final:compile
+[INFO] |        +- io.netty:netty-codec-http2:jar:4.1.8.Final:compile
+[INFO] |        +- io.netty:netty-resolver:jar:4.1.8.Final:compile
+[INFO] |        +- io.netty:netty-resolver-dns:jar:4.1.8.Final:compile
+[INFO] |        |  \- io.netty:netty-codec-dns:jar:4.1.8.Final:compile
+[INFO] |        +- com.fasterxml.jackson.core:jackson-core:jar:2.7.4:compile
+[INFO] |        \- com.fasterxml.jackson.core:jackson-databind:jar:2.7.4:compile
+[INFO] |           \- com.fasterxml.jackson.core:jackson-annotations:jar:2.7.0:compile
+[INFO] +- org.dominokit.domino.test:apt-test:jar:1.0-rc.3-SNAPSHOT:test
+[INFO] |  +- com.google.testing.compile:compile-testing:jar:0.9:test
+[INFO] |  |  +- com.google.truth:truth:jar:0.28:test
+[INFO] |  |  \- com.sun:tools:jar:1.8.0_191:system
+[INFO] |  +- org.apache.logging.log4j:log4j-api:jar:2.8.2:test
+[INFO] |  \- org.apache.logging.log4j:log4j-core:jar:2.8.2:test
+[INFO] +- commons-io:commons-io:jar:2.5:test
+[INFO] +- com.google.auto.service:auto-service:jar:1.0-rc3:provided
+[INFO] |  +- com.google.auto:auto-common:jar:0.3:provided
+[INFO] |  \- com.google.guava:guava:jar:19.0:provided
+[INFO] +- com.squareup:javapoet:jar:1.9.0:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] +- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] 
+[INFO] ----------------< org.dominokit.domino.apt:apt-server >-----------------
+[INFO] Building apt-server 1.0-rc.3-SNAPSHOT                            [17/27]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ apt-server ---
+[INFO] org.dominokit.domino.apt:apt-server:jar:1.0-rc.3-SNAPSHOT
+[INFO] +- org.dominokit.domino.api:domino-api-shared:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  \- javax.validation:validation-api:jar:1.1.0.Final:compile
+[INFO] +- org.dominokit.domino.api:domino-api-server:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  +- org.dominokit.domino:domino-service-discovery:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  |  +- io.vertx:vertx-service-discovery:jar:3.4.2:compile
+[INFO] |  |  +- io.vertx:vertx-web-client:jar:3.4.2:compile
+[INFO] |  |  |  \- io.vertx:vertx-web-common:jar:3.4.2:compile
+[INFO] |  |  +- io.vertx:vertx-service-proxy:jar:3.4.2:compile
+[INFO] |  |  |  \- io.vertx:vertx-lang-js:jar:3.4.2:compile
+[INFO] |  |  +- io.vertx:vertx-codegen:jar:3.4.2:compile
+[INFO] |  |  |  \- org.mvel:mvel2:jar:2.2.8.Final:compile
+[INFO] |  |  +- io.vertx:vertx-service-proxy:jar:processor:3.4.2:compile
+[INFO] |  |  +- io.vertx:vertx-jdbc-client:jar:3.4.2:compile
+[INFO] |  |  |  +- io.vertx:vertx-sql-common:jar:3.4.2:compile
+[INFO] |  |  |  \- com.mchange:c3p0:jar:0.9.5.2:compile
+[INFO] |  |  |     \- com.mchange:mchange-commons-java:jar:0.2.11:compile
+[INFO] |  |  +- io.vertx:vertx-redis-client:jar:3.4.2:compile
+[INFO] |  |  \- io.vertx:vertx-mongo-client:jar:3.4.2:compile
+[INFO] |  |     \- org.mongodb:mongodb-driver-async:jar:3.4.1:compile
+[INFO] |  |        +- org.mongodb:mongodb-driver-core:jar:3.4.1:compile
+[INFO] |  |        \- org.mongodb:bson:jar:3.4.1:compile
+[INFO] |  +- io.vertx:vertx-config:jar:3.4.2:compile
+[INFO] |  \- com.google.guava:guava:jar:23.4-jre:compile
+[INFO] |     +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO] |     +- com.google.errorprone:error_prone_annotations:jar:2.0.18:compile
+[INFO] |     +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |     \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:compile
+[INFO] +- org.dominokit.domino.apt:apt-commons:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  \- commons-lang:commons-lang:jar:2.6:compile
+[INFO] +- io.vertx:vertx-web:jar:3.4.2:compile
+[INFO] |  +- io.vertx:vertx-auth-common:jar:3.4.2:compile
+[INFO] |  \- io.vertx:vertx-core:jar:3.4.2:compile
+[INFO] |     +- io.netty:netty-common:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-buffer:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-transport:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-handler:jar:4.1.8.Final:compile
+[INFO] |     |  \- io.netty:netty-codec:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-handler-proxy:jar:4.1.8.Final:compile
+[INFO] |     |  \- io.netty:netty-codec-socks:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-codec-http:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-codec-http2:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-resolver:jar:4.1.8.Final:compile
+[INFO] |     +- io.netty:netty-resolver-dns:jar:4.1.8.Final:compile
+[INFO] |     |  \- io.netty:netty-codec-dns:jar:4.1.8.Final:compile
+[INFO] |     +- com.fasterxml.jackson.core:jackson-core:jar:2.7.4:compile
+[INFO] |     \- com.fasterxml.jackson.core:jackson-databind:jar:2.7.4:compile
+[INFO] |        \- com.fasterxml.jackson.core:jackson-annotations:jar:2.7.0:compile
+[INFO] +- org.dominokit.domino.test:apt-test:jar:1.0-rc.3-SNAPSHOT:test
+[INFO] |  +- com.google.testing.compile:compile-testing:jar:0.9:test
+[INFO] |  |  +- com.google.truth:truth:jar:0.28:test
+[INFO] |  |  \- com.sun:tools:jar:1.8.0_191:system
+[INFO] |  +- org.apache.logging.log4j:log4j-api:jar:2.8.2:test
+[INFO] |  \- org.apache.logging.log4j:log4j-core:jar:2.8.2:test
+[INFO] +- commons-io:commons-io:jar:2.5:test
+[INFO] +- com.google.auto.service:auto-service:jar:1.0-rc3:provided
+[INFO] |  \- com.google.auto:auto-common:jar:0.3:provided
+[INFO] +- com.squareup:javapoet:jar:1.9.0:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] +- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] 
+[INFO] -------------< org.dominokit.domino.archetypes:archetypes >-------------
+[INFO] Building archetypes 1.0-rc.3-SNAPSHOT                            [18/27]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ archetypes ---
+[INFO] org.dominokit.domino.archetypes:archetypes:pom:1.0-rc.3-SNAPSHOT
+[INFO] 
+[INFO] ------< org.dominokit.domino.archetypes:domino-gwt-app-archetype >------
+[INFO] Building domino-gwt-app-archetype 1.0-rc.3-SNAPSHOT              [19/27]
+[INFO] --------------------------[ maven-archetype ]---------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-gwt-app-archetype ---
+[INFO] org.dominokit.domino.archetypes:domino-gwt-app-archetype:maven-archetype:1.0-rc.3-SNAPSHOT
+[INFO] 
+[INFO] ----< org.dominokit.domino.archetypes:domino-gwt-module-archetype >-----
+[INFO] Building domino-gwt-module-archetype 1.0-rc.3-SNAPSHOT           [20/27]
+[INFO] --------------------------[ maven-archetype ]---------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-gwt-module-archetype ---
+[INFO] org.dominokit.domino.archetypes:domino-gwt-module-archetype:maven-archetype:1.0-rc.3-SNAPSHOT
+[INFO] 
+[INFO] --< org.dominokit.domino.archetypes:domino-gwt-single-module-archetype >--
+[INFO] Building domino-gwt-single-module-archetype 1.0-rc.3-SNAPSHOT    [21/27]
+[INFO] --------------------------[ maven-archetype ]---------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-gwt-single-module-archetype ---
+[INFO] org.dominokit.domino.archetypes:domino-gwt-single-module-archetype:maven-archetype:1.0-rc.3-SNAPSHOT
+[INFO] 
+[INFO] ------------< org.dominokit.domino:jks-server-configurator >------------
+[INFO] Building jks-server-configurator 1.0-rc.3-SNAPSHOT               [22/27]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ jks-server-configurator ---
+[INFO] org.dominokit.domino:jks-server-configurator:jar:1.0-rc.3-SNAPSHOT
+[INFO] +- org.dominokit.domino.api:domino-api-server:jar:1.0-rc.3-SNAPSHOT:provided
+[INFO] |  +- org.dominokit.domino.api:domino-api-shared:jar:1.0-rc.3-SNAPSHOT:provided
+[INFO] |  |  \- javax.validation:validation-api:jar:1.1.0.Final:provided
+[INFO] |  +- org.dominokit.domino:domino-service-discovery:jar:1.0-rc.3-SNAPSHOT:provided
+[INFO] |  |  +- io.vertx:vertx-service-discovery:jar:3.4.2:provided
+[INFO] |  |  +- io.vertx:vertx-web-client:jar:3.4.2:provided
+[INFO] |  |  |  \- io.vertx:vertx-web-common:jar:3.4.2:provided
+[INFO] |  |  +- io.vertx:vertx-service-proxy:jar:3.4.2:provided
+[INFO] |  |  |  \- io.vertx:vertx-lang-js:jar:3.4.2:provided
+[INFO] |  |  +- io.vertx:vertx-codegen:jar:3.4.2:provided
+[INFO] |  |  |  +- com.fasterxml.jackson.core:jackson-core:jar:2.7.4:provided
+[INFO] |  |  |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.7.4:provided
+[INFO] |  |  |  |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.7.0:provided
+[INFO] |  |  |  \- org.mvel:mvel2:jar:2.2.8.Final:provided
+[INFO] |  |  +- io.vertx:vertx-service-proxy:jar:processor:3.4.2:provided
+[INFO] |  |  +- io.vertx:vertx-jdbc-client:jar:3.4.2:provided
+[INFO] |  |  |  +- io.vertx:vertx-sql-common:jar:3.4.2:provided
+[INFO] |  |  |  \- com.mchange:c3p0:jar:0.9.5.2:provided
+[INFO] |  |  |     \- com.mchange:mchange-commons-java:jar:0.2.11:provided
+[INFO] |  |  +- io.vertx:vertx-redis-client:jar:3.4.2:provided
+[INFO] |  |  \- io.vertx:vertx-mongo-client:jar:3.4.2:provided
+[INFO] |  |     \- org.mongodb:mongodb-driver-async:jar:3.4.1:provided
+[INFO] |  |        +- org.mongodb:mongodb-driver-core:jar:3.4.1:provided
+[INFO] |  |        \- org.mongodb:bson:jar:3.4.1:provided
+[INFO] |  +- io.vertx:vertx-web:jar:3.4.2:provided
+[INFO] |  |  +- io.vertx:vertx-auth-common:jar:3.4.2:provided
+[INFO] |  |  \- io.vertx:vertx-core:jar:3.4.2:provided
+[INFO] |  |     +- io.netty:netty-common:jar:4.1.8.Final:provided
+[INFO] |  |     +- io.netty:netty-buffer:jar:4.1.8.Final:provided
+[INFO] |  |     +- io.netty:netty-transport:jar:4.1.8.Final:provided
+[INFO] |  |     +- io.netty:netty-handler:jar:4.1.8.Final:provided
+[INFO] |  |     |  \- io.netty:netty-codec:jar:4.1.8.Final:provided
+[INFO] |  |     +- io.netty:netty-handler-proxy:jar:4.1.8.Final:provided
+[INFO] |  |     |  \- io.netty:netty-codec-socks:jar:4.1.8.Final:provided
+[INFO] |  |     +- io.netty:netty-codec-http:jar:4.1.8.Final:provided
+[INFO] |  |     +- io.netty:netty-codec-http2:jar:4.1.8.Final:provided
+[INFO] |  |     +- io.netty:netty-resolver:jar:4.1.8.Final:provided
+[INFO] |  |     \- io.netty:netty-resolver-dns:jar:4.1.8.Final:provided
+[INFO] |  |        \- io.netty:netty-codec-dns:jar:4.1.8.Final:provided
+[INFO] |  +- io.vertx:vertx-config:jar:3.4.2:provided
+[INFO] |  \- com.google.guava:guava:jar:23.4-jre:provided
+[INFO] |     +- com.google.code.findbugs:jsr305:jar:1.3.9:provided
+[INFO] |     +- com.google.errorprone:error_prone_annotations:jar:2.0.18:provided
+[INFO] |     +- com.google.j2objc:j2objc-annotations:jar:1.1:provided
+[INFO] |     \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:provided
+[INFO] +- com.google.auto.service:auto-service:jar:1.0-rc3:provided
+[INFO] |  \- com.google.auto:auto-common:jar:0.3:provided
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] +- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] 
+[INFO] ---------< org.dominokit.domino.logging:domino-remote-logging >---------
+[INFO] Building domino-remote-logging 1.0-rc.3-SNAPSHOT                 [23/27]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-remote-logging ---
+[INFO] org.dominokit.domino.logging:domino-remote-logging:jar:1.0-rc.3-SNAPSHOT
+[INFO] +- org.dominokit.domino.api:domino-api-server:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  +- org.dominokit.domino.api:domino-api-shared:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  |  \- javax.validation:validation-api:jar:1.1.0.Final:compile
+[INFO] |  +- org.dominokit.domino:domino-service-discovery:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  |  +- io.vertx:vertx-service-discovery:jar:3.4.2:compile
+[INFO] |  |  +- io.vertx:vertx-web-client:jar:3.4.2:compile
+[INFO] |  |  |  \- io.vertx:vertx-web-common:jar:3.4.2:compile
+[INFO] |  |  +- io.vertx:vertx-service-proxy:jar:3.4.2:compile
+[INFO] |  |  |  \- io.vertx:vertx-lang-js:jar:3.4.2:compile
+[INFO] |  |  +- io.vertx:vertx-codegen:jar:3.4.2:compile
+[INFO] |  |  |  +- com.fasterxml.jackson.core:jackson-core:jar:2.7.4:compile
+[INFO] |  |  |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.7.4:compile
+[INFO] |  |  |  |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.7.0:compile
+[INFO] |  |  |  \- org.mvel:mvel2:jar:2.2.8.Final:compile
+[INFO] |  |  +- io.vertx:vertx-service-proxy:jar:processor:3.4.2:compile
+[INFO] |  |  +- io.vertx:vertx-jdbc-client:jar:3.4.2:compile
+[INFO] |  |  |  +- io.vertx:vertx-sql-common:jar:3.4.2:compile
+[INFO] |  |  |  \- com.mchange:c3p0:jar:0.9.5.2:compile
+[INFO] |  |  |     \- com.mchange:mchange-commons-java:jar:0.2.11:compile
+[INFO] |  |  +- io.vertx:vertx-redis-client:jar:3.4.2:compile
+[INFO] |  |  \- io.vertx:vertx-mongo-client:jar:3.4.2:compile
+[INFO] |  |     \- org.mongodb:mongodb-driver-async:jar:3.4.1:compile
+[INFO] |  |        +- org.mongodb:mongodb-driver-core:jar:3.4.1:compile
+[INFO] |  |        \- org.mongodb:bson:jar:3.4.1:compile
+[INFO] |  +- io.vertx:vertx-web:jar:3.4.2:compile
+[INFO] |  |  +- io.vertx:vertx-auth-common:jar:3.4.2:compile
+[INFO] |  |  \- io.vertx:vertx-core:jar:3.4.2:compile
+[INFO] |  |     +- io.netty:netty-common:jar:4.1.8.Final:compile
+[INFO] |  |     +- io.netty:netty-buffer:jar:4.1.8.Final:compile
+[INFO] |  |     +- io.netty:netty-transport:jar:4.1.8.Final:compile
+[INFO] |  |     +- io.netty:netty-handler:jar:4.1.8.Final:compile
+[INFO] |  |     |  \- io.netty:netty-codec:jar:4.1.8.Final:compile
+[INFO] |  |     +- io.netty:netty-handler-proxy:jar:4.1.8.Final:compile
+[INFO] |  |     |  \- io.netty:netty-codec-socks:jar:4.1.8.Final:compile
+[INFO] |  |     +- io.netty:netty-codec-http:jar:4.1.8.Final:compile
+[INFO] |  |     +- io.netty:netty-codec-http2:jar:4.1.8.Final:compile
+[INFO] |  |     +- io.netty:netty-resolver:jar:4.1.8.Final:compile
+[INFO] |  |     \- io.netty:netty-resolver-dns:jar:4.1.8.Final:compile
+[INFO] |  |        \- io.netty:netty-codec-dns:jar:4.1.8.Final:compile
+[INFO] |  +- io.vertx:vertx-config:jar:3.4.2:compile
+[INFO] |  \- com.google.guava:guava:jar:23.4-jre:compile
+[INFO] |     +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO] |     +- com.google.errorprone:error_prone_annotations:jar:2.0.18:compile
+[INFO] |     +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |     \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:compile
+[INFO] +- com.google.gwt:gwt-servlet:jar:2.8.2:provided
+[INFO] +- com.google.code.gson:gson:jar:2.6.2:compile
+[INFO] +- com.google.auto.service:auto-service:jar:1.0-rc3:provided
+[INFO] |  \- com.google.auto:auto-common:jar:0.3:provided
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] +- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] 
+[INFO] ----------------< org.dominokit.domino:domino-desktop >-----------------
+[INFO] Building domino-desktop 1.0-rc.3-SNAPSHOT                        [24/27]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-desktop ---
+[INFO] org.dominokit.domino:domino-desktop:jar:1.0-rc.3-SNAPSHOT
+[INFO] +- org.dominokit.domino.api:domino-api-client:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  \- org.dominokit.domino.api:domino-api-shared:jar:sources:1.0-rc.3-SNAPSHOT:compile
+[INFO] +- org.dominokit.domino.api:domino-api-shared:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  \- javax.validation:validation-api:jar:1.1.0.Final:compile
+[INFO] +- org.dominokit.domino.api:domino-api-server:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  +- org.dominokit.domino:domino-service-discovery:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  |  +- io.vertx:vertx-service-discovery:jar:3.4.2:compile
+[INFO] |  |  +- io.vertx:vertx-web-client:jar:3.4.2:compile
+[INFO] |  |  |  \- io.vertx:vertx-web-common:jar:3.4.2:compile
+[INFO] |  |  +- io.vertx:vertx-service-proxy:jar:3.4.2:compile
+[INFO] |  |  |  \- io.vertx:vertx-lang-js:jar:3.4.2:compile
+[INFO] |  |  +- io.vertx:vertx-codegen:jar:3.4.2:compile
+[INFO] |  |  |  +- com.fasterxml.jackson.core:jackson-core:jar:2.7.4:compile
+[INFO] |  |  |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.7.4:compile
+[INFO] |  |  |  |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.7.0:compile
+[INFO] |  |  |  \- org.mvel:mvel2:jar:2.2.8.Final:compile
+[INFO] |  |  +- io.vertx:vertx-service-proxy:jar:processor:3.4.2:compile
+[INFO] |  |  +- io.vertx:vertx-jdbc-client:jar:3.4.2:compile
+[INFO] |  |  |  +- io.vertx:vertx-sql-common:jar:3.4.2:compile
+[INFO] |  |  |  \- com.mchange:c3p0:jar:0.9.5.2:compile
+[INFO] |  |  |     \- com.mchange:mchange-commons-java:jar:0.2.11:compile
+[INFO] |  |  +- io.vertx:vertx-redis-client:jar:3.4.2:compile
+[INFO] |  |  \- io.vertx:vertx-mongo-client:jar:3.4.2:compile
+[INFO] |  |     \- org.mongodb:mongodb-driver-async:jar:3.4.1:compile
+[INFO] |  |        +- org.mongodb:mongodb-driver-core:jar:3.4.1:compile
+[INFO] |  |        \- org.mongodb:bson:jar:3.4.1:compile
+[INFO] |  +- io.vertx:vertx-web:jar:3.4.2:compile
+[INFO] |  |  +- io.vertx:vertx-auth-common:jar:3.4.2:compile
+[INFO] |  |  \- io.vertx:vertx-core:jar:3.4.2:compile
+[INFO] |  |     +- io.netty:netty-common:jar:4.1.8.Final:compile
+[INFO] |  |     +- io.netty:netty-buffer:jar:4.1.8.Final:compile
+[INFO] |  |     +- io.netty:netty-transport:jar:4.1.8.Final:compile
+[INFO] |  |     +- io.netty:netty-handler:jar:4.1.8.Final:compile
+[INFO] |  |     |  \- io.netty:netty-codec:jar:4.1.8.Final:compile
+[INFO] |  |     +- io.netty:netty-handler-proxy:jar:4.1.8.Final:compile
+[INFO] |  |     |  \- io.netty:netty-codec-socks:jar:4.1.8.Final:compile
+[INFO] |  |     +- io.netty:netty-codec-http:jar:4.1.8.Final:compile
+[INFO] |  |     +- io.netty:netty-codec-http2:jar:4.1.8.Final:compile
+[INFO] |  |     +- io.netty:netty-resolver:jar:4.1.8.Final:compile
+[INFO] |  |     \- io.netty:netty-resolver-dns:jar:4.1.8.Final:compile
+[INFO] |  |        \- io.netty:netty-codec-dns:jar:4.1.8.Final:compile
+[INFO] |  +- io.vertx:vertx-config:jar:3.4.2:compile
+[INFO] |  \- com.google.guava:guava:jar:23.4-jre:compile
+[INFO] |     +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO] |     +- com.google.errorprone:error_prone_annotations:jar:2.0.18:compile
+[INFO] |     +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |     \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:compile
+[INFO] +- org.dominokit.domino:domino-client-commons:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] +- commons-beanutils:commons-beanutils:jar:1.7.0:compile
+[INFO] |  \- commons-logging:commons-logging:jar:1.0.3:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] +- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] 
+[INFO] ----------------< org.dominokit.domino:domino-gwt-view >----------------
+[INFO] Building domino-gwt-view 1.0-rc.3-SNAPSHOT                       [25/27]
+[INFO] ------------------------------[ gwt-lib ]-------------------------------
+Downloading from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/dominokit/domino-ui/1.0-SNAPSHOT/maven-metadata.xml
+Progress (1): 2.0 kB                    Downloaded from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/dominokit/domino-ui/1.0-SNAPSHOT/maven-metadata.xml (2.0 kB at 4.6 kB/s)
+Downloading from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/gwtproject/safehtml/gwt-safehtml/1.0-SNAPSHOT/maven-metadata.xml
+Downloading from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/gwtproject/safehtml/safehtml-parent/1.0-SNAPSHOT/maven-metadata.xml
+Downloading from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/gwtproject/editors/1.0-SNAPSHOT/maven-metadata.xml
+Downloading from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/gwtproject/gwt-editors-parent/1.0-SNAPSHOT/maven-metadata.xml
+Downloading from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/gwtproject/i18n/gwt-cldr/1.0-SNAPSHOT/maven-metadata.xml
+Downloading from sonatype-snapshots-repo: https://oss.sonatype.org/content/repositories/snapshots/org/gwtproject/i18n/gwt-datetimeformat/1.0-SNAPSHOT/maven-metadata.xml
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-gwt-view ---
+[INFO] org.dominokit.domino:domino-gwt-view:gwt-lib:1.0-rc.3-SNAPSHOT
+[INFO] +- org.dominokit.domino.api:domino-api-client:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  +- org.dominokit.domino.api:domino-api-shared:jar:1.0-rc.3-SNAPSHOT:compile
+[INFO] |  |  \- javax.validation:validation-api:jar:1.1.0.Final:compile
+[INFO] |  \- org.dominokit.domino.api:domino-api-shared:jar:sources:1.0-rc.3-SNAPSHOT:compile
+[INFO] +- com.google.elemental2:elemental2-core:jar:1.0.0-RC1:compile
+[INFO] |  +- com.google.jsinterop:jsinterop-annotations:jar:1.0.2:compile
+[INFO] |  \- com.google.jsinterop:base:jar:1.0.0-RC1:compile
+[INFO] +- com.google.elemental2:elemental2-dom:jar:1.0.0-RC1:compile
+[INFO] |  \- com.google.elemental2:elemental2-promise:jar:1.0.0-RC1:compile
+[INFO] +- org.dominokit:domino-ui:jar:1.0-SNAPSHOT:compile
+[INFO] |  +- org.gwtproject.timer:gwt-timer:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  \- com.google.elemental2:elemental2-dom:jar:sources:1.0.0-RC1:compile
+[INFO] |  +- org.jboss.gwt.elemento:elemento-core:jar:0.8.5:compile
+[INFO] |  |  +- com.google.elemental2:elemental2-webstorage:jar:1.0.0-RC1:compile
+[INFO] |  |  +- org.gwtproject.safehtml:gwt-safehtml:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  |  \- com.google.jsilver:jsilver:jar:1.0.0:compile
+[INFO] |  |  |     \- com.google.guava:guava:jar:r06:compile
+[INFO] |  |  \- org.gwtproject.event:gwt-event:jar:HEAD-SNAPSHOT:compile
+[INFO] |  +- org.jboss.gwt.elemento:elemento-template-api:jar:0.8.5:compile
+[INFO] |  |  +- org.jboss.gwt.elemento:elemento-core:jar:sources:0.8.5:compile
+[INFO] |  |  \- javax.annotation:jsr250-api:jar:1.0:compile
+[INFO] |  +- org.gwtproject:editors:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  \- org.gwtproject.event:gwt-event:jar:sources:HEAD-SNAPSHOT:compile
+[INFO] |  +- org.gwtproject.i18n:gwt-cldr:jar:1.0-SNAPSHOT:compile
+[INFO] |  +- org.gwtproject.i18n:gwt-cldr:jar:sources:1.0-SNAPSHOT:compile
+[INFO] |  +- org.gwtproject.i18n:gwt-datetimeformat:jar:1.0-SNAPSHOT:compile
+[INFO] |  +- org.gwtproject.i18n:gwt-datetimeformat:jar:sources:1.0-SNAPSHOT:compile
+[INFO] |  +- com.google.elemental2:elemental2-svg:jar:1.0.0-RC1:compile
+[INFO] |  \- com.google.elemental2:elemental2-svg:jar:sources:1.0.0-RC1:compile
+[INFO] +- org.dominokit:domino-ui:jar:sources:1.0-SNAPSHOT:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] +- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] 
+[INFO] ------< org.dominokit.domino.logging:domino-log4j-server-logging >------
+[INFO] Building domino-log4j-server-logging 1.0-rc.3-SNAPSHOT           [26/27]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-log4j-server-logging ---
+[INFO] org.dominokit.domino.logging:domino-log4j-server-logging:jar:1.0-rc.3-SNAPSHOT
+[INFO] +- org.slf4j:slf4j-log4j12:jar:1.7.25:compile
+[INFO] |  \- log4j:log4j:jar:1.2.17:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] +- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] 
+[INFO] --------------------< org.dominokit.domino:domino >---------------------
+[INFO] Building domino 1.0-rc.3-SNAPSHOT                                [27/27]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino ---
+[INFO] org.dominokit.domino:domino:pom:1.0-rc.3-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for domino-parent 1.0-rc.3-SNAPSHOT:
+[INFO] 
+[INFO] domino-parent ...................................... SUCCESS [  0.487 s]
+[INFO] domino-api-shared .................................. SUCCESS [  0.024 s]
+[INFO] domino-api-client .................................. SUCCESS [  2.118 s]
+[INFO] domino-service-discovery ........................... SUCCESS [  0.084 s]
+[INFO] domino-api-server .................................. SUCCESS [  0.494 s]
+[INFO] domino-slf4j-super ................................. SUCCESS [  0.005 s]
+[INFO] domino-gwt-logger .................................. SUCCESS [  0.220 s]
+[INFO] domino-client-commons .............................. SUCCESS [  1.231 s]
+[INFO] domino-gwt ......................................... SUCCESS [  5.031 s]
+[INFO] domino-test ........................................ SUCCESS [  0.013 s]
+[INFO] domino-client-test ................................. SUCCESS [  0.624 s]
+[INFO] domino-server-test ................................. SUCCESS [  0.021 s]
+[INFO] apt-test ........................................... SUCCESS [  0.011 s]
+[INFO] domino-apt ......................................... SUCCESS [  0.501 s]
+[INFO] apt-commons ........................................ SUCCESS [  0.041 s]
+[INFO] apt-client ......................................... SUCCESS [  0.520 s]
+[INFO] apt-server ......................................... SUCCESS [  0.023 s]
+[INFO] archetypes ......................................... SUCCESS [  0.002 s]
+[INFO] domino-gwt-app-archetype ........................... SUCCESS [  0.135 s]
+[INFO] domino-gwt-module-archetype ........................ SUCCESS [  0.004 s]
+[INFO] domino-gwt-single-module-archetype ................. SUCCESS [  0.003 s]
+[INFO] jks-server-configurator ............................ SUCCESS [  0.020 s]
+[INFO] domino-remote-logging .............................. SUCCESS [  0.022 s]
+[INFO] domino-desktop ..................................... SUCCESS [  0.019 s]
+[INFO] domino-gwt-view .................................... SUCCESS [  4.653 s]
+[INFO] domino-log4j-server-logging ........................ SUCCESS [  0.006 s]
+[INFO] domino ............................................. SUCCESS [  0.002 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  17.792 s
+[INFO] Finished at: 2018-11-17T12:52:36+02:00
+[INFO] ------------------------------------------------------------------------

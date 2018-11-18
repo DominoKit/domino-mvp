@@ -15,4 +15,6 @@ public @interface Path {
     String serviceRoot() default "";
     @NotNull
     String method() default "POST";
+
+    int[] successCodes() default {200, 201, 202, 203, 204};
 }

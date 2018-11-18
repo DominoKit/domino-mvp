@@ -1,6 +1,6 @@
 <module>
-  <inherits name="org.dominokit.domino.logger.api.SLF4J"/>
   <inherits name="com.google.gwt.logging.Logging"/>
+  <inherits name="org.slf4j.SLF4J"/>
 
   <source path=""/>
 
