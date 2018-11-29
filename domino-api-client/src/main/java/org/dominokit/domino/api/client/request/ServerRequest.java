@@ -21,6 +21,8 @@ public abstract class ServerRequest<R extends RequestBean, S extends ResponseBea
 
     private R requestBean;
 
+    private String url;
+
     private Success<S> success = response -> {
     };
     private Fail fail =
@@ -113,6 +115,14 @@ public abstract class ServerRequest<R extends RequestBean, S extends ResponseBea
 
     public Map<String, String> parameters() {
         return new HashMap<>(parameters);
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @Override
