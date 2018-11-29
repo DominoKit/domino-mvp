@@ -1,49 +1,49 @@
 package org.dominokit.domino.apt.client;
 
-import com.google.gwt.core.client.GWT;
+import java.util.Arrays;
+import java.util.Map;
+import javax.annotation.Generated;
+import org.dominokit.domino.api.client.ServiceRootMatcher;
+import org.dominokit.domino.api.client.annotations.RequestSender;
 import org.dominokit.domino.api.client.request.RequestRestSender;
 import org.dominokit.domino.api.client.request.ServerRequestCallBack;
-import org.dominokit.domino.api.client.annotations.RequestSender;
-import org.fusesource.restygwt.client.Method;
-import org.fusesource.restygwt.client.MethodCallback;
-import org.fusesource.restygwt.client.RestService;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import java.util.Map;
+import org.dominokit.domino.api.shared.request.ArrayResponse;
+import org.dominokit.rest.client.FailedResponse;
+import org.dominokit.rest.shared.RestfulRequest;
+import org.test.sample.xyz.shared.request.XyzRequest;
+import org.test.sample.xyz.shared.request.XyzRequest_MapperImpl;
+import org.test.sample.xyz.shared.response.XyzResponse;
+import org.test.sample.xyz.shared.response.XyzResponse_MapperImpl;
 
+/**
+ * This is generated class, please don't modify
+ */
+@Generated("org.dominokit.domino.apt.client.processors.handlers.RequestPathProcessor")
 @RequestSender(value = AnnotatedClassWithHandlerPath.class, customServiceRoot = true)
 public class AnnotatedClassWithRequestSender implements RequestRestSender<SomeRequest> {
 
     public static final String SERVICE_ROOT_KEY="AnnotatedClassWithHandlerPath";
     public static final String SERVICE_ROOT="someServiceRootPath";
 
-    private AnnotatedClassWithRequestSenderService service = GWT.create(AnnotatedClassWithRequestSenderService.class);
+    public static final String PATH = "XyzRequest";
 
-    public interface AnnotatedClassWithRequestSenderService extends RestService {
-        @POST
-        @Path("somePath")
-        @Produces(MediaType.APPLICATION_JSON)
-        @Consumes(MediaType.APPLICATION_JSON)
-        void send(SomeRequest request,
-                  MethodCallback<SomeResponse> callback);
-
-    }
+    private static final Integer[] SUCCESS_CODES = new Integer[]{200,201,202,203,204};
 
     @Override
-    public void send(SomeRequest request, Map headers, ServerRequestCallBack callBack) {
-        service.send(request, new MethodCallback<SomeResponse>() {
-            @Override
-            public void onFailure(Method method, Throwable throwable) {
-                callBack.onFailure(throwable);
-            }
-
-            @Override
-            public void onSuccess(Method method, SomeResponse response) {
-                callBack.onSuccess(response);
-            }
-        });
+    public void send(SomeRequest request, Map<String, String> headers,
+                     Map parameters, ServerRequestCallBack callBack) {
+        RestfulRequest.post(ServiceRootMatcher.matchedServiceRoot(PATH) + PATH)
+                .putHeaders(headers)
+                .onSuccess(response -> {
+                            if(Arrays.stream(SUCCESS_CODES).anyMatch(code -> code.equals(response.getStatusCode()))) {
+                                SomeResponse[] items = SomeResponse.INSTANCE.readArray(response.getBodyAsString(), length -> new SomeResponse[length]);
+                                callBack.onSuccess(new ArrayResponse<>(items));
+                            }
+                            else {
+                                callBack.onFailure(new FailedResponse(response.getStatusCode(), response.getBodyAsString()));
+                            }
+                        }
+                ).onError(callBack::onFailure)
+                .sendJson(SomeRequest_MapperImpl.INSTANCE.write(request));
     }
 }

@@ -28,7 +28,7 @@ public class AnnotatedClassWithHandlerPathWithServiceRootSender implements Reque
     private AnnotatedClassWithHandlerPathWithServiceRootService service = GWT.create(AnnotatedClassWithHandlerPathWithServiceRootService.class);
 
     @Override
-    public void send(SomeRequest request, Map<String, String> headers, ServerRequestCallBack callBack) {
+    public void send(SomeRequest request, Map<String, String> headers, Map parameters, ServerRequestCallBack callBack) {
         ((RestServiceProxy)service).setResource(new Resource(SERVICE_ROOT, headers));
         service.send(request, request, new MethodCallback<SomeResponse>() {
             @Override

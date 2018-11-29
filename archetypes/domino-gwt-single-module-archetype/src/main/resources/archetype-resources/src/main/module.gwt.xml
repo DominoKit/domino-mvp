@@ -5,6 +5,7 @@
 <module>
   <inherits name="com.google.gwt.user.User" />
   <inherits name="com.google.gwt.resources.Resources" />
+  <inherits name="org.dominokit.jacksonapt.GwtJacksonApt"/>
 
   <source path="" />
 

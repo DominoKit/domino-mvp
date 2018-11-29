@@ -4,7 +4,9 @@
 package ${package}.${subpackage}.shared.response;
 
 import org.dominokit.domino.api.shared.request.ResponseBean;
+import org.dominokit.jacksonapt.annotation.JSONMapper;
 
+@JSONMapper
 public class ${module}Response implements ResponseBean {
 
     private String serverMessage;

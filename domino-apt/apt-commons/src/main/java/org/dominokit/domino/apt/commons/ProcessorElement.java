@@ -108,4 +108,12 @@ public class ProcessorElement {
     public Messager getMessager() {
         return messager;
     }
+
+    public Elements getElementUtils() {
+        return elementUtils;
+    }
+
+    public Types getTypeUtils() {
+        return typeUtils;
+    }
 }

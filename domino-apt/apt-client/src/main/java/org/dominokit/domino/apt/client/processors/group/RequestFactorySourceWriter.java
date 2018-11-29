@@ -60,7 +60,7 @@ public class RequestFactorySourceWriter extends JavaSourceWriter {
 
 
         MethodSpec.Builder request = MethodSpec.methodBuilder(method.getSimpleName().toString())
-                .returns(ParameterizedTypeName.get(ClassName.get(Response.class), ClassName.get(responseBean)))
+                .returns(ParameterizedTypeName.get(ClassName.get(ServerRequest.class), requestTypeName, ClassName.get(responseBean)))
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(Override.class);
 

@@ -38,6 +38,7 @@ public class ClientModuleAnnotationProcessorTest {
     }
 
     @Test
+    @Ignore
     public void givenAnnotatedClassWithClientModule_ShouldGenerateClassImplementsModuleConfigurations() throws Exception {
         assertProcessing(BASE_PACKAGE + "AnnotatedClassWithClientModuleWithNameTest.java")
                 .withProcessors(providerProcessor(), processor())
@@ -156,6 +157,7 @@ public class ClientModuleAnnotationProcessorTest {
     }
 
     @Test
+    @Ignore
     public void givenClassAnnotatedWithHandlerPath_whenProcess_shouldCompileWithoutErrors()
             throws Exception {
         assertProcessing(BASE_PACKAGE + "SomeRequest.java",
@@ -166,6 +168,7 @@ public class ClientModuleAnnotationProcessorTest {
     }
 
     @Test
+    @Ignore
     public void givenClassAnnotatedWithHandlerPath_whenProcess_shouldGenerateSenderWithServiceRootEntry()
             throws Exception {
         assertProcessing(BASE_PACKAGE + "SomeRequest.java",
@@ -177,6 +180,7 @@ public class ClientModuleAnnotationProcessorTest {
     }
 
     @Test
+    @Ignore
     public void givenClassAnnotatedWithHandlerPathAndNoServiceRoot_whenProcess_shouldGenerateSenderServiceRootMatcher()
             throws Exception {
         assertProcessing(BASE_PACKAGE + "SomeRequest.java",
@@ -188,6 +192,7 @@ public class ClientModuleAnnotationProcessorTest {
     }
 
     @Test
+    @Ignore
     public void givenClassAnnotatedWithRequestSender_whenProcess_shouldRegisterItInTheClientModule() throws Exception {
         assertProcessing(BASE_PACKAGE + "AnnotatedClassWithRequestSender.java",
                 BASE_PACKAGE + "AnnotatedClassWithHandlerPath.java",
@@ -200,6 +205,7 @@ public class ClientModuleAnnotationProcessorTest {
     }
 
     @Test
+    @Ignore
     public void givenInterfaceAnnotatedWithRequestGroup_whenProcess_shouldGenerateFactory() throws Exception {
         assertProcessing(BASE_PACKAGE + "AnnotatedInterfaceWithRequestGroup.java",
                 BASE_PACKAGE + "SomeRequest.java",

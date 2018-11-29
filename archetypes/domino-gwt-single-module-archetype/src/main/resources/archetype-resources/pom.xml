@@ -48,6 +48,24 @@
             <version>1.7.25</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.dominokit.jackson</groupId>
+            <artifactId>jackson-apt</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.dominokit.jackson</groupId>
+            <artifactId>jackson-apt</artifactId>
+            <version>${jackson.version}</version>
+            <classifier>sources</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.dominokit.jackson</groupId>
+            <artifactId>jackson-apt-processor</artifactId>
+            <version>${jackson.version}</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>

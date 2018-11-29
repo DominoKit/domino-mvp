@@ -1,5 +1,7 @@
 package org.dominokit.domino.api.client;
 
+import org.dominokit.domino.api.client.request.RequestInterceptor;
+
 import java.util.List;
 
 public interface HasDominoOptions {
@@ -8,4 +10,6 @@ public interface HasDominoOptions {
     String getDefaultJsonDateFormat();
 
     List<DynamicServiceRoot> getServiceRoots();
+
+    RequestInterceptor getRequestInterceptor();
 }

@@ -7,13 +7,17 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
+
+import static java.util.Objects.nonNull;
 
 public abstract class ServerRequest<R extends RequestBean, S extends ResponseBean>
-        extends BaseRequest implements Response<S>, CanFailOrSend{
+        extends BaseRequest implements Response<S>, CanFailOrSend, HasHeadersAndParameters<R, S>{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServerRequest.class);
 
     private Map<String, String> headers = new HashMap<>();
+    private Map<String, String> parameters = new HashMap<>();
 
     private R requestBean;
 
@@ -42,7 +46,7 @@ public abstract class ServerRequest<R extends RequestBean, S extends ResponseBea
             ServerRequest.this.applyState(context.nextContext);
         } else {
             throw new InvalidRequestState(
-                    "Request cannot be processed until a responseBean is recieved from the server");
+                    "Request cannot be processed until a responseBean is received from the server");
         }
     };
 
@@ -63,6 +67,11 @@ public abstract class ServerRequest<R extends RequestBean, S extends ResponseBea
         return this;
     }
 
+    public ServerRequest<R,S> intercept(Consumer<HasHeadersAndParameters<R,S>> interceptor){
+        interceptor.accept(this);
+        return this;
+    }
+
     @Override
     public void startRouting() {
         state = sent;
@@ -74,13 +83,36 @@ public abstract class ServerRequest<R extends RequestBean, S extends ResponseBea
         return this.requestBean;
     }
 
-    protected ServerRequest<R, S> setHeader(String name, String value) {
+    public HasHeadersAndParameters<R, S> setHeader(String name, String value) {
         headers.put(name, value);
+        return this;
+    }
+
+    public HasHeadersAndParameters<R, S> setHeaders(Map<String, String> headers) {
+        if(nonNull(headers) && !headers.isEmpty()) {
+            this.headers.putAll(headers);
+        }
+        return this;
+    }
+
+    public HasHeadersAndParameters<R, S> setParameter(String name, String value) {
+        parameters.put(name, value);
+        return this;
+    }
+
+    public HasHeadersAndParameters<R, S> setParameters(Map<String, String> parameters) {
+        if(nonNull(parameters) && !parameters.isEmpty()) {
+            this.parameters.putAll(parameters);
+        }
         return this;
     }
 
     public Map<String, String> headers() {
         return new HashMap<>(headers);
+    }
+
+    public Map<String, String> parameters() {
+        return new HashMap<>(parameters);
     }
 
     @Override
