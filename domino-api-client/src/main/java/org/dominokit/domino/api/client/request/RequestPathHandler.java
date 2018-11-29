@@ -1,21 +1,23 @@
 package org.dominokit.domino.api.client.request;
 
 import org.dominokit.domino.api.client.ServiceRootMatcher;
+import org.dominokit.domino.api.shared.request.RequestBean;
+import org.dominokit.domino.api.shared.request.ResponseBean;
 
 import java.util.function.Consumer;
 
 import static java.util.Objects.isNull;
 
-public class RequestPathProcessor {
+public class RequestPathHandler<R extends RequestBean, S extends ResponseBean> {
     private ServerRequest request;
     private String path;
 
-    public RequestPathProcessor(ServerRequest request, String path) {
+    public RequestPathHandler(ServerRequest<R,S> request, String path) {
         this.request = request;
         this.path = path;
     }
 
-    public void process(Consumer<ServerRequest> consumer){
+    public void process(Consumer<ServerRequest<R,S>> consumer){
         if(isNull(request.getUrl())){
             request.setUrl(ServiceRootMatcher.matchedServiceRoot(path)+path);
         }

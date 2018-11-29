@@ -121,8 +121,9 @@ public abstract class ServerRequest<R extends RequestBean, S extends ResponseBea
         return url;
     }
 
-    public void setUrl(String url) {
+    public ServerRequest<R,S> setUrl(String url) {
         this.url = url;
+        return this;
     }
 
     @Override

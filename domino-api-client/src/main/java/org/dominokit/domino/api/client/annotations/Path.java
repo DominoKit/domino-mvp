@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE, ElementType.METHOD})
 public @interface Path {
     @NotNull
-    String value();
+    String value() default "";
     @NotNull
     String serviceRoot() default "";
     @NotNull
