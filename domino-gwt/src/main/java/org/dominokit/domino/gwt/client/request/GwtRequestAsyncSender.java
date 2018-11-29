@@ -20,7 +20,7 @@ public class GwtRequestAsyncSender extends AbstractRequestAsyncSender {
         ClientApp.make().dominoOptions().getRequestInterceptor()
                 .interceptRequest(request, () ->
                         ClientApp.make().getRequestRestSendersRepository().get(request.getKey())
-                        .send(request.requestBean(), request.headers(), request.parameters(),
+                        .send(request,
                                 new ServerRequestCallBack() {
                                     @Override
                                     public void onSuccess(ResponseBean response) {

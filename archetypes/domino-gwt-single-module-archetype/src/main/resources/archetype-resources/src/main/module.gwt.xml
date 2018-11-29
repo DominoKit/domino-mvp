@@ -7,7 +7,7 @@
   <inherits name="com.google.gwt.resources.Resources" />
   <inherits name="org.dominokit.jacksonapt.GwtJacksonApt"/>
 
-  <source path="" />
+  <source url="" />
 
   <entry-point class="${package}.${subpackage}.client.${module}ClientModule" />
 

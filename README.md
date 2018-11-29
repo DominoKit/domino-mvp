@@ -135,7 +135,7 @@ Before running the application we need to build it, open a terminal in Intellij 
     - Fill the Main class with : `org.dominokit.domino.api.server.DominoLauncher`
     - Fill the program arguments with : `run org.dominokit.domino.api.server.StartupVerticle -conf target/classes/config.json`
     - Select the Working directory as `domino-demo-backend` module folder.
-    - Select the Use class path of module as `domino-demo-backend`
+    - Select the Use class url of module as `domino-demo-backend`
     - Make sure the JRE is 1.8.
     - Click **Apply and OK **.
 
@@ -236,7 +236,7 @@ Open the module you will notice a few already created classes, in some cases thi
             <scope>test</scope>
         </dependency> 
 ``` 
-Notice other compilation errors, this might be because of the exclusion of the target folder, generated sources are normally excluded from the source path we need to add them, follow the below points,
+Notice other compilation errors, this might be because of the exclusion of the target folder, generated sources are normally excluded from the source url we need to add them, follow the below points,
            
 * Rebuild the project.    
 * Exclude the target folder.    

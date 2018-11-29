@@ -5,7 +5,9 @@ import com.sun.tools.internal.xjc.reader.TypeUtil;
 import org.dominokit.domino.api.client.ServiceRootMatcher;
 import org.dominokit.domino.api.client.annotations.Path;
 import org.dominokit.domino.api.client.annotations.RequestSender;
+import org.dominokit.domino.api.client.request.RequestPathHandler;
 import org.dominokit.domino.api.client.request.RequestRestSender;
+import org.dominokit.domino.api.client.request.ServerRequest;
 import org.dominokit.domino.api.client.request.ServerRequestCallBack;
 import org.dominokit.domino.api.shared.request.ArrayResponse;
 import org.dominokit.domino.api.shared.request.VoidRequest;
@@ -102,7 +104,7 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
 
         return DominoTypeBuilder.build(processorElement.simpleName() + "Sender", RequestPathProcessor.class)
                 .addAnnotation(requestSenderAnnotationBuilder.build())
-                .addSuperinterface(ParameterizedTypeName.get(ClassName.get(RequestRestSender.class), requestType));
+                .addSuperinterface(ParameterizedTypeName.get(ClassName.get(RequestRestSender.class), requestType, responseType));
     }
 
     private FieldSpec addServiceRoot() {
@@ -138,24 +140,23 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
             MethodSpec.Builder sendMethodBuilder = MethodSpec.methodBuilder("send")
                     .addAnnotation(Override.class)
                     .addModifiers(Modifier.PUBLIC)
-                    .addParameter(requestType, "request")
-                    .addParameter(ParameterizedTypeName.get(ClassName.get(Map.class), ClassName.get(String.class), ClassName.get(String.class)), "headers")
-                    .addParameter(ParameterizedTypeName.get(ClassName.get(Map.class), ClassName.get(String.class), ClassName.get(String.class)), "parameters")
+                    .addParameter(ParameterizedTypeName.get(ClassName.get(ServerRequest.class), requestType, responseType), "request")
                     .addParameter(ServerRequestCallBack.class, "callBack");
 
             CodeBlock.Builder sendRequestCodeBlock = CodeBlock.builder();
             if (requestType.compareTo(ClassName.get(VoidRequest.class)) == 0 || "get".equalsIgnoreCase(method)) {
                 sendRequestCodeBlock.addStatement(".send()");
             } else {
-                sendRequestCodeBlock.addStatement(".sendJson($T.INSTANCE.write(request))", ClassName.get(requestType.packageName(), requestType.simpleName() + "_MapperImpl"));
+                sendRequestCodeBlock.addStatement(".sendJson($T.INSTANCE.write(request.requestBean()))", ClassName.get(requestType.packageName(), requestType.simpleName() + "_MapperImpl"));
             }
 
 
             return sendMethodBuilder
                     .addCode(CodeBlock.builder()
-                            .add("$T." + method.toLowerCase() + "($T.matchedServiceRoot(PATH) + replaceRequestParameters(request))\n", RestfulRequest.class, ServiceRootMatcher.class)
-                            .add(".putHeaders(headers)\n")
-                            .add(".putParameters(parameters)\n")
+                            .addStatement("new $T<>(request, PATH).process(serverRequest -> serverRequest.setUrl(replaceRequestParameters(serverRequest.requestBean())))", RequestPathHandler.class)
+                            .add("$T." + method.toLowerCase() + "(request.getUrl())\n", RestfulRequest.class)
+                            .add(".putHeaders(request.headers())\n")
+                            .add(".putParameters(request.parameters())\n")
                             .add(".onSuccess(response ->")
                             .add(CodeBlock.builder().beginControlFlow("")
                                     .beginControlFlow("if($T.stream(SUCCESS_CODES).anyMatch(code -> code.equals(response.getStatusCode())))", Arrays.class)

@@ -11,8 +11,8 @@
 
     <entry-point class='org.dominokit.domino.gwt.client.Core'/>
 
-    <source path='client'/>
-    <source path='shared'/>
+    <source url='client'/>
+    <source url='shared'/>
 
     <add-linker name="xsiframe"/>
 </module>

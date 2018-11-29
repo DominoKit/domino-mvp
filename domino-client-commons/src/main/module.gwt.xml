@@ -3,8 +3,8 @@
 <module rename-to='common'>
     <inherits name="com.google.gwt.logging.Logging"/>
 
-    <source path='client'/>
-    <source path='shared'/>
+    <source url='client'/>
+    <source url='shared'/>
 
     <add-linker name="xsiframe"/>
 </module>
