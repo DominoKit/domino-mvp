@@ -1,6 +1,6 @@
 <module>
 
   <inherits name="org.dominokit.domino.ui.DominoUI"/>
-  <source url=""/>
+  <source path=""/>
 
 </module>

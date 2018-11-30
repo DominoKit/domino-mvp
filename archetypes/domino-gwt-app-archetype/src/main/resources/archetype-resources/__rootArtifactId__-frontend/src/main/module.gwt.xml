@@ -6,7 +6,7 @@
     <inherits name="com.google.gwt.user.User"/>
     <inherits name="org.dominokit.domino.logger.Logging"/>
 
-    <source url=""/>
+    <source path=""/>
 
     <entry-point class="${package}.AppClientModule"/>
 

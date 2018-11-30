@@ -1,5 +1,5 @@
 <module>
     <inherits name="com.google.gwt.core.Core"/>
 
-    <super-source url="emul"/>
+    <super-source path="emul"/>
 </module>
