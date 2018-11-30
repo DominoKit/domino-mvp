@@ -4,8 +4,8 @@
 
     <inherits name="com.google.gwt.logging.Logging"/>
 
-    <source url='client'/>
-    <source url='shared'/>
+    <source path='client'/>
+    <source path='shared'/>
 
     <add-linker name="xsiframe"/>
 </module>
