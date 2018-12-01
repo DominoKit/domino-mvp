@@ -43,7 +43,7 @@ public abstract class BaseDominoView<T> implements DominoView<T>, HasContent {
 
     protected abstract void initRoot(T root);
 
-    public abstract void init(T root);
+    protected abstract void init(T root);
 
     @Override
     public void clear() {

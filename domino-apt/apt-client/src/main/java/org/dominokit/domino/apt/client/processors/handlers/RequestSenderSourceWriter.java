@@ -1,14 +1,11 @@
 package org.dominokit.domino.apt.client.processors.handlers;
 
 import com.squareup.javapoet.*;
-import com.sun.tools.internal.xjc.reader.TypeUtil;
-import org.dominokit.domino.api.client.ServiceRootMatcher;
+import com.sun.org.apache.bcel.internal.generic.ArrayType;
 import org.dominokit.domino.api.client.annotations.Path;
 import org.dominokit.domino.api.client.annotations.RequestSender;
-import org.dominokit.domino.api.client.request.RequestPathHandler;
-import org.dominokit.domino.api.client.request.RequestRestSender;
-import org.dominokit.domino.api.client.request.ServerRequest;
-import org.dominokit.domino.api.client.request.ServerRequestCallBack;
+import org.dominokit.domino.api.client.request.AbstractArrayResponseRequestSender;
+import org.dominokit.domino.api.client.request.AbstractSingleResponseRequestSender;
 import org.dominokit.domino.api.shared.request.ArrayResponse;
 import org.dominokit.domino.api.shared.request.VoidRequest;
 import org.dominokit.domino.api.shared.request.VoidResponse;
@@ -16,22 +13,16 @@ import org.dominokit.domino.apt.commons.DominoTypeBuilder;
 import org.dominokit.domino.apt.commons.FullClassName;
 import org.dominokit.domino.apt.commons.JavaSourceWriter;
 import org.dominokit.domino.apt.commons.ProcessorElement;
-import org.dominokit.rest.client.FailedResponse;
-import org.dominokit.rest.shared.RestfulRequest;
+import org.dominokit.jacksonapt.AbstractObjectMapper;
 
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -40,13 +31,11 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
 
     private final String serviceRoot;
     private final String method;
-    private final List<String> pathParams = new ArrayList<>();
     private final String path;
     private final ClassName requestType;
     private final ClassName responseType;
     private final int[] successCodes;
     private final boolean arrayResponse;
-    private final FullClassName requestFullName;
 
 
     public RequestSenderSourceWriter(ProcessorElement processorElement, FullClassName request, FullClassName response, FullClassName fullSuperClassName) {
@@ -56,7 +45,6 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
         this.method = processorElement.getAnnotation(Path.class).method();
         this.successCodes = processorElement.getAnnotation(Path.class).successCodes();
         requestType = ClassName.get(request.asPackage(), request.asSimpleName());
-        this.requestFullName = request;
 
         if (response.asImport().equals(new FullClassName(ArrayResponse.class.getCanonicalName()).asImport())) {
             FullClassName actualResponse = new FullClassName(fullSuperClassName.allImports().get(3));
@@ -67,14 +55,6 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
             this.arrayResponse = false;
         }
 
-        fillPathParameters(path);
-    }
-
-    private void fillPathParameters(String path) {
-        Matcher pathParamMatcher = Pattern.compile("\\{(.*?)\\}").matcher(path);
-        while (pathParamMatcher.find()) {
-            pathParams.add(pathParamMatcher.group().replace("{", "").replace("}", ""));
-        }
     }
 
     @Override
@@ -84,27 +64,108 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
             senderBuilder.addField(addServiceRoot());
         }
 
-        senderBuilder.addField(addPathField())
+        senderBuilder
+                .addField(addPathField())
                 .addField(addSuccessCodesField());
 
-        senderBuilder.addMethod(new SendMethodBuilder().build());
+        senderBuilder.addMethod(MethodSpec.methodBuilder("getPath")
+                .addAnnotation(Override.class)
+                .addModifiers(Modifier.PROTECTED)
+                .returns(String.class)
+                .addStatement("return PATH")
+                .build());
+
+        senderBuilder.addMethod(MethodSpec.methodBuilder("getSuccessCodes")
+                .addAnnotation(Override.class)
+                .addModifiers(Modifier.PROTECTED)
+                .returns(Integer[].class)
+                .addStatement("return SUCCESS_CODES")
+                .build());
+
+        senderBuilder.addMethod(MethodSpec.methodBuilder("getRequestMapper")
+                .addAnnotation(Override.class)
+                .addModifiers(Modifier.PROTECTED)
+                .returns(ParameterizedTypeName.get(ClassName.get(AbstractObjectMapper.class), requestType))
+                .addCode(getRequestMapper().build())
+                .build());
+
+        senderBuilder.addMethod(MethodSpec.methodBuilder("getResponseMapper")
+                .addAnnotation(Override.class)
+                .addModifiers(Modifier.PROTECTED)
+                .returns(ParameterizedTypeName.get(ClassName.get(AbstractObjectMapper.class), responseType))
+                .addCode(getResponseMapper().build())
+                .build());
+
+        senderBuilder.addMethod(MethodSpec.methodBuilder("getMethod")
+                .addAnnotation(Override.class)
+                .addModifiers(Modifier.PROTECTED)
+                .returns(String.class)
+                .addStatement("return \""+method+"\"")
+                .build());
+
+        senderBuilder.addMethod(MethodSpec.methodBuilder("getCustomRoot")
+                .addAnnotation(Override.class)
+                .addModifiers(Modifier.PROTECTED)
+                .returns(String.class)
+                .addStatement(hasServiceRoot()?"return SERVICE_ROOT":"return null")
+                .build());
+
         senderBuilder.addMethod(new ReplaceParametersMethodBuilder().build());
+
+        if(arrayResponse){
+            senderBuilder.addMethod(MethodSpec.methodBuilder("initArray")
+                    .addAnnotation(Override.class)
+                    .addModifiers(Modifier.PROTECTED)
+                    .returns(ArrayTypeName.of(responseType))
+                    .addParameter(int.class, "length")
+                    .addStatement("return new $T[length]", responseType)
+                    .build());
+        }
 
         StringBuilder asString = new StringBuilder();
         JavaFile.builder(processorElement.elementPackage(), senderBuilder.build()).skipJavaLangImports(true).build().writeTo(asString);
         return asString.toString();
     }
 
+    private CodeBlock.Builder getRequestMapper() {
+        CodeBlock.Builder builder = CodeBlock.builder();
+        if (isVoidRequest()) {
+            builder.addStatement("return null");
+        }else{
+            builder.addStatement("return $T.INSTANCE", ClassName.get(requestType.packageName(), requestType.simpleName() + "_MapperImpl"));
+        }
+        return builder;
+    }
+
+    private CodeBlock.Builder getResponseMapper() {
+        CodeBlock.Builder builder = CodeBlock.builder();
+        if (isVoidResponse()) {
+            builder.addStatement("return null");
+        }else{
+            builder.addStatement("return $T.INSTANCE", ClassName.get(responseType.packageName(), responseType.simpleName() + "_MapperImpl"));
+        }
+        return builder;
+    }
+
+    private boolean isVoidRequest() {
+        return requestType.compareTo(ClassName.get(VoidRequest.class)) == 0;
+    }
+
+    private boolean isVoidResponse() {
+        return responseType.compareTo(ClassName.get(VoidResponse.class)) == 0;
+    }
+
     private TypeSpec.Builder makeSenderBuilder() {
         AnnotationSpec.Builder requestSenderAnnotationBuilder = AnnotationSpec.builder(RequestSender.class)
                 .addMember("value", CodeBlock.builder().add("$T.class", TypeName.get(processorElement.getElement().asType())).build());
 
-        if (hasServiceRoot())
+        if (hasServiceRoot()) {
             requestSenderAnnotationBuilder.addMember("customServiceRoot", "true");
+        }
 
         return DominoTypeBuilder.build(processorElement.simpleName() + "Sender", RequestPathProcessor.class)
                 .addAnnotation(requestSenderAnnotationBuilder.build())
-                .addSuperinterface(ParameterizedTypeName.get(ClassName.get(RequestRestSender.class), requestType, responseType));
+                .superclass(ParameterizedTypeName.get(ClassName.get(arrayResponse ? AbstractArrayResponseRequestSender.class : AbstractSingleResponseRequestSender.class), requestType, responseType));
     }
 
     private FieldSpec addServiceRoot() {
@@ -135,78 +196,19 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
         return !serviceRoot.trim().isEmpty();
     }
 
-    private class SendMethodBuilder {
-        private MethodSpec build() {
-            MethodSpec.Builder sendMethodBuilder = MethodSpec.methodBuilder("send")
-                    .addAnnotation(Override.class)
-                    .addModifiers(Modifier.PUBLIC)
-                    .addParameter(ParameterizedTypeName.get(ClassName.get(ServerRequest.class), requestType, responseType), "request")
-                    .addParameter(ServerRequestCallBack.class, "callBack");
-
-            CodeBlock.Builder sendRequestCodeBlock = CodeBlock.builder();
-            if (requestType.compareTo(ClassName.get(VoidRequest.class)) == 0 || "get".equalsIgnoreCase(method)) {
-                sendRequestCodeBlock.addStatement(".send()");
-            } else {
-                sendRequestCodeBlock.addStatement(".sendJson($T.INSTANCE.write(request.requestBean()))", ClassName.get(requestType.packageName(), requestType.simpleName() + "_MapperImpl"));
-            }
-
-
-            return sendMethodBuilder
-                    .addCode(CodeBlock.builder()
-                            .addStatement("new $T<>(request, PATH).process(serverRequest -> serverRequest.setUrl(replaceRequestParameters(serverRequest.requestBean())))", RequestPathHandler.class)
-                            .add("$T." + method.toLowerCase() + "(request.getUrl())\n", RestfulRequest.class)
-                            .add(".putHeaders(request.headers())\n")
-                            .add(".putParameters(request.parameters())\n")
-                            .add(".onSuccess(response ->")
-                            .add(CodeBlock.builder().beginControlFlow("")
-                                    .beginControlFlow("if($T.stream(SUCCESS_CODES).anyMatch(code -> code.equals(response.getStatusCode())))", Arrays.class)
-                                    .add(getSuccessBlock())
-                                    .endControlFlow()
-                                    .beginControlFlow("else")
-                                    .addStatement("callBack.onFailure(new $T(response.getStatusCode(), response.getBodyAsString()))", FailedResponse.class)
-                                    .endControlFlow()
-                                    .endControlFlow()
-                                    .add(")")
-                                    .add(".onError(callBack::onFailure)\n")
-                                    .add(sendRequestCodeBlock
-                                            .build())
-                                    .build()).build())
-                    .build();
-        }
-
-
-        private CodeBlock getSuccessBlock() {
-
-            CodeBlock.Builder builder = CodeBlock.builder();
-
-            if (responseType.compareTo(ClassName.get(VoidResponse.class)) == 0) {
-                builder.addStatement("callBack.onSuccess(new $T())", ClassName.get(VoidResponse.class));
-            } else {
-                if (arrayResponse) {
-                    builder
-                            .addStatement("$T[] items = $T.INSTANCE.readArray(response.getBodyAsString(), length -> new $T[length])", responseType, ClassName.get(responseType.packageName(), responseType.simpleName() + "_MapperImpl"), responseType)
-                            .addStatement("callBack.onSuccess(new $T<>(items))", ArrayResponse.class);
-                } else {
-                    builder.addStatement("callBack.onSuccess($T.INSTANCE.read(response.getBodyAsString()))", ClassName.get(responseType.packageName(), responseType.simpleName() + "_MapperImpl"));
-                }
-            }
-
-            return builder.build();
-        }
-
-    }
-
     private class ReplaceParametersMethodBuilder {
         private MethodSpec build() {
             MethodSpec.Builder replaceParametersBuilder = MethodSpec.methodBuilder("replaceRequestParameters")
-                    .addModifiers(Modifier.PRIVATE)
+                    .addAnnotation(Override.class)
+                    .addModifiers(Modifier.PROTECTED)
                     .returns(String.class)
+                    .addParameter(String.class, "path")
                     .addParameter(requestType, "request");
             try {
 
                 CodeBlock.Builder replaceBuilder = CodeBlock.builder()
-                        .beginControlFlow("if (PATH.contains(\"{\"))")
-                        .addStatement("$T processedPath = PATH", String.class);
+                        .beginControlFlow("if (path.contains(\"{\"))")
+                        .addStatement("$T processedPath = path", String.class);
                 String tempPath = path;
                 while (tempPath.contains("{")) {
                     String nextParameter = tempPath.substring(tempPath.indexOf("{"), tempPath.indexOf("}") + 1);
@@ -219,11 +221,11 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
                 replaceParametersBuilder
                         .addCode(CodeBlock.builder()
                                 .add(replaceBuilder.build())
-                                .addStatement("return PATH")
+                                .addStatement("return path")
                                 .build());
 
                 return replaceParametersBuilder.build();
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 handleError(ex);
             }
 
