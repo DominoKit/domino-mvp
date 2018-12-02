@@ -5,20 +5,20 @@ import org.dominokit.domino.api.shared.request.RequestBean;
 import org.dominokit.domino.api.shared.request.ResponseBean;
 import org.dominokit.domino.api.shared.request.VoidResponse;
 import org.dominokit.jacksonapt.AbstractObjectMapper;
-import org.dominokit.rest.client.FailedResponse;
 import org.dominokit.rest.shared.Response;
 import org.dominokit.rest.shared.RestfulRequest;
 
 import java.util.Arrays;
-
-import static java.util.Objects.isNull;
+import java.util.List;
 
 public abstract class AbstractRequestSender<R extends RequestBean, S extends ResponseBean> implements RequestRestSender<R, S> {
+
+    private final List<String> SEND_BODY_METHODS = Arrays.asList("POST","PUT","PATCH");
 
     @Override
     public void send(ServerRequest<R, S> request, ServerRequestCallBack callBack) {
         new RequestPathHandler<>(request, getPath(), getCustomRoot()).process(serverRequest -> serverRequest.setUrl(replaceRequestParameters(serverRequest.getUrl(), serverRequest.requestBean())));
-        RestfulRequest restfulRequest = RestfulRequest.get(request.getUrl())
+        RestfulRequest restfulRequest = RestfulRequest.request(request.getUrl(), getMethod().toUpperCase())
                 .putHeaders(request.headers())
                 .putParameters(request.parameters())
                 .onSuccess(response -> {
@@ -33,10 +33,10 @@ public abstract class AbstractRequestSender<R extends RequestBean, S extends Res
                             }
                         }
                 ).onError(throwable -> callBack.onFailure(new FailedResponseBean(throwable)));
-        if ("get".equalsIgnoreCase(getMethod())) {
-            restfulRequest.send();
-        } else {
+        if (SEND_BODY_METHODS.contains(getMethod().toUpperCase())) {
             restfulRequest.send(getRequestMapper().write(request.requestBean()));
+        } else {
+            restfulRequest.send();
         }
     }
 
