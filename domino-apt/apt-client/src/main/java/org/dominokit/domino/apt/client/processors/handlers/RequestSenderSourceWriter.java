@@ -109,6 +109,20 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
                 .addStatement(hasServiceRoot()?"return SERVICE_ROOT":"return null")
                 .build());
 
+        senderBuilder.addMethod(MethodSpec.methodBuilder("isVoidResponse")
+                .addAnnotation(Override.class)
+                .addModifiers(Modifier.PROTECTED)
+                .returns(boolean.class)
+                .addStatement(isVoidResponse()?"return true":"return false")
+                .build());
+
+        senderBuilder.addMethod(MethodSpec.methodBuilder("isVoidRequest")
+                .addAnnotation(Override.class)
+                .addModifiers(Modifier.PROTECTED)
+                .returns(boolean.class)
+                .addStatement(isVoidRequest()?"return true":"return false")
+                .build());
+
         senderBuilder.addMethod(new ReplaceParametersMethodBuilder().build());
 
         if(arrayResponse){

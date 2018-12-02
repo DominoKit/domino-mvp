@@ -23,10 +23,10 @@ public abstract class AbstractRequestSender<R extends RequestBean, S extends Res
                 .putParameters(request.parameters())
                 .onSuccess(response -> {
                             if (Arrays.stream(getSuccessCodes()).anyMatch(code -> code.equals(response.getStatusCode()))) {
-                                if (isNull(getResponseMapper())) {
-                                    readResponse(callBack, response);
-                                } else {
+                                if (isVoidResponse()) {
                                     callBack.onSuccess(new VoidResponse());
+                                } else {
+                                    readResponse(callBack, response);
                                 }
                             } else {
                                 callBack.onFailure(new FailedResponseBean(response.getStatusCode(), response.getStatusText(), response.getBodyAsString(), response.getHeaders()));
@@ -50,11 +50,12 @@ public abstract class AbstractRequestSender<R extends RequestBean, S extends Res
 
     protected abstract AbstractObjectMapper<R> getRequestMapper();
 
-    protected abstract AbstractObjectMapper<S> getResponseMapper();
-
     protected abstract String getMethod();
 
     protected abstract String getCustomRoot();
+
+    protected abstract boolean isVoidResponse();
+    protected abstract boolean isVoidRequest();
 
 }
 

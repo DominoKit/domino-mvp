@@ -19,5 +19,6 @@ public abstract class AbstractSingleResponseRequestSender<R extends RequestBean,
         callBack.onSuccess(getResponseMapper().read(response.getBodyAsString()));
     }
 
+    protected abstract AbstractObjectMapper<S> getResponseMapper();
 }
 
