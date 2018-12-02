@@ -1,5 +1,6 @@
 package org.dominokit.domino.api.client.request;
 
+import org.dominokit.domino.api.shared.request.FailedResponseBean;
 import org.dominokit.domino.api.shared.request.RequestBean;
 import org.dominokit.domino.api.shared.request.ResponseBean;
 import org.dominokit.domino.api.shared.request.VoidResponse;
@@ -28,10 +29,10 @@ public abstract class AbstractRequestSender<R extends RequestBean, S extends Res
                                     callBack.onSuccess(new VoidResponse());
                                 }
                             } else {
-                                callBack.onFailure(new FailedResponse(response.getStatusCode(), response.getBodyAsString()));
+                                callBack.onFailure(new FailedResponseBean(response.getStatusCode(), response.getStatusText(), response.getBodyAsString(), response.getHeaders()));
                             }
                         }
-                ).onError(callBack::onFailure);
+                ).onError(throwable -> callBack.onFailure(new FailedResponseBean(throwable)));
         if ("get".equalsIgnoreCase(getMethod())) {
             restfulRequest.send();
         } else {

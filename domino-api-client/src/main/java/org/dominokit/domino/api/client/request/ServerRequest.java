@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 import static java.util.Objects.nonNull;
 
 public abstract class ServerRequest<R extends RequestBean, S extends ResponseBean>
-        extends BaseRequest implements Response<S>, CanFailOrSend, HasHeadersAndParameters<R, S>{
+        extends BaseRequest implements Response<S>, CanFailOrSend, HasHeadersAndParameters<R, S> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServerRequest.class);
 
@@ -26,7 +26,13 @@ public abstract class ServerRequest<R extends RequestBean, S extends ResponseBea
     private Success<S> success = response -> {
     };
     private Fail fail =
-            failedResponse -> LOGGER.debug("could not execute request on server: ", failedResponse.getError());
+            failedResponse -> {
+                if (nonNull(failedResponse.getThrowable())) {
+                    LOGGER.debug("could not execute request on server: ", failedResponse.getThrowable());
+                }else{
+                    LOGGER.debug("could not execute request on server: status ["+failedResponse.getStatusCode()+"], body ["+failedResponse.getBody()+"]");
+                }
+            };
 
     private final RequestState<ServerSuccessRequestStateContext> executedOnServer = context -> {
         success.onSuccess((S) context.responseBean);
@@ -39,7 +45,7 @@ public abstract class ServerRequest<R extends RequestBean, S extends ResponseBea
                 state = completed;
             };
 
-    private final RequestState<ServerResponseReceivedStateContext> sent=context -> {
+    private final RequestState<ServerResponseReceivedStateContext> sent = context -> {
         if (context.nextContext instanceof ServerSuccessRequestStateContext) {
             state = executedOnServer;
             ServerRequest.this.applyState(context.nextContext);
@@ -60,16 +66,16 @@ public abstract class ServerRequest<R extends RequestBean, S extends ResponseBea
     }
 
     @Override
-    public final void send(){
+    public final void send() {
         execute();
     }
 
-    public ServerRequest<R, S> setBean(R requestBean){
+    public ServerRequest<R, S> setBean(R requestBean) {
         this.requestBean = requestBean;
         return this;
     }
 
-    public ServerRequest<R,S> intercept(Consumer<HasHeadersAndParameters<R,S>> interceptor){
+    public ServerRequest<R, S> intercept(Consumer<HasHeadersAndParameters<R, S>> interceptor) {
         interceptor.accept(this);
         return this;
     }
@@ -91,7 +97,7 @@ public abstract class ServerRequest<R extends RequestBean, S extends ResponseBea
     }
 
     public HasHeadersAndParameters<R, S> setHeaders(Map<String, String> headers) {
-        if(nonNull(headers) && !headers.isEmpty()) {
+        if (nonNull(headers) && !headers.isEmpty()) {
             this.headers.putAll(headers);
         }
         return this;
@@ -103,7 +109,7 @@ public abstract class ServerRequest<R extends RequestBean, S extends ResponseBea
     }
 
     public HasHeadersAndParameters<R, S> setParameters(Map<String, String> parameters) {
-        if(nonNull(parameters) && !parameters.isEmpty()) {
+        if (nonNull(parameters) && !parameters.isEmpty()) {
             this.parameters.putAll(parameters);
         }
         return this;
@@ -121,20 +127,20 @@ public abstract class ServerRequest<R extends RequestBean, S extends ResponseBea
         return url;
     }
 
-    public ServerRequest<R,S> setUrl(String url) {
+    public ServerRequest<R, S> setUrl(String url) {
         this.url = url;
         return this;
     }
 
     @Override
     public CanFailOrSend onSuccess(Success<S> success) {
-        this.success =success;
+        this.success = success;
         return this;
     }
 
     @Override
     public CanSend onFailed(Fail fail) {
-        this.fail=fail;
+        this.fail = fail;
         return this;
     }
 }
