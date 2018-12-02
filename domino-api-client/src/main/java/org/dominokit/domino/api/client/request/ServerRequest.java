@@ -91,24 +91,24 @@ public abstract class ServerRequest<R extends RequestBean, S extends ResponseBea
         return this.requestBean;
     }
 
-    public HasHeadersAndParameters<R, S> setHeader(String name, String value) {
+    public ServerRequest<R, S> setHeader(String name, String value) {
         headers.put(name, value);
         return this;
     }
 
-    public HasHeadersAndParameters<R, S> setHeaders(Map<String, String> headers) {
+    public ServerRequest<R, S> setHeaders(Map<String, String> headers) {
         if (nonNull(headers) && !headers.isEmpty()) {
             this.headers.putAll(headers);
         }
         return this;
     }
 
-    public HasHeadersAndParameters<R, S> setParameter(String name, String value) {
+    public ServerRequest<R, S> setParameter(String name, String value) {
         parameters.put(name, value);
         return this;
     }
 
-    public HasHeadersAndParameters<R, S> setParameters(Map<String, String> parameters) {
+    public ServerRequest<R, S> setParameters(Map<String, String> parameters) {
         if (nonNull(parameters) && !parameters.isEmpty()) {
             this.parameters.putAll(parameters);
         }

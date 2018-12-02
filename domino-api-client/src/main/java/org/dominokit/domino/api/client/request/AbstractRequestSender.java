@@ -34,7 +34,7 @@ public abstract class AbstractRequestSender<R extends RequestBean, S extends Res
                         }
                 ).onError(throwable -> callBack.onFailure(new FailedResponseBean(throwable)));
         if (SEND_BODY_METHODS.contains(getMethod().toUpperCase())) {
-            restfulRequest.send(getRequestMapper().write(request.requestBean()));
+            restfulRequest.sendJson(getRequestMapper().write(request.requestBean()));
         } else {
             restfulRequest.send();
         }
