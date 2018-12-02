@@ -1,7 +1,6 @@
 package org.dominokit.domino.apt.client.processors.handlers;
 
 import com.squareup.javapoet.*;
-import com.sun.org.apache.bcel.internal.generic.ArrayType;
 import org.dominokit.domino.api.client.annotations.Path;
 import org.dominokit.domino.api.client.annotations.RequestSender;
 import org.dominokit.domino.api.client.request.AbstractArrayResponseRequestSender;
