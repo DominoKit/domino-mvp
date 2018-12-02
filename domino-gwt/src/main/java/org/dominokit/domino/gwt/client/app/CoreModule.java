@@ -1,7 +1,11 @@
 package org.dominokit.domino.gwt.client.app;
 
 import com.google.gwt.core.client.GWT;
+import elemental2.dom.DomGlobal;
+import elemental2.dom.HTMLElement;
+import jsinterop.base.Js;
 import org.dominokit.domino.api.client.ClientApp;
+import org.dominokit.domino.api.client.mvp.slots.SlotRegistry;
 import org.dominokit.domino.client.commons.extensions.CoreMainExtensionPoint;
 import org.dominokit.domino.client.commons.extensions.InMemoryDominoEventsListenerRepository;
 import org.dominokit.domino.client.commons.mvp.presenter.InMemoryPresentersRepository;
@@ -34,6 +38,9 @@ public class CoreModule {
         ServerRouter serverRouter = new ServerRouter(new GwtRequestAsyncSender(new ServerEventFactory()));
         RequestEventProcessor requestEventProcessor = new RequestEventProcessor();
         SimpleEventsBus eventBus = new SimpleEventsBus(requestEventProcessor);
+        SlotRegistry.registerSlot("root", content -> {
+            DomGlobal.document.body.appendChild(Js.<HTMLElement>cast(content.get()));
+        });
         ClientApp.ClientAppBuilder
                 .clientRouter(clientRouter)
                 .serverRouter(serverRouter)
