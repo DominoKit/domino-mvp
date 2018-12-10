@@ -15,14 +15,6 @@
     <set-property name="gwt.logging.enabled" value="TRUE"/>
     <set-property name="gwt.logging.consoleHandler" value="ENABLED"/>
     <set-property name="compiler.useSourceMaps" value="true"/>
-    <set-property name="gwt.logging.simpleRemoteHandler" value="ENABLED"/>
     <set-configuration-property name="includeSourceMapUrl" value="static/gwt/extra/app/symbolMaps/__HASH___sourceMap__FRAGMENT__.json"/>
 
-    <replace-with class="org.dominokit.domino.gwt.client.logging.RestfulRemoteLogHandler">
-        <when-type-is class="com.google.gwt.logging.client.SimpleRemoteLogHandler"/>
-        <any>
-            <when-property-is name="gwt.logging.enabled" value="TRUE"/>
-            <when-property-is name="gwt.logging.simpleRemoteHandler" value="ENABLED"/>
-        </any>
-    </replace-with>
 </module>

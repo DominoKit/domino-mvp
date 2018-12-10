@@ -41,8 +41,8 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
         }
 
         @Override
-        public Event makeFailed(ServerRequest request, Throwable error) {
-            return new TestServerFailedEvent(request, error);
+        public Event makeFailed(ServerRequest request, FailedResponseBean failedResponseBean) {
+            return new TestServerFailedEvent(request, failedResponseBean);
         }
     };
 
@@ -84,11 +84,11 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
             listener.onRouteRequest(request, response);
         } catch (HandlersRepository.RequestHandlerNotFound ex) {
             LOGGER.error("Request handler not found for request [" + request.getClass().getSimpleName() + "]! either fake the request or start an actual server");
-            eventFactory.makeFailed(request, ex).fire();
+            eventFactory.makeFailed(request, new FailedResponseBean(ex)).fire();
             return;
         } catch (Exception ex) {
             LOGGER.error("could not execute request : ", ex);
-            eventFactory.makeFailed(request, ex).fire();
+            eventFactory.makeFailed(request, new FailedResponseBean(ex)).fire();
             return;
         }
         eventFactory.makeSuccess(request, response).fire();
@@ -143,12 +143,12 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
 
     public class TestServerFailedEvent implements Event {
         protected final ServerRequest request;
-        protected final Throwable error;
+        protected final FailedResponseBean failedResponseBean;
         private final ClientApp clientApp = ClientApp.make();
 
-        public TestServerFailedEvent(ServerRequest request, Throwable error) {
+        public TestServerFailedEvent(ServerRequest request, FailedResponseBean failedResponseBean) {
             this.request = request;
-            this.error = error;
+            this.failedResponseBean = failedResponseBean;
         }
 
         @Override
@@ -162,7 +162,7 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
         }
 
         private Request.ServerFailedRequestStateContext makeFailedContext() {
-            return new Request.ServerFailedRequestStateContext(new FailedResponseBean(error));
+            return new Request.ServerFailedRequestStateContext(failedResponseBean);
         }
     }
 

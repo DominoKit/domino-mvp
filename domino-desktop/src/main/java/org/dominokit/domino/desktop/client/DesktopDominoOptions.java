@@ -3,14 +3,17 @@ package org.dominokit.domino.desktop.client;
 import org.dominokit.domino.api.client.CanSetDominoOptions;
 import org.dominokit.domino.api.client.DominoOptions;
 import org.dominokit.domino.api.client.DynamicServiceRoot;
+import org.dominokit.domino.api.client.request.RequestInterceptor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DesktopDominoOptions implements DominoOptions {
+
     private String defaultServiceRoot = "http://localhost:8080/service";
     private String defaultJsonDateFormat = null;
     private List<DynamicServiceRoot> dynamicServiceRoots = new ArrayList<>();
+    private RequestInterceptor requestInterceptor = (request, callBack) -> callBack.onComplete();
 
     @Override
     public void applyOptions() {
@@ -33,6 +36,17 @@ public class DesktopDominoOptions implements DominoOptions {
     public CanSetDominoOptions addDynamicServiceRoot(DynamicServiceRoot dynamicServiceRoot) {
         dynamicServiceRoots.add(dynamicServiceRoot);
         return this;
+    }
+
+    @Override
+    public CanSetDominoOptions setRequestInterceptor(RequestInterceptor interceptor) {
+        this.requestInterceptor = interceptor;
+        return this;
+    }
+
+    @Override
+    public RequestInterceptor getRequestInterceptor() {
+        return requestInterceptor;
     }
 
     @Override

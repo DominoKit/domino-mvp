@@ -4,6 +4,7 @@ import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.async.AsyncRunner;
 import org.dominokit.domino.api.client.extension.DominoEvents;
 import org.dominokit.domino.api.shared.extension.DominoEvent;
+import org.dominokit.domino.api.shared.history.AppHistory;
 import org.dominokit.domino.api.shared.history.DominoHistory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +53,7 @@ public abstract class BaseClientPresenter extends ClientPresenter implements Pre
         return ClientApp.make().getPresentersRepository().getNameFromConcreteName(getConcrete());
     }
 
-    protected DominoHistory history() {
+    protected AppHistory history() {
         return ClientApp.make().getHistory();
     }
 }

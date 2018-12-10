@@ -12,12 +12,12 @@ import org.dominokit.domino.api.shared.request.FailedResponseBean;
 public class ServerFailedRequestEvent extends ServerFailedRequestGwtEvent implements Event {
 
     protected final ServerRequest request;
-    private final Throwable error;
+    private final FailedResponseBean failedResponseBean;
     private final ClientApp clientApp = ClientApp.make();
 
-    ServerFailedRequestEvent(ServerRequest request, Throwable error) {
+    ServerFailedRequestEvent(ServerRequest request, FailedResponseBean failedResponseBean) {
         this.request = request;
-        this.error = error;
+        this.failedResponseBean = failedResponseBean;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class ServerFailedRequestEvent extends ServerFailedRequestGwtEvent implem
     }
 
     private Request.ServerFailedRequestStateContext makeFailedContext() {
-        return new Request.ServerFailedRequestStateContext(new FailedResponseBean(error));
+        return new Request.ServerFailedRequestStateContext(failedResponseBean);
     }
 
     @Override

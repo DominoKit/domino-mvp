@@ -10,9 +10,11 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE, ElementType.METHOD})
 public @interface Path {
     @NotNull
-    String value();
+    String value() default "";
     @NotNull
     String serviceRoot() default "";
     @NotNull
     String method() default "POST";
+
+    int[] successCodes() default {200, 201, 202, 203, 204};
 }

@@ -4,32 +4,31 @@ import com.google.gwt.core.client.GWT;
 import org.dominokit.domino.api.client.CanSetDominoOptions;
 import org.dominokit.domino.api.client.DominoOptions;
 import org.dominokit.domino.api.client.DynamicServiceRoot;
-import org.fusesource.restygwt.client.Defaults;
+import org.dominokit.domino.api.client.request.RequestInterceptor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RestyGwtOptions implements DominoOptions{
-
-    private String defaultServiceRoot= GWT.getModuleBaseURL().replace("static", "service");
-    private String defaultJsonDateFormat =null;
-    private List<DynamicServiceRoot> dynamicServiceRoots=new ArrayList<>();
+public class DefaultDominoOptions implements DominoOptions {
+    private String defaultServiceRoot = GWT.getModuleBaseURL().replace("static", "service");
+    private String defaultJsonDateFormat = null;
+    private List<DynamicServiceRoot> dynamicServiceRoots = new ArrayList<>();
+    private RequestInterceptor requestInterceptor = (request, callBack) -> callBack.onComplete();
 
     @Override
     public void applyOptions() {
-        Defaults.setServiceRoot(defaultServiceRoot);
-        Defaults.setDateFormat(defaultJsonDateFormat);
+        //not implemented yet
     }
 
     @Override
     public CanSetDominoOptions setDefaultServiceRoot(String defaultServiceRoot) {
-        this.defaultServiceRoot=defaultServiceRoot;
+        this.defaultServiceRoot = defaultServiceRoot;
         return this;
     }
 
     @Override
     public CanSetDominoOptions setDefaultJsonDateFormat(String defaultJsonDateFormat) {
-        this.defaultJsonDateFormat=defaultJsonDateFormat;
+        this.defaultJsonDateFormat = defaultJsonDateFormat;
         return this;
     }
 
@@ -37,6 +36,17 @@ public class RestyGwtOptions implements DominoOptions{
     public CanSetDominoOptions addDynamicServiceRoot(DynamicServiceRoot dynamicServiceRoot) {
         dynamicServiceRoots.add(dynamicServiceRoot);
         return this;
+    }
+
+    @Override
+    public CanSetDominoOptions setRequestInterceptor(RequestInterceptor interceptor) {
+        this.requestInterceptor = interceptor;
+        return this;
+    }
+
+    @Override
+    public RequestInterceptor getRequestInterceptor() {
+        return requestInterceptor;
     }
 
     @Override

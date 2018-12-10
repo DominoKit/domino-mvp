@@ -1,6 +1,8 @@
 package org.dominokit.domino.api.client.mvp.view;
 
-public interface DominoView<T> extends View {
+import org.dominokit.domino.api.client.mvp.slots.SlotsEntries;
+
+public interface DominoView<T> extends ContentView {
 
     boolean isInitialized();
 
@@ -11,6 +13,9 @@ public interface DominoView<T> extends View {
     T createRoot();
 
     void clear();
+    default SlotsEntries getSlots(){
+        return SlotsEntries.create();
+    }
 
     default void setRevealHandler(RevealedHandler revealHandler) {
     }

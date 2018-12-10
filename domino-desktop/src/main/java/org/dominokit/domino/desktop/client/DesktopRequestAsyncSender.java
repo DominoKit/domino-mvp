@@ -5,6 +5,7 @@ import org.dominokit.domino.api.client.ServiceRootMatcher;
 import org.dominokit.domino.api.client.annotations.Path;
 import org.dominokit.domino.api.client.events.ServerRequestEventFactory;
 import org.dominokit.domino.api.client.request.ServerRequest;
+import org.dominokit.domino.api.shared.request.FailedResponseBean;
 import org.dominokit.domino.api.shared.request.RequestBean;
 import org.dominokit.domino.api.shared.request.ResponseBean;
 import org.dominokit.domino.client.commons.request.AbstractRequestAsyncSender;
@@ -82,10 +83,10 @@ public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
 
                     requestEventFactory.makeSuccess(request, Json.decodeValue(event.result().body(), clazz)).fire();
                 } else
-                    requestEventFactory.makeFailed(request, event.cause()).fire();
+                    requestEventFactory.makeFailed(request, new FailedResponseBean(event.cause())).fire();
             });
         } catch (ClassNotFoundException e) {
-            requestEventFactory.makeFailed(request, e);
+            requestEventFactory.makeFailed(request, new FailedResponseBean(e));
         }
     }
 

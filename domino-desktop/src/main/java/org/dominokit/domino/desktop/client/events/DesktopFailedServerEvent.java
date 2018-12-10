@@ -8,11 +8,11 @@ import org.dominokit.domino.api.shared.request.FailedResponseBean;
 
 public class DesktopFailedServerEvent implements Event {
     private final ServerRequest request;
-    private final Throwable error;
+    private final FailedResponseBean failedResponseBean;
 
-    public DesktopFailedServerEvent(ServerRequest request, Throwable error) {
+    public DesktopFailedServerEvent(ServerRequest request, FailedResponseBean failedResponseBean) {
         this.request = request;
-        this.error = error;
+        this.failedResponseBean = failedResponseBean;
     }
 
     @Override
@@ -26,6 +26,6 @@ public class DesktopFailedServerEvent implements Event {
     }
 
     private Request.ServerFailedRequestStateContext makeFailedContext() {
-        return new Request.ServerFailedRequestStateContext(new FailedResponseBean(error));
+        return new Request.ServerFailedRequestStateContext(failedResponseBean);
     }
 }

@@ -3,6 +3,7 @@ package org.dominokit.domino.test.api.client;
 import org.dominokit.domino.api.client.CanSetDominoOptions;
 import org.dominokit.domino.api.client.DominoOptions;
 import org.dominokit.domino.api.client.DynamicServiceRoot;
+import org.dominokit.domino.api.client.request.RequestInterceptor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ public class FakeDominoOptions implements DominoOptions {
     private String serviceRoot = "";
     private String dateFormat = "";
     private List<DynamicServiceRoot> dynamicServiceRoots = new ArrayList<>();
+    private RequestInterceptor requestInterceptor = (request, callBack) -> callBack.onComplete();
 
     @Override
     public void applyOptions() {
@@ -34,6 +36,17 @@ public class FakeDominoOptions implements DominoOptions {
     public CanSetDominoOptions addDynamicServiceRoot(DynamicServiceRoot dynamicServiceRoot) {
         dynamicServiceRoots.add(dynamicServiceRoot);
         return this;
+    }
+
+    @Override
+    public CanSetDominoOptions setRequestInterceptor(RequestInterceptor interceptor) {
+        this.requestInterceptor = interceptor;
+        return this;
+    }
+
+    @Override
+    public RequestInterceptor getRequestInterceptor() {
+        return requestInterceptor;
     }
 
     @Override

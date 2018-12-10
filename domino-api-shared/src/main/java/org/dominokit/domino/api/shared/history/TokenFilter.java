@@ -3,11 +3,14 @@ package org.dominokit.domino.api.shared.history;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
+
 import static java.util.Objects.nonNull;
 
 public interface TokenFilter {
 
-    static final Logger LOGGER= LoggerFactory.getLogger(TokenFilter.class);
+    Logger LOGGER= LoggerFactory.getLogger(TokenFilter.class);
+
     boolean filter(HistoryToken token);
 
     static TokenFilter exactMatch(String matchingToken) {
@@ -49,6 +52,18 @@ public interface TokenFilter {
     static TokenFilter anyFragment(){
         return new TokenFilter.AnyFragmentFilter();
     }
+
+    static TokenFilter hasPathFilter(String path){return new HasPathFilter(path);}
+
+    static TokenFilter hasPathsFilter(String... paths){return new HasPathsFilter(paths);}
+
+    static TokenFilter exactPathFilter(String path){return new ExactPathFilter(path);}
+
+    static TokenFilter startsWithPathFilter(String path){return new StartsWithPathFilter(path);}
+
+    static TokenFilter endsWithPathFilter(String path){return new EndsWithPathFilter(path);}
+
+    static TokenFilter anyPathFilter(){return new AnyPathFilter();}
 
     class AnyFilter implements TokenFilter {
         @Override
@@ -166,6 +181,78 @@ public interface TokenFilter {
         @Override
         public boolean filter(HistoryToken token) {
             return nonNull(token.fragment()) && !token.fragment().isEmpty();
+        }
+    }
+
+    class HasPathFilter implements TokenFilter {
+        private final String path;
+
+        HasPathFilter(String path) {
+            this.path = path;
+        }
+
+        @Override
+        public boolean filter(HistoryToken token) {
+            return token.paths().contains(path);
+        }
+    }
+
+    class HasPathsFilter implements TokenFilter {
+        private final String[] path;
+
+        HasPathsFilter(String... path) {
+            this.path = path;
+        }
+
+        @Override
+        public boolean filter(HistoryToken token) {
+            return token.paths().containsAll(Arrays.asList(path));
+        }
+    }
+
+    class ExactPathFilter implements TokenFilter {
+        private final String path;
+
+        ExactPathFilter(String path) {
+            this.path = path;
+        }
+
+        @Override
+        public boolean filter(HistoryToken token) {
+            return token.path().equals(path);
+        }
+    }
+
+    class StartsWithPathFilter implements TokenFilter {
+        private final String path;
+
+        StartsWithPathFilter(String path) {
+            this.path = path;
+        }
+
+        @Override
+        public boolean filter(HistoryToken token) {
+            return token.path().startsWith(path);
+        }
+    }
+
+    class EndsWithPathFilter implements TokenFilter {
+        private final String path;
+
+        EndsWithPathFilter(String path) {
+            this.path = path;
+        }
+
+        @Override
+        public boolean filter(HistoryToken token) {
+            return token.path().endsWith(path);
+        }
+    }
+
+    class AnyPathFilter implements TokenFilter{
+        @Override
+        public boolean filter(HistoryToken token) {
+            return nonNull(token.path()) && !token.paths().isEmpty();
         }
     }
 

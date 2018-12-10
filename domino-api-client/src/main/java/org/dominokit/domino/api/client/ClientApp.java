@@ -112,7 +112,7 @@ public class ClientApp
         return ASYNC_RUNNER_HOLDER.attribute;
     }
 
-    public DominoHistory getHistory() {
+    public AppHistory getHistory() {
         return HISTORY_HOLDER.attribute;
     }
 

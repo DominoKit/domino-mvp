@@ -55,23 +55,30 @@ public class RequestPathProcessor extends BaseProcessor {
     }
 
     private boolean extendsServerRequest(Element e) {
-        FullClassName fullClassName=new FullClassName(((TypeElement)e).getSuperclass().toString());
-        if(!ServerRequest.class.getCanonicalName().equals(fullClassName.asImport())){
+        FullClassName fullClassName = new FullClassName(((TypeElement) e).getSuperclass().toString());
+        if (!ServerRequest.class.getCanonicalName().equals(fullClassName.asImport())) {
             messager.printMessage(Diagnostic.Kind.ERROR, "Class does not extends RequestBean", e);
         }
         return true;
     }
 
     private void generateRequestRestfulSender(Element element) {
-        FullClassName fullSuperClassName=new FullClassName(((TypeElement)element).getSuperclass().toString());
-        List<String> allSuperClassTypes=fullSuperClassName.allImports();
-        FullClassName fullRequestClassName=new FullClassName(allSuperClassTypes.get(REQUEST_INDEX));
-        FullClassName fullResponseClassName=new FullClassName(allSuperClassTypes.get(RESPONSE_INDEX));
-        ProcessorElement processorElement=newProcessorElement(element);
+        FullClassName fullSuperClassName = new FullClassName(((TypeElement) element).getSuperclass().toString());
+        List<String> allSuperClassTypes = fullSuperClassName.allImports();
+        FullClassName fullRequestClassName;
+        FullClassName fullResponseClassName;
+        if (allSuperClassTypes.size() >= 3) {
+            fullRequestClassName = new FullClassName(allSuperClassTypes.get(REQUEST_INDEX));
+            fullResponseClassName = new FullClassName(allSuperClassTypes.get(RESPONSE_INDEX));
+        }else{
+            fullRequestClassName = new FullClassName(allSuperClassTypes.get(REQUEST_INDEX));
+            fullResponseClassName = new FullClassName(allSuperClassTypes.get(REQUEST_INDEX));
+        }
+        ProcessorElement processorElement = newProcessorElement(element);
         try (Writer sourceWriter = obtainSourceWriter(
-                processorElement.elementPackage(),processorElement.simpleName()+"Sender")) {
+                processorElement.elementPackage(), processorElement.simpleName() + "Sender")) {
             sourceWriter
-                    .write(new RequestSenderSourceWriter(processorElement, fullRequestClassName, fullResponseClassName).write());
+                    .write(new RequestSenderSourceWriter(processorElement, fullRequestClassName, fullResponseClassName, fullSuperClassName).write());
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Could not generate classes : ", e);
             messager.printMessage(Diagnostic.Kind.ERROR, "could not generate class");

@@ -1,8 +1,16 @@
 package org.dominokit.domino.api.client.mvp.presenter;
 
 import org.dominokit.domino.api.client.ClientApp;
+import org.dominokit.domino.api.client.mvp.slots.InvalidSlotException;
+import org.dominokit.domino.api.client.mvp.slots.RevealViewWithNoContentException;
+import org.dominokit.domino.api.client.mvp.slots.Slot;
+import org.dominokit.domino.api.client.mvp.slots.SlotRegistry;
 import org.dominokit.domino.api.client.mvp.view.DominoView;
+import org.dominokit.domino.api.client.mvp.view.HasContent;
 import org.dominokit.domino.api.client.mvp.view.View;
+
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter {
 
@@ -17,10 +25,36 @@ public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter
         }
         initView(ViewBaseClientPresenter.this.view);
         super.initialize();
+
+        if(nonNull(autoRevealSlot()) && !autoRevealSlot().trim().isEmpty()){
+            revealInSlot(autoRevealSlot());
+        }
+
     }
 
     protected void initView(V view) {
         // Default empty implementation
+    }
+
+    protected String autoRevealSlot(){
+        return null;
+    }
+
+    public void revealInSlot(String key){
+        Slot slot = SlotRegistry.get(key);
+        if(nonNull(slot)) {
+            revealInSlot(slot);
+        }else{
+            throw new InvalidSlotException(key);
+        }
+    }
+
+    public void revealInSlot(Slot slot){
+        if(view instanceof HasContent) {
+            slot.updateContent(((HasContent) view).getContent());
+        }else{
+            throw new RevealViewWithNoContentException(view.getClass().getCanonicalName());
+        }
     }
 
     public DominoView.RevealedHandler onRevealed() {

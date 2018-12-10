@@ -28,7 +28,7 @@ public class StateHistory implements AppHistory {
             if (nonNull(state) && nonNull(state.historyToken)) {
                 inform(state.historyToken, state.title, state.data);
             }else{
-                inform(windowToken(), state.title, state.data);
+                inform(windowToken(), windowTitle(), "");
             }
         });
     }
@@ -100,6 +100,9 @@ public class StateHistory implements AppHistory {
             return nullState();
         }
         JsState jsState = getJsState();
+        if(isNull(jsState)){
+            return  new DominoHistoryState(windowToken(), windowTitle(), "");
+        }
         return new DominoHistoryState(jsState.historyToken, jsState.title, jsState.data);
     }
 

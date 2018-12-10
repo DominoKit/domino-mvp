@@ -2,10 +2,12 @@
 
 <module rename-to='core'>
     <inherits name="com.google.gwt.logging.Logging"/>
-    <inherits name="org.fusesource.restygwt.RestyGWT"/>
     <inherits name="org.dominokit.domino.logger.Logging"/>
     <inherits name="elemental2.core.Core"/>
     <inherits name="elemental2.dom.Dom"/>
+    <inherits name="org.dominokit.rest.DominoRest"/>
+    <inherits name="org.dominokit.jacksonapt.GwtJacksonApt"/>
+
 
     <entry-point class='org.dominokit.domino.gwt.client.Core'/>
 

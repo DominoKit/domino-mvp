@@ -4,7 +4,7 @@ import org.dominokit.domino.api.shared.extension.Content;
 
 import static java.util.Objects.nonNull;
 
-public abstract class BaseDominoView<T> implements DominoView<T> {
+public abstract class BaseDominoView<T> implements DominoView<T>, HasContent {
 
     private boolean initialized = false;
     protected RevealedHandler revealHandler;
@@ -41,13 +41,14 @@ public abstract class BaseDominoView<T> implements DominoView<T> {
             if (nonNull(createHandler)) {
                 createHandler.onCreated();
             }
+            initialized = true;
         }
         return (Content<T>) () -> root;
     }
 
     protected abstract void initRoot(T root);
 
-    public abstract void init(T root);
+    protected abstract void init(T root);
 
     @Override
     public void clear() {

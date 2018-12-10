@@ -31,7 +31,7 @@ public class AnnotatedClassWithHandlerPathWithoutServiceRootSender implements Re
     private AnnotatedClassWithHandlerPathWithoutServiceRootService service = GWT.create(AnnotatedClassWithHandlerPathWithoutServiceRootService.class);
 
     @Override
-    public void send(SomeRequest request, Map<String, String> headers, ServerRequestCallBack callBack) {
+    public void send(SomeRequest request, Map<String, String> headers, Map parameters, ServerRequestCallBack callBack) {
         ((RestServiceProxy)service).setResource(new Resource(ServiceRootMatcher.matchedServiceRoot(PATH), headers));
         service.send(request, request, new MethodCallback<SomeResponse>() {
             @Override

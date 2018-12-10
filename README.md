@@ -4,7 +4,7 @@
 ## Welcome to ![logoimage](https://raw.githubusercontent.com/DominoKit/domino/master/documents/projectavatar.png) Domino
 
 <a title="Gitter" href="https://gitter.im/domino-gwt/Domino"><img src="https://badges.gitter.im/Join%20Chat.svg"></a>
-[![Build Status](https://travis-ci.org/DominoKit/domino.svg?branch=master)](https://travis-ci.org/DominoKit/domino)
+[![Build Status](https://travis-ci.org/DominoKit/domino-mvp.svg?branch=master)](https://travis-ci.org/DominoKit/domino-mvp)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.dominokit.domino/domino/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.dominokit.domino/domino)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/bfdb8283919a4adab6cbfeeb3a22e53a)](https://www.codacy.com/app/akabme/domino?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=DominoKit/domino&amp;utm_campaign=Badge_Grade)
 
@@ -135,7 +135,7 @@ Before running the application we need to build it, open a terminal in Intellij 
     - Fill the Main class with : `org.dominokit.domino.api.server.DominoLauncher`
     - Fill the program arguments with : `run org.dominokit.domino.api.server.StartupVerticle -conf target/classes/config.json`
     - Select the Working directory as `domino-demo-backend` module folder.
-    - Select the Use class path of module as `domino-demo-backend`
+    - Select the Use class url of module as `domino-demo-backend`
     - Make sure the JRE is 1.8.
     - Click **Apply and OK **.
 
@@ -236,7 +236,7 @@ Open the module you will notice a few already created classes, in some cases thi
             <scope>test</scope>
         </dependency> 
 ``` 
-Notice other compilation errors, this might be because of the exclusion of the target folder, generated sources are normally excluded from the source path we need to add them, follow the below points,
+Notice other compilation errors, this might be because of the exclusion of the target folder, generated sources are normally excluded from the source url we need to add them, follow the below points,
            
 * Rebuild the project.    
 * Exclude the target folder.    

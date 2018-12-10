@@ -20,6 +20,23 @@
             <groupId>org.dominokit.domino.api</groupId>
             <artifactId>domino-api-shared</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.dominokit.jackson</groupId>
+            <artifactId>jackson-apt</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.dominokit.jackson</groupId>
+            <artifactId>jackson-apt</artifactId>
+            <version>${jackson.version}</version>
+            <classifier>sources</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.dominokit.jackson</groupId>
+            <artifactId>jackson-apt-processor</artifactId>
+            <version>${jackson.version}</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
