@@ -18,6 +18,11 @@ public abstract class BaseDominoView<T> implements DominoView<T> {
     }
 
     @Override
+    public void setInitialized(boolean initialized) {
+        this.initialized = initialized;
+    }
+
+    @Override
     public boolean isSingleton() {
         return false;
     }

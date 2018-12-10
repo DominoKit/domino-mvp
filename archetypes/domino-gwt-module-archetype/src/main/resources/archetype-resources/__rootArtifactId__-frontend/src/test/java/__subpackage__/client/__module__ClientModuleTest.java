@@ -50,7 +50,7 @@ public class ${module}ClientModuleTest{
             .returnResponse(new ${module}Response("Server message"));
 
         ${module}RequestsFactory.INSTANCE.request(new ${module}Request("client message")).onSuccess(response -> assertThat(response.getServerMessage()).isEqualTo("Server message"))
-        .onFailed(failedResponse -> fail(failedResponse.getError().getMessage()))
+        .onFailed(failedResponse -> fail(failedResponse.getThrowable().getMessage()))
         .send();
     }
 }
