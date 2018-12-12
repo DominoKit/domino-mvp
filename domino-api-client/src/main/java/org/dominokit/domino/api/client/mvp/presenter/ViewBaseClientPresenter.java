@@ -5,9 +5,7 @@ import org.dominokit.domino.api.client.mvp.slots.InvalidSlotException;
 import org.dominokit.domino.api.client.mvp.slots.RevealViewWithNoContentException;
 import org.dominokit.domino.api.client.mvp.slots.Slot;
 import org.dominokit.domino.api.client.mvp.slots.SlotRegistry;
-import org.dominokit.domino.api.client.mvp.view.DominoView;
-import org.dominokit.domino.api.client.mvp.view.HasContent;
-import org.dominokit.domino.api.client.mvp.view.View;
+import org.dominokit.domino.api.client.mvp.view.*;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -22,6 +20,9 @@ public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter
         if (view instanceof DominoView) {
             ((DominoView) view).setRevealHandler(onRevealed());
             ((DominoView) view).setRemoveHandler(onRemoved());
+        }
+        if(this instanceof UiHandlers && view instanceof HasUiHandlers){
+            ((HasUiHandlers) view).setUiHandlers((UiHandlers) this);
         }
         initView(ViewBaseClientPresenter.this.view);
         super.initialize();
