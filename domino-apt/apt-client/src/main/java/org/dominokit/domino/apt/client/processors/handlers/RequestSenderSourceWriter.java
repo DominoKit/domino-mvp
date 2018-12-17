@@ -255,7 +255,7 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
 
             List<String> gettersString = Arrays.asList(fieldsNames)
                     .stream()
-                    .map(s -> "get" + s.replace(s.charAt(0) + "", (s.charAt(0) + "").toUpperCase()) + "()")
+                    .map(s -> "get" + s.replaceFirst(s.charAt(0) + "", (s.charAt(0) + "").toUpperCase()) + "()")
                     .collect(Collectors.toList());
 
             String result = getterWithNullCheck(gettersString, 1);
