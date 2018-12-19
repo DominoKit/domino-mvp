@@ -2,6 +2,7 @@ package org.dominokit.domino.api.client;
 
 import org.dominokit.domino.api.client.async.AsyncRunner;
 import org.dominokit.domino.api.client.events.EventsBus;
+import org.dominokit.domino.api.client.extension.ContextAggregator;
 import org.dominokit.domino.api.client.extension.DominoEventsRegistry;
 import org.dominokit.domino.api.client.extension.DominoEventsListenersRepository;
 import org.dominokit.domino.api.client.mvp.PresenterRegistry;
@@ -17,8 +18,10 @@ import org.dominokit.domino.api.shared.extension.MainDominoEvent;
 import org.dominokit.domino.api.shared.history.AppHistory;
 import org.dominokit.domino.api.shared.history.DominoHistory;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 public class ClientApp
         implements PresenterRegistry, CommandRegistry, ViewRegistry, InitialTaskRegistry, DominoEventsRegistry,
@@ -137,8 +140,25 @@ public class ClientApp
     public void run(DominoOptionsHandler dominoOptionsHandler) {
         dominoOptionsHandler.onBeforeRun(dominoOptions());
         dominoOptions().applyOptions();
-        INITIAL_TASKS_HOLDER.attribute.forEach(ClientStartupTask::execute);
-        fireEvent(MainDominoEvent.class, MAIN_EXTENSION_POINT_HOLDER.attribute);
+
+        List<ContextAggregator.ContextWait> waitingList = new ArrayList<>();
+        INITIAL_TASKS_HOLDER.attribute.forEach(clientStartupTask -> {
+            if(clientStartupTask instanceof ContextAggregator.ContextWait){
+                waitingList.add((ContextAggregator.ContextWait<?>) clientStartupTask);
+            }
+        });
+
+        if(!waitingList.isEmpty()){
+            ContextAggregator.waitFor(waitingList)
+                    .onReady(() -> fireEvent(MainDominoEvent.class, MAIN_EXTENSION_POINT_HOLDER.attribute));
+            INITIAL_TASKS_HOLDER.attribute.forEach(ClientStartupTask::execute);
+        }else{
+            INITIAL_TASKS_HOLDER.attribute.forEach(ClientStartupTask::execute);
+            fireEvent(MainDominoEvent.class, MAIN_EXTENSION_POINT_HOLDER.attribute);
+        }
+
+
+
     }
 
     public void fireEvent(Class<? extends DominoEvent> extensionPointInterface,

@@ -1,5 +1,6 @@
 package org.dominokit.domino.api.client.extension;
 
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -21,6 +22,10 @@ public class ContextAggregator {
         return ContextAggregatorBuilder.waitForContext(context);
     }
 
+    public static CanWaitForContext waitFor(Collection<ContextWait> contexts){
+        return ContextAggregatorBuilder.waitForContext(contexts);
+    }
+
     public interface CanWaitForContext{
         CanWaitForContext and(ContextWait context);
         ContextAggregator onReady(ReadyHandler handler);
@@ -39,8 +44,16 @@ public class ContextAggregator {
             this.contextSet.add(context);
         }
 
+        private ContextAggregatorBuilder(Collection<ContextWait> contexts) {
+            this.contextSet.addAll(contexts);
+        }
+
         public static CanWaitForContext waitForContext(ContextWait context){
             return new ContextAggregatorBuilder(context);
+        }
+
+        public static CanWaitForContext waitForContext(Collection<ContextWait> contexts){
+            return new ContextAggregatorBuilder(contexts);
         }
 
         @Override
