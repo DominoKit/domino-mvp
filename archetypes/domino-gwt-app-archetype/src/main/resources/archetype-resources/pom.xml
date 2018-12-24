@@ -15,7 +15,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <material.version>2.0</material.version>
-        <vertx.version>3.4.2</vertx.version>
+        <vertx.version>3.6.2</vertx.version>
         <jackson.version>1.0-SNAPSHOT</jackson.version>
     </properties>
 
