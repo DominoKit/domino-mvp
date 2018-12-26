@@ -1,6 +1,6 @@
 package org.dominokit.domino.apt.client.processors.module.client.initialtasks;
 
-import org.dominokit.domino.api.client.ClientStartupTask;
+import org.dominokit.domino.api.client.startup.ClientStartupTask;
 import org.dominokit.domino.api.client.annotations.StartupTask;
 import org.dominokit.domino.apt.commons.BaseProcessor;
 

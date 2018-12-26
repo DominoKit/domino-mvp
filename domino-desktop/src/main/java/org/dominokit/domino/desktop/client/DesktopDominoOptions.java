@@ -1,5 +1,6 @@
 package org.dominokit.domino.desktop.client;
 
+import org.dominokit.domino.api.client.ApplicationStartHandler;
 import org.dominokit.domino.api.client.CanSetDominoOptions;
 import org.dominokit.domino.api.client.DominoOptions;
 import org.dominokit.domino.api.client.DynamicServiceRoot;
@@ -14,6 +15,7 @@ public class DesktopDominoOptions implements DominoOptions {
     private String defaultJsonDateFormat = null;
     private List<DynamicServiceRoot> dynamicServiceRoots = new ArrayList<>();
     private RequestInterceptor requestInterceptor = (request, callBack) -> callBack.onComplete();
+    private ApplicationStartHandler applicationStartHandler;
 
     @Override
     public void applyOptions() {
@@ -45,8 +47,19 @@ public class DesktopDominoOptions implements DominoOptions {
     }
 
     @Override
+    public CanSetDominoOptions setApplicationStartHandler(ApplicationStartHandler applicationStartHandler) {
+        this.applicationStartHandler = applicationStartHandler;
+        return this;
+    }
+
+    @Override
     public RequestInterceptor getRequestInterceptor() {
         return requestInterceptor;
+    }
+
+    @Override
+    public ApplicationStartHandler getApplicationStartHandler() {
+        return applicationStartHandler;
     }
 
     @Override

@@ -1,8 +1,10 @@
 package org.dominokit.domino.test.api.client;
 
+import io.vertx.ext.unit.TestContext;
 import org.dominokit.domino.api.client.mvp.presenter.Presentable;
 import org.dominokit.domino.api.client.mvp.view.View;
 import org.dominokit.domino.api.shared.extension.DominoEventListener;
+import org.dominokit.domino.test.api.DominoTestServer;
 
 public interface CanCustomizeClient extends CanStartClient {
     CanCustomizeClient replacePresenter(Class<? extends Presentable> original, Presentable replacement);
@@ -14,7 +16,11 @@ public interface CanCustomizeClient extends CanStartClient {
     <L extends DominoEventListener> CanCustomizeClient listenerOf(Class<L> listenerType,
                                                                   ListenerHandler<L> handler);
 
-    CanCustomizeClient onBeforeStart(BeforeStarted beforeStarted);
+    CanCustomizeClient onBeforeClientStart(BeforeClientStart beforeClientStart);
 
-    CanCustomizeClient onStartCompleted(StartCompleted startCompleted);
+    CanCustomizeClient onClientStarted(StartCompleted startCompleted);
+
+    CanCustomizeClient withServer(TestContext testContext, DominoTestServer.AfterLoadHandler afterLoadHandler);
+
+    CanCustomizeClient withServer(TestContext testContext);
 }

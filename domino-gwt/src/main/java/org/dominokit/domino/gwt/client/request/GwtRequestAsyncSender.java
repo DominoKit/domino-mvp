@@ -17,7 +17,7 @@ public class GwtRequestAsyncSender extends AbstractRequestAsyncSender {
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     protected void sendRequest(ServerRequest request, ServerRequestEventFactory requestEventFactory) {
-        request.headers().put("X-XSRF-TOKEN", Cookies.getCookie("XSRF-TOKEN"));
+//        request.headers().put("X-XSRF-TOKEN", Cookies.getCookie("XSRF-TOKEN"));
         ClientApp.make().dominoOptions().getRequestInterceptor()
                 .interceptRequest(request, () ->
                         ClientApp.make().getRequestRestSendersRepository().get(request.getKey())

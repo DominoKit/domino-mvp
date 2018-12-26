@@ -3,8 +3,8 @@ package org.dominokit.domino.api.client;
 import org.dominokit.domino.api.client.async.AsyncRunner;
 import org.dominokit.domino.api.client.events.EventsBus;
 import org.dominokit.domino.api.client.extension.ContextAggregator;
-import org.dominokit.domino.api.client.extension.DominoEventsRegistry;
 import org.dominokit.domino.api.client.extension.DominoEventsListenersRepository;
+import org.dominokit.domino.api.client.extension.DominoEventsRegistry;
 import org.dominokit.domino.api.client.mvp.PresenterRegistry;
 import org.dominokit.domino.api.client.mvp.ViewRegistry;
 import org.dominokit.domino.api.client.mvp.presenter.LazyPresenterLoader;
@@ -12,16 +12,19 @@ import org.dominokit.domino.api.client.mvp.presenter.PresentersRepository;
 import org.dominokit.domino.api.client.mvp.view.LazyViewLoader;
 import org.dominokit.domino.api.client.mvp.view.ViewsRepository;
 import org.dominokit.domino.api.client.request.*;
-import org.dominokit.domino.api.shared.extension.DominoEventListener;
+import org.dominokit.domino.api.client.startup.AsyncClientStartupTask;
+import org.dominokit.domino.api.client.startup.ClientStartupTask;
+import org.dominokit.domino.api.client.startup.TasksAggregator;
 import org.dominokit.domino.api.shared.extension.DominoEvent;
+import org.dominokit.domino.api.shared.extension.DominoEventListener;
 import org.dominokit.domino.api.shared.extension.MainDominoEvent;
 import org.dominokit.domino.api.shared.history.AppHistory;
-import org.dominokit.domino.api.shared.history.DominoHistory;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.Objects.nonNull;
+import static java.util.stream.Collectors.groupingBy;
 
 public class ClientApp
         implements PresenterRegistry, CommandRegistry, ViewRegistry, InitialTaskRegistry, DominoEventsRegistry,
@@ -44,7 +47,7 @@ public class ClientApp
     private static final AttributeHolder<AsyncRunner> ASYNC_RUNNER_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<DominoOptions> DOMINO_OPTIONS_HOLDER = new AttributeHolder<>();
 
-    private static ClientApp instance=new ClientApp();
+    private static ClientApp instance = new ClientApp();
 
     private ClientApp() {
     }
@@ -119,7 +122,7 @@ public class ClientApp
         return HISTORY_HOLDER.attribute;
     }
 
-    public DominoOptions dominoOptions(){
+    public DominoOptions dominoOptions() {
         return DOMINO_OPTIONS_HOLDER.attribute;
     }
 
@@ -134,38 +137,66 @@ public class ClientApp
 
 
     public void run() {
-        run(canSetDominoOptions -> {});
+        run(canSetDominoOptions -> {
+        });
     }
 
     public void run(DominoOptionsHandler dominoOptionsHandler) {
         dominoOptionsHandler.onBeforeRun(dominoOptions());
         dominoOptions().applyOptions();
 
-        List<ContextAggregator.ContextWait> waitingList = new ArrayList<>();
+        List<AsyncClientStartupTask> waitingList = new ArrayList<>();
         INITIAL_TASKS_HOLDER.attribute.forEach(clientStartupTask -> {
-            if(clientStartupTask instanceof ContextAggregator.ContextWait){
-                waitingList.add((ContextAggregator.ContextWait<?>) clientStartupTask);
+            if (clientStartupTask instanceof AsyncClientStartupTask) {
+                waitingList.add((AsyncClientStartupTask) clientStartupTask);
             }
         });
 
-        if(!waitingList.isEmpty()){
-            ContextAggregator.waitFor(waitingList)
-                    .onReady(() -> fireEvent(MainDominoEvent.class, MAIN_EXTENSION_POINT_HOLDER.attribute));
+        if (!waitingList.isEmpty()) {
+            TreeSet<TasksAggregator> sorted = waitingList.stream().collect(groupingBy(AsyncClientStartupTask::order))
+                    .entrySet().stream()
+                    .map(taskEntry -> new TasksAggregator(taskEntry.getKey(), taskEntry.getValue()))
+                    .collect(Collectors.toCollection(TreeSet::new));
+
+            Iterator<TasksAggregator> iterator = sorted.iterator();
+            TasksAggregator current = iterator.next();
+            while (nonNull(current) && iterator.hasNext()) {
+                TasksAggregator next = iterator.next();
+                current.setNextAggregator(next);
+                current = next;
+            }
+
+            ContextAggregator.waitFor(sorted)
+                    .onReady(this::start);
+            INITIAL_TASKS_HOLDER.attribute.forEach(clientStartupTask -> {
+                if (!(clientStartupTask instanceof AsyncClientStartupTask)) {
+                    clientStartupTask.execute();
+                }
+            });
+            sorted.first().execute();
+        } else {
             INITIAL_TASKS_HOLDER.attribute.forEach(ClientStartupTask::execute);
-        }else{
-            INITIAL_TASKS_HOLDER.attribute.forEach(ClientStartupTask::execute);
-            fireEvent(MainDominoEvent.class, MAIN_EXTENSION_POINT_HOLDER.attribute);
+            start();
         }
+    }
 
+    private void start() {
+        fireEvent(MainDominoEvent.class, MAIN_EXTENSION_POINT_HOLDER.attribute);
+        onApplicationStarted();
+    }
 
-
+    private void onApplicationStarted() {
+        ApplicationStartHandler applicationStartHandler = dominoOptions().getApplicationStartHandler();
+        if (nonNull(applicationStartHandler)) {
+            applicationStartHandler.onApplicationStarted();
+        }
     }
 
     public void fireEvent(Class<? extends DominoEvent> extensionPointInterface,
                           DominoEvent dominoEvent) {
         LISTENERS_REPOSITORY_HOLDER.attribute.getEventListeners(extensionPointInterface)
                 .forEach(c ->
-                getAsyncRunner().runAsync(() -> c.listen(dominoEvent)));
+                        getAsyncRunner().runAsync(() -> c.listen(dominoEvent)));
     }
 
     @FunctionalInterface
@@ -318,7 +349,7 @@ public class ClientApp
 
         @Override
         public CanBuildClientApp dominoOptions(DominoOptions dominoOptions) {
-            this.dominoOptions=dominoOptions;
+            this.dominoOptions = dominoOptions;
             return this;
         }
 
@@ -354,7 +385,7 @@ public class ClientApp
     }
 
     @FunctionalInterface
-    public interface DominoOptionsHandler{
+    public interface DominoOptionsHandler {
         void onBeforeRun(CanSetDominoOptions dominoOptions);
     }
 }

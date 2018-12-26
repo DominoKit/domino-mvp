@@ -18,9 +18,9 @@ import org.dominokit.domino.api.server.request.RequestContext;
 import org.dominokit.domino.api.shared.request.FailedResponseBean;
 import org.dominokit.domino.api.shared.request.RequestBean;
 import org.dominokit.domino.api.shared.request.ResponseBean;
+import org.dominokit.domino.client.commons.request.RequestAsyncSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.dominokit.domino.test.api.client.TestResponseContext;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +30,7 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
     private static final Logger LOGGER = LoggerFactory.getLogger(TestServerRouter.class);
 
     private Map<String, ResponseReply> fakeResponses = new HashMap<>();
-
+    private final RequestAsyncSender requestAsyncRunner;
     private TestRoutingListener defaultListener = new TestRoutingListener();
     private RoutingListener listener = defaultListener;
 
@@ -59,7 +59,8 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
 
     private TestResponseContext<ResponseBean> responseContext = new TestResponseContext<>();
 
-    public TestServerRouter(ServerEntryPointContext entryPointContext) {
+    public TestServerRouter(RequestAsyncSender requestAsyncRunner, ServerEntryPointContext entryPointContext) {
+        this.requestAsyncRunner = requestAsyncRunner;
         this.entryPointContext = entryPointContext;
     }
 
@@ -77,11 +78,11 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
         try {
             if (fakeResponses.containsKey(request.getKey())) {
                 response = fakeResponses.get(request.getKey()).reply();
+                listener.onRouteRequest(request, response);
+                eventFactory.makeSuccess(request, response).fire();
             } else {
-                service.executeRequest(request.requestBean(), responseContext);
-                response = responseContext.getResponseBean();
+                requestAsyncRunner.send(request);
             }
-            listener.onRouteRequest(request, response);
         } catch (HandlersRepository.RequestHandlerNotFound ex) {
             LOGGER.error("Request handler not found for request [" + request.getClass().getSimpleName() + "]! either fake the request or start an actual server");
             eventFactory.makeFailed(request, new FailedResponseBean(ex)).fire();
@@ -91,7 +92,6 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
             eventFactory.makeFailed(request, new FailedResponseBean(ex)).fire();
             return;
         }
-        eventFactory.makeSuccess(request, response).fire();
     }
 
     public void fakeResponse(String requestKey, ResponseReply reply) {

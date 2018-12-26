@@ -1,8 +1,8 @@
 package org.dominokit.domino.test.api.client;
 
+import io.vertx.core.Vertx;
 import org.dominokit.domino.api.client.request.ServerRequest;
 import org.dominokit.domino.api.server.entrypoint.VertxEntryPointContext;
-import io.vertx.core.Vertx;
 
 public interface ClientContext {
     TestDominoHistory history();
@@ -20,4 +20,6 @@ public interface ClientContext {
     Vertx vertx();
 
     VertxEntryPointContext vertxEntryPointContext();
+
+    FakeDominoOptions getDominoOptions();
 }

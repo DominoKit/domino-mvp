@@ -48,6 +48,16 @@
             <artifactId>vertx-unit</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.dominokit.domino.test</groupId>
+            <artifactId>domino-server-test</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-unit</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

@@ -1,5 +1,12 @@
 package org.dominokit.domino.test.api.client;
 
+import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonObject;
+import io.vertx.ext.unit.Async;
+import io.vertx.ext.unit.TestContext;
+import io.vertx.ext.web.Router;
+import io.vertx.ext.web.RoutingContext;
+import org.dominokit.domino.api.client.ApplicationStartHandler;
 import org.dominokit.domino.api.client.ModuleConfiguration;
 import org.dominokit.domino.api.client.ModuleConfigurator;
 import org.dominokit.domino.api.client.mvp.presenter.Presentable;
@@ -14,10 +21,7 @@ import org.dominokit.domino.api.server.entrypoint.VertxEntryPointContext;
 import org.dominokit.domino.api.shared.extension.DominoEventListener;
 import org.dominokit.domino.api.shared.request.ResponseBean;
 import org.dominokit.domino.service.discovery.VertxServiceDiscovery;
-import io.vertx.core.Vertx;
-import io.vertx.core.json.JsonObject;
-import io.vertx.ext.web.Router;
-import io.vertx.ext.web.RoutingContext;
+import org.dominokit.domino.test.api.DominoTestServer;
 
 import java.util.*;
 
@@ -36,8 +40,14 @@ public class DominoTestClient
 
     private VertxEntryPointContext testEntryPointContext;
     private Vertx vertx = Vertx.vertx();
-    private BeforeStarted beforeStarted = context -> {};
-    private StartCompleted startCompleted = context -> {};
+    private BeforeClientStart beforeClientStart = context -> {
+    };
+    private StartCompleted startCompleted = context -> {
+    };
+    private DominoTestServer.AfterLoadHandler afterLoadHandler = context -> {
+    };
+    private boolean withServer = false;
+    private TestContext testContext;
 
     private DominoTestClient(ModuleConfiguration... configurations) {
         this.modules = configurations;
@@ -73,14 +83,27 @@ public class DominoTestClient
     }
 
     @Override
-    public CanCustomizeClient onBeforeStart(BeforeStarted beforeStarted) {
-        this.beforeStarted = beforeStarted;
+    public CanCustomizeClient onBeforeClientStart(BeforeClientStart beforeClientStart) {
+        this.beforeClientStart = beforeClientStart;
         return this;
     }
 
     @Override
-    public CanCustomizeClient onStartCompleted(StartCompleted startCompleted) {
+    public CanCustomizeClient onClientStarted(StartCompleted startCompleted) {
         this.startCompleted = startCompleted;
+        return this;
+    }
+
+    @Override
+    public CanCustomizeClient withServer(TestContext testContext, DominoTestServer.AfterLoadHandler afterLoadHandler) {
+        this.afterLoadHandler = afterLoadHandler;
+        return withServer(testContext);
+    }
+
+    @Override
+    public CanCustomizeClient withServer(TestContext testContext) {
+        this.testContext = testContext;
+        this.withServer = true;
         return this;
     }
 
@@ -104,9 +127,27 @@ public class DominoTestClient
         viewsOf.forEach(v -> v.handler.handle(getView(v.presenterName)));
         listenersOf.forEach(c -> c.handler.handle(getListener(c.listenerName)));
 
-        beforeStarted.onBeforeStart(this);
+        if (withServer) {
+            Async async = testContext.async();
+            DominoTestServer.vertx(vertx())
+                    .onAfterLoad(serverContext -> {
+                        getDominoOptions().setPort(serverContext.getActualPort());
+                        afterLoadHandler.handle(serverContext);
+                        doStart(() -> {
+                            startCompleted.onStarted(this);
+                            async.complete();
+                        });
+                    })
+                    .start();
+        } else {
+            doStart(() -> startCompleted.onStarted(this));
+        }
+    }
+
+    private void doStart(ApplicationStartHandler applicationStartHandler) {
+        beforeClientStart.onBeforeStart(this);
+        getDominoOptions().setApplicationStartHandler(applicationStartHandler);
         make().run();
-        startCompleted.onStarted(this);
     }
 
     private void init(ServerEntryPointContext entryPointContext) {
@@ -172,6 +213,11 @@ public class DominoTestClient
     @Override
     public VertxEntryPointContext vertxEntryPointContext() {
         return testEntryPointContext;
+    }
+
+    @Override
+    public FakeDominoOptions getDominoOptions() {
+        return TestClientAppFactory.dominoOptions;
     }
 
     private static class ViewOf {

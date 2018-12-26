@@ -7,6 +7,8 @@ import org.dominokit.domino.api.shared.extension.MainEventContext;
 import org.dominokit.domino.client.commons.request.InMemoryCommandsRepository;
 import org.dominokit.domino.client.commons.request.InMemoryRequestRestSendersRepository;
 import org.dominokit.domino.gwt.client.events.RequestEventProcessor;
+import org.dominokit.domino.gwt.client.events.ServerEventFactory;
+import org.dominokit.domino.gwt.client.request.GwtRequestAsyncSender;
 
 public class TestClientAppFactory {
 
@@ -19,6 +21,7 @@ public class TestClientAppFactory {
     protected static TestClientRouter clientRouter;
     protected static RequestEventProcessor requestEventProcessor;
     protected static TestEventBus eventBus;
+    protected static FakeDominoOptions dominoOptions;
 
     private TestClientAppFactory() {
     }
@@ -26,7 +29,7 @@ public class TestClientAppFactory {
     public static ClientApp make(ServerEntryPointContext entryPointContext) {
 
         clientRouter = new TestClientRouter();
-        serverRouter = new TestServerRouter(entryPointContext);
+        serverRouter = new TestServerRouter(new GwtRequestAsyncSender(new ServerEventFactory()), entryPointContext);
         requestEventProcessor = new RequestEventProcessor();
         eventBus = new TestEventBus(requestEventProcessor);
 
@@ -35,6 +38,7 @@ public class TestClientAppFactory {
         viewsRepository = new TestInMemoryViewRepository();
         listenersRepository = new TestInMemoryEventsListenersRepository();
         history = new TestDominoHistory();
+        dominoOptions = new FakeDominoOptions();
 
         return ClientApp.ClientAppBuilder
                 .clientRouter(clientRouter)
@@ -49,7 +53,7 @@ public class TestClientAppFactory {
                 .asyncRunner(new TestAsyncRunner())
                 .mainExtensionPoint(() -> new MainEventContext() {
                 })
-                .dominoOptions(new FakeDominoOptions())
+                .dominoOptions(dominoOptions)
                 .build();
     }
 }

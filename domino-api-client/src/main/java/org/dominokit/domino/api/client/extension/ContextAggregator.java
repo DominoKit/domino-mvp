@@ -6,53 +6,54 @@ import java.util.Set;
 
 public class ContextAggregator {
 
-    private Set<ContextWait> contextsSet=new LinkedHashSet<>();
+    private Set<ContextWait> contextsSet = new LinkedHashSet<>();
 
     private ContextAggregator(Set<ContextWait> contextSet,
                               ReadyHandler handler) {
-        this.contextsSet=contextSet;
-        this.contextsSet.forEach(c-> c.onReady(() -> {
+        this.contextsSet = contextSet;
+        this.contextsSet.forEach(c -> c.onReady(() -> {
             this.contextsSet.remove(c);
-            if(this.contextsSet.isEmpty())
+            if (this.contextsSet.isEmpty())
                 handler.onReady();
         }));
     }
 
-    public static CanWaitForContext waitFor(ContextWait context){
+    public static CanWaitForContext waitFor(ContextWait context) {
         return ContextAggregatorBuilder.waitForContext(context);
     }
 
-    public static CanWaitForContext waitFor(Collection<ContextWait> contexts){
+    public static CanWaitForContext waitFor(Collection<? extends ContextWait> contexts) {
         return ContextAggregatorBuilder.waitForContext(contexts);
     }
 
-    public interface CanWaitForContext{
-        CanWaitForContext and(ContextWait context);
+    public interface CanWaitForContext {
+        <T extends ContextWait> CanWaitForContext and(T context);
+
         ContextAggregator onReady(ReadyHandler handler);
     }
 
     @FunctionalInterface
-    public interface ReadyHandler{
+    public interface ReadyHandler {
         void onReady();
     }
 
     private static class ContextAggregatorBuilder implements CanWaitForContext {
 
-        private Set<ContextWait> contextSet=new LinkedHashSet<>();
+        private Set<ContextWait> contextSet = new LinkedHashSet<>();
 
         private ContextAggregatorBuilder(ContextWait context) {
             this.contextSet.add(context);
         }
 
-        private ContextAggregatorBuilder(Collection<ContextWait> contexts) {
+        private ContextAggregatorBuilder(Collection<? extends ContextWait> contexts) {
             this.contextSet.addAll(contexts);
         }
 
-        public static CanWaitForContext waitForContext(ContextWait context){
+        public static <T extends ContextWait> CanWaitForContext waitForContext(T context) {
             return new ContextAggregatorBuilder(context);
         }
 
-        public static CanWaitForContext waitForContext(Collection<ContextWait> contexts){
+        public static CanWaitForContext waitForContext(Collection<? extends ContextWait> contexts) {
             return new ContextAggregatorBuilder(contexts);
         }
 
@@ -68,25 +69,25 @@ public class ContextAggregator {
         }
     }
 
-    public static class ContextWait<T>{
-        private Set<ReadyHandler> readyHandlers=new LinkedHashSet<>();
-        private T context;
+    public static class ContextWait<T> {
+        private Set<ReadyHandler> readyHandlers = new LinkedHashSet<>();
+        private T result;
 
-        public static <T> ContextWait<T> create(){
+        public static <T> ContextWait<T> create() {
             return new ContextWait<>();
         }
 
-        void onReady(ReadyHandler handler){
+        void onReady(ReadyHandler handler) {
             this.readyHandlers.add(handler);
         }
 
-        public void receiveContext(T context){
-            this.context=context;
+        public void complete(T result) {
+            this.result = result;
             readyHandlers.forEach(ReadyHandler::onReady);
         }
 
-        public T get(){
-            return context;
+        public T get() {
+            return result;
         }
     }
 }
