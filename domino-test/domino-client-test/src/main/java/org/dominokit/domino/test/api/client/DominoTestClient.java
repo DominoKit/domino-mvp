@@ -154,7 +154,7 @@ public class DominoTestClient
     }
 
     private void init(ServerEntryPointContext entryPointContext) {
-        TestClientAppFactory.make(entryPointContext);
+        TestClientAppFactory.make(entryPointContext, testContext);
     }
 
     private void configureModule(ModuleConfiguration configuration) {

@@ -1,5 +1,7 @@
 package org.dominokit.domino.test.api.client;
 
+import io.vertx.ext.unit.Async;
+import io.vertx.ext.unit.TestContext;
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.events.Event;
 import org.dominokit.domino.api.client.events.EventsBus;
@@ -25,6 +27,8 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.util.Objects.nonNull;
+
 public class TestServerRouter implements RequestRouter<ServerRequest> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TestServerRouter.class);
@@ -47,6 +51,7 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
     };
 
     private ServerEntryPointContext entryPointContext;
+    private TestContext testContext;
 
     private final TestServerService service = (request, responseContext) -> {
         RequestContext<RequestBean> requestContext = DefaultRequestContext.forRequest(request)
@@ -58,10 +63,12 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
     };
 
     private TestResponseContext<ResponseBean> responseContext = new TestResponseContext<>();
+    private Async async;
 
-    public TestServerRouter(RequestAsyncSender requestAsyncRunner, ServerEntryPointContext entryPointContext) {
+    public TestServerRouter(RequestAsyncSender requestAsyncRunner, ServerEntryPointContext entryPointContext, TestContext testContext) {
         this.requestAsyncRunner = requestAsyncRunner;
         this.entryPointContext = entryPointContext;
+        this.testContext = testContext;
     }
 
     public void setRoutingListener(RoutingListener listener) {
@@ -81,6 +88,9 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
                 listener.onRouteRequest(request, response);
                 eventFactory.makeSuccess(request, response).fire();
             } else {
+                if(nonNull(testContext)){
+                    async = testContext.async();
+                }
                 requestAsyncRunner.send(request);
             }
         } catch (HandlersRepository.RequestHandlerNotFound ex) {
@@ -120,10 +130,18 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
         @Override
         public void process() {
             request.applyState(new Request.ServerResponseReceivedStateContext(makeSuccessContext()));
+            completeIfAsync();
         }
 
         private Request.ServerSuccessRequestStateContext makeSuccessContext() {
             return new Request.ServerSuccessRequestStateContext(responseBean);
+        }
+    }
+
+    private void completeIfAsync() {
+        if(nonNull(async)){
+            async.complete();
+            async = null;
         }
     }
 
@@ -159,6 +177,7 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
         @Override
         public void process() {
             request.applyState(new Request.ServerResponseReceivedStateContext(makeFailedContext()));
+            completeIfAsync();
         }
 
         private Request.ServerFailedRequestStateContext makeFailedContext() {
