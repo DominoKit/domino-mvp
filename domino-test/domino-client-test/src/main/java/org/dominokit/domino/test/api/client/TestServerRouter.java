@@ -131,8 +131,8 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
 
         @Override
         public void process() {
-            request.applyState(new Request.ServerResponseReceivedStateContext(makeSuccessContext()));
             completeIfAsync();
+            request.applyState(new Request.ServerResponseReceivedStateContext(makeSuccessContext()));
         }
 
         private Request.ServerSuccessRequestStateContext makeSuccessContext() {
@@ -178,8 +178,8 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
 
         @Override
         public void process() {
-            request.applyState(new Request.ServerResponseReceivedStateContext(makeFailedContext()));
             completeIfAsync();
+            request.applyState(new Request.ServerResponseReceivedStateContext(makeFailedContext()));
         }
 
         private Request.ServerFailedRequestStateContext makeFailedContext() {
