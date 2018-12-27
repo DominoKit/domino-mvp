@@ -30,7 +30,7 @@ public class TestClientAppFactory {
     public static ClientApp make(ServerEntryPointContext entryPointContext, TestContext testContext) {
 
         clientRouter = new TestClientRouter();
-        serverRouter = new TestServerRouter(new GwtRequestAsyncSender(new ServerEventFactory()), entryPointContext, testContext);
+        serverRouter = new TestServerRouter(entryPointContext, testContext);
         requestEventProcessor = new RequestEventProcessor();
         eventBus = new TestEventBus(requestEventProcessor);
 

@@ -21,6 +21,8 @@ import org.dominokit.domino.api.shared.request.FailedResponseBean;
 import org.dominokit.domino.api.shared.request.RequestBean;
 import org.dominokit.domino.api.shared.request.ResponseBean;
 import org.dominokit.domino.client.commons.request.RequestAsyncSender;
+import org.dominokit.domino.gwt.client.events.ServerEventFactory;
+import org.dominokit.domino.gwt.client.request.GwtRequestAsyncSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,8 +67,8 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
     private TestResponseContext<ResponseBean> responseContext = new TestResponseContext<>();
     private Async async;
 
-    public TestServerRouter(RequestAsyncSender requestAsyncRunner, ServerEntryPointContext entryPointContext, TestContext testContext) {
-        this.requestAsyncRunner = requestAsyncRunner;
+    public TestServerRouter(ServerEntryPointContext entryPointContext, TestContext testContext) {
+        this.requestAsyncRunner = new GwtRequestAsyncSender(eventFactory);
         this.entryPointContext = entryPointContext;
         this.testContext = testContext;
     }
