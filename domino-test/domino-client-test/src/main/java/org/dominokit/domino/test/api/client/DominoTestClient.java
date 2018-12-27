@@ -1,5 +1,6 @@
 package org.dominokit.domino.test.api.client;
 
+import io.vertx.config.ConfigRetriever;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.Async;
@@ -115,7 +116,9 @@ public class DominoTestClient
         VertxContext vertxContext = VertxContext.VertxContextBuilder.vertx(vertx)
                 .router(Router.router(vertx))
                 .serverConfiguration(testServerConfiguration)
-                .vertxServiceDiscovery(new VertxServiceDiscovery(vertx)).build();
+                .vertxServiceDiscovery(new VertxServiceDiscovery(vertx))
+                .configRetriever(ConfigRetriever.create(vertx))
+                .build();
         new ServerConfigurationLoader(vertxContext).loadModules();
 
         init(testEntryPointContext);
