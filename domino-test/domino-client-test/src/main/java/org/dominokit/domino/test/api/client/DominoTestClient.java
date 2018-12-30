@@ -25,13 +25,15 @@ import org.dominokit.domino.service.discovery.VertxServiceDiscovery;
 import org.dominokit.domino.test.api.DominoTestServer;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 import static org.dominokit.domino.api.client.ClientApp.make;
 import static org.easymock.EasyMock.createMock;
 
-public class DominoTestClient
-        implements CanCustomizeClient, CanStartClient,
+public class DominoTestClient implements CanCustomizeClient, CanStartClient,
         ClientContext {
+
+    public static final Logger LOGGER = Logger.getLogger(DominoTestClient.class.getName());
 
     private ModuleConfiguration[] modules;
     private Map<String, Presentable> presentersReplacements = new HashMap<>();
@@ -132,12 +134,14 @@ public class DominoTestClient
 
         if (withServer) {
             Async async = testContext.async();
+            LOGGER.info("Starting server ... ");
             DominoTestServer.vertx(vertx())
                     .onAfterLoad(serverContext -> {
                         getDominoOptions().setPort(serverContext.getActualPort());
                         afterLoadHandler.handle(serverContext);
                         doStart(() -> {
                             startCompleted.onStarted(this);
+                            LOGGER.info("Server started on port ["+serverContext.getActualPort()+"]");
                             async.complete();
                         });
                     })
@@ -151,6 +155,7 @@ public class DominoTestClient
         beforeClientStart.onBeforeStart(this);
         getDominoOptions().setApplicationStartHandler(applicationStartHandler);
         make().run();
+        LOGGER.info("Test client started.");
     }
 
     private void init(ServerEntryPointContext entryPointContext) {
