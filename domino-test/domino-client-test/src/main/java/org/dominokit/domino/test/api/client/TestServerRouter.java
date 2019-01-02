@@ -9,19 +9,11 @@ import org.dominokit.domino.api.client.events.ServerRequestEventFactory;
 import org.dominokit.domino.api.client.request.Request;
 import org.dominokit.domino.api.client.request.RequestRouter;
 import org.dominokit.domino.api.client.request.ServerRequest;
-import org.dominokit.domino.api.server.ServerApp;
-import org.dominokit.domino.api.server.context.DefaultExecutionContext;
-import org.dominokit.domino.api.server.context.ExecutionContext;
 import org.dominokit.domino.api.server.entrypoint.ServerEntryPointContext;
 import org.dominokit.domino.api.server.handler.HandlersRepository;
-import org.dominokit.domino.api.server.request.DefaultMultiMap;
-import org.dominokit.domino.api.server.request.DefaultRequestContext;
-import org.dominokit.domino.api.server.request.RequestContext;
 import org.dominokit.domino.api.shared.request.FailedResponseBean;
-import org.dominokit.domino.api.shared.request.RequestBean;
 import org.dominokit.domino.api.shared.request.ResponseBean;
 import org.dominokit.domino.client.commons.request.RequestAsyncSender;
-import org.dominokit.domino.gwt.client.events.ServerEventFactory;
 import org.dominokit.domino.gwt.client.request.GwtRequestAsyncSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,18 +46,7 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
 
     private ServerEntryPointContext entryPointContext;
     private TestContext testContext;
-
-    private final TestServerService service = (request, responseContext) -> {
-        RequestContext<RequestBean> requestContext = DefaultRequestContext.forRequest(request)
-                .requestPath(request.getClass().getCanonicalName())
-                .parameters(new DefaultMultiMap<>())
-                .headers(new DefaultMultiMap<>()).build();
-        ExecutionContext<RequestBean, ResponseBean> executionContext = new DefaultExecutionContext<>(requestContext, responseContext);
-        ServerApp.make().executeRequest(executionContext, entryPointContext);
-    };
-
-    private TestResponseContext<ResponseBean> responseContext = new TestResponseContext<>();
-    private Async async;
+    private Map<String, Async> requestsAsync = new HashMap<>();
 
     public TestServerRouter(ServerEntryPointContext entryPointContext, TestContext testContext) {
         this.requestAsyncRunner = new GwtRequestAsyncSender(eventFactory);
@@ -90,8 +71,9 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
                 listener.onRouteRequest(request, response);
                 eventFactory.makeSuccess(request, response).fire();
             } else {
-                if(nonNull(testContext)){
-                    async = testContext.async();
+                if (nonNull(testContext)) {
+                    Async async = testContext.async();
+                    requestsAsync.put(request.getKey(), async);
                 }
                 requestAsyncRunner.send(request);
             }
@@ -131,12 +113,12 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
 
         @Override
         public void process() {
-            if(nonNull(testContext)){
-                testContext.verify(event ->{
+            if (nonNull(testContext)) {
+                testContext.verify(event -> {
                     request.applyState(new Request.ServerResponseReceivedStateContext(makeSuccessContext()));
-                    completeIfAsync();
+                    completeIfAsync(request);
                 });
-            }else{
+            } else {
                 request.applyState(new Request.ServerResponseReceivedStateContext(makeSuccessContext()));
             }
         }
@@ -146,10 +128,11 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
         }
     }
 
-    private void completeIfAsync() {
-        if(nonNull(async)){
+    private void completeIfAsync(ServerRequest request) {
+        if (requestsAsync.containsKey(request.getKey())) {
+            Async async = requestsAsync.get(request.getKey());
             async.complete();
-            async = null;
+            requestsAsync.remove(request.getKey());
         }
     }
 
@@ -184,12 +167,12 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
 
         @Override
         public void process() {
-            if(nonNull(testContext)){
+            if (nonNull(testContext)) {
                 testContext.verify(event -> {
                     request.applyState(new Request.ServerResponseReceivedStateContext(makeFailedContext()));
-                    completeIfAsync();
+                    completeIfAsync(request);
                 });
-            }else{
+            } else {
                 request.applyState(new Request.ServerResponseReceivedStateContext(makeFailedContext()));
             }
         }
