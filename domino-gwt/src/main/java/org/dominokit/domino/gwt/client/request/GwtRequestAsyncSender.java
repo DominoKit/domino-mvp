@@ -18,21 +18,18 @@ public class GwtRequestAsyncSender extends AbstractRequestAsyncSender {
     @Override
     protected void sendRequest(ServerRequest request, ServerRequestEventFactory requestEventFactory) {
 //        request.headers().put("X-XSRF-TOKEN", Cookies.getCookie("XSRF-TOKEN"));
-        ClientApp.make().dominoOptions().getRequestInterceptor()
-                .interceptRequest(request, () ->
-                        ClientApp.make().getRequestRestSendersRepository().get(request.getKey())
-                        .send(request,
-                                new ServerRequestCallBack() {
-                                    @Override
-                                    public void onSuccess(ResponseBean response) {
-                                        requestEventFactory.makeSuccess(request, response).fire();
-                                    }
+        ClientApp.make().getRequestRestSendersRepository().get(request.getKey())
+                .send(request,
+                        new ServerRequestCallBack() {
+                            @Override
+                            public void onSuccess(ResponseBean response) {
+                                requestEventFactory.makeSuccess(request, response).fire();
+                            }
 
-                                    @Override
-                                    public void onFailure(FailedResponseBean failedResponse) {
-                                        requestEventFactory.makeFailed(request, failedResponse).fire();
-                                    }
-                                }));
-
+                            @Override
+                            public void onFailure(FailedResponseBean failedResponse) {
+                                requestEventFactory.makeFailed(request, failedResponse).fire();
+                            }
+                        });
     }
 }
