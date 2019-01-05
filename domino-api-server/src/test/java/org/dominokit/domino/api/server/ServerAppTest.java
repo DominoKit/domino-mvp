@@ -1,5 +1,9 @@
 package org.dominokit.domino.api.server;
 
+import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonObject;
+import io.vertx.ext.unit.junit.RunTestOnContext;
+import io.vertx.ext.unit.junit.VertxUnitRunner;
 import org.dominokit.domino.api.server.context.DefaultExecutionContext;
 import org.dominokit.domino.api.server.context.ExecutionContext;
 import org.dominokit.domino.api.server.handler.HandlersRepository;
@@ -7,15 +11,13 @@ import org.dominokit.domino.api.server.handler.RequestHandler;
 import org.dominokit.domino.api.server.request.DefaultMultiMap;
 import org.dominokit.domino.api.server.request.DefaultRequestContext;
 import org.dominokit.domino.api.server.request.RequestContext;
-import io.vertx.core.Vertx;
-import io.vertx.core.json.JsonObject;
-import io.vertx.ext.unit.junit.RunTestOnContext;
-import io.vertx.ext.unit.junit.VertxUnitRunner;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.HashSet;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -51,7 +53,7 @@ public class ServerAppTest {
                 .parameters(new DefaultMultiMap<>())
                 .headers(new DefaultMultiMap<>())
                 .build();
-        routingContext = new DefaultExecutionContext<>(requestContext, new FakeResponseContext());
+        routingContext = new DefaultExecutionContext<>(requestContext, new FakeResponseContext(), new HashSet<>());
     }
 
     private String getPath() {

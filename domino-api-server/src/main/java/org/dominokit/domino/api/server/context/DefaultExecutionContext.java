@@ -1,19 +1,25 @@
 package org.dominokit.domino.api.server.context;
 
+import org.dominokit.domino.api.server.fileuploads.FileUpload;
 import org.dominokit.domino.api.server.request.MultiMap;
 import org.dominokit.domino.api.server.request.RequestContext;
 import org.dominokit.domino.api.server.response.ResponseContext;
+import org.dominokit.domino.api.server.response.ResponseEndHandler;
 import org.dominokit.domino.api.shared.request.RequestBean;
 import org.dominokit.domino.api.shared.request.ResponseBean;
+
+import java.util.Set;
 
 public class DefaultExecutionContext<T extends RequestBean, S extends ResponseBean> implements ExecutionContext<T, S> {
 
     private final RequestContext<T> requestContext;
     private final ResponseContext<S> responseContext;
+    private Set<FileUpload> fileUploads;
 
-    public DefaultExecutionContext(RequestContext<T> requestContext, ResponseContext<S> responseContext) {
+    public DefaultExecutionContext(RequestContext<T> requestContext, ResponseContext<S> responseContext, Set<FileUpload> fileUploads) {
         this.requestContext = requestContext;
         this.responseContext = responseContext;
+        this.fileUploads = fileUploads;
     }
 
     @Override
@@ -64,5 +70,15 @@ public class DefaultExecutionContext<T extends RequestBean, S extends ResponseBe
     @Override
     public void end(String body) {
         responseContext.end(body);
+    }
+
+    @Override
+    public void endHandler(ResponseEndHandler endHandler) {
+        responseContext.endHandler(endHandler);
+    }
+
+    @Override
+    public Set<FileUpload> fileUploads() {
+        return fileUploads;
     }
 }

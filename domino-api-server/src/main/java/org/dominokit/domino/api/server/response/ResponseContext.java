@@ -15,4 +15,6 @@ public interface ResponseContext<T extends ResponseBean> {
     void end(T body);
 
     void end(String body);
+
+    void endHandler(ResponseEndHandler endHandler);
 }

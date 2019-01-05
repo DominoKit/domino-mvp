@@ -1,17 +1,5 @@
 package org.dominokit.domino.api.server.endpoint;
 
-import org.dominokit.domino.api.server.ServerApp;
-import org.dominokit.domino.api.server.context.DefaultExecutionContext;
-import org.dominokit.domino.api.server.context.ExecutionContext;
-import org.dominokit.domino.api.server.entrypoint.VertxEntryPointContext;
-import org.dominokit.domino.api.server.request.DefaultMultiMap;
-import org.dominokit.domino.api.server.request.DefaultRequestContext;
-import org.dominokit.domino.api.server.request.MultiMap;
-import org.dominokit.domino.api.server.request.RequestContext;
-import org.dominokit.domino.api.server.response.ResponseContext;
-import org.dominokit.domino.api.server.response.VertxResponseContext;
-import org.dominokit.domino.api.shared.request.RequestBean;
-import org.dominokit.domino.api.shared.request.ResponseBean;
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.Json;
@@ -20,11 +8,19 @@ import org.dominokit.domino.api.server.ServerApp;
 import org.dominokit.domino.api.server.context.DefaultExecutionContext;
 import org.dominokit.domino.api.server.context.ExecutionContext;
 import org.dominokit.domino.api.server.entrypoint.VertxEntryPointContext;
+import org.dominokit.domino.api.server.fileuploads.FileUpload;
+import org.dominokit.domino.api.server.fileuploads.DefaultFileUploads;
 import org.dominokit.domino.api.server.request.DefaultMultiMap;
 import org.dominokit.domino.api.server.request.DefaultRequestContext;
 import org.dominokit.domino.api.server.request.MultiMap;
 import org.dominokit.domino.api.server.request.RequestContext;
 import org.dominokit.domino.api.server.response.ResponseContext;
+import org.dominokit.domino.api.server.response.VertxResponseContext;
+import org.dominokit.domino.api.shared.request.RequestBean;
+import org.dominokit.domino.api.shared.request.ResponseBean;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
 
@@ -38,7 +34,13 @@ public abstract class AbstractEndpoint<R extends RequestBean, S extends Response
                     .headers(getHeaders(routingContext))
                     .parameters(getParameters(routingContext)).build();
             ResponseContext<S> responseContext = new VertxResponseContext<>(routingContext);
-            executeRequest(routingContext, ServerApp.make(), new DefaultExecutionContext<>(requestContext, responseContext));
+
+            Set<FileUpload> fileUploads = routingContext.fileUploads()
+                    .stream()
+                    .map(DefaultFileUploads::new)
+                    .collect(Collectors.toSet());
+
+            executeRequest(routingContext, ServerApp.make(), new DefaultExecutionContext<>(requestContext, responseContext, fileUploads));
         } catch (Exception e) {
             routingContext.fail(e);
         }

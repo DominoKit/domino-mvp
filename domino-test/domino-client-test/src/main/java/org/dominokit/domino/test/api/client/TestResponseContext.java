@@ -3,6 +3,7 @@ package org.dominokit.domino.test.api.client;
 import org.dominokit.domino.api.server.request.DefaultMultiMap;
 import org.dominokit.domino.api.server.request.MultiMap;
 import org.dominokit.domino.api.server.response.ResponseContext;
+import org.dominokit.domino.api.server.response.ResponseEndHandler;
 import org.dominokit.domino.api.shared.request.ResponseBean;
 
 public class TestResponseContext<S extends ResponseBean> implements ResponseContext<S> {
@@ -11,6 +12,7 @@ public class TestResponseContext<S extends ResponseBean> implements ResponseCont
     private boolean ended;
     private int statusCode;
     private MultiMap<String, String> headers = new DefaultMultiMap<>();
+    private ResponseEndHandler endHandler;
 
     @Override
     public ResponseContext<S> putHeader(String name, String value) {
@@ -33,18 +35,30 @@ public class TestResponseContext<S extends ResponseBean> implements ResponseCont
     @Override
     public void end() {
         this.ended = true;
+        callEndHandler();
     }
 
     @Override
     public void end(S body) {
         this.ended = true;
         responseBean = body;
+        callEndHandler();
     }
 
     @Override
     public void end(String body) {
         this.ended = true;
         this.bodyString = body;
+        callEndHandler();
+    }
+
+    private void callEndHandler() {
+        endHandler.onResponseEnded();
+    }
+
+    @Override
+    public void endHandler(ResponseEndHandler endHandler) {
+        this.endHandler = endHandler;
     }
 
     public String getBodyString() {
