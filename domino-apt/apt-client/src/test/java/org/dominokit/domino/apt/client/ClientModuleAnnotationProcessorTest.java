@@ -15,6 +15,7 @@ import java.io.InputStream;
 
 import static org.dominokit.domino.test.apt.ProcessorAssert.assertProcessing;
 
+@Ignore
 public class ClientModuleAnnotationProcessorTest {
 
     private static final String BASE_PACKAGE = "org/dominokit/domino/apt/client/";
