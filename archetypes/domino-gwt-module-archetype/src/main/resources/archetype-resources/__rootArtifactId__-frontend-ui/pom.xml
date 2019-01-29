@@ -73,6 +73,10 @@
             <artifactId>${rootArtifactId}-frontend</artifactId>
             <version>${version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.dominokit.domino</groupId>
+            <artifactId>domino-gwt-view</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

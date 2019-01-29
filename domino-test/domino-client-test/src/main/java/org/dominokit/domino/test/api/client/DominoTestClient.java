@@ -125,7 +125,6 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
 
         init(testEntryPointContext);
         Arrays.stream(modules).forEach(this::configureModule);
-        presentersReplacements.forEach((key, presentable) -> replacePresenter(key, () -> presentable));
 
         viewsReplacements.forEach((key, value) -> replaceView(key, () -> value));
 
@@ -166,10 +165,6 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
         new ModuleConfigurator().configureModule(configuration);
     }
 
-    private void replacePresenter(String presenterName, TestPresenterFactory presenterFactory) {
-        ((TestInMemoryPresenterRepository) make().getPresentersRepository())
-                .replacePresenter(presenterName, presenterFactory);
-    }
 
     private void replaceView(String presenterName, TestViewFactory viewFactory) {
         ((TestInMemoryViewRepository) make().getViewsRepository()).replaceView(presenterName, viewFactory);

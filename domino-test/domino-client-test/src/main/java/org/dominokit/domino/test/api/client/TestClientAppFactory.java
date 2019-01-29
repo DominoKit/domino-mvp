@@ -5,16 +5,10 @@ import io.vertx.ext.unit.TestContext;
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.server.entrypoint.ServerEntryPointContext;
 import org.dominokit.domino.api.shared.extension.MainEventContext;
-import org.dominokit.domino.client.commons.request.InMemoryCommandsRepository;
-import org.dominokit.domino.client.commons.request.InMemoryRequestRestSendersRepository;
 import org.dominokit.domino.gwt.client.events.RequestEventProcessor;
-import org.dominokit.domino.gwt.client.events.ServerEventFactory;
-import org.dominokit.domino.gwt.client.request.GwtRequestAsyncSender;
 
 public class TestClientAppFactory {
 
-    protected static TestInMemoryPresenterRepository presentersRepository;
-    protected static InMemoryCommandsRepository commandsRepository;
     protected static TestInMemoryViewRepository viewsRepository;
     protected static TestServerRouter serverRouter;
     protected static TestInMemoryEventsListenersRepository listenersRepository;
@@ -34,8 +28,6 @@ public class TestClientAppFactory {
         requestEventProcessor = new RequestEventProcessor();
         eventBus = new TestEventBus(requestEventProcessor);
 
-        presentersRepository = new TestInMemoryPresenterRepository();
-        commandsRepository = new InMemoryCommandsRepository();
         viewsRepository = new TestInMemoryViewRepository();
         listenersRepository = new TestInMemoryEventsListenersRepository();
         history = new TestDominoHistory();
@@ -45,15 +37,10 @@ public class TestClientAppFactory {
                 .clientRouter(clientRouter)
                 .serverRouter(serverRouter)
                 .eventsBus(eventBus)
-                .requestRepository(commandsRepository)
-                .presentersRepository(presentersRepository)
                 .viewsRepository(viewsRepository)
                 .eventsListenersRepository(listenersRepository)
-                .requestSendersRepository(new InMemoryRequestRestSendersRepository())
                 .history(history)
                 .asyncRunner(new TestAsyncRunner())
-                .mainExtensionPoint(() -> new MainEventContext() {
-                })
                 .dominoOptions(dominoOptions)
                 .build();
     }

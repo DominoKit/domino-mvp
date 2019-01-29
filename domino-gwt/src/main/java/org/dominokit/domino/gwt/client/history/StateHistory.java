@@ -4,14 +4,10 @@ import elemental2.dom.DomGlobal;
 import elemental2.dom.PopStateEvent;
 import jsinterop.base.Js;
 import org.dominokit.domino.api.client.ClientApp;
-import org.dominokit.domino.api.shared.history.AppHistory;
-import org.dominokit.domino.api.shared.history.HistoryToken;
-import org.dominokit.domino.api.shared.history.TokenFilter;
+import org.dominokit.domino.api.shared.history.*;
 import org.dominokit.domino.client.commons.history.DominoDirectState;
-import org.dominokit.domino.client.commons.history.StateHistoryToken;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -27,28 +23,54 @@ public class StateHistory implements AppHistory {
             JsState state = Js.cast(popStateEvent.state);
             if (nonNull(state) && nonNull(state.historyToken)) {
                 inform(state.historyToken, state.title, state.data);
-            }else{
+            } else {
                 inform(windowToken(), windowTitle(), "");
             }
         });
     }
 
     private void inform(String token, String title, String stateJson) {
-        listeners.stream().filter(l -> {
-            return l.tokenFilter.filter(new DominoHistoryState(token, title, stateJson).token);
-        })
-                .forEach(l -> ClientApp.make().getAsyncRunner().runAsync(() ->
-                        l.listener.onPopState(new DominoHistoryState(token, title, stateJson))));
+        final List<HistoryListener> completedListeners = new ArrayList<>();
+        listeners.stream()
+                .filter(l -> {
+                    NormalizedToken normalized = getNormalizedToken(token, l);
+                    return l.tokenFilter.filter(new DominoHistoryState(normalized.getToken().value(), title, stateJson).token);
+                })
+                .forEach(l -> {
+                    if (l.removeOnComplete) {
+                        completedListeners.add(l);
+                    }
+                    ClientApp.make().getAsyncRunner().runAsync(() -> {
+                        NormalizedToken normalized = getNormalizedToken(token, l);
+                        l.listener.onPopState(new DominoHistoryState(normalized, token, title, stateJson));
+                    });
+                });
+
+        listeners.removeAll(completedListeners);
+    }
+
+    private NormalizedToken getNormalizedToken(String token, HistoryListener listener) {
+        return listener.tokenFilter.normalizeToken(token);
     }
 
     @Override
     public DirectState listen(StateListener listener) {
-        return listen(TokenFilter.any(), listener);
+        return listen(TokenFilter.any(), listener, false);
     }
 
     @Override
     public DirectState listen(TokenFilter tokenFilter, StateListener listener) {
-        listeners.add(new HistoryListener(listener, tokenFilter));
+        return listen(tokenFilter, listener, false);
+    }
+
+    @Override
+    public DirectState listen(StateListener listener, boolean removeOnComplete) {
+        return listen(TokenFilter.any(), listener, removeOnComplete);
+    }
+
+    @Override
+    public DirectState listen(TokenFilter tokenFilter, StateListener listener, boolean removeOnComplete) {
+        listeners.add(new HistoryListener(listener, tokenFilter, removeOnComplete));
         return new DominoDirectState(tokenFilter, currentState());
     }
 
@@ -64,14 +86,56 @@ public class StateHistory implements AppHistory {
 
     @Override
     public void pushState(String token, String title, String data) {
-        if (nonNull(currentToken().value()) && !currentToken().value().equals(token))
-            history.pushState(JsState.state(token, title, data), title, "/" + token);
+        pushState(token, title, data, new TokenParameter[0]);
+    }
+
+    @Override
+    public void pushState(String token, String title, String data, TokenParameter... parameters) {
+        String tokenWithParameters = replaceParameters(token, Arrays.asList(parameters));
+        if (nonNull(currentToken().value()) && !currentToken().value().equals(tokenWithParameters))
+            history.pushState(JsState.state(tokenWithParameters, title, data), title, "/" + tokenWithParameters);
+    }
+
+    private String replaceParameters(String token, List<TokenParameter> parametersList) {
+        String result = token;
+        for (TokenParameter parameter : parametersList) {
+            result = result.replace(":" + parameter.getName(), parameter.getValue());
+        }
+        return result;
+    }
+
+    @Override
+    public void fireState(String token) {
+        fireState(token, new TokenParameter[0]);
+    }
+
+    @Override
+    public void fireState(String token, TokenParameter... parameters) {
+        pushState(token, parameters);
+        fireCurrentStateHistory();
+    }
+
+    @Override
+    public void fireState(String token, String title, String data) {
+        fireState(token, title, data, new TokenParameter[0]);
+    }
+
+    @Override
+    public void fireState(String token, String title, String data, TokenParameter... parameters) {
+        pushState(token, title, data, parameters);
+        fireCurrentStateHistory();
     }
 
     @Override
     public void pushState(String token) {
-        if (nonNull(currentToken().value()) && !currentToken().value().equals(token))
-            history.pushState(JsState.state(token, windowTitle(), ""), windowTitle(), "/" + token);
+        pushState(token, new TokenParameter[0]);
+    }
+
+    @Override
+    public void pushState(String token, TokenParameter... parameters) {
+        String tokenWithParameters = replaceParameters(token, Arrays.asList(parameters));
+        if (nonNull(currentToken().value()) && !currentToken().value().equals(tokenWithParameters))
+            history.pushState(JsState.state(tokenWithParameters, windowTitle(), ""), windowTitle(), "/" + tokenWithParameters);
     }
 
     @Override
@@ -100,8 +164,8 @@ public class StateHistory implements AppHistory {
             return nullState();
         }
         JsState jsState = getJsState();
-        if(isNull(jsState)){
-            return  new DominoHistoryState(windowToken(), windowTitle(), "");
+        if (isNull(jsState)) {
+            return new DominoHistoryState(windowToken(), windowTitle(), "");
         }
         return new DominoHistoryState(jsState.historyToken, jsState.title, jsState.data);
     }
@@ -135,6 +199,11 @@ public class StateHistory implements AppHistory {
             public String title() {
                 return windowTitle();
             }
+
+            @Override
+            public NormalizedToken normalizedToken() {
+                return new DefaultNormalizedToken(new StateHistoryToken(windowToken()));
+            }
         };
     }
 
@@ -160,10 +229,20 @@ public class StateHistory implements AppHistory {
 
         private final TokenFilter tokenFilter;
 
+        private final boolean removeOnComplete;
+
         private HistoryListener(StateListener listener,
                                 TokenFilter tokenFilter) {
             this.listener = listener;
             this.tokenFilter = tokenFilter;
+            this.removeOnComplete = false;
+        }
+
+        private HistoryListener(StateListener listener,
+                                TokenFilter tokenFilter, boolean removeOnComplete) {
+            this.listener = listener;
+            this.tokenFilter = tokenFilter;
+            this.removeOnComplete = removeOnComplete;
         }
     }
 
@@ -172,11 +251,20 @@ public class StateHistory implements AppHistory {
         private final HistoryToken token;
         private final String data;
         private final String title;
+        private final NormalizedToken normalizedToken;
 
         public DominoHistoryState(String token, String title, String data) {
             this.token = new StateHistoryToken(token);
             this.data = data;
             this.title = title;
+            this.normalizedToken = new DefaultNormalizedToken(new StateHistoryToken(token));
+        }
+
+        public DominoHistoryState(NormalizedToken normalizedToken, String token, String title, String data) {
+            this.token = new StateHistoryToken(token);
+            this.data = data;
+            this.title = title;
+            this.normalizedToken = normalizedToken;
         }
 
         @Override
@@ -192,6 +280,11 @@ public class StateHistory implements AppHistory {
         @Override
         public String title() {
             return this.title;
+        }
+
+        @Override
+        public NormalizedToken normalizedToken() {
+            return normalizedToken;
         }
     }
 }

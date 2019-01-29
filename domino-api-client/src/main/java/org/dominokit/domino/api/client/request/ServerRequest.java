@@ -15,6 +15,7 @@ public abstract class ServerRequest<R extends RequestBean, S extends ResponseBea
         extends BaseRequest implements Response<S>, CanFailOrSend, HasHeadersAndParameters<R, S> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServerRequest.class);
+    private SenderSupplier senderSupplier;
 
     private Map<String, String> headers = new HashMap<>();
     private Map<String, String> parameters = new HashMap<>();
@@ -61,8 +62,9 @@ public abstract class ServerRequest<R extends RequestBean, S extends ResponseBea
     protected ServerRequest() {
     }
 
-    protected ServerRequest(R requestBean) {
+    protected ServerRequest(R requestBean, SenderSupplier senderSupplier) {
         this.requestBean = requestBean;
+        this.senderSupplier = senderSupplier;
     }
 
     @Override
@@ -86,6 +88,9 @@ public abstract class ServerRequest<R extends RequestBean, S extends ResponseBea
         clientApp.getServerRouter().routeRequest(this);
     }
 
+    public RequestRestSender getSender(){
+        return senderSupplier.get();
+    }
 
     public R requestBean() {
         return this.requestBean;

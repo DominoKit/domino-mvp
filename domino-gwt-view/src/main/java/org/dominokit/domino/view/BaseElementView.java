@@ -17,23 +17,18 @@ public abstract class BaseElementView<T extends HTMLElement> extends BaseDominoV
                 if (nonNull(slotsEntries)) {
                     slotsEntries.getSlots().forEach(SlotRegistry::registerSlot);
                 }
-                if (nonNull(revealHandler)) {
-                    revealHandler.onRevealed();
-                }
+                revealHandler.onRevealed();
             });
-
 
             ElementUtil.onDetach(root, mutationRecord -> {
                 SlotsEntries slotsEntries = getSlots();
                 if (nonNull(slotsEntries)) {
                     slotsEntries.getSlots().forEach((key, slot) -> SlotRegistry.removeSlot(key));
                 }
-                if (nonNull(removeHandler)) {
-                    removeHandler.onRemoved();
-                    clear();
-                }
-            });
 
+                removeHandler.onRemoved();
+                clear();
+            });
         }
     }
 

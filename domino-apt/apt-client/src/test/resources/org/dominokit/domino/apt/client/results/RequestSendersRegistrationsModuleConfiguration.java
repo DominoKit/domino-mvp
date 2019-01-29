@@ -2,7 +2,7 @@ package org.dominokit.domino.apt.client;
 
 import javax.annotation.Generated;
 import org.dominokit.domino.api.client.ModuleConfiguration;
-import org.dominokit.domino.api.client.request.LazyRequestRestSenderLoader;
+import org.dominokit.domino.api.client.request.SenderSupplier;
 import org.dominokit.domino.api.client.request.RequestRestSender;
 import org.dominokit.domino.api.client.request.RequestRestSendersRegistry;
 
@@ -14,7 +14,7 @@ public class RequestSendersRegistrationsModuleConfiguration implements ModuleCon
 
     @Override
     public void registerRequestRestSenders(RequestRestSendersRegistry registry) {
-        registry.registerRequestRestSender(AnnotatedClassWithHandlerPath.class.getCanonicalName(), new LazyRequestRestSenderLoader() {
+        registry.registerRequestRestSender(AnnotatedClassWithHandlerPath.class.getCanonicalName(), new SenderSupplier() {
             @Override
             protected RequestRestSender make() {
                 return new AnnotatedClassWithRequestSender();

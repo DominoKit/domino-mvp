@@ -4,17 +4,14 @@ import org.dominokit.domino.api.client.extension.DominoEventsListenersRepository
 import org.dominokit.domino.api.shared.extension.DominoEventListener;
 import org.dominokit.domino.api.shared.extension.DominoEvent;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
 
 public class InMemoryDominoEventsListenerRepository implements DominoEventsListenersRepository {
 
-    private final Map<String, Set<ListenerWrapper>> listeners = new HashMap<>();
+    private final Map<String, List<ListenerWrapper>> listeners = new HashMap<>();
 
     @Override
     public void addListener(Class<? extends DominoEvent> dominoEvent, DominoEventListener dominoEventListener) {
@@ -29,9 +26,19 @@ public class InMemoryDominoEventsListenerRepository implements DominoEventsListe
                 Collectors.toSet());
     }
 
+    @Override
+    public void removeListener(Class<? extends DominoEvent> event, DominoEventListener listener) {
+        Set<DominoEventListener> eventListeners = getEventListeners(event);
+        eventListeners.remove(listener);
+
+        if(eventListeners.isEmpty()){
+            listeners.remove(event.getCanonicalName());
+        }
+    }
+
     private void initializeEventListeners(Class<? extends DominoEvent> extensionPoint) {
         if (isNull(listeners.get(extensionPoint.getCanonicalName())))
-            listeners.put(extensionPoint.getCanonicalName(), new HashSet<>());
+            listeners.put(extensionPoint.getCanonicalName(), new LinkedList<>());
     }
 
     private class ListenerWrapper {

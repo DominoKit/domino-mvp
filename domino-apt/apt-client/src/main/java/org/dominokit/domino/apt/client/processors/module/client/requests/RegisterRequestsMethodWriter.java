@@ -1,6 +1,5 @@
 package org.dominokit.domino.apt.client.processors.module.client.requests;
 
-import org.dominokit.domino.api.client.request.CommandRegistry;
 import org.dominokit.domino.apt.commons.AbstractRegisterMethodWriter;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
@@ -19,7 +18,9 @@ public class RegisterRequestsMethodWriter extends AbstractRegisterMethodWriter<R
 
     @Override
     protected Class<?> registryClass() {
-        return CommandRegistry.class;
+//        return CommandRegistry.class;
+
+        return null;
     }
 
     @Override

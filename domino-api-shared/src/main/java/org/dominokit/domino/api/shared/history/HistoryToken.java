@@ -43,7 +43,7 @@ public interface HistoryToken {
 
     boolean hasQueryParameter(String name);
 
-    String parameterValue(String name);
+    String getQueryParameter(String name);
 
     HistoryToken appendFragment(String fragment);
 
@@ -66,6 +66,8 @@ public interface HistoryToken {
     String fragment();
 
     HistoryToken removeFragment(String fragment);
+
+    boolean isEmpty();
 
     HistoryToken clear();
 

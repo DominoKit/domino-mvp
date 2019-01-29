@@ -13,7 +13,7 @@ import org.dominokit.domino.api.shared.extension.MainDominoEvent;
 public class PresenterInterfaceListenerForMainDominoEvent implements DominoEventListener<MainDominoEvent> {
 
     @Override
-    public void listen(MainDominoEvent event) {
+    public void onEventReceived(MainDominoEvent event) {
         new PresenterInterfaceCommand()
                 .onPresenterReady(presenter -> presenter.onMainDominoEventReceived(event.context()))
                 .send();

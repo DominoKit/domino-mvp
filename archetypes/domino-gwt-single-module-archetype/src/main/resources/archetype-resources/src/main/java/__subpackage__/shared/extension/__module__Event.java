@@ -3,7 +3,7 @@
 #set( $symbol_escape = '\' )
 package ${package}.${subpackage}.shared.extension;
 
-import org.dominokit.domino.api.shared.extension.ExtensionPoint;
+import org.dominokit.domino.api.shared.extension.DominoEvent;
 
-public interface ${module}ExtensionPoint extends ExtensionPoint<${module}Context>{
+public interface ${module}Event extends DominoEvent<${module}EventContext>{
 }

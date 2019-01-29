@@ -1,43 +1,37 @@
 package org.dominokit.domino.api.client.mvp.presenter;
 
-import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.mvp.slots.InvalidSlotException;
 import org.dominokit.domino.api.client.mvp.slots.RevealViewWithNoContentException;
 import org.dominokit.domino.api.client.mvp.slots.Slot;
 import org.dominokit.domino.api.client.mvp.slots.SlotRegistry;
 import org.dominokit.domino.api.client.mvp.view.*;
+import org.dominokit.domino.api.shared.extension.ActivationEventContext;
 
-import static java.util.Objects.isNull;
+import java.util.function.Supplier;
+
 import static java.util.Objects.nonNull;
 
 public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter {
 
+    public static final String DOCUMENT_BODY = "document-body";
+
     protected V view;
+    private Supplier<V> viewSupplier;
 
     @Override
     protected void initialize() {
-        view = loadView();
+        view = viewSupplier.get();
         if (view instanceof DominoView) {
-            ((DominoView) view).setRevealHandler(onRevealed());
-            ((DominoView) view).setRemoveHandler(onRemoved());
+            ((DominoView) view).setRevealHandler(getViewRevealHandler());
+            ((DominoView) view).setRemoveHandler(getViewRemoveHandler());
         }
         if(this instanceof UiHandlers && view instanceof HasUiHandlers){
             ((HasUiHandlers) view).setUiHandlers((UiHandlers) this);
         }
-        initView(ViewBaseClientPresenter.this.view);
         super.initialize();
-
-        if(nonNull(autoRevealSlot()) && !autoRevealSlot().trim().isEmpty()){
-            revealInSlot(autoRevealSlot());
-        }
-
     }
 
-    protected void initView(V view) {
-        // Default empty implementation
-    }
-
-    protected String autoRevealSlot(){
+    public String revealSlot(){
         return null;
     }
 
@@ -50,6 +44,12 @@ public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter
         }
     }
 
+    public void reveal(){
+        if(nonNull(revealSlot()) && !revealSlot().trim().isEmpty()){
+            revealInSlot(revealSlot());
+        }
+    }
+
     public void revealInSlot(Slot slot){
         if(view instanceof HasContent) {
             slot.updateContent(((HasContent) view).getContent());
@@ -58,16 +58,57 @@ public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter
         }
     }
 
-    public DominoView.RevealedHandler onRevealed() {
+    private DominoView.RevealedHandler getViewRevealHandler() {
+        return () -> {
+            RevealedHandler revealHandler = getRevealHandler();
+            if(nonNull(revealHandler)){
+                revealHandler.onRevealed();
+            }
+            activated = true;
+            activate();
+        };
+    }
+
+    @Override
+    protected void fireActivationEvent(ActivationEventContext context) {
+    }
+
+    @Override
+    protected final boolean isAutoActivate() {
+        return false;
+    }
+
+    private DominoView.RemovedHandler getViewRemoveHandler() {
+        return () -> {
+            deActivate();
+            RemovedHandler removeHandler = getRemoveHandler();
+            if(nonNull(removeHandler)){
+                removeHandler.onRemoved();
+            }
+            activated =false;
+            fireActivationEvent(new ActivationEventContext(false));
+        };
+    }
+
+    protected RevealedHandler getRevealHandler() {
         return null;
     }
 
-    public DominoView.RemovedHandler onRemoved() {
+    protected RemovedHandler getRemoveHandler() {
         return null;
     }
 
-    private V loadView() {
-        return (V) ClientApp.make().getViewsRepository().getView(getName());
+    public void setViewSupplier(Supplier<V> viewSupplier) {
+        this.viewSupplier = viewSupplier;
     }
 
+    @FunctionalInterface
+    public interface RevealedHandler {
+        void onRevealed();
+    }
+
+    @FunctionalInterface
+    public interface RemovedHandler {
+        void onRemoved();
+    }
 }

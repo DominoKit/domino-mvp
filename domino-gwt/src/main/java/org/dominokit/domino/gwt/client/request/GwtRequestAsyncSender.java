@@ -1,6 +1,5 @@
 package org.dominokit.domino.gwt.client.request;
 
-import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.events.ServerRequestEventFactory;
 import org.dominokit.domino.api.client.request.ServerRequest;
 import org.dominokit.domino.api.client.request.ServerRequestCallBack;
@@ -18,7 +17,7 @@ public class GwtRequestAsyncSender extends AbstractRequestAsyncSender {
     @Override
     protected void sendRequest(ServerRequest request, ServerRequestEventFactory requestEventFactory) {
 //        request.headers().put("X-XSRF-TOKEN", Cookies.getCookie("XSRF-TOKEN"));
-        ClientApp.make().getRequestRestSendersRepository().get(request.getKey())
+        request.getSender()
                 .send(request,
                         new ServerRequestCallBack() {
                             @Override

@@ -1,10 +1,7 @@
 package org.dominokit.domino.desktop.client;
 
-import org.dominokit.domino.api.shared.history.AppHistory;
-import org.dominokit.domino.api.shared.history.HistoryToken;
-import org.dominokit.domino.api.shared.history.TokenFilter;
+import org.dominokit.domino.api.shared.history.*;
 import org.dominokit.domino.client.commons.history.DominoDirectState;
-import org.dominokit.domino.client.commons.history.StateHistoryToken;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,12 +19,22 @@ public class DesktopStateHistory implements AppHistory {
 
     @Override
     public DirectState listen(StateListener listener) {
-        return listen(TokenFilter.any(), listener);
+        return listen(TokenFilter.any(), listener, false);
+    }
+
+    @Override
+    public DirectState listen(StateListener listener, boolean removeOnComplete) {
+        return listen(TokenFilter.any(), listener, removeOnComplete);
     }
 
     @Override
     public DirectState listen(TokenFilter tokenFilter, StateListener listener) {
-        listeners.add(new HistoryListener(listener, tokenFilter));
+        return listen(tokenFilter, listener, false);
+    }
+
+    @Override
+    public DirectState listen(TokenFilter tokenFilter, StateListener listener, boolean removeOnComplete) {
+        listeners.add(new HistoryListener(listener, tokenFilter, removeOnComplete));
         return new DominoDirectState(tokenFilter, currentState());
     }
 
@@ -50,6 +57,11 @@ public class DesktopStateHistory implements AppHistory {
             @Override
             public String title() {
                 return "";
+            }
+
+            @Override
+            public NormalizedToken normalizedToken() {
+                return new DefaultNormalizedToken(new StateHistoryToken(""));
             }
         };
     }
@@ -84,6 +96,36 @@ public class DesktopStateHistory implements AppHistory {
     }
 
     @Override
+    public void fireState(String token, String title, String data) {
+
+    }
+
+    @Override
+    public void fireState(String token) {
+
+    }
+
+    @Override
+    public void pushState(String token, String title, String data, TokenParameter... parameters) {
+
+    }
+
+    @Override
+    public void pushState(String token, TokenParameter... parameters) {
+
+    }
+
+    @Override
+    public void fireState(String token, String title, String data, TokenParameter... parameters) {
+
+    }
+
+    @Override
+    public void fireState(String token, TokenParameter... parameters) {
+
+    }
+
+    @Override
     public HistoryToken currentToken() {
         return new StateHistoryToken("");
     }
@@ -93,10 +135,20 @@ public class DesktopStateHistory implements AppHistory {
 
         private final TokenFilter tokenFilter;
 
+        private final boolean removeOnComplete;
+
         private HistoryListener(StateListener listener,
                                 TokenFilter tokenFilter) {
             this.listener = listener;
             this.tokenFilter = tokenFilter;
+            this.removeOnComplete = false;
+        }
+
+        private HistoryListener(StateListener listener,
+                                TokenFilter tokenFilter, boolean removeOnComplete) {
+            this.listener = listener;
+            this.tokenFilter = tokenFilter;
+            this.removeOnComplete = removeOnComplete;
         }
     }
 
@@ -125,6 +177,11 @@ public class DesktopStateHistory implements AppHistory {
         @Override
         public String title() {
             return this.title;
+        }
+
+        @Override
+        public NormalizedToken normalizedToken() {
+            return new DefaultNormalizedToken(new StateHistoryToken(token.value()));
         }
     }
 }

@@ -1,7 +1,7 @@
 package org.dominokit.domino.apt.client.processors.module.client.initialtasks;
 
-import org.dominokit.domino.api.client.startup.ClientStartupTask;
 import org.dominokit.domino.api.client.annotations.StartupTask;
+import org.dominokit.domino.api.client.startup.ClientStartupTask;
 import org.dominokit.domino.apt.commons.BaseProcessor;
 
 import javax.annotation.processing.RoundEnvironment;
@@ -23,7 +23,7 @@ public class InitialTasksCollector {
         roundEnv.getElementsAnnotatedWith(StartupTask.class).stream()
                 .map(elementFactory::make)
                 .filter(e -> e.validateElementKind(ElementKind.CLASS))
-                .filter(i -> i.isImplementsInterface(ClientStartupTask.class))
+                .filter(i -> i.isAssignableFrom(ClientStartupTask.class))
                 .collect(Collectors.toSet())
                 .forEach(i -> initialTasks.add(i.fullQualifiedNoneGenericName()));
     }

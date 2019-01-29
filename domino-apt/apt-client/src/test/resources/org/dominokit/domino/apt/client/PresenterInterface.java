@@ -1,12 +1,21 @@
 package org.dominokit.domino.apt.client;
 
 import org.dominokit.domino.api.client.annotations.ListenTo;
+import org.dominokit.domino.api.client.annotations.Presenter;
 import org.dominokit.domino.api.client.mvp.presenter.Presentable;
 import org.dominokit.domino.api.shared.extension.MainEventContext;
 import org.dominokit.domino.api.shared.extension.MainDominoEvent;
 
-public interface PresenterInterface extends Presentable {
+@Presenter
+public class PresenterInterface implements Presentable {
 
     @ListenTo(event = MainDominoEvent.class)
-    void onMainDominoEventReceived(MainEventContext context);
+    public void onMainDominoEventReceived(MainEventContext context){
+
+    };
+
+    @Override
+    public Presentable init() {
+        return this;
+    }
 }
