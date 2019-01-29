@@ -72,9 +72,19 @@ public class ProcessorElement {
         return Objects.nonNull(element.getAnnotation(annotationClass));
     }
 
-    public boolean isImplementsInterface(Class<?> clazz) {
-        return typeUtils.isAssignable(element.asType(),
-                (TypeMirror) elementUtils.getTypeElement(clazz.getCanonicalName()).asType());
+//    public boolean isImplementsInterface(Class<?> clazz) {
+//        return typeUtils.isAssignable(element.asType(),
+//                (TypeMirror) elementUtils.getTypeElement(clazz.getCanonicalName()).asType());
+//    }
+
+    /**
+     * <p>isAssignableFrom.</p>
+     *
+     * @param targetClass a {@link java.lang.Class} object.
+     * @return a boolean.
+     */
+    public boolean isAssignableFrom(Class<?> targetClass) {
+        return typeUtils.isAssignable(element.asType(), typeUtils.getDeclaredType(elementUtils.getTypeElement(targetClass.getName())));
     }
 
     public boolean isImplementsGenericInterface(Class<?> targetInterface) {

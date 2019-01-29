@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.dominokit.domino.test</groupId>
         <artifactId>domino-test</artifactId>
-        <version>1.0-rc.3-SNAPSHOT</version>
+        <version>1.0-rc.4-SNAPSHOT</version>
     </parent>
     <artifactId>domino-server-test</artifactId>
     <packaging>jar</packaging>

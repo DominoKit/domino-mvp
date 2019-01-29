@@ -1,62 +1,139 @@
 package org.dominokit.domino.apt.client.processors.module.client;
 
+import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.TypeName;
+import com.squareup.javapoet.TypeSpec;
+import org.dominokit.domino.api.client.InitialTaskRegistry;
 import org.dominokit.domino.api.client.ModuleConfiguration;
 import org.dominokit.domino.api.client.annotations.ClientModule;
-import org.dominokit.domino.apt.client.processors.module.client.listeners.RegisterListenersMethodWriter;
-import org.dominokit.domino.apt.client.processors.module.client.initialtasks.RegisterInitialTasksMethodWriter;
-import org.dominokit.domino.apt.client.processors.module.client.presenters.RegisterPresentersMethodWriter;
-import org.dominokit.domino.apt.client.processors.module.client.requests.RegisterRequestsMethodWriter;
-import org.dominokit.domino.apt.client.processors.module.client.requests.sender.RegisterSendersMethodWriter;
-import org.dominokit.domino.apt.client.processors.module.client.views.RegisterViewsMethodWriter;
+import org.dominokit.domino.api.client.annotations.Singleton;
+import org.dominokit.domino.api.client.annotations.UiView;
+import org.dominokit.domino.api.client.mvp.presenter.PresenterSupplier;
+import org.dominokit.domino.api.client.mvp.presenter.ViewBaseClientPresenter;
+import org.dominokit.domino.api.client.mvp.presenter.ViewablePresenterSupplier;
+import org.dominokit.domino.api.client.mvp.view.View;
+import org.dominokit.domino.apt.commons.AbstractSourceBuilder;
 import org.dominokit.domino.apt.commons.DominoTypeBuilder;
-import org.dominokit.domino.apt.commons.JavaSourceWriter;
-import org.dominokit.domino.apt.commons.ProcessorElement;
-import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.TypeSpec;
 
-import java.io.IOException;
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.Modifier;
+import javax.lang.model.type.TypeMirror;
+import java.util.Optional;
 import java.util.Set;
 
-public class ModuleConfigurationSourceWriter extends JavaSourceWriter {
+import static java.util.Objects.nonNull;
 
-    private final Set<String> senders;
-    private final Set<String> listeners;
+public class ModuleConfigurationSourceWriter extends AbstractSourceBuilder {
+
     private final Set<String> initialTasks;
-    private final Set<String> requests;
     private final Set<String> presenters;
     private final Set<String> views;
+    private final Element moduleElement;
 
-    public ModuleConfigurationSourceWriter(ProcessorElement processorElement,
-                                           Set<String> presenters, Set<String> views, Set<String> requests,
-                                           Set<String> initialTasks, Set<String> listeners,
-                                           Set<String> senders) {
-        super(processorElement);
+    public ModuleConfigurationSourceWriter(Element moduleElement,
+                                           Set<String> presenters, Set<String> views,
+                                           Set<String> initialTasks,
+                                           ProcessingEnvironment processingEnvironment) {
+        super(processingEnvironment);
+        this.moduleElement = moduleElement;
         this.presenters = presenters;
         this.views = views;
-        this.requests = requests;
         this.initialTasks = initialTasks;
-        this.listeners = listeners;
-        this.senders = senders;
+
     }
 
     @Override
-    public String write() throws IOException {
-        TypeSpec.Builder clientModuleTypeBuilder = DominoTypeBuilder.build(processorElement.getAnnotation(ClientModule.class).name() + "ModuleConfiguration",
+    public TypeSpec.Builder asTypeBuilder() {
+        TypeSpec.Builder clientModuleTypeBuilder = DominoTypeBuilder.build(moduleElement.getAnnotation(ClientModule.class).name() + "ModuleConfiguration",
                 ClientModuleAnnotationProcessor.class)
                 .addSuperinterface(ModuleConfiguration.class);
-        writeBody(clientModuleTypeBuilder);
-        StringBuilder asString = new StringBuilder();
-        JavaFile.builder(processorElement.elementPackage(), clientModuleTypeBuilder.build()).skipJavaLangImports(true).build().writeTo(asString);
-        return asString.toString();
+
+        if (!presenters.isEmpty()) {
+            clientModuleTypeBuilder.addMethod(registerPresenters());
+        }
+
+        if(!views.isEmpty()){
+            clientModuleTypeBuilder.addMethod(registerViews());
+        }
+
+        if(!initialTasks.isEmpty()){
+            clientModuleTypeBuilder.addMethod(registerInitialTasks());
+        }
+
+        return clientModuleTypeBuilder;
     }
 
-    private void writeBody(TypeSpec.Builder clientModuleTypeBuilder) {
-        new RegisterPresentersMethodWriter(clientModuleTypeBuilder).write(presenters);
-        new RegisterViewsMethodWriter(clientModuleTypeBuilder).write(views);
-        new RegisterRequestsMethodWriter(clientModuleTypeBuilder).write(requests);
-        new RegisterInitialTasksMethodWriter(clientModuleTypeBuilder).write(initialTasks);
-        new RegisterListenersMethodWriter(clientModuleTypeBuilder).write(listeners);
-        new RegisterSendersMethodWriter(clientModuleTypeBuilder).write(senders);
+    private MethodSpec registerPresenters() {
+
+        MethodSpec.Builder methodBuilder = MethodSpec.methodBuilder("registerPresenters")
+                .addAnnotation(Override.class)
+                .addModifiers(Modifier.PUBLIC);
+
+        presenters.stream()
+                .map(elements::getTypeElement)
+                .forEach(presenter -> {
+                    ClassName configClassName = ClassName.bestGuess(elements.getPackageOf(presenter).getQualifiedName().toString() + "." + presenter.getSimpleName().toString() + "_Config");
+                    String configName = processorUtil.lowerFirstLetter(presenter.getSimpleName().toString() + "_Config");
+                    boolean singleton = nonNull(presenter.getAnnotation(Singleton.class)) && presenter.getAnnotation(Singleton.class).value();
+
+                    methodBuilder.addStatement("$T $L = new $T()", configClassName, configName, configClassName);
+                    if (processorUtil.isAssignableFrom(presenter, ViewBaseClientPresenter.class)) {
+                        processorUtil.findTypeArgument(presenter.asType(), View.class)
+                                .ifPresent(viewType ->
+                                        methodBuilder.addStatement("$L.setPresenterSupplier(new $T<$T, $T>($L, ()-> new $T()))", configName, TypeName.get(ViewablePresenterSupplier.class), TypeName.get(presenter.asType()), TypeName.get(viewType), singleton, TypeName.get(presenter.asType())));
+
+                    } else {
+                        methodBuilder.addStatement("$L.setPresenterSupplier(new $T<$T>($L, ()-> new $T()))", configName, TypeName.get(PresenterSupplier.class), TypeName.get(presenter.asType()), singleton, TypeName.get(presenter.asType()));
+                    }
+                });
+
+        return methodBuilder.build();
     }
+
+    private MethodSpec registerViews() {
+
+        MethodSpec.Builder methodBuilder = MethodSpec.methodBuilder("registerViews")
+                .addAnnotation(Override.class)
+                .addModifiers(Modifier.PUBLIC);
+
+        views.stream().map(elements::getTypeElement)
+                .forEach(view -> {
+                    Optional<TypeMirror> presenterType = processorUtil.getClassValueFromAnnotation(view, UiView.class, "presentable");
+                    boolean proxy = view.getAnnotation(UiView.class).proxy();
+                    if(!presenterType.isPresent()){
+                        throw new IllegalArgumentException();
+                    }
+
+                    presenterType.ifPresent(presenter -> {
+                        String postfix = (proxy ? "_Proxy" : "") + "_Config";
+                        ClassName configClassName = ClassName.bestGuess(elements.getPackageOf(types.asElement(presenter)).getQualifiedName().toString() + "." + types.asElement(presenter).getSimpleName().toString() + postfix);
+                        String configName = processorUtil.lowerFirstLetter(types.asElement(presenter).getSimpleName().toString() +postfix);
+
+                        methodBuilder.addStatement("$T $L = new $T()", configClassName, configName, configClassName);
+                        methodBuilder.addStatement("$L.setViewSupplier($T::new)", configName, TypeName.get(view.asType()));
+
+                    });
+                });
+
+        return methodBuilder.build();
+    }
+
+    private MethodSpec registerInitialTasks() {
+
+        MethodSpec.Builder methodBuilder = MethodSpec.methodBuilder("registerInitialTasks")
+                .addAnnotation(Override.class)
+                .addModifiers(Modifier.PUBLIC)
+                .addParameter(TypeName.get(InitialTaskRegistry.class), "registry");
+        initialTasks.stream().map(elements::getTypeElement)
+                .forEach(initialTask ->{
+                    methodBuilder.addStatement("registry.registerInitialTask(new $T())", TypeName.get(initialTask.asType()));
+                });
+
+        return methodBuilder.build();
+    }
+
+
 
 }

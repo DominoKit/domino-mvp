@@ -8,7 +8,7 @@ import org.dominokit.domino.api.shared.extension.MainDominoEvent;
 public class AnnotatedClassWithPresentableListener implements DominoEventListener<MainDominoEvent> {
 
     @Override
-    public void listen(MainDominoEvent dominoEvent) {
+    public void onEventReceived(MainDominoEvent dominoEvent) {
         //for generation testing only
     }
 }

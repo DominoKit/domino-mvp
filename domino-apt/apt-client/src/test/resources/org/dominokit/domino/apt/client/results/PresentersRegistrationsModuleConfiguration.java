@@ -3,7 +3,7 @@ package org.dominokit.domino.apt.client;
 import javax.annotation.Generated;
 import org.dominokit.domino.api.client.ModuleConfiguration;
 import org.dominokit.domino.api.client.mvp.PresenterRegistry;
-import org.dominokit.domino.api.client.mvp.presenter.LazyPresenterLoader;
+import org.dominokit.domino.api.client.mvp.presenter.PresenterSupplier;
 import org.dominokit.domino.api.client.mvp.presenter.Presentable;
 
 /**
@@ -13,13 +13,13 @@ import org.dominokit.domino.api.client.mvp.presenter.Presentable;
 public class PresentersRegistrationsModuleConfiguration implements ModuleConfiguration {
     @Override
     public void registerPresenters(PresenterRegistry registry) {
-        registry.registerPresenter(new LazyPresenterLoader(FirstAnnotatedClassWithPresenter.class.getCanonicalName(), FirstAnnotatedClassWithPresenter.class.getCanonicalName()) {
+        registry.registerPresenter(new PresenterSupplier(FirstAnnotatedClassWithPresenter.class.getCanonicalName(), FirstAnnotatedClassWithPresenter.class.getCanonicalName()) {
             @Override
             protected Presentable make() {
                 return new FirstAnnotatedClassWithPresenter();
             }
         });
-        registry.registerPresenter(new LazyPresenterLoader(SecondAnnotatedClassWithPresenter.class.getCanonicalName(), SecondAnnotatedClassWithPresenter.class.getCanonicalName()) {
+        registry.registerPresenter(new PresenterSupplier(SecondAnnotatedClassWithPresenter.class.getCanonicalName(), SecondAnnotatedClassWithPresenter.class.getCanonicalName()) {
             @Override
             protected Presentable make() {
                 return new SecondAnnotatedClassWithPresenter();

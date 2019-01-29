@@ -2,7 +2,7 @@ package org.dominokit.domino.apt.client.processors.module.client.listeners;
 
 import org.dominokit.domino.apt.commons.AbstractRegisterMethodWriter;
 
-class ListenerEntry implements AbstractRegisterMethodWriter.ItemEntry {
+public class ListenerEntry implements AbstractRegisterMethodWriter.ItemEntry {
     protected final String listener;
     protected final String dominoEvent;
 

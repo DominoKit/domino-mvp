@@ -1,5 +1,7 @@
 package org.dominokit.domino.apt.commons;
 
+import com.google.common.collect.SetMultimap;
+
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
@@ -13,6 +15,8 @@ import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
 import java.io.IOException;
 import java.io.Writer;
+import java.lang.annotation.Annotation;
+import java.util.Set;
 
 public abstract class BaseProcessor extends AbstractProcessor {
 
@@ -71,6 +75,11 @@ public abstract class BaseProcessor extends AbstractProcessor {
         public ProcessorElement make(Element element){
             return new ProcessorElement(element, this.elementUtils, this.typeUtils, messager);
         }
+    }
+
+    public interface ProcessingStep {
+
+        void process(Set<? extends Element> elementsByAnnotation);
     }
 }
 

@@ -36,7 +36,7 @@
             <dependency>
                 <groupId>org.dominokit.domino</groupId>
                 <artifactId>domino</artifactId>
-                <version>1.0-rc.3-SNAPSHOT</version>
+                <version>1.0-rc.4-SNAPSHOT</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -70,7 +70,7 @@
         <dependency>
             <groupId>com.google.auto.service</groupId>
             <artifactId>auto-service</artifactId>
-            <version>1.0-rc3</version>
+            <version>1.0-rc4</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

@@ -1,15 +1,9 @@
 package org.dominokit.domino.test.api.client;
 
-import org.dominokit.domino.api.shared.history.AppHistory;
-import org.dominokit.domino.api.shared.history.HistoryToken;
-import org.dominokit.domino.api.shared.history.TokenFilter;
+import org.dominokit.domino.api.shared.history.*;
 import org.dominokit.domino.client.commons.history.DominoDirectState;
-import org.dominokit.domino.client.commons.history.StateHistoryToken;
 
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Set;
+import java.util.*;
 
 import static java.util.Objects.isNull;
 
@@ -21,12 +15,22 @@ public class TestDominoHistory implements AppHistory {
 
     @Override
     public DirectState listen(StateListener listener) {
-        return listen(TokenFilter.any(), listener);
+        return listen(TokenFilter.any(), listener, false);
     }
 
     @Override
     public DirectState listen(TokenFilter tokenFilter, StateListener listener) {
-        listeners.add(new HistoryListener(listener, tokenFilter));
+        return listen(tokenFilter, listener, false);
+    }
+
+    @Override
+    public DirectState listen(StateListener listener, boolean removeOnComplete) {
+        return listen(TokenFilter.any(), listener, removeOnComplete);
+    }
+
+    @Override
+    public DirectState listen(TokenFilter tokenFilter, StateListener listener, boolean removeOnComplete) {
+        listeners.add(new HistoryListener(listener, tokenFilter, removeOnComplete));
         return new DominoDirectState(tokenFilter, currentState());
     }
 
@@ -65,12 +69,44 @@ public class TestDominoHistory implements AppHistory {
 
     @Override
     public void pushState(String token, String title, String data) {
-        push(token, data);
+        push(token, data, new TokenParameter[0]);
+    }
+
+    @Override
+    public void pushState(String token, String title, String data, TokenParameter... parameters) {
+        push(token, data, parameters);
     }
 
     @Override
     public void pushState(String token) {
-        push(token, "");
+        push(token, "", new TokenParameter[0]);
+    }
+
+    @Override
+    public void pushState(String token, TokenParameter... parameters) {
+        push(token, "", parameters);
+    }
+
+    @Override
+    public void fireState(String token, String title, String data) {
+        fireState(token, title, data, new TokenParameter[0]);
+    }
+
+    @Override
+    public void fireState(String token, String title, String data, TokenParameter... parameters) {
+        pushState(token, title, data, parameters);
+        fireCurrentStateHistory();
+    }
+
+    @Override
+    public void fireState(String token) {
+        fireState(token, new TokenParameter[0]);
+    }
+
+    @Override
+    public void fireState(String token, TokenParameter... parameters) {
+        pushState(token, parameters);
+        fireCurrentStateHistory();
     }
 
     @Override
@@ -96,17 +132,34 @@ public class TestDominoHistory implements AppHistory {
         push(token, data);
     }
 
-    private void push(String token, String data) {
-        forwards.push(new HistoryState(token, data));
+    private void push(String token, String data, TokenParameter... parameters) {
+
+        forwards.push(new HistoryState(replaceParameters(token, Arrays.asList(parameters)), data));
+    }
+
+    private String replaceParameters(String token, List<TokenParameter> parametersList) {
+        String result = token;
+        for (TokenParameter parameter:parametersList) {
+            result=result.replace(":"+parameter.getName(), parameter.getValue());
+        }
+        return result;
     }
 
     private class HistoryListener {
         private final StateListener listener;
         private final TokenFilter tokenFilter;
+        private final boolean removeOnComplete;
 
         public HistoryListener(StateListener listener, TokenFilter tokenFilter) {
             this.listener = listener;
             this.tokenFilter = tokenFilter;
+            this.removeOnComplete = false;
+        }
+
+        public HistoryListener(StateListener listener, TokenFilter tokenFilter, boolean removeOnComplete) {
+            this.listener = listener;
+            this.tokenFilter = tokenFilter;
+            this.removeOnComplete = removeOnComplete;
         }
     }
 
@@ -143,6 +196,11 @@ public class TestDominoHistory implements AppHistory {
         @Override
         public String title() {
             return "test title";
+        }
+
+        @Override
+        public NormalizedToken normalizedToken() {
+            return new DefaultNormalizedToken(new StateHistoryToken(historyState.token));
         }
     }
 

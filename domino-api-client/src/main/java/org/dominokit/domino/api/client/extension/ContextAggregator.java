@@ -1,21 +1,52 @@
 package org.dominokit.domino.api.client.extension;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class ContextAggregator {
 
-    private Set<ContextWait> contextsSet = new LinkedHashSet<>();
+    private static final Logger LOGGER = LoggerFactory.getLogger(ContextAggregator.class);
 
-    private ContextAggregator(Set<ContextWait> contextSet,
+    private Set<ContextWait> contextsSet = new LinkedHashSet<>();
+    private Set<ContextWait> removed = new LinkedHashSet<>();
+    private ReadyHandler handler;
+    private int contextCount = 0;
+
+    private ContextAggregator(Set<ContextWait> contexts,
                               ReadyHandler handler) {
-        this.contextsSet = contextSet;
-        this.contextsSet.forEach(c -> c.onReady(() -> {
-            this.contextsSet.remove(c);
-            if (this.contextsSet.isEmpty())
-                handler.onReady();
-        }));
+        this.handler = handler;
+        contexts.forEach(this::setupContext);
+    }
+
+    public void setupContext(ContextWait c) {
+        if(!this.contextsSet.contains(c)) {
+            this.contextsSet.add(c);
+            contextCount++;
+            c.onReady(() -> {
+                this.contextsSet.remove(c);
+                this.removed.add(c);
+                LOGGER.info("Total : "+contextCount+", Completed : "+removed.size()+", Remaining : "+contextsSet.size());
+                if (this.contextsSet.isEmpty()) {
+                    handler.onReady();
+                }
+            });
+        }
+    }
+
+    public void reset(){
+       contextsSet.addAll(removed);
+       removed.clear();
+    }
+
+    public void resetContext(ContextWait context){
+        if(removed.contains(context)){
+            contextsSet.add(context);
+            removed.remove(context);
+        }
     }
 
     public static CanWaitForContext waitFor(ContextWait context) {

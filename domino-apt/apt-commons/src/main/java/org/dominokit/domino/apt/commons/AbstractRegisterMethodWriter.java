@@ -6,6 +6,8 @@ import com.squareup.javapoet.TypeSpec;
 import javax.lang.model.element.Modifier;
 import java.util.Collection;
 
+import static java.util.Objects.nonNull;
+
 public abstract class AbstractRegisterMethodWriter<E extends AbstractRegisterMethodWriter.ItemEntry, I> {
 
     private final TypeSpec.Builder clientModuleTypeBuilder;
@@ -18,8 +20,11 @@ public abstract class AbstractRegisterMethodWriter<E extends AbstractRegisterMet
         if (!items.isEmpty()) {
             MethodSpec.Builder registerViewsMethodBuilder = MethodSpec.methodBuilder(methodName())
                     .addAnnotation(Override.class)
-                    .addModifiers(Modifier.PUBLIC)
-                    .addParameter(registryClass(), "registry");
+                    .addModifiers(Modifier.PUBLIC);
+
+            if(nonNull(registryClass())) {
+                    registerViewsMethodBuilder.addParameter(registryClass(), "registry");
+            }
             items.stream().map(this::parseEntry)
                     .forEach(e -> registerItem(e, registerViewsMethodBuilder));
             clientModuleTypeBuilder.addMethod(registerViewsMethodBuilder.build());

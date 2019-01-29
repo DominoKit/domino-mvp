@@ -8,4 +8,6 @@ import java.util.Set;
 public interface DominoEventsListenersRepository {
     void addListener(Class<? extends DominoEvent> dominoEvent, DominoEventListener dominoEventListener);
     Set<DominoEventListener> getEventListeners(Class<? extends DominoEvent> dominoEvent);
+
+    void removeListener(Class<? extends DominoEvent> event, DominoEventListener listener);
 }

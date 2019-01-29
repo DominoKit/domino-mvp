@@ -4,5 +4,8 @@ import org.dominokit.domino.api.client.mvp.view.View;
 
 public abstract class ClientPresenter<V extends View> {
 
-    protected  abstract ClientPresenter<V> prepare();
+    protected abstract ClientPresenter<V> prepare();
+
+    protected abstract void onActivated();
+    protected abstract void onDeactivated();
 }

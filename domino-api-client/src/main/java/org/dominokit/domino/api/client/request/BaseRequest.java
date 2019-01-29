@@ -3,6 +3,8 @@ package org.dominokit.domino.api.client.request;
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.mvp.presenter.Presentable;
 
+import java.util.function.Supplier;
+
 public abstract class BaseRequest implements Request {
 
     public static final String REQUEST_HAVE_ALREADY_BEEN_SENT = "Request have already been sent";
@@ -34,13 +36,7 @@ public abstract class BaseRequest implements Request {
         this.state.execute(new DefaultRequestStateContext());
     }
 
-    protected Presentable getRequestPresenter() {
-        return clientApp.getPresentersRepository().getPresenter(getPresenterName());
-    }
 
-    private String getPresenterName() {
-        return clientApp.getRequestRepository().findRequestPresenterWrapper(this.getKey()).getPresenterName();
-    }
 
     @Override
     public void applyState(RequestStateContext context) {

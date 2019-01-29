@@ -5,10 +5,9 @@ import org.dominokit.domino.api.client.events.EventsBus;
 import org.dominokit.domino.api.client.extension.ContextAggregator;
 import org.dominokit.domino.api.client.extension.DominoEventsListenersRepository;
 import org.dominokit.domino.api.client.extension.DominoEventsRegistry;
-import org.dominokit.domino.api.client.mvp.PresenterRegistry;
 import org.dominokit.domino.api.client.mvp.ViewRegistry;
-import org.dominokit.domino.api.client.mvp.presenter.LazyPresenterLoader;
-import org.dominokit.domino.api.client.mvp.presenter.PresentersRepository;
+import org.dominokit.domino.api.client.mvp.slots.Slot;
+import org.dominokit.domino.api.client.mvp.slots.SlotRegistry;
 import org.dominokit.domino.api.client.mvp.view.LazyViewLoader;
 import org.dominokit.domino.api.client.mvp.view.ViewsRepository;
 import org.dominokit.domino.api.client.request.*;
@@ -26,20 +25,14 @@ import java.util.stream.Collectors;
 import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.groupingBy;
 
-public class ClientApp
-        implements PresenterRegistry, CommandRegistry, ViewRegistry, InitialTaskRegistry, DominoEventsRegistry,
-        RequestRestSendersRegistry {
+public class ClientApp implements ViewRegistry, InitialTaskRegistry, DominoEventsRegistry {
 
     private static final AttributeHolder<RequestRouter<PresenterCommand>> CLIENT_ROUTER_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<RequestRouter<ServerRequest>> SERVER_ROUTER_HOLDER =
             new AttributeHolder<>();
     private static final AttributeHolder<EventsBus> EVENTS_BUS_HOLDER = new AttributeHolder<>();
-    private static final AttributeHolder<CommandsRepository> COMMANDS_REPOSITORY_HOLDER = new AttributeHolder<>();
-    private static final AttributeHolder<PresentersRepository> PRESENTERS_REPOSITORY_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<ViewsRepository> VIEWS_REPOSITORY_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<DominoEventsListenersRepository> LISTENERS_REPOSITORY_HOLDER =
-            new AttributeHolder<>();
-    private static final AttributeHolder<RequestRestSendersRepository> REQUEST_REST_SENDERS_REPOSITORY_HOLDER =
             new AttributeHolder<>();
     private static final AttributeHolder<MainDominoEvent> MAIN_EXTENSION_POINT_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<AppHistory> HISTORY_HOLDER = new AttributeHolder<>();
@@ -47,19 +40,10 @@ public class ClientApp
     private static final AttributeHolder<AsyncRunner> ASYNC_RUNNER_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<DominoOptions> DOMINO_OPTIONS_HOLDER = new AttributeHolder<>();
 
+
     private static ClientApp instance = new ClientApp();
 
     private ClientApp() {
-    }
-
-    @Override
-    public void registerPresenter(LazyPresenterLoader lazyPresenterLoader) {
-        PRESENTERS_REPOSITORY_HOLDER.attribute.registerPresenter(lazyPresenterLoader);
-    }
-
-    @Override
-    public void registerCommand(String commandName, String presenterName) {
-        COMMANDS_REPOSITORY_HOLDER.attribute.registerCommand(new RequestHolder(commandName, presenterName));
     }
 
     @Override
@@ -70,11 +54,6 @@ public class ClientApp
     @Override
     public void addListener(Class<? extends DominoEvent> event, DominoEventListener dominoEventListener) {
         LISTENERS_REPOSITORY_HOLDER.attribute.addListener(event, dominoEventListener);
-    }
-
-    @Override
-    public void registerRequestRestSender(String requestName, LazyRequestRestSenderLoader loader) {
-        REQUEST_REST_SENDERS_REPOSITORY_HOLDER.attribute.registerSender(requestName, loader);
     }
 
     @Override
@@ -98,20 +77,8 @@ public class ClientApp
         return EVENTS_BUS_HOLDER.attribute;
     }
 
-    public CommandsRepository getRequestRepository() {
-        return COMMANDS_REPOSITORY_HOLDER.attribute;
-    }
-
-    public PresentersRepository getPresentersRepository() {
-        return PRESENTERS_REPOSITORY_HOLDER.attribute;
-    }
-
     public ViewsRepository getViewsRepository() {
         return VIEWS_REPOSITORY_HOLDER.attribute;
-    }
-
-    public RequestRestSendersRepository getRequestRestSendersRepository() {
-        return REQUEST_REST_SENDERS_REPOSITORY_HOLDER.attribute;
     }
 
     public AsyncRunner getAsyncRunner() {
@@ -126,13 +93,18 @@ public class ClientApp
         return DOMINO_OPTIONS_HOLDER.attribute;
     }
 
+    public void registerEventListener(Class<? extends DominoEvent> event, DominoEventListener listener){
+        LISTENERS_REPOSITORY_HOLDER.attribute.addListener(event, listener);
+    }
+
+    public void removeEventListener(Class<? extends DominoEvent> event, DominoEventListener listener){
+        LISTENERS_REPOSITORY_HOLDER.attribute.removeListener(event, listener);
+    }
+
     public void configureModule(ModuleConfiguration configuration) {
-        configuration.registerPresenters(this);
-        configuration.registerRequests(this);
-        configuration.registerViews(this);
-        configuration.registerListeners(this);
+        configuration.registerPresenters();
+        configuration.registerViews();
         configuration.registerInitialTasks(this);
-        configuration.registerRequestRestSenders(this);
     }
 
 
@@ -181,7 +153,8 @@ public class ClientApp
     }
 
     private void start() {
-        fireEvent(MainDominoEvent.class, MAIN_EXTENSION_POINT_HOLDER.attribute);
+        fireEvent(MainDominoEvent.class, new MainDominoEvent());
+        getHistory().fireCurrentStateHistory();
         onApplicationStarted();
     }
 
@@ -196,7 +169,7 @@ public class ClientApp
                           DominoEvent dominoEvent) {
         LISTENERS_REPOSITORY_HOLDER.attribute.getEventListeners(extensionPointInterface)
                 .forEach(c ->
-                        getAsyncRunner().runAsync(() -> c.listen(dominoEvent)));
+                        getAsyncRunner().runAsync(() -> c.onEventReceived(dominoEvent)));
     }
 
     @FunctionalInterface
@@ -211,16 +184,6 @@ public class ClientApp
 
     @FunctionalInterface
     public interface HasEventBus {
-        HasRequestRepository requestRepository(CommandsRepository requestRepository);
-    }
-
-    @FunctionalInterface
-    public interface HasRequestRepository {
-        HasPresentersRepository presentersRepository(PresentersRepository presentersRepository);
-    }
-
-    @FunctionalInterface
-    public interface HasPresentersRepository {
         HasViewRepository viewsRepository(ViewsRepository viewsRepository);
     }
 
@@ -231,23 +194,12 @@ public class ClientApp
 
     @FunctionalInterface
     public interface HasDominoEventListenersRepository {
-        HasRequestRestSendersRepository requestSendersRepository(
-                RequestRestSendersRepository requestRestSendersRepository);
-    }
-
-    @FunctionalInterface
-    public interface HasRequestRestSendersRepository {
         HasHistory history(AppHistory history);
     }
 
     @FunctionalInterface
     public interface HasHistory {
-        HasAsyncRunner asyncRunner(AsyncRunner asyncRunner);
-    }
-
-    @FunctionalInterface
-    public interface HasAsyncRunner {
-        HasOptions mainExtensionPoint(MainDominoEvent mainDominoEvent);
+        HasOptions asyncRunner(AsyncRunner asyncRunner);
     }
 
     @FunctionalInterface
@@ -261,18 +213,15 @@ public class ClientApp
     }
 
     public static class ClientAppBuilder
-            implements HasClientRouter, HasServerRouter, HasEventBus, HasRequestRepository, HasPresentersRepository,
-            HasViewRepository, HasDominoEventListenersRepository, HasRequestRestSendersRepository,
-            HasHistory, HasAsyncRunner, HasOptions, CanBuildClientApp {
+            implements HasClientRouter, HasServerRouter, HasEventBus,
+            HasViewRepository, HasDominoEventListenersRepository,
+            HasHistory, HasOptions, CanBuildClientApp {
 
         private RequestRouter<PresenterCommand> clientRouter;
         private RequestRouter<ServerRequest> serverRouter;
         private EventsBus eventsBus;
-        private CommandsRepository requestRepository;
-        private PresentersRepository presentersRepository;
         private ViewsRepository viewsRepository;
         private DominoEventsListenersRepository dominoEventsListenersRepository;
-        private RequestRestSendersRepository requestRestSendersRepository;
         private MainDominoEvent mainDominoEvent;
         private AppHistory history;
         private AsyncRunner asyncRunner;
@@ -299,18 +248,6 @@ public class ClientApp
         }
 
         @Override
-        public HasRequestRepository requestRepository(CommandsRepository requestRepository) {
-            this.requestRepository = requestRepository;
-            return this;
-        }
-
-        @Override
-        public HasPresentersRepository presentersRepository(PresentersRepository presentersRepository) {
-            this.presentersRepository = presentersRepository;
-            return this;
-        }
-
-        @Override
         public HasViewRepository viewsRepository(ViewsRepository viewsRepository) {
             this.viewsRepository = viewsRepository;
             return this;
@@ -323,27 +260,14 @@ public class ClientApp
         }
 
         @Override
-        public HasRequestRestSendersRepository requestSendersRepository(
-                RequestRestSendersRepository requestRestSendersRepository) {
-            this.requestRestSendersRepository = requestRestSendersRepository;
-            return this;
-        }
-
-        @Override
         public HasHistory history(AppHistory history) {
             this.history = history;
             return this;
         }
 
         @Override
-        public HasAsyncRunner asyncRunner(AsyncRunner asyncRunner) {
+        public HasOptions asyncRunner(AsyncRunner asyncRunner) {
             this.asyncRunner = asyncRunner;
-            return this;
-        }
-
-        @Override
-        public HasOptions mainExtensionPoint(MainDominoEvent mainDominoEvent) {
-            this.mainDominoEvent = mainDominoEvent;
             return this;
         }
 
@@ -363,11 +287,8 @@ public class ClientApp
             ClientApp.CLIENT_ROUTER_HOLDER.hold(clientRouter);
             ClientApp.SERVER_ROUTER_HOLDER.hold(serverRouter);
             ClientApp.EVENTS_BUS_HOLDER.hold(eventsBus);
-            ClientApp.COMMANDS_REPOSITORY_HOLDER.hold(requestRepository);
-            ClientApp.PRESENTERS_REPOSITORY_HOLDER.hold(presentersRepository);
             ClientApp.VIEWS_REPOSITORY_HOLDER.hold(viewsRepository);
             ClientApp.LISTENERS_REPOSITORY_HOLDER.hold(dominoEventsListenersRepository);
-            ClientApp.REQUEST_REST_SENDERS_REPOSITORY_HOLDER.hold(requestRestSendersRepository);
             ClientApp.MAIN_EXTENSION_POINT_HOLDER.hold(mainDominoEvent);
             ClientApp.HISTORY_HOLDER.hold(history);
             ClientApp.INITIAL_TASKS_HOLDER.hold(new LinkedList<>());

@@ -6,13 +6,9 @@ import elemental2.dom.HTMLElement;
 import jsinterop.base.Js;
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.mvp.slots.SlotRegistry;
-import org.dominokit.domino.client.commons.extensions.CoreMainExtensionPoint;
 import org.dominokit.domino.client.commons.extensions.InMemoryDominoEventsListenerRepository;
-import org.dominokit.domino.client.commons.mvp.presenter.InMemoryPresentersRepository;
 import org.dominokit.domino.client.commons.mvp.view.InMemoryViewRepository;
 import org.dominokit.domino.client.commons.request.ClientRouter;
-import org.dominokit.domino.client.commons.request.InMemoryCommandsRepository;
-import org.dominokit.domino.client.commons.request.InMemoryRequestRestSendersRepository;
 import org.dominokit.domino.client.commons.request.ServerRouter;
 import org.dominokit.domino.gwt.client.async.GwtAsyncRunner;
 import org.dominokit.domino.gwt.client.events.ClientEventFactory;
@@ -45,14 +41,10 @@ public class CoreModule {
                 .clientRouter(clientRouter)
                 .serverRouter(serverRouter)
                 .eventsBus(eventBus)
-                .requestRepository(new InMemoryCommandsRepository())
-                .presentersRepository(new InMemoryPresentersRepository())
                 .viewsRepository(new InMemoryViewRepository())
                 .eventsListenersRepository(new InMemoryDominoEventsListenerRepository())
-                .requestSendersRepository(new InMemoryRequestRestSendersRepository())
                 .history(new StateHistory())
                 .asyncRunner(new GwtAsyncRunner())
-                .mainExtensionPoint(new CoreMainExtensionPoint())
                 .dominoOptions(new DefaultDominoOptions())
                 .build();
     }
