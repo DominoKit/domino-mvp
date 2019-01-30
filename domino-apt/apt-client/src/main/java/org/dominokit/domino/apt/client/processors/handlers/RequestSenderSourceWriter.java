@@ -222,8 +222,7 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
             try {
 
                 CodeBlock.Builder replaceBuilder = CodeBlock.builder()
-                        .beginControlFlow("if (path.contains(\":\"))")
-                        .addStatement("$T processedPath = path", String.class);
+                        .beginControlFlow("if (token.value().contains(\":\"))");
                 StateHistoryToken token = new StateHistoryToken(path);
 
                 token.paths()
@@ -242,9 +241,6 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
                         .stream()
                         .filter(fragment -> fragment.startsWith(":"))
                         .forEach(fragment -> replaceBuilder.addStatement("token.replaceFragment(\"" + fragment + "\", " + convertParameterToGetter(fragment.replace(":","")) + "+\"\")", Objects.class));
-
-
-                replaceBuilder.addStatement("return token.value()");
 
                 replaceBuilder.endControlFlow();
                 replaceParametersBuilder
