@@ -3,6 +3,8 @@ package org.dominokit.domino.api.server;
 import org.dominokit.domino.api.server.response.ResponseContext;
 import org.dominokit.domino.api.server.response.ResponseEndHandler;
 
+import java.util.List;
+
 public class FakeResponseContext implements ResponseContext<TestResponse> {
 
     @Override
@@ -32,6 +34,16 @@ public class FakeResponseContext implements ResponseContext<TestResponse> {
 
     @Override
     public void end(String body) {
+
+    }
+
+    @Override
+    public void end(TestResponse[] bodyArray) {
+
+    }
+
+    @Override
+    public void end(List<TestResponse> bodyList) {
 
     }
 

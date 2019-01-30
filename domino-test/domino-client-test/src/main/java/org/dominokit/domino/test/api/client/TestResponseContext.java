@@ -6,8 +6,12 @@ import org.dominokit.domino.api.server.response.ResponseContext;
 import org.dominokit.domino.api.server.response.ResponseEndHandler;
 import org.dominokit.domino.api.shared.request.ResponseBean;
 
+import java.util.List;
+
 public class TestResponseContext<S extends ResponseBean> implements ResponseContext<S> {
     private S responseBean;
+    private S[] responseArray;
+    private List<S> responseList;
     private String bodyString;
     private boolean ended;
     private int statusCode;
@@ -52,6 +56,20 @@ public class TestResponseContext<S extends ResponseBean> implements ResponseCont
         callEndHandler();
     }
 
+    @Override
+    public void end(S[] bodyArray) {
+        this.ended = true;
+        this.responseArray = bodyArray;
+        callEndHandler();
+    }
+
+    @Override
+    public void end(List<S> bodyList) {
+        this.ended = true;
+        this.responseList = bodyList;
+        callEndHandler();
+    }
+
     private void callEndHandler() {
         endHandler.onResponseEnded();
     }
@@ -79,5 +97,13 @@ public class TestResponseContext<S extends ResponseBean> implements ResponseCont
 
     public int getStatusCode() {
         return statusCode;
+    }
+
+    public S[] getResponseArray() {
+        return responseArray;
+    }
+
+    public List<S> getResponseList() {
+        return responseList;
     }
 }

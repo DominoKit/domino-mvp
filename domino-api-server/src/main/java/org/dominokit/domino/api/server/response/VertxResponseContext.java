@@ -4,6 +4,8 @@ import io.vertx.core.json.Json;
 import io.vertx.ext.web.RoutingContext;
 import org.dominokit.domino.api.shared.request.ResponseBean;
 
+import java.util.List;
+
 public class VertxResponseContext<S extends ResponseBean> implements ResponseContext<S> {
 
     private final RoutingContext routingContext;
@@ -44,6 +46,18 @@ public class VertxResponseContext<S extends ResponseBean> implements ResponseCon
     @Override
     public void end(String body) {
         routingContext.response().end(body);
+    }
+
+    @Override
+    public void end(S[] bodyArray) {
+        putHeader("Content-Type", "application/json");
+        end(Json.encode(bodyArray));
+    }
+
+    @Override
+    public void end(List<S> bodyList) {
+        putHeader("Content-Type", "application/json");
+        end(Json.encode(bodyList));
     }
 
     @Override

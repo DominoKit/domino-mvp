@@ -8,6 +8,7 @@ import org.dominokit.domino.api.server.response.ResponseEndHandler;
 import org.dominokit.domino.api.shared.request.RequestBean;
 import org.dominokit.domino.api.shared.request.ResponseBean;
 
+import java.util.List;
 import java.util.Set;
 
 public class DefaultExecutionContext<T extends RequestBean, S extends ResponseBean> implements ExecutionContext<T, S> {
@@ -70,6 +71,16 @@ public class DefaultExecutionContext<T extends RequestBean, S extends ResponseBe
     @Override
     public void end(String body) {
         responseContext.end(body);
+    }
+
+    @Override
+    public void end(S[] bodyArray) {
+        responseContext.end(bodyArray);
+    }
+
+    @Override
+    public void end(List<S> bodyList) {
+        responseContext.end(bodyList);
     }
 
     @Override

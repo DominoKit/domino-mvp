@@ -11,5 +11,5 @@ import java.lang.annotation.Target;
 public @interface RequestFactory {
 
     @NotNull
-    String value() default "";
+    String serviceRoot() default "";
 }

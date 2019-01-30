@@ -2,6 +2,8 @@ package org.dominokit.domino.api.server.response;
 
 import org.dominokit.domino.api.shared.request.ResponseBean;
 
+import java.util.List;
+
 public interface ResponseContext<T extends ResponseBean> {
 
     ResponseContext<T> putHeader(String name, String value);
@@ -13,6 +15,10 @@ public interface ResponseContext<T extends ResponseBean> {
     void end();
 
     void end(T body);
+
+    void end(T[] bodyArray);
+
+    void end(List<T> bodyList);
 
     void end(String body);
 

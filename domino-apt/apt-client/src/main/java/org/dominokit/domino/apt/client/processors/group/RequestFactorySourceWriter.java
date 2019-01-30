@@ -31,7 +31,7 @@ public class RequestFactorySourceWriter extends AbstractSourceBuilder {
     public RequestFactorySourceWriter(Element serviceElement, ProcessingEnvironment processingEnvironment) {
         super(processingEnvironment);
         this.serviceElement = serviceElement;
-        this.requestsServiceRoot = serviceElement.getAnnotation(RequestFactory.class).value();
+        this.requestsServiceRoot = serviceElement.getAnnotation(RequestFactory.class).serviceRoot();
     }
 
     @Override
