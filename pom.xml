@@ -380,7 +380,10 @@
         <profile>
             <id>dev</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>ci</name>
+                    <value>false</value>
+                </property>
             </activation>
             <build>
                 <plugins>
@@ -406,10 +409,7 @@
                 <gpg.secretKeyring>${env.GPG_DIR}/secring.gpg</gpg.secretKeyring>
             </properties>
             <activation>
-                <property>
-                    <name>ci</name>
-                    <value>true</value>
-                </property>
+                <activeByDefault>true</activeByDefault>
             </activation>
             <build>
                 <plugins>

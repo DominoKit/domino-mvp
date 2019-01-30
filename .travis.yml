@@ -7,7 +7,7 @@ language: java
 jdk: oraclejdk8
 branches:
   only:
-  - master
+  - b1.0-rc.3
 cache:
   directories:
   - "$HOME/.m2"
