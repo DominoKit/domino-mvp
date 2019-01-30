@@ -9,7 +9,7 @@ import org.dominokit.domino.test.api.client.ClientContext;
 import org.dominokit.domino.test.api.client.DominoTestClient;
 import ${package}.${subpackage}.client.presenters.${module}PresenterSpy;
 import ${package}.${subpackage}.client.presenters.${module}Proxy_Presenter_Config;
-import ${package}.${subpackage}.client.requests.${module}RequestsFactory;
+import ${package}.${subpackage}.client.services.${module}ServiceFactory;
 import ${package}.${subpackage}.client.views.Fake${module}View;
 import ${package}.${subpackage}.shared.request.${module}Request;
 import ${package}.${subpackage}.shared.response.${module}Response;
@@ -55,7 +55,7 @@ public class ${module}ClientModuleTest {
         clientContext.forRequest(${module}RequestsFactory.${module}Requests_request.class)
                 .returnResponse(new ${module}Response("Server message"));
 
-        ${module}RequestsFactory.INSTANCE.request(new ${module}Request("client message"))
+        ${module}ServiceFactory.INSTANCE.request(new ${module}Request("client message"))
                 .onSuccess(response -> assertThat(response.getServerMessage()).isEqualTo("Server message"))
                 .onFailed(failedResponse -> fail(failedResponse.getThrowable().getMessage()))
                 .send();

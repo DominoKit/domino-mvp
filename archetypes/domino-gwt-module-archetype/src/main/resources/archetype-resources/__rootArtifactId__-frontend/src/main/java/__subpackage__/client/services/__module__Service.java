@@ -1,7 +1,7 @@
 #set( $symbol_pound = '#' )
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
-package ${package}.${subpackage}.client.requests;
+package ${package}.${subpackage}.client.services;
 
 import org.dominokit.domino.api.client.annotations.Path;
 import org.dominokit.domino.api.client.annotations.RequestFactory;
@@ -10,7 +10,7 @@ import ${package}.${subpackage}.shared.response.${module}Response;
 import ${package}.${subpackage}.shared.request.${module}Request;
 
 @RequestFactory
-public interface ${module}Requests {
+public interface ${module}Service {
     @Path("${module}Request")
     Response<${module}Response> request(${module}Request request);
 }
