@@ -1,4 +1,6 @@
-## Welcome to ![logoimage](https://raw.githubusercontent.com/DominoKit/DominoKit.github.io/master/domino-logo.png) Domino
+![logoimage](https://raw.githubusercontent.com/DominoKit/DominoKit.github.io/master/domino-logo.png)
+
+## Welcome to Domino-mvp
 
 <a title="Gitter" href=""><img src="https://badges.gitter.im/Join%20Chat.svg"></a>
 [![Build Status](https://travis-ci.org/DominoKit/domino-mvp.svg?branch=master)](https://travis-ci.org/DominoKit/domino-mvp)
