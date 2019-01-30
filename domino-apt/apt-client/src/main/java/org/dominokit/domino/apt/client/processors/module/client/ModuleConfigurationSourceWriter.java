@@ -107,7 +107,7 @@ public class ModuleConfigurationSourceWriter extends AbstractSourceBuilder {
                     }
 
                     presenterType.ifPresent(presenter -> {
-                        String postfix = (proxy ? "_Proxy" : "") + "_Config";
+                        String postfix = (proxy ? "_Presenter" : "") + "_Config";
                         ClassName configClassName = ClassName.bestGuess(elements.getPackageOf(types.asElement(presenter)).getQualifiedName().toString() + "." + types.asElement(presenter).getSimpleName().toString() + postfix);
                         String configName = processorUtil.lowerFirstLetter(types.asElement(presenter).getSimpleName().toString() +postfix);
 

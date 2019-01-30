@@ -28,7 +28,7 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
 
     @Override
     public TypeSpec.Builder asTypeBuilder() {
-        String proxyClassName = proxyElement.getSimpleName() + "_Proxy";
+        String proxyClassName = proxyElement.getSimpleName() + "_Presenter";
         TypeSpec.Builder proxyType = DominoTypeBuilder.build(proxyClassName, PresenterProcessor.class)
                 .addAnnotation(Presenter.class)
                 .addModifiers(Modifier.PUBLIC)
@@ -220,7 +220,7 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
                         String listenerName = elements.getPackageOf(proxyElement).getQualifiedName().toString()
                                 .replace(".presenters", ".listeners")
                                 +"."+ proxyElement.getSimpleName().toString()
-                                +"_ProxyListenFor"+types.asElement(eventType).getSimpleName().toString();
+                                +"_PresenterListenFor"+types.asElement(eventType).getSimpleName().toString();
                         listenersMethod.addStatement("listenersMap.put($T.class, new $L(this))", TypeName.get(eventType), ClassName.bestGuess(listenerName));
                     });
                 });
