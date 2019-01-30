@@ -25,7 +25,6 @@ public class BaseRoutingAggregator {
     public void init(Consumer<DominoHistory.State> stateConsumer) {
         contextAggregator = ContextAggregator.waitFor(routingEvent)
                 .onReady(() -> {
-                    LOGGER.info("routing completed ----");
                     stateConsumer.accept(routingEvent.get());
                     contextAggregator.resetContext(routingEvent);
                 });
@@ -35,7 +34,6 @@ public class BaseRoutingAggregator {
     }
 
     public void completeRoutingState(DominoHistory.State state) {
-        LOGGER.info("completing routing context : "+ state.token().value());
         routingEvent.complete(state);
     }
 

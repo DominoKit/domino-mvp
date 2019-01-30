@@ -14,7 +14,6 @@ public class ContextAggregator {
     private Set<ContextWait> contextsSet = new LinkedHashSet<>();
     private Set<ContextWait> removed = new LinkedHashSet<>();
     private ReadyHandler handler;
-    private int contextCount = 0;
 
     private ContextAggregator(Set<ContextWait> contexts,
                               ReadyHandler handler) {
@@ -25,11 +24,9 @@ public class ContextAggregator {
     public void setupContext(ContextWait c) {
         if(!this.contextsSet.contains(c)) {
             this.contextsSet.add(c);
-            contextCount++;
             c.onReady(() -> {
                 this.contextsSet.remove(c);
                 this.removed.add(c);
-                LOGGER.info("Total : "+contextCount+", Completed : "+removed.size()+", Remaining : "+contextsSet.size());
                 if (this.contextsSet.isEmpty()) {
                     handler.onReady();
                 }

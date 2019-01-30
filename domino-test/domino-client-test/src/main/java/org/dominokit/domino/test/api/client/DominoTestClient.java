@@ -10,8 +10,9 @@ import io.vertx.ext.web.RoutingContext;
 import org.dominokit.domino.api.client.ApplicationStartHandler;
 import org.dominokit.domino.api.client.ModuleConfiguration;
 import org.dominokit.domino.api.client.ModuleConfigurator;
-import org.dominokit.domino.api.client.mvp.presenter.Presentable;
-import org.dominokit.domino.api.client.mvp.view.View;
+import org.dominokit.domino.api.client.mvp.presenter.ViewBaseClientPresenter;
+import org.dominokit.domino.api.client.mvp.slots.Slot;
+import org.dominokit.domino.api.client.mvp.slots.SlotRegistry;
 import org.dominokit.domino.api.client.request.ServerRequest;
 import org.dominokit.domino.api.server.config.ServerConfiguration;
 import org.dominokit.domino.api.server.config.ServerConfigurationLoader;
@@ -19,12 +20,15 @@ import org.dominokit.domino.api.server.config.VertxConfiguration;
 import org.dominokit.domino.api.server.entrypoint.ServerEntryPointContext;
 import org.dominokit.domino.api.server.entrypoint.VertxContext;
 import org.dominokit.domino.api.server.entrypoint.VertxEntryPointContext;
+import org.dominokit.domino.api.shared.extension.Content;
 import org.dominokit.domino.api.shared.extension.DominoEventListener;
 import org.dominokit.domino.api.shared.request.ResponseBean;
 import org.dominokit.domino.service.discovery.VertxServiceDiscovery;
 import org.dominokit.domino.test.api.DominoTestServer;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
 
 import static org.dominokit.domino.api.client.ClientApp.make;
@@ -36,21 +40,24 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
     public static final Logger LOGGER = Logger.getLogger(DominoTestClient.class.getName());
 
     private ModuleConfiguration[] modules;
-    private Map<String, Presentable> presentersReplacements = new HashMap<>();
-    private Map<String, View> viewsReplacements = new HashMap<>();
-    private List<ViewOf> viewsOf = new ArrayList<>();
     private List<ListenerOf> listenersOf = new ArrayList<>();
 
     private VertxEntryPointContext testEntryPointContext;
     private Vertx vertx = Vertx.vertx();
-    private BeforeClientStart beforeClientStart = context -> {
-    };
-    private StartCompleted startCompleted = context -> {
-    };
-    private DominoTestServer.AfterLoadHandler afterLoadHandler = context -> {
-    };
     private boolean withServer = false;
     private TestContext testContext;
+
+    private BeforeClientStart beforeClientStart = context -> {
+    };
+
+    private StartCompleted startCompleted = context -> {
+    };
+
+    private DominoTestServer.AfterLoadHandler afterLoadHandler = context -> {
+    };
+
+    private ConfigOverrideHandler configOverrideHandler = () -> {
+    };
 
     private DominoTestClient(ModuleConfiguration... configurations) {
         this.modules = configurations;
@@ -61,20 +68,8 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
     }
 
     @Override
-    public CanCustomizeClient replacePresenter(Class<? extends Presentable> original, Presentable presentable) {
-        presentersReplacements.put(original.getCanonicalName(), presentable);
-        return this;
-    }
-
-    @Override
-    public CanCustomizeClient replaceView(Class<? extends Presentable> presenter, View view) {
-        viewsReplacements.put(presenter.getCanonicalName(), view);
-        return this;
-    }
-
-    @Override
-    public CanCustomizeClient viewOf(Class<? extends Presentable> presenter, ViewHandler handler) {
-        this.viewsOf.add(new ViewOf(presenter.getCanonicalName(), handler));
+    public CanCustomizeClient overrideConfig(ConfigOverrideHandler handler) {
+        this.configOverrideHandler = handler;
         return this;
     }
 
@@ -126,9 +121,9 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
         init(testEntryPointContext);
         Arrays.stream(modules).forEach(this::configureModule);
 
-        viewsReplacements.forEach((key, value) -> replaceView(key, () -> value));
+        this.configOverrideHandler.overrideConfig();
+        SlotRegistry.registerSlot(ViewBaseClientPresenter.DOCUMENT_BODY, new FakeSlot());
 
-        viewsOf.forEach(v -> v.handler.handle(getView(v.presenterName)));
         listenersOf.forEach(c -> c.handler.handle(getListener(c.listenerName)));
 
         if (withServer) {
@@ -140,7 +135,7 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
                         afterLoadHandler.handle(serverContext);
                         doStart(() -> {
                             startCompleted.onStarted(this);
-                            LOGGER.info("Server started on port ["+serverContext.getActualPort()+"]");
+                            LOGGER.info("Server started on port [" + serverContext.getActualPort() + "]");
                             async.complete();
                         });
                     })
@@ -163,15 +158,6 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
 
     private void configureModule(ModuleConfiguration configuration) {
         new ModuleConfigurator().configureModule(configuration);
-    }
-
-
-    private void replaceView(String presenterName, TestViewFactory viewFactory) {
-        ((TestInMemoryViewRepository) make().getViewsRepository()).replaceView(presenterName, viewFactory);
-    }
-
-    private <T extends View> T getView(String presenterName) {
-        return (T) make().getViewsRepository().getView(presenterName);
     }
 
     public <L extends DominoEventListener> L getListener(Class<L> listenerType) {
@@ -223,15 +209,6 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
         return TestClientAppFactory.dominoOptions;
     }
 
-    private static class ViewOf {
-        private final String presenterName;
-        private final ViewHandler handler;
-
-        private ViewOf(String presenterName, ViewHandler handler) {
-            this.presenterName = presenterName;
-            this.handler = handler;
-        }
-    }
 
     private static class ListenerOf {
         private final Class<? extends DominoEventListener> listenerName;
@@ -258,6 +235,11 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
         public void failWith(Exception error) {
             TestClientAppFactory.serverRouter.fakeResponse(request, new TestServerRouter.FailedReply(error));
         }
+    }
+
+    @FunctionalInterface
+    public interface ConfigOverrideHandler {
+        void overrideConfig();
     }
 
 }

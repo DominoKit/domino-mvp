@@ -9,7 +9,6 @@ import org.dominokit.domino.gwt.client.events.RequestEventProcessor;
 
 public class TestClientAppFactory {
 
-    protected static TestInMemoryViewRepository viewsRepository;
     protected static TestServerRouter serverRouter;
     protected static TestInMemoryEventsListenersRepository listenersRepository;
     protected static TestDominoHistory history;
@@ -28,7 +27,6 @@ public class TestClientAppFactory {
         requestEventProcessor = new RequestEventProcessor();
         eventBus = new TestEventBus(requestEventProcessor);
 
-        viewsRepository = new TestInMemoryViewRepository();
         listenersRepository = new TestInMemoryEventsListenersRepository();
         history = new TestDominoHistory();
         dominoOptions = new FakeDominoOptions();
@@ -37,7 +35,6 @@ public class TestClientAppFactory {
                 .clientRouter(clientRouter)
                 .serverRouter(serverRouter)
                 .eventsBus(eventBus)
-                .viewsRepository(viewsRepository)
                 .eventsListenersRepository(listenersRepository)
                 .history(history)
                 .asyncRunner(new TestAsyncRunner())

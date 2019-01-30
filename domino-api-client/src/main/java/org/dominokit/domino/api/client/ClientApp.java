@@ -5,12 +5,9 @@ import org.dominokit.domino.api.client.events.EventsBus;
 import org.dominokit.domino.api.client.extension.ContextAggregator;
 import org.dominokit.domino.api.client.extension.DominoEventsListenersRepository;
 import org.dominokit.domino.api.client.extension.DominoEventsRegistry;
-import org.dominokit.domino.api.client.mvp.ViewRegistry;
-import org.dominokit.domino.api.client.mvp.slots.Slot;
-import org.dominokit.domino.api.client.mvp.slots.SlotRegistry;
-import org.dominokit.domino.api.client.mvp.view.LazyViewLoader;
-import org.dominokit.domino.api.client.mvp.view.ViewsRepository;
-import org.dominokit.domino.api.client.request.*;
+import org.dominokit.domino.api.client.request.PresenterCommand;
+import org.dominokit.domino.api.client.request.RequestRouter;
+import org.dominokit.domino.api.client.request.ServerRequest;
 import org.dominokit.domino.api.client.startup.AsyncClientStartupTask;
 import org.dominokit.domino.api.client.startup.ClientStartupTask;
 import org.dominokit.domino.api.client.startup.TasksAggregator;
@@ -25,16 +22,14 @@ import java.util.stream.Collectors;
 import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.groupingBy;
 
-public class ClientApp implements ViewRegistry, InitialTaskRegistry, DominoEventsRegistry {
+public class ClientApp implements InitialTaskRegistry, DominoEventsRegistry {
 
     private static final AttributeHolder<RequestRouter<PresenterCommand>> CLIENT_ROUTER_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<RequestRouter<ServerRequest>> SERVER_ROUTER_HOLDER =
             new AttributeHolder<>();
     private static final AttributeHolder<EventsBus> EVENTS_BUS_HOLDER = new AttributeHolder<>();
-    private static final AttributeHolder<ViewsRepository> VIEWS_REPOSITORY_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<DominoEventsListenersRepository> LISTENERS_REPOSITORY_HOLDER =
             new AttributeHolder<>();
-    private static final AttributeHolder<MainDominoEvent> MAIN_EXTENSION_POINT_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<AppHistory> HISTORY_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<List<ClientStartupTask>> INITIAL_TASKS_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<AsyncRunner> ASYNC_RUNNER_HOLDER = new AttributeHolder<>();
@@ -44,11 +39,6 @@ public class ClientApp implements ViewRegistry, InitialTaskRegistry, DominoEvent
     private static ClientApp instance = new ClientApp();
 
     private ClientApp() {
-    }
-
-    @Override
-    public void registerView(LazyViewLoader lazyViewLoader) {
-        VIEWS_REPOSITORY_HOLDER.attribute.registerView(lazyViewLoader);
     }
 
     @Override
@@ -75,10 +65,6 @@ public class ClientApp implements ViewRegistry, InitialTaskRegistry, DominoEvent
 
     public EventsBus getEventsBus() {
         return EVENTS_BUS_HOLDER.attribute;
-    }
-
-    public ViewsRepository getViewsRepository() {
-        return VIEWS_REPOSITORY_HOLDER.attribute;
     }
 
     public AsyncRunner getAsyncRunner() {
@@ -184,11 +170,6 @@ public class ClientApp implements ViewRegistry, InitialTaskRegistry, DominoEvent
 
     @FunctionalInterface
     public interface HasEventBus {
-        HasViewRepository viewsRepository(ViewsRepository viewsRepository);
-    }
-
-    @FunctionalInterface
-    public interface HasViewRepository {
         HasDominoEventListenersRepository eventsListenersRepository(DominoEventsListenersRepository dominoEventsListenersRepository);
     }
 
@@ -213,16 +194,13 @@ public class ClientApp implements ViewRegistry, InitialTaskRegistry, DominoEvent
     }
 
     public static class ClientAppBuilder
-            implements HasClientRouter, HasServerRouter, HasEventBus,
-            HasViewRepository, HasDominoEventListenersRepository,
+            implements HasClientRouter, HasServerRouter, HasEventBus, HasDominoEventListenersRepository,
             HasHistory, HasOptions, CanBuildClientApp {
 
         private RequestRouter<PresenterCommand> clientRouter;
         private RequestRouter<ServerRequest> serverRouter;
         private EventsBus eventsBus;
-        private ViewsRepository viewsRepository;
         private DominoEventsListenersRepository dominoEventsListenersRepository;
-        private MainDominoEvent mainDominoEvent;
         private AppHistory history;
         private AsyncRunner asyncRunner;
         private DominoOptions dominoOptions;
@@ -244,12 +222,6 @@ public class ClientApp implements ViewRegistry, InitialTaskRegistry, DominoEvent
         @Override
         public HasEventBus eventsBus(EventsBus eventsBus) {
             this.eventsBus = eventsBus;
-            return this;
-        }
-
-        @Override
-        public HasViewRepository viewsRepository(ViewsRepository viewsRepository) {
-            this.viewsRepository = viewsRepository;
             return this;
         }
 
@@ -287,9 +259,7 @@ public class ClientApp implements ViewRegistry, InitialTaskRegistry, DominoEvent
             ClientApp.CLIENT_ROUTER_HOLDER.hold(clientRouter);
             ClientApp.SERVER_ROUTER_HOLDER.hold(serverRouter);
             ClientApp.EVENTS_BUS_HOLDER.hold(eventsBus);
-            ClientApp.VIEWS_REPOSITORY_HOLDER.hold(viewsRepository);
             ClientApp.LISTENERS_REPOSITORY_HOLDER.hold(dominoEventsListenersRepository);
-            ClientApp.MAIN_EXTENSION_POINT_HOLDER.hold(mainDominoEvent);
             ClientApp.HISTORY_HOLDER.hold(history);
             ClientApp.INITIAL_TASKS_HOLDER.hold(new LinkedList<>());
             ClientApp.ASYNC_RUNNER_HOLDER.hold(asyncRunner);

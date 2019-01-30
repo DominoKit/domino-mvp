@@ -28,7 +28,6 @@ public class ActivationEventWait {
     protected void updateContext(DominoEvent event) {
         ActivationEventContext eventContext = (ActivationEventContext) event.context();
         if (eventContext.isActivated()) {
-            LOGGER.info("Activating event "+eventType.getCanonicalName());
             contextWait.complete(true);
         } else {
             aggregator.resetContext(contextWait);

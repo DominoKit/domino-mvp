@@ -7,11 +7,7 @@ import org.dominokit.domino.api.shared.extension.DominoEventListener;
 import org.dominokit.domino.test.api.DominoTestServer;
 
 public interface CanCustomizeClient extends CanStartClient {
-    CanCustomizeClient replacePresenter(Class<? extends Presentable> original, Presentable replacement);
-
-    CanCustomizeClient replaceView(Class<? extends Presentable> presenter, View view);
-
-    CanCustomizeClient viewOf(Class<? extends Presentable> presenter, ViewHandler handler);
+    CanCustomizeClient overrideConfig(DominoTestClient.ConfigOverrideHandler handler);
 
     <L extends DominoEventListener> CanCustomizeClient listenerOf(Class<L> listenerType,
                                                                   ListenerHandler<L> handler);

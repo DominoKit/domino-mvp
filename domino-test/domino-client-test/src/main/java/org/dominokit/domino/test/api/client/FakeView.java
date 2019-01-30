@@ -1,35 +1,34 @@
-package org.dominokit.domino.view;
+package org.dominokit.domino.test.api.client;
 
-import elemental2.dom.HTMLElement;
 import org.dominokit.domino.api.client.mvp.slots.SlotRegistry;
 import org.dominokit.domino.api.client.mvp.slots.SlotsEntries;
 import org.dominokit.domino.api.client.mvp.view.BaseDominoView;
-import org.dominokit.domino.ui.utils.ElementUtil;
 
 import static java.util.Objects.nonNull;
 
-public abstract class BaseElementView<T extends HTMLElement> extends BaseDominoView<T> {
+public abstract class FakeView extends BaseDominoView<FakeElement> {
+
     @Override
-    protected final void initRoot(T root) {
-        if (nonNull(root)) {
-            ElementUtil.onAttach(root, mutationRecord -> {
+    protected void initRoot(FakeElement root) {
+
+    }
+
+    @Override
+    public FakeElement createRoot() {
+        return new FakeElement(attached -> {
+            if(attached){
                 SlotsEntries slotsEntries = getSlots();
                 if (nonNull(slotsEntries)) {
                     slotsEntries.getSlots().forEach(SlotRegistry::registerSlot);
                 }
                 revealHandler.onRevealed();
-            });
-
-            ElementUtil.onDetach(root, mutationRecord -> {
+            }else{
                 SlotsEntries slotsEntries = getSlots();
                 if (nonNull(slotsEntries)) {
                     slotsEntries.getSlots().forEach((key, slot) -> SlotRegistry.removeSlot(key));
                 }
-
                 removeHandler.onRemoved();
-                clear();
-            });
-        }
+            }
+        });
     }
-
 }

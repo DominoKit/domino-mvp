@@ -31,7 +31,6 @@ public abstract class BaseClientPresenter extends ClientPresenter implements Pre
         this.listeners = getListeners();
         registerListeners();
         state = initialized;
-        activate();
         if(isAutoActivate()){
             activate();
         }

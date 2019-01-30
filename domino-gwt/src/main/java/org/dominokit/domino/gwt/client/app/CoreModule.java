@@ -7,7 +7,6 @@ import jsinterop.base.Js;
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.mvp.slots.SlotRegistry;
 import org.dominokit.domino.client.commons.extensions.InMemoryDominoEventsListenerRepository;
-import org.dominokit.domino.client.commons.mvp.view.InMemoryViewRepository;
 import org.dominokit.domino.client.commons.request.ClientRouter;
 import org.dominokit.domino.client.commons.request.ServerRouter;
 import org.dominokit.domino.gwt.client.async.GwtAsyncRunner;
@@ -41,7 +40,6 @@ public class CoreModule {
                 .clientRouter(clientRouter)
                 .serverRouter(serverRouter)
                 .eventsBus(eventBus)
-                .viewsRepository(new InMemoryViewRepository())
                 .eventsListenersRepository(new InMemoryDominoEventsListenerRepository())
                 .history(new StateHistory())
                 .asyncRunner(new GwtAsyncRunner())

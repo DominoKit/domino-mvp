@@ -3,7 +3,6 @@ package org.dominokit.domino.desktop.client;
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.async.AsyncRunner;
 import org.dominokit.domino.client.commons.extensions.InMemoryDominoEventsListenerRepository;
-import org.dominokit.domino.client.commons.mvp.view.InMemoryViewRepository;
 import org.dominokit.domino.client.commons.request.ClientRouter;
 import org.dominokit.domino.client.commons.request.ServerRouter;
 import org.dominokit.domino.desktop.client.events.DesktopClientEventFactory;
@@ -21,7 +20,6 @@ public class CoreModule {
                 .clientRouter(clientRouter)
                 .serverRouter(serverRouter)
                 .eventsBus(new DesktopEventBus())
-                .viewsRepository(new InMemoryViewRepository())
                 .eventsListenersRepository(new InMemoryDominoEventsListenerRepository())
                 .history(new DesktopStateHistory())
                 .asyncRunner(AsyncRunner.AsyncTask::onSuccess)

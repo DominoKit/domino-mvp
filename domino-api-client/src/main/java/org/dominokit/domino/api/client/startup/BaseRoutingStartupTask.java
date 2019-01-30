@@ -32,7 +32,6 @@ public abstract class BaseRoutingStartupTask implements ClientStartupTask {
     @Override
     public void execute() {
         ClientApp.make().getHistory().listen(getTokenFilter(), state -> {
-            LOGGER.info("receiving token : " + state.token().value());
             aggregators.forEach(aggregator -> aggregator.completeRoutingState(state));
         }, isRoutingOnce());
     }

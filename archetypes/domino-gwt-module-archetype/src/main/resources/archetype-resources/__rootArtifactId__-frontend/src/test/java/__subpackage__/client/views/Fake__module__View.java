@@ -3,15 +3,18 @@
 #set( $symbol_escape = '\' )
 package ${package}.${subpackage}.client.views;
 
-import ${package}.${subpackage}.client.views.${module}View;
-import ${package}.${subpackage}.client.presenters.${module}Presenter;
 import org.dominokit.domino.api.client.annotations.UiView;
-import org.dominokit.domino.api.shared.extension.Content;
+import org.dominokit.domino.test.api.client.FakeElement;
+import org.dominokit.domino.test.api.client.FakeView;
+import ${package}.${subpackage}.client.presenters.${module}Proxy_Presenter;
 
-@UiView(presentable=${module}Presenter.class)
-public class Fake${module}View implements ${module}View {
+@UiView(presentable= ${module}Proxy_Presenter.class)
+public class Fake${module}View extends FakeView implements ${module}View {
+
+    private FakeElement root;
+
     @Override
-    public Content getContent() {
-        return null;
+    protected void init(FakeElement root) {
+        this.root = root;
     }
 }
