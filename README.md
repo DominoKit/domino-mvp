@@ -15,5 +15,5 @@ Domino-mvp comes with the required testing framework and tools that enables the 
 
 ----------------------------
 
-(**Documentation**)[https://github.com/DominoKit/domino-mvp/wiki]
+**(Documentation)[https://github.com/DominoKit/domino-mvp/wiki]**
 
