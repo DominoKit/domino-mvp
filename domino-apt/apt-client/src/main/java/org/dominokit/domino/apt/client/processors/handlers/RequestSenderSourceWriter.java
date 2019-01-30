@@ -5,6 +5,8 @@ import org.dominokit.domino.api.client.annotations.Path;
 import org.dominokit.domino.api.client.annotations.RequestSender;
 import org.dominokit.domino.api.client.request.AbstractArrayResponseRequestSender;
 import org.dominokit.domino.api.client.request.AbstractSingleResponseRequestSender;
+import org.dominokit.domino.api.shared.history.HistoryToken;
+import org.dominokit.domino.api.shared.history.StateHistoryToken;
 import org.dominokit.domino.api.shared.request.ArrayResponse;
 import org.dominokit.domino.api.shared.request.VoidRequest;
 import org.dominokit.domino.api.shared.request.VoidResponse;
@@ -215,26 +217,40 @@ public class RequestSenderSourceWriter extends JavaSourceWriter {
                     .addAnnotation(Override.class)
                     .addModifiers(Modifier.PROTECTED)
                     .returns(String.class)
-                    .addParameter(String.class, "path")
+                    .addParameter(HistoryToken.class, "token")
                     .addParameter(requestType, "request");
             try {
 
                 CodeBlock.Builder replaceBuilder = CodeBlock.builder()
-                        .beginControlFlow("if (path.contains(\"{\"))")
+                        .beginControlFlow("if (path.contains(\":\"))")
                         .addStatement("$T processedPath = path", String.class);
-                String tempPath = path;
-                while (tempPath.contains("{")) {
-                    String nextParameter = tempPath.substring(tempPath.indexOf("{"), tempPath.indexOf("}") + 1);
-                    tempPath = tempPath.replace(nextParameter, convertParameterToGetter(nextParameter));
-                    replaceBuilder.addStatement("processedPath = processedPath.replace(\"" + nextParameter + "\", " + convertParameterToGetter(nextParameter) + "+\"\")", Objects.class);
-                }
-                replaceBuilder.addStatement("return processedPath");
+                StateHistoryToken token = new StateHistoryToken(path);
+
+                token.paths()
+                        .stream()
+                        .filter(tokenPath -> tokenPath.startsWith(":"))
+                        .forEach(tokenPath -> replaceBuilder.addStatement("token.replacePath(\"" + tokenPath + "\", " + convertParameterToGetter(tokenPath.replace(":","")) + "+\"\")", Objects.class));
+                token.queryParameters()
+                        .entrySet()
+                        .stream()
+                        .filter(entry -> entry.getValue().startsWith(":"))
+                        .forEach(entry -> {
+                            replaceBuilder.addStatement("token.replaceParameter(\"" + entry.getKey() + "\", \"" + entry.getKey() + "\", " + convertParameterToGetter(entry.getValue().replace(":","")) + "+\"\")", Objects.class);
+                        });
+
+                token.fragments()
+                        .stream()
+                        .filter(fragment -> fragment.startsWith(":"))
+                        .forEach(fragment -> replaceBuilder.addStatement("token.replaceFragment(\"" + fragment + "\", " + convertParameterToGetter(fragment.replace(":","")) + "+\"\")", Objects.class));
+
+
+                replaceBuilder.addStatement("return token.value()");
 
                 replaceBuilder.endControlFlow();
                 replaceParametersBuilder
                         .addCode(CodeBlock.builder()
                                 .add(replaceBuilder.build())
-                                .addStatement("return path")
+                                .addStatement("return token.value()")
                                 .build());
 
                 return replaceParametersBuilder.build();
