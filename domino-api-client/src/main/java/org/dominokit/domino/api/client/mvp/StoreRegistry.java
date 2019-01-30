@@ -1,7 +1,4 @@
-package org.dominokit.domino.api.client;
-
-import org.dominokit.domino.api.client.mvp.IsStore;
-import org.dominokit.domino.api.client.mvp.RegistrationHandler;
+package org.dominokit.domino.api.client.mvp;
 
 import java.util.ArrayList;
 import java.util.HashMap;

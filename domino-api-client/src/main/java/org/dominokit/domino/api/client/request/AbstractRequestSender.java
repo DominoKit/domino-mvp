@@ -1,6 +1,8 @@
 package org.dominokit.domino.api.client.request;
 
 import org.dominokit.domino.api.client.ClientApp;
+import org.dominokit.domino.api.shared.history.HistoryToken;
+import org.dominokit.domino.api.shared.history.StateHistoryToken;
 import org.dominokit.domino.api.shared.request.FailedResponseBean;
 import org.dominokit.domino.api.shared.request.RequestBean;
 import org.dominokit.domino.api.shared.request.ResponseBean;
@@ -18,7 +20,7 @@ public abstract class AbstractRequestSender<R extends RequestBean, S extends Res
 
     @Override
     public void send(ServerRequest<R, S> request, ServerRequestCallBack callBack) {
-        new RequestPathHandler<>(request, getPath(), getCustomRoot()).process(serverRequest -> serverRequest.setUrl(replaceRequestParameters(serverRequest.getUrl(), serverRequest.requestBean())));
+        new RequestPathHandler<>(request, getPath(), getCustomRoot()).process(serverRequest -> serverRequest.setUrl(replaceRequestParameters(new StateHistoryToken(serverRequest.getUrl()), serverRequest.requestBean())));
         ClientApp.make().dominoOptions().getRequestInterceptor()
                 .interceptRequest(request, () -> {
                     RestfulRequest restfulRequest = RestfulRequest.request(request.getUrl(), getMethod().toUpperCase())
@@ -51,7 +53,7 @@ public abstract class AbstractRequestSender<R extends RequestBean, S extends Res
 
     protected abstract Integer[] getSuccessCodes();
 
-    protected abstract String replaceRequestParameters(String path, R request);
+    protected abstract String replaceRequestParameters(HistoryToken token, R request);
 
     protected abstract AbstractObjectMapper<R> getRequestMapper();
 
