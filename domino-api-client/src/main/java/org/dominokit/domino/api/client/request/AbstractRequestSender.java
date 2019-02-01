@@ -10,6 +10,8 @@ import org.dominokit.domino.api.shared.request.VoidResponse;
 import org.dominokit.jacksonapt.AbstractObjectMapper;
 import org.dominokit.rest.shared.Response;
 import org.dominokit.rest.shared.RestfulRequest;
+import org.gwtproject.regexp.shared.MatchResult;
+import org.gwtproject.regexp.shared.RegExp;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +22,7 @@ public abstract class AbstractRequestSender<R extends RequestBean, S extends Res
 
     @Override
     public void send(ServerRequest<R, S> request, ServerRequestCallBack callBack) {
-        new RequestPathHandler<>(request, getPath(), getCustomRoot()).process(serverRequest -> serverRequest.setUrl(replaceRequestParameters(new StateHistoryToken(serverRequest.getUrl()), serverRequest.requestBean())));
+        new RequestPathHandler<>(request, getPath(), getCustomRoot()).process(serverRequest -> serverRequest.setUrl(formatUrl(serverRequest.getUrl(), serverRequest.requestBean())));
         ClientApp.make().dominoOptions().getRequestInterceptor()
                 .interceptRequest(request, () -> {
                     RestfulRequest restfulRequest = RestfulRequest.request(request.getUrl(), getMethod().toUpperCase())
@@ -45,6 +47,29 @@ public abstract class AbstractRequestSender<R extends RequestBean, S extends Res
                         restfulRequest.send();
                     }
                 });
+    }
+
+    protected String formatUrl(String url, R requestBean) {
+        String postfix = asTokenString(url);
+        String prefix = url.replace(postfix, "");
+
+        String formattedPostfix = replaceRequestParameters(new StateHistoryToken(postfix), requestBean);
+        return prefix + formattedPostfix;
+    }
+
+    private String asTokenString(String url) {
+        if (url.contains("http:") || url.contains("https:")) {
+            RegExp regExp = RegExp.compile("^((.*:)//([a-z0-9\\-.]+)(|:[0-9]+)/)(.*)$");
+            MatchResult matcher = regExp.exec(url);
+            boolean matchFound = matcher != null; // equivalent to regExp.test(inputStr);
+
+            if (matchFound) {
+                String suffixPart = matcher.getGroup(matcher.getGroupCount() - 1);
+                return suffixPart;
+            }
+        }
+
+        return url;
     }
 
     protected abstract void readResponse(ServerRequestCallBack callBack, Response response);

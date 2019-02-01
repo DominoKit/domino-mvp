@@ -3,6 +3,7 @@
 <module rename-to='Domino'>
 
     <inherits name="com.google.gwt.logging.Logging"/>
+    <inherits name="org.gwtproject.regexp.RegExp"/>
 
     <source path='client'/>
     <source path='shared'/>

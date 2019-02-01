@@ -1,6 +1,7 @@
 #set( $symbol_pound = '#' )
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
+#set( $token = ${module.toLowerCase()} )
 package ${package}.${subpackage}.client.presenters;
 
 import org.dominokit.domino.api.client.annotations.*;
@@ -13,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import static org.dominokit.domino.api.client.mvp.presenter.ViewBaseClientPresenter.DOCUMENT_BODY;
 
 @PresenterProxy
-@AutoRoute(token = "${module}")
+@AutoRoute(token = "${token}")
 @Slot(DOCUMENT_BODY)
 @AutoReveal
 @OnStateChanged(${module}Event.class)

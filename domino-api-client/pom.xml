@@ -61,6 +61,11 @@
             <version>1.0-SNAPSHOT</version>
             <classifier>sources</classifier>
         </dependency>
+        <dependency>
+            <groupId>org.gwtproject.regexp</groupId>
+            <artifactId>gwt-regexp</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>

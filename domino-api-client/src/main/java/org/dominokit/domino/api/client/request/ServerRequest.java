@@ -137,6 +137,11 @@ public abstract class ServerRequest<R extends RequestBean, S extends ResponseBea
         return this;
     }
 
+    public ServerRequest<R, S> onBeforeSend(BeforeSendHandler handler) {
+        handler.onBeforeSend();
+        return this;
+    }
+
     @Override
     public CanFailOrSend onSuccess(Success<S> success) {
         this.success = success;
@@ -147,5 +152,10 @@ public abstract class ServerRequest<R extends RequestBean, S extends ResponseBea
     public CanSend onFailed(Fail fail) {
         this.fail = fail;
         return this;
+    }
+
+    @FunctionalInterface
+    public interface BeforeSendHandler{
+        void onBeforeSend();
     }
 }
