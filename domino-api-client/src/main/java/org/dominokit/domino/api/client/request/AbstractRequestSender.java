@@ -8,11 +8,15 @@ import org.dominokit.domino.api.shared.request.VoidResponse;
 import org.dominokit.jacksonapt.AbstractObjectMapper;
 import org.dominokit.rest.shared.Response;
 import org.dominokit.rest.shared.RestfulRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
 
 public abstract class AbstractRequestSender<R extends RequestBean, S extends ResponseBean> implements RequestRestSender<R, S> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractRequestSender.class);
 
     private final List<String> SEND_BODY_METHODS = Arrays.asList("POST", "PUT", "PATCH");
 
@@ -29,7 +33,14 @@ public abstract class AbstractRequestSender<R extends RequestBean, S extends Res
                                             if (isVoidResponse()) {
                                                 callBack.onSuccess(new VoidResponse());
                                             } else {
-                                                readResponse(callBack, response);
+                                                try {
+                                                    readResponse(callBack, response);
+                                                } catch (Exception ex) {
+                                                    LOGGER.error("Could not read response for request ", ex);
+                                                    FailedResponseBean failedResponse = new FailedResponseBean(response.getStatusCode(), response.getStatusText(), response.getBodyAsString(), response.getHeaders());
+                                                    failedResponse.setThrowable(ex);
+                                                    callBack.onFailure(failedResponse);
+                                                }
                                             }
                                         } else {
                                             callBack.onFailure(new FailedResponseBean(response.getStatusCode(), response.getStatusText(), response.getBodyAsString(), response.getHeaders()));

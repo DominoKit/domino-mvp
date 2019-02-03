@@ -42,4 +42,8 @@ public class FailedResponseBean implements ResponseBean {
     public Throwable getThrowable() {
         return throwable;
     }
+
+    public void setThrowable(Throwable throwable) {
+        this.throwable = throwable;
+    }
 }
