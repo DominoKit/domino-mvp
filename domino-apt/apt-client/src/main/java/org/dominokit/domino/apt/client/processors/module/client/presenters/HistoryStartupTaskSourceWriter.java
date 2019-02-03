@@ -16,6 +16,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
+import java.lang.annotation.Annotation;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -41,8 +42,11 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
                 .addMethod(MethodSpec.constructorBuilder()
                         .addModifiers(Modifier.PUBLIC)
                         .addCode(getSuperCall(taskType))
-                        .build())
-                .addMethod(getFilterTokenMethod())
+                        .build());
+
+        getDirectUrlFilterTokenMethod(taskType);
+
+        taskType.addMethod(getFilterTokenMethod())
                 .addMethod(onStateReadyMethod());
 
         if (presenterElement.getAnnotation(AutoRoute.class).routeOnce()) {
@@ -61,6 +65,25 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
         return method.build();
     }
 
+
+    private void getDirectUrlFilterTokenMethod(TypeSpec.Builder taskType) {
+
+        Optional<String> tokenFilterMethodName = getTokenFilterMethodName(presenterElement, StartupTokenFilter.class);
+
+        tokenFilterMethodName.ifPresent(methodName -> {
+            MethodSpec.Builder method = MethodSpec.methodBuilder("getStartupTokenFilter")
+                    .addAnnotation(Override.class)
+                    .addModifiers(Modifier.PROTECTED)
+                    .returns(TokenFilter.class);
+
+
+            method.addStatement("return $T." + methodName + "(\"" + token + "\")", TypeName.get(presenterElement.asType()));
+
+            taskType.addMethod(method.build());
+
+        });
+    }
+
     private MethodSpec getFilterTokenMethod() {
 
         MethodSpec.Builder method = MethodSpec.methodBuilder("getTokenFilter")
@@ -68,7 +91,7 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
                 .addModifiers(Modifier.PROTECTED)
                 .returns(TokenFilter.class);
 
-        Optional<String> tokenFilterMethodName = getTokenFilterMethodName(presenterElement);
+        Optional<String> tokenFilterMethodName = getTokenFilterMethodName(presenterElement, RoutingTokenFilter.class);
         if (tokenFilterMethodName.isPresent()) {
             method.addStatement("return $T." + tokenFilterMethodName.get() + "(\"" + token + "\")", TypeName.get(presenterElement.asType()));
         } else {
@@ -124,6 +147,8 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
         CodeBlock.Builder codeBlock = CodeBlock.builder();
 
         codeBlock.beginControlFlow(" new $T().onPresenterReady(presenter ->", ClassName.bestGuess(makeRequestClassName()));
+
+        codeBlock.addStatement("bindPresenter(presenter)");
 
         Optional<String> onBeforeRevealMethod = onBeforeRevealMethodCall();
         onBeforeRevealMethod
@@ -217,17 +242,17 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
         return Optional.empty();
     }
 
-    public Optional<String> getTokenFilterMethodName(Element targetElement) {
+    public Optional<String> getTokenFilterMethodName(Element targetElement, Class<? extends Annotation> annotation) {
         Optional<String> method = targetElement.getEnclosedElements()
                 .stream()
-                .filter(e -> e.getKind().equals(ElementKind.METHOD) && e.getModifiers().contains(Modifier.STATIC) && nonNull(e.getAnnotation(FilterToken.class)))
+                .filter(e -> e.getKind().equals(ElementKind.METHOD) && e.getModifiers().contains(Modifier.STATIC) && nonNull(e.getAnnotation(annotation)))
                 .map(element -> element.getSimpleName().toString())
                 .findFirst();
         TypeMirror superclass = ((TypeElement) targetElement).getSuperclass();
         if (superclass.getKind().equals(TypeKind.NONE)) {
             return method;
         } else {
-            return method.isPresent() ? method : getTokenFilterMethodName(types.asElement(superclass));
+            return method.isPresent() ? method : getTokenFilterMethodName(types.asElement(superclass), annotation);
         }
     }
 

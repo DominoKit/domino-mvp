@@ -140,7 +140,6 @@ public class ClientApp implements InitialTaskRegistry, DominoEventsRegistry {
 
     private void start() {
         fireEvent(MainDominoEvent.class, new MainDominoEvent());
-        getHistory().fireCurrentStateHistory();
         onApplicationStarted();
     }
 

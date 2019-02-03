@@ -9,11 +9,13 @@ import static java.util.Objects.nonNull;
 
 public interface TokenFilter {
 
-    Logger LOGGER= LoggerFactory.getLogger(TokenFilter.class);
+    Logger LOGGER = LoggerFactory.getLogger(TokenFilter.class);
 
     boolean filter(HistoryToken token);
 
-    default NormalizedToken normalizeToken(String token){return null;};
+    default NormalizedToken normalizeToken(String token) {
+        return null;
+    }
 
     static TokenFilter exactMatch(String matchingToken) {
         return new TokenFilter.ExactMatchFilter(matchingToken);
@@ -31,7 +33,7 @@ public interface TokenFilter {
         return new TokenFilter.ContainsFilter(part);
     }
 
-    static TokenFilter any(){
+    static TokenFilter any() {
         return new TokenFilter.AnyFilter();
     }
 
@@ -51,21 +53,37 @@ public interface TokenFilter {
         return new TokenFilter.ContainsFragmentFilter(part);
     }
 
-    static TokenFilter anyFragment(){
+    static TokenFilter anyFragment() {
         return new TokenFilter.AnyFragmentFilter();
     }
 
-    static TokenFilter hasPathFilter(String path){return new HasPathFilter(path);}
+    static TokenFilter hasPathFilter(String path) {
+        return new HasPathFilter(path);
+    }
 
-    static TokenFilter hasPathsFilter(String... paths){return new HasPathsFilter(paths);}
+    static TokenFilter hasPathsFilter(String... paths) {
+        return new HasPathsFilter(paths);
+    }
 
-    static TokenFilter exactPathFilter(String path){return new ExactPathFilter(path);}
+    static TokenFilter exactPathFilter(String path) {
+        return new ExactPathFilter(path);
+    }
 
-    static TokenFilter startsWithPathFilter(String path){return new StartsWithPathFilter(path);}
+    static TokenFilter startsWithPathFilter(String path) {
+        return new StartsWithPathFilter(path);
+    }
 
-    static TokenFilter endsWithPathFilter(String path){return new EndsWithPathFilter(path);}
+    static TokenFilter endsWithPathFilter(String path) {
+        return new EndsWithPathFilter(path);
+    }
 
-    static TokenFilter anyPathFilter(){return new AnyPathFilter();}
+    static TokenFilter anyPathFilter() {
+        return new AnyPathFilter();
+    }
+
+    static TokenFilter isEmpty(){
+        return new EmptyFilter();
+    }
 
     class AnyFilter implements TokenFilter {
         @Override
@@ -147,7 +165,7 @@ public interface TokenFilter {
 
         @Override
         public NormalizedToken normalizeToken(String token) {
-            if(token.contains(":")) {
+            if (token.contains(":")) {
                 throw new UnsupportedOperationException("Contains filter cannot normalize token, please remove all variable from filter!");
             }
             return new DefaultNormalizedToken(token);
@@ -168,7 +186,7 @@ public interface TokenFilter {
 
         @Override
         public NormalizedToken normalizeToken(String token) {
-            if(token.contains(":")) {
+            if (token.contains(":")) {
                 throw new UnsupportedOperationException("Contains fragment filter cannot normalize token, please remove all variable from filter!");
             }
             return new DefaultNormalizedToken(token);
@@ -256,7 +274,7 @@ public interface TokenFilter {
 
         @Override
         public NormalizedToken normalizeToken(String token) {
-            if(token.contains(":")) {
+            if (token.contains(":")) {
                 throw new UnsupportedOperationException("Has path filter cannot normalize token, please remove all variable from filter!");
             }
             return new DefaultNormalizedToken(token);
@@ -277,7 +295,7 @@ public interface TokenFilter {
 
         @Override
         public NormalizedToken normalizeToken(String token) {
-            if(token.contains(":")) {
+            if (token.contains(":")) {
                 throw new UnsupportedOperationException("Has paths filter cannot normalize token, please remove all variable from filter!");
             }
             return new DefaultNormalizedToken(token);
@@ -338,7 +356,7 @@ public interface TokenFilter {
         }
     }
 
-    class AnyPathFilter implements TokenFilter{
+    class AnyPathFilter implements TokenFilter {
         @Override
         public boolean filter(HistoryToken token) {
             return nonNull(token.path()) && !token.paths().isEmpty();
@@ -346,9 +364,21 @@ public interface TokenFilter {
 
         @Override
         public NormalizedToken normalizeToken(String token) {
-            if(token.contains(":")) {
+            if (token.contains(":")) {
                 throw new UnsupportedOperationException("Has paths filter cannot normalize token, please remove all variable from filter!");
             }
+            return new DefaultNormalizedToken(token);
+        }
+    }
+
+    class EmptyFilter implements TokenFilter {
+        @Override
+        public boolean filter(HistoryToken token) {
+            return token.isEmpty();
+        }
+
+        @Override
+        public NormalizedToken normalizeToken(String token) {
             return new DefaultNormalizedToken(token);
         }
     }

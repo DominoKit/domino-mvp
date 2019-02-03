@@ -34,15 +34,15 @@ public class StateHistory implements AppHistory {
         listeners.stream()
                 .filter(l -> {
                     NormalizedToken normalized = getNormalizedToken(token, l);
-                    return l.tokenFilter.filter(new DominoHistoryState(normalized.getToken().value(), title, stateJson).token);
+                    return l.getTokenFilter().filter(new DominoHistoryState(normalized.getToken().value(), title, stateJson).token);
                 })
                 .forEach(l -> {
-                    if (l.removeOnComplete) {
+                    if (l.isRemoveOnComplete()) {
                         completedListeners.add(l);
                     }
                     ClientApp.make().getAsyncRunner().runAsync(() -> {
                         NormalizedToken normalized = getNormalizedToken(token, l);
-                        l.listener.onPopState(new DominoHistoryState(normalized, token, title, stateJson));
+                        l.getListener().onPopState(new DominoHistoryState(normalized, token, title, stateJson));
                     });
                 });
 
@@ -50,7 +50,7 @@ public class StateHistory implements AppHistory {
     }
 
     private NormalizedToken getNormalizedToken(String token, HistoryListener listener) {
-        return listener.tokenFilter.normalizeToken(token);
+        return listener.getTokenFilter().normalizeToken(token);
     }
 
     @Override
@@ -70,8 +70,14 @@ public class StateHistory implements AppHistory {
 
     @Override
     public DirectState listen(TokenFilter tokenFilter, StateListener listener, boolean removeOnComplete) {
-        listeners.add(new HistoryListener(listener, tokenFilter, removeOnComplete));
-        return new DominoDirectState(tokenFilter, currentState());
+        HistoryListener historyListener = new HistoryListener(listener, tokenFilter, removeOnComplete);
+        listeners.add(historyListener);
+        return new DominoDirectState(tokenFilter, currentState(), listener)
+                .onCompleted(dominoDirectState -> {
+                    if (historyListener.isRemoveOnComplete()) {
+                        listeners.remove(historyListener);
+                    }
+                });
     }
 
     @Override
@@ -204,6 +210,10 @@ public class StateHistory implements AppHistory {
             public NormalizedToken normalizedToken() {
                 return new DefaultNormalizedToken(new StateHistoryToken(windowToken()));
             }
+
+            @Override
+            public void setNormalizedToken(NormalizedToken normalizedToken) {
+            }
         };
     }
 
@@ -224,34 +234,12 @@ public class StateHistory implements AppHistory {
         return isNull(state) ? "" : state.data();
     }
 
-    private class HistoryListener {
-        private final StateListener listener;
-
-        private final TokenFilter tokenFilter;
-
-        private final boolean removeOnComplete;
-
-        private HistoryListener(StateListener listener,
-                                TokenFilter tokenFilter) {
-            this.listener = listener;
-            this.tokenFilter = tokenFilter;
-            this.removeOnComplete = false;
-        }
-
-        private HistoryListener(StateListener listener,
-                                TokenFilter tokenFilter, boolean removeOnComplete) {
-            this.listener = listener;
-            this.tokenFilter = tokenFilter;
-            this.removeOnComplete = removeOnComplete;
-        }
-    }
-
     private class DominoHistoryState implements State {
 
         private final HistoryToken token;
         private final String data;
         private final String title;
-        private final NormalizedToken normalizedToken;
+        private NormalizedToken normalizedToken;
 
         public DominoHistoryState(String token, String title, String data) {
             this.token = new StateHistoryToken(token);
@@ -285,6 +273,11 @@ public class StateHistory implements AppHistory {
         @Override
         public NormalizedToken normalizedToken() {
             return normalizedToken;
+        }
+
+        @Override
+        public void setNormalizedToken(NormalizedToken normalizedToken) {
+            this.normalizedToken = normalizedToken;
         }
     }
 }

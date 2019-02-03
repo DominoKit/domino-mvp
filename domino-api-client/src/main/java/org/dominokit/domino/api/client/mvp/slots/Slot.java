@@ -4,4 +4,5 @@ import org.dominokit.domino.api.shared.extension.Content;
 
 public interface Slot {
     void updateContent(Content content);
+    default void cleanUp(){};
 }

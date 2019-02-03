@@ -35,7 +35,7 @@ public class DesktopStateHistory implements AppHistory {
     @Override
     public DirectState listen(TokenFilter tokenFilter, StateListener listener, boolean removeOnComplete) {
         listeners.add(new HistoryListener(listener, tokenFilter, removeOnComplete));
-        return new DominoDirectState(tokenFilter, currentState());
+        return new DominoDirectState(tokenFilter, currentState(), listener);
     }
 
     private State currentState() {
@@ -62,6 +62,11 @@ public class DesktopStateHistory implements AppHistory {
             @Override
             public NormalizedToken normalizedToken() {
                 return new DefaultNormalizedToken(new StateHistoryToken(""));
+            }
+
+            @Override
+            public void setNormalizedToken(NormalizedToken normalizedToken) {
+
             }
         };
     }
@@ -182,6 +187,11 @@ public class DesktopStateHistory implements AppHistory {
         @Override
         public NormalizedToken normalizedToken() {
             return new DefaultNormalizedToken(new StateHistoryToken(token.value()));
+        }
+
+        @Override
+        public void setNormalizedToken(NormalizedToken normalizedToken) {
+
         }
     }
 }

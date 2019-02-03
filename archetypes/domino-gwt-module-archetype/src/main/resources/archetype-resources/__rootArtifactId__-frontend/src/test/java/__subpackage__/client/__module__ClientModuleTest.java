@@ -52,7 +52,7 @@ public class ${module}ClientModuleTest {
 
     @Test
     public void given${module}ClientModule_when${module}ServerRequestIsSent_thenServerMessageShouldBeRecieved() {
-        clientContext.forRequest(${module}RequestsFactory.${module}Requests_request.class)
+        clientContext.forRequest(${module}ServiceFactory.${module}Service_request.class)
                 .returnResponse(new ${module}Response("Server message"));
 
         ${module}ServiceFactory.INSTANCE.request(new ${module}Request("client message"))

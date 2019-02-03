@@ -112,7 +112,7 @@ public class ModuleConfigurationSourceWriter extends AbstractSourceBuilder {
                         String configName = processorUtil.lowerFirstLetter(types.asElement(presenter).getSimpleName().toString() +postfix);
 
                         methodBuilder.addStatement("$T $L = new $T()", configClassName, configName, configClassName);
-                        methodBuilder.addStatement("$L.setViewSupplier($T::new)", configName, TypeName.get(view.asType()));
+                        methodBuilder.addStatement("$L.setViewSupplier(()-> new $T())", configName, TypeName.get(view.asType()));
 
                     });
                 });

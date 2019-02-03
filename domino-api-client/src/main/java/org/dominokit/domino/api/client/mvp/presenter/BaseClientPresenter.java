@@ -3,11 +3,13 @@ package org.dominokit.domino.api.client.mvp.presenter;
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.async.AsyncRunner;
 import org.dominokit.domino.api.client.extension.DominoEvents;
+import org.dominokit.domino.api.client.startup.BaseRoutingStartupTask;
 import org.dominokit.domino.api.shared.extension.ActivationEventContext;
 import org.dominokit.domino.api.shared.extension.DominoEvent;
 import org.dominokit.domino.api.shared.extension.DominoEventListener;
 import org.dominokit.domino.api.shared.history.AppHistory;
 import org.dominokit.domino.api.shared.history.DominoHistory;
+import org.dominokit.domino.api.shared.history.TokenParameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +21,7 @@ public abstract class BaseClientPresenter extends ClientPresenter implements Pre
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseClientPresenter.class);
     private PresenterState state;
     protected boolean activated;
+    private BaseRoutingStartupTask routingTask;
 
     private final PresenterState initialized = () ->
             LOGGER.info("Presenter " + BaseClientPresenter.this.getClass() + " Have already been initialized.");
@@ -31,10 +34,9 @@ public abstract class BaseClientPresenter extends ClientPresenter implements Pre
         this.listeners = getListeners();
         registerListeners();
         state = initialized;
-        if(isAutoActivate()){
+        if (isAutoActivate()) {
             activate();
         }
-
     }
 
     protected void activate() {
@@ -42,18 +44,18 @@ public abstract class BaseClientPresenter extends ClientPresenter implements Pre
         onActivated();
     }
 
-    protected void fireStateEvent(boolean state){
+    protected void fireStateEvent(boolean state) {
         fireActivationEvent(new ActivationEventContext(state));
     }
 
-    protected void fireActivationEvent(ActivationEventContext context){
+    protected void fireActivationEvent(ActivationEventContext context) {
     }
 
-    private void registerListeners(){
+    private void registerListeners() {
         listeners.forEach((key, value) -> ClientApp.make().registerEventListener(key, value));
     }
 
-    private void removeListeners(){
+    private void removeListeners() {
         listeners.forEach((key, value) -> ClientApp.make().removeEventListener(key, value));
     }
 
@@ -70,7 +72,7 @@ public abstract class BaseClientPresenter extends ClientPresenter implements Pre
         return this;
     }
 
-    protected final void deActivate(){
+    protected final void deActivate() {
         removeListeners();
         fireStateEvent(false);
         onDeactivated();
@@ -86,11 +88,41 @@ public abstract class BaseClientPresenter extends ClientPresenter implements Pre
 
     }
 
-    public void setState(DominoHistory.State state){
+    public void setState(DominoHistory.State state) {
 
     }
 
-    protected boolean isAutoActivate(){
+    public void setRoutingTask(BaseRoutingStartupTask routingTask) {
+        this.routingTask = routingTask;
+    }
+
+    public final void onSkippedRouting() {
+        if (!routingTask.isEnabled()) {
+            routingTask.enable();
+        }
+    }
+
+    protected void publishState(String token, String title, String data) {
+        routingTask.disable();
+        history().fireState(token, title, data);
+    }
+
+    protected void publishState(String token, String title, String data, TokenParameter... parameters) {
+        routingTask.disable();
+        history().fireState(token, title, data, parameters);
+    }
+
+    protected void publishState(String token) {
+        routingTask.disable();
+        history().fireState(token);
+    }
+
+    protected void publishState(String token, TokenParameter... parameters) {
+        routingTask.disable();
+        history().fireState(token, parameters);
+    }
+
+    protected boolean isAutoActivate() {
         return true;
     }
 

@@ -19,7 +19,8 @@ public class SlotRegistry {
 
     public static void removeSlot(String key) {
         if (SLOT_QUEUE.containsKey(key.toLowerCase())) {
-            SLOT_QUEUE.get(key.toLowerCase()).pop();
+            Slot popedOut = SLOT_QUEUE.get(key.toLowerCase()).pop();
+            popedOut.cleanUp();
         }
     }
 

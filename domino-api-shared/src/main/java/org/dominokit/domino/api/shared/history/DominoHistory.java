@@ -39,6 +39,8 @@ public interface DominoHistory {
         String title();
 
         NormalizedToken normalizedToken();
+
+        void setNormalizedToken(NormalizedToken normalizedToken);
     }
 
     @FunctionalInterface
@@ -46,8 +48,8 @@ public interface DominoHistory {
         void handle(State state);
     }
 
-    @FunctionalInterface
     interface DirectState{
-        void onDirectUrl(DirectUrlHandler handler);
+        void onDirectUrl();
+        void onDirectUrl(TokenFilter tokenFilter);
     }
 }
