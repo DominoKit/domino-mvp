@@ -5,7 +5,7 @@
 
     <groupId>org.dominokit.domino</groupId>
     <artifactId>domino-parent</artifactId>
-    <version>1.0-rc.3-1</version>
+    <version>1.0-rc.3-2</version>
 
     <packaging>pom</packaging>
 

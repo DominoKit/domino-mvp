@@ -46,4 +46,15 @@ public class FailedResponseBean implements ResponseBean {
     public void setThrowable(Throwable throwable) {
         this.throwable = throwable;
     }
+
+    @Override
+    public String toString() {
+        return "FailedResponseBean{" +
+                "statusCode=" + statusCode +
+                ", statusText='" + statusText + '\'' +
+                ", body='" + body + '\'' +
+                ", headers=" + headers +
+                ", throwable=" + throwable +
+                '}';
+    }
 }

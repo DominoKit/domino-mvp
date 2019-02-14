@@ -6,6 +6,7 @@ import org.dominokit.domino.api.shared.request.RequestBean;
 import org.dominokit.domino.api.shared.request.ResponseBean;
 import org.dominokit.domino.api.shared.request.VoidResponse;
 import org.dominokit.jacksonapt.AbstractObjectMapper;
+import org.dominokit.rest.client.RequestTimeoutException;
 import org.dominokit.rest.shared.Response;
 import org.dominokit.rest.shared.RestfulRequest;
 import org.slf4j.Logger;
@@ -23,36 +24,61 @@ public abstract class AbstractRequestSender<R extends RequestBean, S extends Res
     @Override
     public void send(ServerRequest<R, S> request, ServerRequestCallBack callBack) {
         new RequestPathHandler<>(request, getPath(), getCustomRoot()).process(serverRequest -> serverRequest.setUrl(replaceRequestParameters(serverRequest.getUrl(), serverRequest.requestBean())));
+        final int[] retriesCounter = new int[]{0};
         ClientApp.make().dominoOptions().getRequestInterceptor()
                 .interceptRequest(request, () -> {
-                    RestfulRequest restfulRequest = RestfulRequest.request(request.getUrl(), getMethod().toUpperCase())
-                            .putHeaders(request.headers())
+                    RestfulRequest restfulRequest = RestfulRequest.request(request.getUrl(), getMethod().toUpperCase());
+                    restfulRequest.putHeaders(request.headers())
                             .putParameters(request.parameters())
-                            .onSuccess(response -> {
-                                        if (Arrays.stream(getSuccessCodes()).anyMatch(code -> code.equals(response.getStatusCode()))) {
-                                            if (isVoidResponse()) {
-                                                callBack.onSuccess(new VoidResponse());
-                                            } else {
-                                                try {
-                                                    readResponse(callBack, response);
-                                                } catch (Exception ex) {
-                                                    LOGGER.error("Could not read response for request ", ex);
-                                                    FailedResponseBean failedResponse = new FailedResponseBean(response.getStatusCode(), response.getStatusText(), response.getBodyAsString(), response.getHeaders());
-                                                    failedResponse.setThrowable(ex);
-                                                    callBack.onFailure(failedResponse);
-                                                }
-                                            }
-                                        } else {
-                                            callBack.onFailure(new FailedResponseBean(response.getStatusCode(), response.getStatusText(), response.getBodyAsString(), response.getHeaders()));
-                                        }
-                                    }
-                            ).onError(throwable -> callBack.onFailure(new FailedResponseBean(throwable)));
-                    if (SEND_BODY_METHODS.contains(getMethod().toUpperCase())) {
-                        restfulRequest.sendJson(getRequestMapper().write(request.requestBean()));
-                    } else {
-                        restfulRequest.send();
-                    }
+                            .onSuccess(response -> handleResponse(callBack, response)
+                            ).onError(throwable -> {
+                                if (throwable instanceof RequestTimeoutException && retriesCounter[0] < request.getRetries()) {
+                                    retriesCounter[0]++;
+                                    LOGGER.info("Retrying request : " + retriesCounter[0]);
+                                    doSend(request, restfulRequest);
+                                } else {
+                                    FailedResponseBean failedResponseBean = new FailedResponseBean(throwable);
+                                    LOGGER.info("Failed to execute request : ", failedResponseBean);
+                                    callBack.onFailure(failedResponseBean);
+                                }
+                            });
+
+                    setTimeout(request, restfulRequest);
+                    doSend(request, restfulRequest);
                 });
+    }
+
+    private void handleResponse(ServerRequestCallBack callBack, Response response) {
+        if (Arrays.stream(getSuccessCodes()).anyMatch(code -> code.equals(response.getStatusCode()))) {
+            if (isVoidResponse()) {
+                callBack.onSuccess(new VoidResponse());
+            } else {
+                try {
+                    readResponse(callBack, response);
+                } catch (Exception ex) {
+                    LOGGER.error("Could not read response for request ", ex);
+                    FailedResponseBean failedResponse = new FailedResponseBean(response.getStatusCode(), response.getStatusText(), response.getBodyAsString(), response.getHeaders());
+                    failedResponse.setThrowable(ex);
+                    callBack.onFailure(failedResponse);
+                }
+            }
+        } else {
+            callBack.onFailure(new FailedResponseBean(response.getStatusCode(), response.getStatusText(), response.getBodyAsString(), response.getHeaders()));
+        }
+    }
+
+    private void setTimeout(ServerRequest<R, S> request, RestfulRequest restfulRequest) {
+        if (request.getTimeout() > 0) {
+            restfulRequest.timeout(request.getTimeout());
+        }
+    }
+
+    private void doSend(ServerRequest<R, S> request, RestfulRequest restfulRequest) {
+        if (SEND_BODY_METHODS.contains(getMethod().toUpperCase())) {
+            restfulRequest.sendJson(getRequestMapper().write(request.requestBean()));
+        } else {
+            restfulRequest.send();
+        }
     }
 
     protected abstract void readResponse(ServerRequestCallBack callBack, Response response);

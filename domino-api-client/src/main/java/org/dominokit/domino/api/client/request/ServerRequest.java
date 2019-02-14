@@ -22,6 +22,8 @@ public abstract class ServerRequest<R extends RequestBean, S extends ResponseBea
     private R requestBean;
 
     private String url;
+    private int timeout = -1;
+    private int maxRetries = -1;
 
     private Success<S> success = response -> {
     };
@@ -142,5 +144,23 @@ public abstract class ServerRequest<R extends RequestBean, S extends ResponseBea
     public CanSend onFailed(Fail fail) {
         this.fail = fail;
         return this;
+    }
+
+    public ServerRequest<R, S> setTimeout(int timeout) {
+        this.timeout = timeout;
+        return this;
+    }
+
+    public int getTimeout() {
+        return this.timeout;
+    }
+
+    public ServerRequest<R, S> setRetries(int retries) {
+        this.maxRetries = retries;
+        return this;
+    }
+
+    public int getRetries() {
+        return this.maxRetries;
     }
 }
