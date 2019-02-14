@@ -12,8 +12,6 @@ public class StateHistoryToken implements HistoryToken {
 
     private static final String QUERY_REGEX = "\\?";
     private static final String FRAGMENT_REGEX = "\\#";
-    private static final int NAME_INDEX = 0;
-    private static final int VALUE_INDEX = 1;
     private List<String> paths = new LinkedList<>();
     private List<Parameter> queryParameters = new LinkedList<>();
     private List<String> fragments = new LinkedList<>();
@@ -220,6 +218,22 @@ public class StateHistoryToken implements HistoryToken {
         if (!this.paths.isEmpty()) {
             this.paths.remove(paths.size() - 1);
             this.paths.add(replacement);
+        }
+        return this;
+    }
+
+    @Override
+    public HistoryToken removeLastPath() {
+        if (!this.paths.isEmpty()) {
+            this.paths.remove(paths.size() - 1);
+        }
+        return this;
+    }
+
+    @Override
+    public HistoryToken removeLastFragment() {
+        if (!this.fragments.isEmpty()) {
+            this.fragments.remove(fragments.size() - 1);
         }
         return this;
     }

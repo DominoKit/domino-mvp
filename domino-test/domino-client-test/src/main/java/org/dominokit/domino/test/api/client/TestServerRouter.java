@@ -10,7 +10,7 @@ import org.dominokit.domino.api.client.request.Request;
 import org.dominokit.domino.api.client.request.RequestRouter;
 import org.dominokit.domino.api.client.request.ServerRequest;
 import org.dominokit.domino.api.server.entrypoint.ServerEntryPointContext;
-import org.dominokit.domino.api.server.handler.HandlersRepository;
+import org.dominokit.domino.api.server.resource.ResourcesRepository;
 import org.dominokit.domino.api.shared.request.FailedResponseBean;
 import org.dominokit.domino.api.shared.request.ResponseBean;
 import org.dominokit.domino.client.commons.request.RequestAsyncSender;
@@ -77,8 +77,8 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
                 }
                 requestAsyncRunner.send(request);
             }
-        } catch (HandlersRepository.RequestHandlerNotFound ex) {
-            LOGGER.error("Request handler not found for request [" + request.getClass().getSimpleName() + "]! either fake the request or start an actual server");
+        } catch (ResourcesRepository.RequestHandlerNotFound ex) {
+            LOGGER.error("Request resource not found for request [" + request.getClass().getSimpleName() + "]! either fake the request or start an actual server");
             eventFactory.makeFailed(request, new FailedResponseBean(ex)).fire();
             return;
         } catch (Exception ex) {

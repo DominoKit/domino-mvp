@@ -5,7 +5,7 @@ import org.dominokit.domino.api.shared.request.ResponseBean;
 
 import java.util.Map;
 
-public interface HasHeadersAndParameters<R extends RequestBean, S extends ResponseBean> {
+public interface HasHeadersAndParameters<R, S> {
     HasHeadersAndParameters<R, S> setHeader(String name, String value);
 
     HasHeadersAndParameters<R, S> setHeaders(Map<String, String> headers);

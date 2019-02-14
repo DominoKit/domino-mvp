@@ -14,4 +14,6 @@ public interface HasDominoOptions {
     RequestInterceptor getRequestInterceptor();
 
     ApplicationStartHandler getApplicationStartHandler();
+
+    String getDefaultResourceRootPath();
 }

@@ -30,6 +30,8 @@ public interface HistoryToken {
     HistoryToken replaceLastPath(String replacement);
 
     HistoryToken replaceLastFragment(String replacement);
+    HistoryToken removeLastFragment();
+    HistoryToken removeLastPath();
 
     HistoryToken replaceAllPaths(String newPath);
 

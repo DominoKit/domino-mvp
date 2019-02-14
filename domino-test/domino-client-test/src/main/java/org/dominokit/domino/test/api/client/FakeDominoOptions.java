@@ -14,11 +14,23 @@ import static java.util.Objects.isNull;
 public class FakeDominoOptions implements DominoOptions {
 
     private String serviceRoot;
+    private String resourceRootPath;
     private String dateFormat = "";
     private List<DynamicServiceRoot> dynamicServiceRoots = new ArrayList<>();
     private RequestInterceptor requestInterceptor = (request, callBack) -> callBack.onComplete();
     private int port;
     private ApplicationStartHandler applicationStartHandler;
+
+    @Override
+    public CanSetDominoOptions setDefaultResourceRootPath(String rootPath) {
+        this.resourceRootPath = rootPath;
+        return this;
+    }
+
+    @Override
+    public String getDefaultResourceRootPath() {
+        return resourceRootPath;
+    }
 
     @Override
     public void applyOptions() {

@@ -1,39 +1,27 @@
 package org.dominokit.domino.apt.server;
 
 import com.google.auto.service.AutoService;
+import com.squareup.javapoet.AnnotationSpec;
+import com.squareup.javapoet.JavaFile;
+import com.squareup.javapoet.TypeSpec;
 import org.dominokit.domino.api.server.config.ServerModule;
 import org.dominokit.domino.api.server.config.ServerModuleConfiguration;
 import org.dominokit.domino.apt.commons.DominoTypeBuilder;
 import org.dominokit.domino.apt.commons.JavaSourceWriter;
 import org.dominokit.domino.apt.commons.ProcessorElement;
-import org.dominokit.domino.apt.server.endpoints.EndpointsRegisterMethodWriter;
-import org.dominokit.domino.apt.server.handlers.HandlersRegisterMethodWriter;
-import org.dominokit.domino.apt.server.interceptors.InterceptorsRegisterMethodWriter;
-import org.dominokit.domino.apt.server.interceptors.global.GlobalInterceptorsRegisterMethodWriter;
-import com.squareup.javapoet.AnnotationSpec;
-import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.TypeSpec;
-import org.dominokit.domino.apt.server.endpoints.EndpointsRegisterMethodWriter;
-import org.dominokit.domino.apt.server.interceptors.InterceptorsRegisterMethodWriter;
-import org.dominokit.domino.apt.server.interceptors.global.GlobalInterceptorsRegisterMethodWriter;
+import org.dominokit.domino.apt.server.handlers.ResourceRegisterMethodWriter;
 
 import java.io.IOException;
 import java.util.List;
 
 public class ServerModuleSourceWriter extends JavaSourceWriter {
 
-    private final List<ProcessorElement> handlers;
-    private final List<ProcessorElement> interceptors;
-    private final List<ProcessorElement> globalInterceptors;
+    private final List<ProcessorElement> resources;
 
     public ServerModuleSourceWriter(ProcessorElement serverModuleElement,
-                                    List<ProcessorElement> handlers,
-                                    List<ProcessorElement> interceptors,
-                                    List<ProcessorElement> globalInterceptors) {
+                                    List<ProcessorElement> resources) {
         super(serverModuleElement);
-        this.handlers = handlers;
-        this.interceptors = interceptors;
-        this.globalInterceptors = globalInterceptors;
+        this.resources = resources;
     }
 
     @Override
@@ -54,9 +42,6 @@ public class ServerModuleSourceWriter extends JavaSourceWriter {
     }
 
     private void writeRegisterMethods(TypeSpec.Builder serverModuleTypeBuilder) {
-        new HandlersRegisterMethodWriter(serverModuleTypeBuilder).write(handlers);
-        new EndpointsRegisterMethodWriter(serverModuleTypeBuilder).write(handlers);
-        new InterceptorsRegisterMethodWriter(serverModuleTypeBuilder).write(interceptors);
-        new GlobalInterceptorsRegisterMethodWriter(serverModuleTypeBuilder).write(globalInterceptors);
+        new ResourceRegisterMethodWriter(serverModuleTypeBuilder).write(resources);
     }
 }

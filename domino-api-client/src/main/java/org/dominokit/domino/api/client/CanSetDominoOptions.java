@@ -13,4 +13,6 @@ public interface CanSetDominoOptions {
 
     CanSetDominoOptions setApplicationStartHandler(ApplicationStartHandler applicationStartHandler);
 
+    CanSetDominoOptions setDefaultResourceRootPath(String rootPath);
+
 }

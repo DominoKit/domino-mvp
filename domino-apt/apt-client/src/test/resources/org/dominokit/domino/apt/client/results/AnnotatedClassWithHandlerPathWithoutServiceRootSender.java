@@ -22,7 +22,7 @@ import org.fusesource.restygwt.client.RestServiceProxy;
 /**
  * This is generated class, please don't modify
  */
-@Generated("org.dominokit.domino.apt.client.processors.handlers.RequestPathProcessor")
+@Generated("org.dominokit.domino.apt.client.processors.resources.RequestPathProcessor")
 @RequestSender(AnnotatedClassWithHandlerPathWithoutServiceRoot.class)
 public class AnnotatedClassWithHandlerPathWithoutServiceRootSender implements RequestRestSender<SomeRequest> {
 

@@ -13,7 +13,7 @@ public class DominoDirectState implements DirectState {
     private final TokenFilter tokenFilter;
     private final State state;
     private StateListener listener;
-    private Consumer<DominoDirectState> onCompleted;
+    private Consumer<DominoDirectState> onCompleted = dominoDirectState -> {};
 
     public DominoDirectState(TokenFilter tokenFilter, State state, StateListener listener) {
         this.tokenFilter = tokenFilter;

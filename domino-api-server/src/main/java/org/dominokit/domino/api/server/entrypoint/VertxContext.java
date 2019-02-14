@@ -1,12 +1,12 @@
 package org.dominokit.domino.api.server.entrypoint;
 
-import org.dominokit.domino.api.server.config.ServerConfiguration;
-import org.dominokit.domino.service.discovery.VertxServiceDiscovery;
 import io.vertx.config.ConfigRetriever;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
+import org.dominokit.domino.api.server.config.ServerConfiguration;
+import org.dominokit.domino.service.discovery.VertxServiceDiscovery;
 
 import java.util.function.Supplier;
 
@@ -41,7 +41,9 @@ public class VertxContext implements ServerContext {
 
     @Override
     public void publishEndPoint(String path, Supplier<?> factory) {
-        router.route().path(path).handler((Handler<RoutingContext>) factory.get());
+        router.route()
+                .path(path)
+                .handler((Handler<RoutingContext>) factory.get());
     }
 
     public Router router() {
@@ -71,7 +73,6 @@ public class VertxContext implements ServerContext {
         private VertxServiceDiscovery serviceDiscovery;
         private DominoHttpServerOptions httpServerOptions;
         private ConfigRetriever configRetriever;
-
 
         private VertxContextBuilder(Vertx vertx) {
             this.vertx = vertx;

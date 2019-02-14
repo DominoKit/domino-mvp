@@ -1,9 +1,11 @@
-package org.dominokit.domino.api.server.handler;
+package org.dominokit.domino.api.server.resource;
 
-public interface HandlersRepository {
+import java.util.List;
 
-    void registerHandler(String path, RequestHandler handler);
-    RequestHandler findHandler(String path);
+public interface ResourcesRepository {
+
+    void registerResource(Class<?> resourceClasses);
+    List<Class<?>> getResources();
 
     class RequestHandlerHaveAlreadyBeenRegistered extends RuntimeException {
         public RequestHandlerHaveAlreadyBeenRegistered(String message) {

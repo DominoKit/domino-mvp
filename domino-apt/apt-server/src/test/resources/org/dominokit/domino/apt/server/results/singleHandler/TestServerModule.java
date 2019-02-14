@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 import javax.annotation.Generated;
 import org.dominokit.domino.api.server.config.ServerModuleConfiguration;
 import org.dominokit.domino.api.server.endpoint.EndpointsRegistry;
-import org.dominokit.domino.api.server.handler.HandlerRegistry;
+import org.dominokit.domino.api.server.resource.ResourceRegistry;
 import org.dominokit.domino.apt.server.HandlerImplementingRequestHandlerInterface;
 import org.dominokit.domino.apt.server.HandlerImplementingRequestHandlerInterfaceEndpointHandler;
 
@@ -17,8 +17,8 @@ import org.dominokit.domino.apt.server.HandlerImplementingRequestHandlerInterfac
 public class TestServerModule implements ServerModuleConfiguration{
 
     @Override
-    public void registerHandlers(HandlerRegistry registry) {
-        registry.registerHandler("somePath", new HandlerImplementingRequestHandlerInterface());
+    public void registerHandlers(ResourceRegistry registry) {
+        registry.registerResource("somePath", new HandlerImplementingRequestHandlerInterface());
     }
 
     @Override

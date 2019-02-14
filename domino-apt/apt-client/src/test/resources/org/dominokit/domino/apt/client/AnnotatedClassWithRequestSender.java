@@ -18,7 +18,7 @@ import org.test.sample.xyz.shared.response.XyzResponse_MapperImpl;
 /**
  * This is generated class, please don't modify
  */
-@Generated("org.dominokit.domino.apt.client.processors.handlers.RequestPathProcessor")
+@Generated("org.dominokit.domino.apt.client.processors.resources.RequestPathProcessor")
 @RequestSender(value = AnnotatedClassWithHandlerPath.class, customServiceRoot = true)
 public class AnnotatedClassWithRequestSender implements RequestRestSender<SomeRequest> {
 

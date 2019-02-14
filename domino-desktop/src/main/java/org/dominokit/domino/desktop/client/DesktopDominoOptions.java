@@ -9,9 +9,13 @@ import org.dominokit.domino.api.client.request.RequestInterceptor;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+
 public class DesktopDominoOptions implements DominoOptions {
 
-    private String defaultServiceRoot = "http://localhost:8080/service";
+    private String defaultServiceRoot;
+    private String defaultResourceRootPath = "service";
     private String defaultJsonDateFormat = null;
     private List<DynamicServiceRoot> dynamicServiceRoots = new ArrayList<>();
     private RequestInterceptor requestInterceptor = (request, callBack) -> callBack.onComplete();
@@ -53,6 +57,14 @@ public class DesktopDominoOptions implements DominoOptions {
     }
 
     @Override
+    public CanSetDominoOptions setDefaultResourceRootPath(String rootPath) {
+        if(nonNull(rootPath)){
+            this.defaultResourceRootPath = rootPath;
+        }
+        return this;
+    }
+
+    @Override
     public RequestInterceptor getRequestInterceptor() {
         return requestInterceptor;
     }
@@ -63,7 +75,15 @@ public class DesktopDominoOptions implements DominoOptions {
     }
 
     @Override
+    public String getDefaultResourceRootPath() {
+        return defaultResourceRootPath;
+    }
+
+    @Override
     public String getDefaultServiceRoot() {
+        if(isNull(defaultServiceRoot)){
+            return "http://localhost:8080/"+ defaultResourceRootPath;
+        }
         return defaultServiceRoot;
     }
 

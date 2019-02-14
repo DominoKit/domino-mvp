@@ -1,14 +1,6 @@
 package org.dominokit.domino.desktop.client;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.dominokit.domino.api.client.ServiceRootMatcher;
-import org.dominokit.domino.api.client.annotations.Path;
-import org.dominokit.domino.api.client.events.ServerRequestEventFactory;
-import org.dominokit.domino.api.client.request.ServerRequest;
-import org.dominokit.domino.api.shared.request.FailedResponseBean;
-import org.dominokit.domino.api.shared.request.RequestBean;
-import org.dominokit.domino.api.shared.request.ResponseBean;
-import org.dominokit.domino.client.commons.request.AbstractRequestAsyncSender;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpMethod;
@@ -18,6 +10,13 @@ import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.WebClient;
 import org.apache.commons.beanutils.BeanUtils;
+import org.dominokit.domino.api.client.ServiceRootMatcher;
+import org.dominokit.domino.api.client.annotations.Path;
+import org.dominokit.domino.api.client.events.ServerRequestEventFactory;
+import org.dominokit.domino.api.client.request.ServerRequest;
+import org.dominokit.domino.api.shared.request.FailedResponseBean;
+import org.dominokit.domino.api.shared.request.ResponseBean;
+import org.dominokit.domino.client.commons.request.AbstractRequestAsyncSender;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
@@ -90,7 +89,7 @@ public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
         }
     }
 
-    private String buildPath(Path pathAnnotation, RequestBean arguments) {
+    private String buildPath(Path pathAnnotation, Object arguments) {
 
         String path = formattedPath(getPathParams(pathAnnotation.value()), arguments, pathAnnotation.value());
 
@@ -105,7 +104,7 @@ public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
         return (serviceRoot + "/" + path);
     }
 
-    private String formattedPath(Collection<String> pathParams, RequestBean arguments, String path) {
+    private String formattedPath(Collection<String> pathParams, Object arguments, String path) {
         final String[] processedPath = {path};
         pathParams.forEach(p -> {
             try {
@@ -124,7 +123,7 @@ public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
         return processedPath[0];
     }
 
-    private String getNestedValue(RequestBean arguments, String p) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    private String getNestedValue(Object arguments, String p) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         if (!isNestedNull(arguments, p.split("\\.")))
             return BeanUtils.getProperty(arguments, p);
         return "";
@@ -134,7 +133,7 @@ public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
         return p.contains(".");
     }
 
-    private boolean isNestedNull(RequestBean arguments, String[] nestedParts) {
+    private boolean isNestedNull(Object arguments, String[] nestedParts) {
         return IntStream.range(0, nestedParts.length - 1).anyMatch(i -> {
             try {
                 return isNull(BeanUtils.getProperty(arguments, nestedParts[i]));

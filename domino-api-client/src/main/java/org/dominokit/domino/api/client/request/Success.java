@@ -1,8 +1,6 @@
 package org.dominokit.domino.api.client.request;
 
-import org.dominokit.domino.api.shared.request.ResponseBean;
-
 @FunctionalInterface
-public interface Success<S extends ResponseBean> {
+public interface Success<S > {
     void onSuccess(S response);
 }

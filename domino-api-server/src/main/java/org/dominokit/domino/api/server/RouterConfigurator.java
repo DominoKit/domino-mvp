@@ -57,7 +57,7 @@ public class RouterConfigurator {
 
     private void addPredefinedHandlers(Vertx vertx, Router router) {
         addCorsHandler(router);
-        addBodyHandler(router);
+//        addBodyHandler(router);
         addSessionHandler(vertx, router);
         addCSRFHandler(router);
         addRemoteExceptionHandler(router);

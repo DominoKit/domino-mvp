@@ -18,7 +18,7 @@ import org.fusesource.restygwt.client.Resource;
 import org.fusesource.restygwt.client.RestService;
 import org.fusesource.restygwt.client.RestServiceProxy;
 
-@Generated("org.dominokit.domino.apt.client.processors.handlers.RequestPathProcessor")
+@Generated("org.dominokit.domino.apt.client.processors.resources.RequestPathProcessor")
 @RequestSender(value = AnnotatedClassWithHandlerPathWithServiceRoot.class, customServiceRoot=true)
 public class AnnotatedClassWithHandlerPathWithServiceRootSender implements RequestRestSender<SomeRequest> {
 

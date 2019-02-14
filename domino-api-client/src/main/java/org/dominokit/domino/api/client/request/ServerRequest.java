@@ -1,7 +1,5 @@
 package org.dominokit.domino.api.client.request;
 
-import org.dominokit.domino.api.shared.request.RequestBean;
-import org.dominokit.domino.api.shared.request.ResponseBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +9,7 @@ import java.util.function.Consumer;
 
 import static java.util.Objects.nonNull;
 
-public abstract class ServerRequest<R extends RequestBean, S extends ResponseBean>
+public abstract class ServerRequest<R,S>
         extends BaseRequest implements Response<S>, CanFailOrSend, HasHeadersAndParameters<R, S> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServerRequest.class);
@@ -19,6 +17,7 @@ public abstract class ServerRequest<R extends RequestBean, S extends ResponseBea
 
     private Map<String, String> headers = new HashMap<>();
     private Map<String, String> parameters = new HashMap<>();
+    private Map<String, String> callArguments = new HashMap<>();
 
     private R requestBean;
 
@@ -139,6 +138,16 @@ public abstract class ServerRequest<R extends RequestBean, S extends ResponseBea
 
     public ServerRequest<R, S> onBeforeSend(BeforeSendHandler handler) {
         handler.onBeforeSend();
+        return this;
+    }
+
+    public ServerRequest<R, S> addCallArgument(String name, String value){
+        callArguments.put(name, value);
+        return this;
+    }
+
+    public ServerRequest<R, S> removeCallArgument(String name){
+        callArguments.remove(name);
         return this;
     }
 

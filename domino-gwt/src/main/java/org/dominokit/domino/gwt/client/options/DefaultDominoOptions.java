@@ -10,8 +10,12 @@ import org.dominokit.domino.api.client.request.RequestInterceptor;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+
 public class DefaultDominoOptions implements DominoOptions {
-    private String defaultServiceRoot = GWT.getModuleBaseURL().replace("static", "service");
+    private String defaultServiceRoot;
+    private String defaultResourceRootPath = "service";
     private String defaultJsonDateFormat = null;
     private List<DynamicServiceRoot> dynamicServiceRoots = new ArrayList<>();
     private RequestInterceptor requestInterceptor = (request, callBack) -> callBack.onComplete();
@@ -64,6 +68,9 @@ public class DefaultDominoOptions implements DominoOptions {
 
     @Override
     public String getDefaultServiceRoot() {
+        if(isNull(defaultServiceRoot)){
+            return GWT.getModuleBaseURL().replace("static", defaultResourceRootPath);
+        }
         return defaultServiceRoot;
     }
 
@@ -75,5 +82,18 @@ public class DefaultDominoOptions implements DominoOptions {
     @Override
     public List<DynamicServiceRoot> getServiceRoots() {
         return dynamicServiceRoots;
+    }
+
+    @Override
+    public CanSetDominoOptions setDefaultResourceRootPath(String rootPath) {
+        if(nonNull(rootPath)) {
+            this.defaultResourceRootPath = rootPath;
+        }
+        return this;
+    }
+
+    @Override
+    public String getDefaultResourceRootPath() {
+        return defaultResourceRootPath;
     }
 }

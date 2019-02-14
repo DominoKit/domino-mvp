@@ -38,12 +38,7 @@ public class DominoTestServer implements TestServerContext {
         RouterConfigurator routerConfigurator = new RouterConfigurator(vertx, config, secret);
         router = routerConfigurator.configuredRouter();
         beforeLoad();
-        new DominoLoader(vertx, router, config).start(httpServerAsyncResult -> {
-            if (httpServerAsyncResult.succeeded()) {
-                httpServer = httpServerAsyncResult.result();
-                afterLoad();
-            }
-        });
+        new DominoLoader(vertx, router, config).start();
     }
 
     private void beforeLoad() {

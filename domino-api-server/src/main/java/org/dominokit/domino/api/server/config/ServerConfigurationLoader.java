@@ -3,12 +3,8 @@ package org.dominokit.domino.api.server.config;
 import org.dominokit.domino.api.server.ServerApp;
 import org.dominokit.domino.api.server.entrypoint.ServerEntryPointsLoader;
 import org.dominokit.domino.api.server.entrypoint.VertxContext;
-import org.dominokit.domino.api.server.handler.HandlersRepository;
-import org.dominokit.domino.api.server.handler.InMemoryHandlersRepository;
-import org.dominokit.domino.api.server.interceptor.InMemoryInterceptorsRepository;
-import org.dominokit.domino.api.server.interceptor.InterceptorsRepository;
-import org.dominokit.domino.api.server.request.DefaultRequestExecutor;
-import org.dominokit.domino.api.server.ServerApp;
+import org.dominokit.domino.api.server.resource.InMemoryResourceRepository;
+import org.dominokit.domino.api.server.resource.ResourcesRepository;
 
 import java.util.ServiceLoader;
 
@@ -21,21 +17,17 @@ public class ServerConfigurationLoader {
     }
 
     public void loadModules() {
-        HandlersRepository handlersRepository = new InMemoryHandlersRepository();
-        InterceptorsRepository interceptorsRepository = new InMemoryInterceptorsRepository();
-        ServerApp serverApp = makeServerApp(handlersRepository, interceptorsRepository);
+        ResourcesRepository resourcesRepository = new InMemoryResourceRepository();
+        ServerApp serverApp = makeServerApp(resourcesRepository);
 
         ServiceLoader.load(ServerModuleConfiguration.class).forEach(serverApp::configureModule);
         ServerEntryPointsLoader.runEntryPoints(serverContext);
     }
 
-    private ServerApp makeServerApp(HandlersRepository handlersRepository,
-                                    InterceptorsRepository interceptorsRepository) {
+    private ServerApp makeServerApp(ResourcesRepository resourcesRepository) {
         return new ServerApp.ServerAppBuilder()
-                .handlersRepository(handlersRepository)
-                .interceptorsRepository(interceptorsRepository)
+                .handlersRepository(resourcesRepository)
                 .serverContext(serverContext)
-                .executor(new DefaultRequestExecutor(handlersRepository, interceptorsRepository))
                 .build();
     }
 }
