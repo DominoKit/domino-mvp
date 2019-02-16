@@ -34,7 +34,7 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
 
     private final ServerRequestEventFactory eventFactory = new ServerRequestEventFactory() {
         @Override
-        public Event makeSuccess(ServerRequest request, ResponseBean responseBean) {
+        public <T> Event makeSuccess(ServerRequest request, T responseBean) {
             return new TestServerSuccessEvent(request, responseBean);
         }
 
@@ -96,12 +96,12 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
         return defaultListener;
     }
 
-    public class TestServerSuccessEvent implements Event {
+    public class TestServerSuccessEvent<T> implements Event {
         protected final ServerRequest request;
-        protected final ResponseBean responseBean;
+        protected final T responseBean;
         private final ClientApp clientApp = ClientApp.make();
 
-        public TestServerSuccessEvent(ServerRequest request, ResponseBean responseBean) {
+        public TestServerSuccessEvent(ServerRequest request, T responseBean) {
             this.request = request;
             this.responseBean = responseBean;
         }

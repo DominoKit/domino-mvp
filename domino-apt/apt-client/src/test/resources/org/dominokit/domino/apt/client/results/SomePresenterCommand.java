@@ -1,7 +1,7 @@
 package org.dominokit.domino.apt.client;
 
 import javax.annotation.Generated;
-import org.dominokit.domino.api.client.annotations.Command;
+import org.dominokit.domino.api.client.annotations.presenter.Command;
 import org.dominokit.domino.api.client.request.PresenterCommand;
 
 /**

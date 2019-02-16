@@ -10,7 +10,7 @@ import org.dominokit.domino.desktop.client.events.DesktopSuccessServerEvent;
 
 public class DesktopServerRequestEventFactory implements ServerRequestEventFactory {
     @Override
-    public Event makeSuccess(ServerRequest request, ResponseBean responseBean) {
+    public <T> Event makeSuccess(ServerRequest request, T responseBean) {
         return new DesktopSuccessServerEvent(request, responseBean);
     }
 

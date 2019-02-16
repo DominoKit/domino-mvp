@@ -17,8 +17,8 @@ package org.dominokit.domino.apt.client.processors.module.client.presenters;
 
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeSpec;
-import org.dominokit.domino.api.client.annotations.AutoRoute;
-import org.dominokit.domino.api.client.annotations.ListenTo;
+import org.dominokit.domino.api.client.annotations.presenter.AutoRoute;
+import org.dominokit.domino.api.client.annotations.presenter.ListenTo;
 import org.dominokit.domino.apt.commons.AbstractProcessingStep;
 import org.dominokit.domino.apt.commons.ExceptionUtil;
 import org.dominokit.domino.apt.commons.StepBuilder;

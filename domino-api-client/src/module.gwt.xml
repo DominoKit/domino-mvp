@@ -4,6 +4,7 @@
 
     <inherits name="com.google.gwt.logging.Logging"/>
     <inherits name="org.gwtproject.regexp.RegExp"/>
+    <inherits name="javax.ws.rs.JaxRs"/>
 
     <source path='client'/>
     <source path='shared'/>

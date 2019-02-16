@@ -16,7 +16,7 @@
 package org.dominokit.domino.apt.client.processors.module.client.presenters;
 
 import com.google.auto.service.AutoService;
-import org.dominokit.domino.api.client.annotations.Presenter;
+import org.dominokit.domino.api.client.annotations.presenter.Presenter;
 import org.dominokit.domino.apt.commons.BaseProcessor;
 
 import javax.annotation.processing.Processor;

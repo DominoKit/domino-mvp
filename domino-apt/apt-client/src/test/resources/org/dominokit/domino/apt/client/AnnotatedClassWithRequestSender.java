@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Map;
 import javax.annotation.Generated;
 import org.dominokit.domino.api.client.ServiceRootMatcher;
-import org.dominokit.domino.api.client.annotations.RequestSender;
+import org.dominokit.domino.api.client.annotations.service.RequestSender;
 import org.dominokit.domino.api.client.request.RequestRestSender;
 import org.dominokit.domino.api.client.request.ServerRequestCallBack;
 import org.dominokit.domino.api.shared.request.ArrayResponse;

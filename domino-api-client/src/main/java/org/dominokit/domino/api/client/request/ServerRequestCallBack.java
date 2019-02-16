@@ -5,5 +5,5 @@ import org.dominokit.domino.api.shared.request.ResponseBean;
 
 public interface ServerRequestCallBack {
     void onFailure(FailedResponseBean failedResponse);
-    void onSuccess(ResponseBean response);
+    <T> void  onSuccess(T response);
 }

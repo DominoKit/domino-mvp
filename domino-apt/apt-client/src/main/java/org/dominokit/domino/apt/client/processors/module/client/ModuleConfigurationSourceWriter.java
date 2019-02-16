@@ -7,7 +7,7 @@ import com.squareup.javapoet.TypeSpec;
 import org.dominokit.domino.api.client.InitialTaskRegistry;
 import org.dominokit.domino.api.client.ModuleConfiguration;
 import org.dominokit.domino.api.client.annotations.ClientModule;
-import org.dominokit.domino.api.client.annotations.Singleton;
+import org.dominokit.domino.api.client.annotations.presenter.Singleton;
 import org.dominokit.domino.api.client.annotations.UiView;
 import org.dominokit.domino.api.client.mvp.presenter.PresenterSupplier;
 import org.dominokit.domino.api.client.mvp.presenter.ViewBaseClientPresenter;

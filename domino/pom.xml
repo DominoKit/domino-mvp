@@ -167,6 +167,17 @@
                 <artifactId>domino-gwt-view</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.dominokit.domino.api</groupId>
+                <artifactId>jaxrs-super</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dominokit.domino.api</groupId>
+                <artifactId>jaxrs-super</artifactId>
+                <version>${project.version}</version>
+                <classifier>sources</classifier>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <build>

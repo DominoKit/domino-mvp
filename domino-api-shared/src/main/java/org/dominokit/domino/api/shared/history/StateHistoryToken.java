@@ -142,7 +142,7 @@ public class StateHistoryToken implements HistoryToken {
     @Override
     public Map<String, String> queryParameters() {
         Map<String, String> parameters = new HashMap<>();
-        queryParameters.stream().forEach(parameter -> parameters.put(parameter.key, parameter.value));
+        queryParameters.forEach(parameter -> parameters.put(parameter.key, parameter.value));
         return parameters;
     }
 

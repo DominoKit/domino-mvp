@@ -17,22 +17,13 @@ package org.dominokit.domino.apt.client.processors.module.client;
 
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeSpec;
-import org.dominokit.domino.api.client.annotations.AutoRoute;
-import org.dominokit.domino.api.client.annotations.ListenTo;
-import org.dominokit.domino.apt.client.processors.module.client.presenters.DominoEventListenerSourceWriter;
-import org.dominokit.domino.apt.client.processors.module.client.presenters.HistoryStartupTaskSourceWriter;
-import org.dominokit.domino.apt.client.processors.module.client.presenters.PresenterCommandSourceWriter;
-import org.dominokit.domino.apt.client.processors.module.client.presenters.PresenterConfigSourceWriter;
 import org.dominokit.domino.apt.commons.AbstractProcessingStep;
 import org.dominokit.domino.apt.commons.ExceptionUtil;
 import org.dominokit.domino.apt.commons.StepBuilder;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
-import java.util.List;
 import java.util.Set;
-
-import static java.util.Objects.nonNull;
 
 public class ClientModuleProcessingStep extends AbstractProcessingStep {
 

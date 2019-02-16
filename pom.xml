@@ -27,6 +27,7 @@
         <module>domino-gwt-view</module>
         <module>domino-log4j-server-logging</module>
         <module>domino</module>
+        <module>jaxrs-super</module>
     </modules>
 
     <url>https://github.com/DominoKit/domino</url>
@@ -169,6 +170,17 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
+                <groupId>org.dominokit.domino.api</groupId>
+                <artifactId>jaxrs-super</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dominokit.domino.api</groupId>
+                <artifactId>jaxrs-super</artifactId>
+                <version>${project.version}</version>
+                <classifier>sources</classifier>
+            </dependency>
+            <dependency>
                 <groupId>org.dominokit.domino</groupId>
                 <artifactId>jks-server-cofigurator</artifactId>
                 <version>${project.version}</version>
@@ -303,6 +315,7 @@
                 <artifactId>validation-api</artifactId>
                 <version>2.0.1.Final</version>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
     <dependencies>
@@ -372,6 +385,9 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>2.10.4</version>
+                    <configuration>
+                        <failOnError>false</failOnError>
+                    </configuration>
                     <executions>
                         <execution>
                             <id>attach-javadocs</id>

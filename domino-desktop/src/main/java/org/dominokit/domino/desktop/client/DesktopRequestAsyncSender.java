@@ -11,13 +11,14 @@ import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.WebClient;
 import org.apache.commons.beanutils.BeanUtils;
 import org.dominokit.domino.api.client.ServiceRootMatcher;
-import org.dominokit.domino.api.client.annotations.Path;
+import org.dominokit.domino.api.client.annotations.service.ServiceRoot;
 import org.dominokit.domino.api.client.events.ServerRequestEventFactory;
 import org.dominokit.domino.api.client.request.ServerRequest;
 import org.dominokit.domino.api.shared.request.FailedResponseBean;
 import org.dominokit.domino.api.shared.request.ResponseBean;
 import org.dominokit.domino.client.commons.request.AbstractRequestAsyncSender;
 
+import javax.ws.rs.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -36,7 +37,7 @@ import static java.util.Objects.nonNull;
 public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DesktopRequestAsyncSender.class);
-    public static final int RRESPONSE_TYPE_INDEX = 1;
+    public static final int RESPONSE_TYPE_INDEX = 1;
 
     static {
         Json.mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
@@ -52,11 +53,10 @@ public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
 
     @Override
     protected void sendRequest(ServerRequest request, ServerRequestEventFactory requestEventFactory) {
-        Path pathAnnotation = request.getClass().getAnnotation(Path.class);
-        HttpMethod method = HttpMethod.valueOf(pathAnnotation.method());
+        HttpMethod method = getHttpMethod(request);
 
 
-        String absoluteURI = buildPath(pathAnnotation, request.requestBean());
+        String absoluteURI = buildPath(request);
         HttpRequest<Buffer> httpRequest = webClient.requestAbs(method, absoluteURI);
 
         if (nonNull(csrfToken))
@@ -68,7 +68,7 @@ public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
             httpRequest.putHeader("Accept", "application/json");
 
         ParameterizedType parameterizedType = (ParameterizedType) request.getClass().getGenericSuperclass();
-        Type responseType = parameterizedType.getActualTypeArguments()[RRESPONSE_TYPE_INDEX];
+        Type responseType = parameterizedType.getActualTypeArguments()[RESPONSE_TYPE_INDEX];
 
         try {
             Class<? extends ResponseBean> clazz = (Class<? extends ResponseBean>) Class.forName(responseType.getTypeName());
@@ -89,15 +89,49 @@ public class DesktopRequestAsyncSender extends AbstractRequestAsyncSender {
         }
     }
 
-    private String buildPath(Path pathAnnotation, Object arguments) {
+    private HttpMethod getHttpMethod(ServerRequest request) {
 
-        String path = formattedPath(getPathParams(pathAnnotation.value()), arguments, pathAnnotation.value());
+        if (nonNull(request.getClass().getAnnotation(GET.class))) {
+            return HttpMethod.GET;
+        }
+
+        if (nonNull(request.getClass().getAnnotation(POST.class))) {
+            return HttpMethod.POST;
+        }
+
+        if (nonNull(request.getClass().getAnnotation(PUT.class))) {
+            return HttpMethod.PUT;
+        }
+
+        if (nonNull(request.getClass().getAnnotation(DELETE.class))) {
+            return HttpMethod.DELETE;
+        }
+
+        if (nonNull(request.getClass().getAnnotation(PATCH.class))) {
+            return HttpMethod.PATCH;
+        }
+
+        if (nonNull(request.getClass().getAnnotation(OPTIONS.class))) {
+            return HttpMethod.OPTIONS;
+        }
+
+        if (nonNull(request.getClass().getAnnotation(HEAD.class))) {
+            return HttpMethod.HEAD;
+        }
+
+        return HttpMethod.GET;
+    }
+
+    private String buildPath(ServerRequest request) {
+        Path pathAnnotation= request.getClass().getAnnotation(Path.class);
+        ServiceRoot serviceRootAnnotation= request.getClass().getAnnotation(ServiceRoot.class);
+        String path = formattedPath(getPathParams(pathAnnotation.value()), request.requestBean(), pathAnnotation.value());
 
         String serviceRoot;
-        if (pathAnnotation.serviceRoot().isEmpty()) {
+        if (serviceRootAnnotation.value().isEmpty()) {
             serviceRoot = ServiceRootMatcher.matchedServiceRoot(path);
         } else {
-            serviceRoot = pathAnnotation.serviceRoot();
+            serviceRoot = serviceRootAnnotation.value();
         }
         if (serviceRoot.endsWith("/") || pathAnnotation.value().startsWith("/"))
             return (serviceRoot + path).replace("//", "/");

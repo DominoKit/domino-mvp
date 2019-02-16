@@ -15,11 +15,9 @@
  */
 package org.dominokit.domino.apt.client.processors.module.client.presenters;
 
-import com.google.auto.common.AnnotationMirrors;
-import com.google.auto.common.MoreElements;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeSpec;
-import org.dominokit.domino.api.client.annotations.PresenterProxy;
+import org.dominokit.domino.api.client.annotations.presenter.PresenterProxy;
 import org.dominokit.domino.apt.commons.AbstractProcessingStep;
 import org.dominokit.domino.apt.commons.ExceptionUtil;
 import org.dominokit.domino.apt.commons.StepBuilder;

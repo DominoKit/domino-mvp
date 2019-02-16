@@ -6,11 +6,11 @@ import org.dominokit.domino.api.client.request.ServerRequest;
 import org.dominokit.domino.api.client.request.Request;
 import org.dominokit.domino.api.shared.request.ResponseBean;
 
-public class DesktopSuccessServerEvent implements Event {
+public class DesktopSuccessServerEvent<T> implements Event {
     private final ServerRequest request;
-    private final ResponseBean responseBean;
+    private final T responseBean;
 
-    public DesktopSuccessServerEvent(ServerRequest request, ResponseBean responseBean) {
+    public DesktopSuccessServerEvent(ServerRequest request, T responseBean) {
         this.request = request;
         this.responseBean = responseBean;
     }

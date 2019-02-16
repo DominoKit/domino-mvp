@@ -5,6 +5,6 @@ import org.dominokit.domino.api.shared.request.FailedResponseBean;
 import org.dominokit.domino.api.shared.request.ResponseBean;
 
 public interface ServerRequestEventFactory {
-    Event makeSuccess(ServerRequest request, ResponseBean responseBean);
+    <T> Event makeSuccess(ServerRequest request, T responseBean);
     Event makeFailed(ServerRequest request, FailedResponseBean failedResponse);
 }

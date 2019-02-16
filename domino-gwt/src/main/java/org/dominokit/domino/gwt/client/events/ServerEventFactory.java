@@ -9,7 +9,7 @@ import org.dominokit.domino.api.shared.request.ResponseBean;
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class ServerEventFactory implements ServerRequestEventFactory {
     @Override
-    public Event makeSuccess(ServerRequest request, ResponseBean responseBean) {
+    public <T> Event makeSuccess(ServerRequest request, T responseBean) {
         return new ServerSuccessRequestEvent(request, responseBean);
     }
 

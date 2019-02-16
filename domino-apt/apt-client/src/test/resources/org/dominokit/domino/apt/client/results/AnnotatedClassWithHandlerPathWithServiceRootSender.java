@@ -8,7 +8,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import org.dominokit.domino.api.client.annotations.RequestSender;
+import org.dominokit.domino.api.client.annotations.service.RequestSender;
 import org.dominokit.domino.api.client.request.RequestRestSender;
 import org.dominokit.domino.api.client.request.ServerRequestCallBack;
 import org.fusesource.restygwt.client.Attribute;

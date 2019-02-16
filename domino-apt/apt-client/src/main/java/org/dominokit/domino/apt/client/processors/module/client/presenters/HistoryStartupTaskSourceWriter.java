@@ -2,6 +2,7 @@ package org.dominokit.domino.apt.client.processors.module.client.presenters;
 
 import com.squareup.javapoet.*;
 import org.dominokit.domino.api.client.annotations.*;
+import org.dominokit.domino.api.client.annotations.presenter.*;
 import org.dominokit.domino.api.client.events.BaseRoutingAggregator;
 import org.dominokit.domino.api.client.events.DefaultEventAggregator;
 import org.dominokit.domino.api.client.startup.BaseRoutingStartupTask;

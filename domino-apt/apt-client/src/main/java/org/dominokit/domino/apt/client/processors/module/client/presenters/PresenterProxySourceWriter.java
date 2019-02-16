@@ -2,6 +2,7 @@ package org.dominokit.domino.apt.client.processors.module.client.presenters;
 
 import com.squareup.javapoet.*;
 import org.dominokit.domino.api.client.annotations.*;
+import org.dominokit.domino.api.client.annotations.presenter.*;
 import org.dominokit.domino.api.client.mvp.presenter.ViewBaseClientPresenter;
 import org.dominokit.domino.api.shared.extension.ActivationEventContext;
 import org.dominokit.domino.api.shared.extension.DominoEvent;

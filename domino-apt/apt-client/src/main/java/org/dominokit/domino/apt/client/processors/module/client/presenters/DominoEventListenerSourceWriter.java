@@ -2,8 +2,8 @@ package org.dominokit.domino.apt.client.processors.module.client.presenters;
 
 import com.google.auto.common.MoreElements;
 import com.squareup.javapoet.*;
-import org.dominokit.domino.api.client.annotations.ListenTo;
-import org.dominokit.domino.api.client.annotations.Listener;
+import org.dominokit.domino.api.client.annotations.presenter.ListenTo;
+import org.dominokit.domino.api.client.annotations.presenter.Listener;
 import org.dominokit.domino.api.shared.extension.DominoEventListener;
 import org.dominokit.domino.apt.commons.AbstractSourceBuilder;
 import org.dominokit.domino.apt.commons.DominoTypeBuilder;

@@ -1,11 +1,10 @@
 package org.dominokit.domino.apt.client;
 
 import org.apache.commons.io.IOUtils;
-import org.dominokit.domino.apt.client.processors.group.RequestFactoryProcessor;
-import org.dominokit.domino.apt.client.processors.handlers.RequestPathProcessor;
 import org.dominokit.domino.apt.client.processors.module.client.ClientModuleAnnotationProcessor;
 import org.dominokit.domino.apt.client.processors.module.client.ConfigurationProviderAnnotationProcessor;
 import org.dominokit.domino.apt.client.processors.module.client.presenters.PresenterProcessor;
+import org.dominokit.domino.apt.client.processors.service.RequestFactoryProcessor;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -145,51 +144,6 @@ public class ClientModuleAnnotationProcessorTest {
         assertProcessing(BASE_PACKAGE + "AnnotatedClassWithClientModuleWithListenerRegistrations.java",
                 BASE_PACKAGE + "InvalidListenerClass.java")
                 .withProcessor(processor()).failsToCompile();
-    }
-
-    @Test(expected = RuntimeException.class)
-    public void givenClassAnnotatedWithHandlerPathButNotExtendingServerRequest_whenProcess_shouldThrowException()
-            throws Exception {
-        assertProcessing(
-                BASE_PACKAGE + "InvalidHandlerPathRequestClass.java")
-                .withProcessor(new RequestPathProcessor())
-                .failsToCompile();
-
-    }
-
-    @Test
-    @Ignore
-    public void givenClassAnnotatedWithHandlerPath_whenProcess_shouldCompileWithoutErrors()
-            throws Exception {
-        assertProcessing(BASE_PACKAGE + "SomeRequest.java",
-                BASE_PACKAGE + "SomeResponse.java",
-                BASE_PACKAGE + "AnnotatedClassWithHandlerPath.java")
-                .withProcessor(new RequestPathProcessor())
-                .compilesWithoutErrors();
-    }
-
-    @Test
-    @Ignore
-    public void givenClassAnnotatedWithHandlerPath_whenProcess_shouldGenerateSenderWithServiceRootEntry()
-            throws Exception {
-        assertProcessing(BASE_PACKAGE + "SomeRequest.java",
-                BASE_PACKAGE + "SomeResponse.java",
-                BASE_PACKAGE + "AnnotatedClassWithHandlerPathWithServiceRoot.java")
-                .withProcessor(new RequestPathProcessor())
-                .generates(getExpectedResultFileContent(
-                        "AnnotatedClassWithHandlerPathWithServiceRootSender.java"));
-    }
-
-    @Test
-    @Ignore
-    public void givenClassAnnotatedWithHandlerPathAndNoServiceRoot_whenProcess_shouldGenerateSenderServiceRootMatcher()
-            throws Exception {
-        assertProcessing(BASE_PACKAGE + "SomeRequest.java",
-                BASE_PACKAGE + "SomeResponse.java",
-                BASE_PACKAGE + "AnnotatedClassWithHandlerPathWithoutServiceRoot.java")
-                .withProcessor(new RequestPathProcessor())
-                .generates(getExpectedResultFileContent(
-                        "AnnotatedClassWithHandlerPathWithoutServiceRootSender.java"));
     }
 
     @Test

@@ -9,13 +9,13 @@ import org.dominokit.domino.api.client.request.Request;
 import org.dominokit.domino.api.shared.request.ResponseBean;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
-public class ServerSuccessRequestEvent extends ServerSuccessRequestGwtEvent implements Event {
+public class ServerSuccessRequestEvent<T> extends ServerSuccessRequestGwtEvent implements Event {
 
     protected final ServerRequest request;
-    private final ResponseBean responseBean;
+    private final T responseBean;
     private final ClientApp clientApp = ClientApp.make();
 
-    public ServerSuccessRequestEvent(ServerRequest request, ResponseBean responseBean) {
+    public ServerSuccessRequestEvent(ServerRequest request, T responseBean) {
         this.request = request;
         this.responseBean = responseBean;
     }

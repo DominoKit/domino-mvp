@@ -10,19 +10,15 @@ import static java.util.Objects.isNull;
 
 public class RequestPathHandler<R extends RequestBean, S extends ResponseBean> {
     private ServerRequest request;
-    private String path;
-    private String customRoot;
 
-    public RequestPathHandler(ServerRequest<R, S> request, String path, String customRoot) {
+    public RequestPathHandler(ServerRequest<R, S> request) {
         this.request = request;
-        this.path = path;
-        this.customRoot = customRoot;
     }
 
     public void process(Consumer<ServerRequest<R, S>> consumer) {
         if (isNull(request.getUrl())) {
-            String serviceRoot = (isNull(customRoot) || customRoot.isEmpty()) ? ServiceRootMatcher.matchedServiceRoot(path) : customRoot;
-            request.setUrl(serviceRoot + path);
+            String serviceRoot = (isNull(request.getServiceRoot()) || request.getServiceRoot().isEmpty()) ? ServiceRootMatcher.matchedServiceRoot(request.getPath()) : request.getServiceRoot();
+            request.setUrl(serviceRoot + request.getPath());
         }
         consumer.accept(request);
     }

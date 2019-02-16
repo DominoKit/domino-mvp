@@ -1,6 +1,6 @@
 package org.dominokit.domino.apt.client.processors.module.client.listeners;
 
-import org.dominokit.domino.api.client.annotations.Listener;
+import org.dominokit.domino.api.client.annotations.presenter.Listener;
 import org.dominokit.domino.api.shared.extension.DominoEventListener;
 import org.dominokit.domino.apt.commons.BaseProcessor;
 import org.dominokit.domino.apt.commons.FullClassName;

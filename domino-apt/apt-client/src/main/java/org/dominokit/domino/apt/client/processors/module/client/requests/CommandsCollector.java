@@ -1,6 +1,6 @@
 package org.dominokit.domino.apt.client.processors.module.client.requests;
 
-import org.dominokit.domino.api.client.annotations.Command;
+import org.dominokit.domino.api.client.annotations.presenter.Command;
 import org.dominokit.domino.api.client.request.PresenterCommand;
 import org.dominokit.domino.apt.commons.BaseProcessor;
 import org.dominokit.domino.apt.commons.FullClassName;

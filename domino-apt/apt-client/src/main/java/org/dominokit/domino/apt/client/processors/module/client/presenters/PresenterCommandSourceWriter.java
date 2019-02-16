@@ -1,7 +1,7 @@
 package org.dominokit.domino.apt.client.processors.module.client.presenters;
 
 import com.squareup.javapoet.*;
-import org.dominokit.domino.api.client.annotations.Command;
+import org.dominokit.domino.api.client.annotations.presenter.Command;
 import org.dominokit.domino.api.client.request.PresenterCommand;
 import org.dominokit.domino.apt.commons.AbstractSourceBuilder;
 import org.dominokit.domino.apt.commons.DominoTypeBuilder;

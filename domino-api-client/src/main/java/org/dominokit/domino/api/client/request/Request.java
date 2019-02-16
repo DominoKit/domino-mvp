@@ -16,11 +16,11 @@ public interface Request {
         }
     }
 
-    class ServerSuccessRequestStateContext implements RequestStateContext{
+    class ServerSuccessRequestStateContext<T> implements RequestStateContext{
 
-        protected final ResponseBean responseBean;
+        protected final T responseBean;
 
-        public ServerSuccessRequestStateContext(ResponseBean responseBean) {
+        public ServerSuccessRequestStateContext(T responseBean) {
             this.responseBean = responseBean;
         }
     }

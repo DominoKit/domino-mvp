@@ -1,8 +1,8 @@
 package org.dominokit.domino.apt.client;
 
 import javax.annotation.Generated;
-import org.dominokit.domino.api.client.annotations.Path;
-import org.dominokit.domino.api.client.annotations.Request;
+import org.dominokit.domino.api.client.annotations.service.Path;
+import org.dominokit.domino.api.client.annotations.service.Request;
 import org.dominokit.domino.api.client.request.Response;
 import org.dominokit.domino.api.client.request.ServerRequest;
 import org.dominokit.domino.api.shared.request.RequestBean;
@@ -12,7 +12,7 @@ import org.dominokit.domino.api.shared.request.VoidRequest;
 /**
  * This is generated class, please don't modify
  */
-@Generated("org.dominokit.domino.apt.client.processors.group.RequestFactoryProcessor")
+@Generated("org.dominokit.domino.apt.client.processors.service.RequestFactoryProcessor")
 public class AnnotatedInterfaceWithRequestGroupFactory implements AnnotatedInterfaceWithRequestGroup {
 
     public static final AnnotatedInterfaceWithRequestGroupFactory INSTANCE = new AnnotatedInterfaceWithRequestGroupFactory();

@@ -20,8 +20,9 @@ public class GwtRequestAsyncSender extends AbstractRequestAsyncSender {
         request.getSender()
                 .send(request,
                         new ServerRequestCallBack() {
+
                             @Override
-                            public void onSuccess(ResponseBean response) {
+                            public <T> void onSuccess(T response) {
                                 requestEventFactory.makeSuccess(request, response).fire();
                             }
 

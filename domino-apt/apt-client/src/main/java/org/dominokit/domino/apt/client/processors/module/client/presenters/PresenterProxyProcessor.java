@@ -17,7 +17,7 @@ package org.dominokit.domino.apt.client.processors.module.client.presenters;
 
 import com.google.auto.service.AutoService;
 import org.dominokit.domino.api.client.annotations.Aggregate;
-import org.dominokit.domino.api.client.annotations.PresenterProxy;
+import org.dominokit.domino.api.client.annotations.presenter.PresenterProxy;
 import org.dominokit.domino.apt.client.processors.aggregate.AggregateProcessingStep;
 import org.dominokit.domino.apt.commons.BaseProcessor;
 
