@@ -3,7 +3,7 @@
 
     <groupId>org.dominokit.domino.archetypes</groupId>
     <artifactId>archetypes</artifactId>
-    <version>1.0-rc.3-2</version>
+    <version>1.0-rc.3-3</version>
     <modelVersion>4.0.0</modelVersion>
 
 
@@ -114,6 +114,9 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-gpg-plugin</artifactId>
                     <version>1.6</version>
+                    <configuration>
+                        <skip>{skip.signing}</skip>
+                    </configuration>
                     <executions>
                         <execution>
                             <id>sign-artifacts</id>

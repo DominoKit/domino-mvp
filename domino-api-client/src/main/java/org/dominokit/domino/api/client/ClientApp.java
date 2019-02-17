@@ -47,6 +47,7 @@ public class ClientApp
     private static final AttributeHolder<AsyncRunner> ASYNC_RUNNER_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<DominoOptions> DOMINO_OPTIONS_HOLDER = new AttributeHolder<>();
 
+    private List<ModuleConfiguration> modules = new ArrayList<>();
     private static ClientApp instance = new ClientApp();
 
     private ClientApp() {
@@ -127,14 +128,8 @@ public class ClientApp
     }
 
     public void configureModule(ModuleConfiguration configuration) {
-        configuration.registerPresenters(this);
-        configuration.registerRequests(this);
-        configuration.registerViews(this);
-        configuration.registerListeners(this);
-        configuration.registerInitialTasks(this);
-        configuration.registerRequestRestSenders(this);
+        modules.add(configuration);
     }
-
 
     public void run() {
         run(canSetDominoOptions -> {
@@ -142,6 +137,16 @@ public class ClientApp
     }
 
     public void run(DominoOptionsHandler dominoOptionsHandler) {
+
+        modules.forEach(configuration -> {
+            configuration.registerPresenters(this);
+            configuration.registerRequests(this);
+            configuration.registerViews(this);
+            configuration.registerListeners(this);
+            configuration.registerInitialTasks(this);
+            configuration.registerRequestRestSenders(this);
+        });
+
         dominoOptionsHandler.onBeforeRun(dominoOptions());
         dominoOptions().applyOptions();
 
