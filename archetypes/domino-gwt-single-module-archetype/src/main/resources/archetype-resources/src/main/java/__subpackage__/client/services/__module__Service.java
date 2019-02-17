@@ -11,7 +11,7 @@ import ${package}.${subpackage}.shared.request.${module}Request;
 import javax.ws.rs.Path;
 
 @RequestFactory
-public interface ${module}Requests {
+public interface ${module}Service {
     @Path("${module}Request")
     Response<${module}Response> request(${module}Request request);
 }
