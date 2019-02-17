@@ -4,7 +4,7 @@
 #set( $token = ${module.toLowerCase()} )
 package ${package}.${subpackage}.client.presenters;
 
-import org.dominokit.domino.api.client.annotations.*;
+import org.dominokit.domino.api.client.annotations.presenter.*;
 import org.dominokit.domino.api.client.mvp.presenter.ViewBaseClientPresenter;
 import ${package}.${subpackage}.client.views.${module}View;
 import ${package}.${subpackage}.shared.extension.${module}Event;
