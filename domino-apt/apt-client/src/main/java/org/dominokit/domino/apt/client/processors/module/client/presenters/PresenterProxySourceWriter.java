@@ -40,6 +40,7 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
             proxyType.addAnnotation(AnnotationSpec.builder(AutoRoute.class)
                     .addMember("token", "$S", autoRoute.token())
                     .addMember("routeOnce", "$L", autoRoute.routeOnce())
+                    .addMember("reRouteActivated", "$L", autoRoute.reRouteActivated())
                     .build());
         }
 

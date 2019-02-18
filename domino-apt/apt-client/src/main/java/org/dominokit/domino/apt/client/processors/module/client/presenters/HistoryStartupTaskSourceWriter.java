@@ -54,6 +54,10 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
             taskType.addMethod(routOnceMethod());
         }
 
+        if (!presenterElement.getAnnotation(AutoRoute.class).reRouteActivated()) {
+            taskType.addMethod(reRouteActivatedMethod());
+        }
+
         return taskType;
     }
 
@@ -63,6 +67,15 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
                 .addModifiers(Modifier.PROTECTED)
                 .returns(TypeName.BOOLEAN)
                 .addStatement("return true");
+        return method.build();
+    }
+
+    private MethodSpec reRouteActivatedMethod() {
+        MethodSpec.Builder method = MethodSpec.methodBuilder("isReRouteActivated")
+                .addAnnotation(Override.class)
+                .addModifiers(Modifier.PROTECTED)
+                .returns(TypeName.BOOLEAN)
+                .addStatement("return false");
         return method.build();
     }
 

@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 public abstract class BaseRoutingStartupTask implements ClientStartupTask {
@@ -33,7 +34,7 @@ public abstract class BaseRoutingStartupTask implements ClientStartupTask {
         aggregators.forEach(BaseRoutingAggregator::resetRoutingState);
     }
 
-    protected void bindPresenter(BaseClientPresenter presenter){
+    protected void bindPresenter(BaseClientPresenter presenter) {
         presenter.setRoutingTask(this);
         this.presenter = presenter;
     }
@@ -43,16 +44,26 @@ public abstract class BaseRoutingStartupTask implements ClientStartupTask {
         ClientApp.make()
                 .getHistory()
                 .listen(getTokenFilter(), state -> {
-                    if(enabled) {
-                        aggregators.forEach(aggregator -> aggregator.completeRoutingState(state));
-                    }else{
-                        if(nonNull(presenter)){
-                            presenter.onSkippedRouting();
+                    if (isNull(presenter) || !presenter.isActivated()) {
+                        doRoutingIfEnabled(state);
+                    } else {
+                        if (isReRouteActivated()) {
+                            doRoutingIfEnabled(state);
                         }
                     }
 
                 }, isRoutingOnce())
                 .onDirectUrl(getStartupTokenFilter());
+    }
+
+    private void doRoutingIfEnabled(DominoHistory.State state) {
+        if (enabled) {
+            aggregators.forEach(aggregator -> aggregator.completeRoutingState(state));
+        } else {
+            if (nonNull(presenter)) {
+                presenter.onSkippedRouting();
+            }
+        }
     }
 
     protected abstract void onStateReady(DominoHistory.State state);
@@ -67,15 +78,19 @@ public abstract class BaseRoutingStartupTask implements ClientStartupTask {
         return false;
     }
 
-    public void disable(){
+    public void disable() {
         this.enabled = false;
     }
 
-    public void enable(){
+    public void enable() {
         this.enabled = true;
     }
 
     public boolean isEnabled() {
         return enabled;
+    }
+
+    protected boolean isReRouteActivated() {
+        return true;
     }
 }
