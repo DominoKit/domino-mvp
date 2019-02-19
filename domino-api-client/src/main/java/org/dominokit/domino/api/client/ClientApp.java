@@ -35,6 +35,7 @@ public class ClientApp implements InitialTaskRegistry, DominoEventsRegistry {
     private static final AttributeHolder<AsyncRunner> ASYNC_RUNNER_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<DominoOptions> DOMINO_OPTIONS_HOLDER = new AttributeHolder<>();
 
+    private List<ModuleConfiguration> modules = new ArrayList<>();
 
     private static ClientApp instance = new ClientApp();
 
@@ -79,18 +80,16 @@ public class ClientApp implements InitialTaskRegistry, DominoEventsRegistry {
         return DOMINO_OPTIONS_HOLDER.attribute;
     }
 
-    public void registerEventListener(Class<? extends DominoEvent> event, DominoEventListener listener){
+    public void registerEventListener(Class<? extends DominoEvent> event, DominoEventListener listener) {
         LISTENERS_REPOSITORY_HOLDER.attribute.addListener(event, listener);
     }
 
-    public void removeEventListener(Class<? extends DominoEvent> event, DominoEventListener listener){
+    public void removeEventListener(Class<? extends DominoEvent> event, DominoEventListener listener) {
         LISTENERS_REPOSITORY_HOLDER.attribute.removeListener(event, listener);
     }
 
     public void configureModule(ModuleConfiguration configuration) {
-        configuration.registerPresenters();
-        configuration.registerViews();
-        configuration.registerInitialTasks(this);
+        modules.add(configuration);
     }
 
 
@@ -100,6 +99,14 @@ public class ClientApp implements InitialTaskRegistry, DominoEventsRegistry {
     }
 
     public void run(DominoOptionsHandler dominoOptionsHandler) {
+        modules.forEach(configuration -> {
+            configuration.registerPresenters();
+            configuration.registerViews();
+            configuration.registerInitialTasks(this);
+        });
+
+        modules.clear();
+
         dominoOptionsHandler.onBeforeRun(dominoOptions());
         dominoOptions().applyOptions();
 
