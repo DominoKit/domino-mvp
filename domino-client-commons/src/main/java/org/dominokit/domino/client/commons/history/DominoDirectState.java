@@ -1,11 +1,13 @@
 package org.dominokit.domino.client.commons.history;
 
+import org.dominokit.domino.api.shared.history.DefaultNormalizedToken;
 import org.dominokit.domino.api.shared.history.NormalizedToken;
 import org.dominokit.domino.api.shared.history.StateHistoryToken;
 import org.dominokit.domino.api.shared.history.TokenFilter;
 
 import java.util.function.Consumer;
 
+import static java.util.Objects.isNull;
 import static org.dominokit.domino.api.shared.history.DominoHistory.*;
 
 public class DominoDirectState implements DirectState {
@@ -34,6 +36,9 @@ public class DominoDirectState implements DirectState {
     @Override
     public void onDirectUrl(TokenFilter tokenFilter) {
         NormalizedToken normalized = tokenFilter.normalizeToken(state.token().value());
+        if(isNull(normalized)){
+            normalized = new DefaultNormalizedToken(state.token());
+        }
         state.setNormalizedToken(normalized);
         if (tokenFilter.filter(new StateHistoryToken(normalized.getToken().value()))) {
             listener.onPopState(state);

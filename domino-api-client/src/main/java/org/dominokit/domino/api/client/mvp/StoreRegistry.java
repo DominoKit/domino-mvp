@@ -6,21 +6,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import static java.util.Objects.isNull;
-
 public class StoreRegistry {
     public static final StoreRegistry INSTANCE = new StoreRegistry();
 
-    private Map<String, IsStore<?>> stores = new HashMap<>();
-    private Map<String, List<Consumer<IsStore<?>>>> consumers = new HashMap<>();
+    private Map<String, IsStore> stores = new HashMap<>();
+    private Map<String, List<Consumer<IsStore>>> consumers = new HashMap<>();
 
-    private StoreRegistry(){
+    private StoreRegistry() {
 
     }
 
-    public RegistrationHandler registerStore(String key, IsStore<?> store){
+    public RegistrationHandler registerStore(String key, IsStore<?> store) {
         stores.put(key, store);
-        addConsumer(key, store);
+
+        if (consumers.containsKey(key)) {
+            consumers.get(key).forEach(consumer -> consumer.accept(store));
+        }
 
         return () -> {
             stores.remove(key);
@@ -28,21 +29,21 @@ public class StoreRegistry {
         };
     }
 
-    private void addConsumer(String key, IsStore<?> store) {
-        if(isNull(consumers.get(key))){
+    private void addConsumer(String key, Consumer<IsStore> consumer) {
+        if (!consumers.containsKey(key)) {
             consumers.put(key, new ArrayList<>());
-        }else{
-            consumers.get(key).forEach(consumer-> consumer.accept(store));
         }
+        consumers.get(key).add(consumer);
     }
 
-    public <T> IsStore<T> getStore(String key){
+    public <T> IsStore<T> getStore(String key) {
         return (IsStore<T>) stores.get(key);
     }
-    public <T> RegistrationHandler consumeStore(String key, Consumer<IsStore<T>> consumer){
-        addConsumer(key, (IsStore<?>) consumer);
 
-        if(stores.containsKey(key)){
+    public <T> RegistrationHandler consumeStore(String key, Consumer<IsStore> consumer) {
+        addConsumer(key, consumer);
+
+        if (stores.containsKey(key)) {
             consumer.accept((IsStore<T>) stores.get(key));
         }
         return () -> consumers.get(key).remove(consumer);
