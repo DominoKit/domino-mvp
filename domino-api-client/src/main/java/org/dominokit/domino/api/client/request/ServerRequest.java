@@ -151,9 +151,7 @@ public class ServerRequest<R, S>
 
     public void normalizeUrl() {
         if (isNull(this.url)) {
-            String serviceRoot = (isNull(this.serviceRoot) || this.serviceRoot.isEmpty()) ? ServiceRootMatcher.matchedServiceRoot(path) : this.serviceRoot;
-            String targetUrl = serviceRoot + path;
-
+            String targetUrl = (isNull(this.serviceRoot) || this.serviceRoot.isEmpty()) ? ServiceRootMatcher.matchedServiceRoot(path) : ServiceRootMatcher.matchedServiceRoot(serviceRoot + path);
             this.setUrl(formatUrl(targetUrl));
         }
     }
