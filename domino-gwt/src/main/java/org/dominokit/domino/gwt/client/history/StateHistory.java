@@ -34,6 +34,9 @@ public class StateHistory implements AppHistory {
         listeners.stream()
                 .filter(l -> {
                     NormalizedToken normalized = getNormalizedToken(token, l);
+                    if(isNull(normalized)){
+                        normalized = new DefaultNormalizedToken(token);
+                    }
                     return l.getTokenFilter().filter(new DominoHistoryState(normalized.getToken().value(), title, stateJson).token);
                 })
                 .forEach(l -> {

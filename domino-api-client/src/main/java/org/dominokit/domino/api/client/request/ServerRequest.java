@@ -23,7 +23,7 @@ public class ServerRequest<R, S>
     private static final String CONTENT_TYPE = "Content-type";
     private static final String ACCEPT = "Accept";
 
-    private SenderSupplier senderSupplier = new SenderSupplier(() -> new RequestSender<R,S>() {
+    private SenderSupplier senderSupplier = new SenderSupplier(() -> new RequestSender<R, S>() {
     });
 
     private Map<String, String> headers = new HashMap<>();
@@ -151,8 +151,8 @@ public class ServerRequest<R, S>
 
     public void normalizeUrl() {
         if (isNull(this.url)) {
-            String targetUrl = (isNull(this.serviceRoot) || this.serviceRoot.isEmpty()) ? ServiceRootMatcher.matchedServiceRoot(path) : ServiceRootMatcher.matchedServiceRoot(serviceRoot + path);
-            this.setUrl(formatUrl(targetUrl));
+            String root = (isNull(this.serviceRoot) || this.serviceRoot.isEmpty()) ? ServiceRootMatcher.matchedServiceRoot(path) : ServiceRootMatcher.matchedServiceRoot(this.serviceRoot + path);
+            this.setUrl(formatUrl(root + this.serviceRoot + path));
         }
     }
 
@@ -307,15 +307,15 @@ public class ServerRequest<R, S>
         return this;
     }
 
-    public boolean isVoidRequest(){
+    public boolean isVoidRequest() {
         return requestBean instanceof VoidRequest;
     }
 
-    public boolean isVoidResponse(){
+    public boolean isVoidResponse() {
         return voidResponse;
     }
 
-    protected void markAsVoidResponse(){
+    protected void markAsVoidResponse() {
         this.voidResponse = true;
     }
 
