@@ -31,12 +31,17 @@ public abstract class BaseClientPresenter extends ClientPresenter implements Pre
     private Map<Class<? extends DominoEvent>, DominoEventListener> listeners;
 
     protected void initialize() {
+        postConstruct();
         this.listeners = getListeners();
         registerListeners();
         state = initialized;
         if (isAutoActivate()) {
             activate();
         }
+    }
+
+    protected void postConstruct(){
+
     }
 
     protected void activate() {

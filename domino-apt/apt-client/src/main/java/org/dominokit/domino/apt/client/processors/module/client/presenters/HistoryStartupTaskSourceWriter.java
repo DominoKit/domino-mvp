@@ -1,7 +1,7 @@
 package org.dominokit.domino.apt.client.processors.module.client.presenters;
 
 import com.squareup.javapoet.*;
-import org.dominokit.domino.api.client.annotations.*;
+import org.dominokit.domino.api.client.annotations.StartupTask;
 import org.dominokit.domino.api.client.annotations.presenter.*;
 import org.dominokit.domino.api.client.events.BaseRoutingAggregator;
 import org.dominokit.domino.api.client.events.DefaultEventAggregator;
@@ -164,9 +164,13 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
 
         codeBlock.addStatement("bindPresenter(presenter)");
 
-        Optional<String> onBeforeRevealMethod = onBeforeRevealMethodCall();
-        onBeforeRevealMethod
-                .ifPresent(methodName -> codeBlock.beginControlFlow("if(presenter.$L())", methodName));
+        String[] revealConditionMethods = revealConditionMethods();
+        if (revealConditionMethods.length > 0) {
+            String methodsCondition = Arrays.stream(revealConditionMethods)
+                    .map(method -> "presenter.$L()")
+                    .collect(Collectors.joining(" && "));
+            codeBlock.beginControlFlow("if(" + methodsCondition + ")", revealConditionMethods);
+        }
 
         List<Element> routingState = processorUtil.getAnnotatedFields(presenterElement.asType(), RoutingState.class);
         List<Element> pathParameters = processorUtil.getAnnotatedFields(presenterElement.asType(), PathParameter.class);
@@ -187,7 +191,9 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
             codeBlock.endControlFlow();
         }
 
-        onBeforeRevealMethod.ifPresent(methodName -> codeBlock.endControlFlow());
+        if (revealConditionMethods.length > 0) {
+            codeBlock.endControlFlow();
+        }
 
         codeBlock.endControlFlow(").send()");
 
@@ -247,13 +253,16 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
         }
     }
 
-    private Optional<String> onBeforeRevealMethodCall() {
-        List<Element> onBeforeRevealMethods = processorUtil.getAnnotatedMethods(presenterElement.asType(), OnBeforeReveal.class);
-        if (nonNull(onBeforeRevealMethods) && !onBeforeRevealMethods.isEmpty()) {
-            Element onBeforeRevealMethod = onBeforeRevealMethods.get(0);
-            return Optional.of(onBeforeRevealMethod.getSimpleName().toString());
+    private String[] revealConditionMethods() {
+        List<Element> revealConditionMethods = processorUtil.getAnnotatedMethods(presenterElement.asType(), RevealCondition.class);
+        if (nonNull(revealConditionMethods) && !revealConditionMethods.isEmpty()) {
+            String[] methods = new String[revealConditionMethods.size()];
+            revealConditionMethods.stream().map(element -> element.getSimpleName().toString())
+                    .collect(Collectors.toList())
+                    .toArray(methods);
+            return methods;
         }
-        return Optional.empty();
+        return new String[]{};
     }
 
     public Optional<String> getTokenFilterMethodName(Element targetElement, Class<? extends Annotation> annotation) {

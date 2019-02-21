@@ -52,10 +52,15 @@ public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter
 
     public void revealInSlot(Slot slot){
         if(view instanceof HasContent) {
+            onBeforeReveal();
             slot.updateContent(((HasContent) view).getContent());
         }else{
             throw new RevealViewWithNoContentException(view.getClass().getCanonicalName());
         }
+    }
+
+    protected void onBeforeReveal(){
+
     }
 
     private DominoView.RevealedHandler getViewRevealHandler() {

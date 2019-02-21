@@ -11,6 +11,7 @@ import org.dominokit.domino.api.shared.history.DominoHistory;
 import org.dominokit.domino.apt.commons.AbstractSourceBuilder;
 import org.dominokit.domino.apt.commons.DominoTypeBuilder;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeMirror;
@@ -60,6 +61,8 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
         generateOnInit(proxyType);
         generateOnReveal(proxyType);
         generateOnRemove(proxyType);
+        generateOnBeforeReveal(proxyType);
+        generateOnPostConstruct(proxyType);
         generateListenersMethod(proxyType);
         generateSetState(proxyType);
         generateFireActivationEvent(proxyType);
@@ -172,7 +175,36 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
                     .addCode(methodsCall.build())
                     .build());
         }
+    }
 
+    private void generateOnBeforeReveal(TypeSpec.Builder proxyType) {
+        List<Element> onBeforeRevealMethods = processorUtil.getAnnotatedMethods(proxyElement.asType(), OnBeforeReveal.class);
+        if (nonNull(onBeforeRevealMethods) && !onBeforeRevealMethods.isEmpty()) {
+            CodeBlock.Builder methodsCall = CodeBlock.builder();
+            onBeforeRevealMethods.forEach(element -> methodsCall.addStatement(element.getSimpleName().toString() + "()"));
+
+            proxyType.addMethod(MethodSpec.methodBuilder("onBeforeReveal")
+                    .addAnnotation(Override.class)
+                    .addModifiers(Modifier.PROTECTED)
+                    .returns(TypeName.VOID)
+                    .addCode(methodsCall.build())
+                    .build());
+        }
+    }
+
+    private void generateOnPostConstruct(TypeSpec.Builder proxyType) {
+        List<Element> onPostConstructMethods = processorUtil.getAnnotatedMethods(proxyElement.asType(), PostConstruct.class);
+        if (nonNull(onPostConstructMethods) && !onPostConstructMethods.isEmpty()) {
+            CodeBlock.Builder methodsCall = CodeBlock.builder();
+            onPostConstructMethods.forEach(element -> methodsCall.addStatement(element.getSimpleName().toString() + "()"));
+
+            proxyType.addMethod(MethodSpec.methodBuilder("postConstruct")
+                    .addAnnotation(Override.class)
+                    .addModifiers(Modifier.PROTECTED)
+                    .returns(TypeName.VOID)
+                    .addCode(methodsCall.build())
+                    .build());
+        }
     }
 
     private void generateOnRemove(TypeSpec.Builder proxyType) {
