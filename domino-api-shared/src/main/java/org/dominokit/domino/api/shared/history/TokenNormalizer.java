@@ -52,9 +52,11 @@ public class TokenNormalizer {
     private static void checkAndReplacePath(DefaultNormalizedToken normalizedToken, StateHistoryToken originalToken, List<String> originalPaths, List<String> targetPaths, int resultIndex, int i) {
         String path = targetPaths.get(i);
         if (path.startsWith(":")) {
-            String originalPath = originalPaths.get(resultIndex);
-            originalToken.replacePath(originalPath, path);
-            normalizedToken.addPathParameter(path.replace(":", ""), originalPath);
+            if (resultIndex> -1 && resultIndex < originalPaths.size()) {
+                String originalPath = originalPaths.get(resultIndex);
+                originalToken.replacePath(originalPath, path);
+                normalizedToken.addPathParameter(path.replace(":", ""), originalPath);
+            }
         }
     }
 
@@ -88,7 +90,7 @@ public class TokenNormalizer {
             int targetIndex = targetFragments.size() - 1;
             int resultIndex = originalIndex;
 
-            for (int i = targetIndex; resultIndex >= 0  && i >= 0; i--) {
+            for (int i = targetIndex; resultIndex >= 0 && i >= 0; i--) {
                 resultIndex = originalIndex - (targetIndex - i);
                 checkAndReplaceFragment(normalizedToken, originalToken, originalFragments, targetFragments, resultIndex, i);
             }
@@ -98,9 +100,11 @@ public class TokenNormalizer {
     private static void checkAndReplaceFragment(DefaultNormalizedToken normalizedToken, StateHistoryToken originalToken, List<String> originalFragments, List<String> targetFragments, int resultIndex, int i) {
         String fragment = targetFragments.get(i);
         if (fragment.startsWith(":")) {
-            String originalFragment = originalFragments.get(resultIndex);
-            originalToken.replaceFragment(originalFragment, fragment);
-            normalizedToken.addFragmentParameter(fragment.replace(":", ""), originalFragment);
+            if (resultIndex> -1 && resultIndex < originalFragments.size()) {
+                String originalFragment = originalFragments.get(resultIndex);
+                originalToken.replaceFragment(originalFragment, fragment);
+                normalizedToken.addFragmentParameter(fragment.replace(":", ""), originalFragment);
+            }
         }
     }
 

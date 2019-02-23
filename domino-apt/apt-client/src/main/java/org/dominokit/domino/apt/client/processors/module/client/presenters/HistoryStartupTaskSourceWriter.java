@@ -164,14 +164,6 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
 
         codeBlock.addStatement("bindPresenter(presenter)");
 
-        String[] revealConditionMethods = revealConditionMethods();
-        if (revealConditionMethods.length > 0) {
-            String methodsCondition = Arrays.stream(revealConditionMethods)
-                    .map(method -> "presenter.$L()")
-                    .collect(Collectors.joining(" && "));
-            codeBlock.beginControlFlow("if(" + methodsCondition + ")", revealConditionMethods);
-        }
-
         List<Element> routingState = processorUtil.getAnnotatedFields(presenterElement.asType(), RoutingState.class);
         List<Element> pathParameters = processorUtil.getAnnotatedFields(presenterElement.asType(), PathParameter.class);
         List<Element> fragmentParameters = processorUtil.getAnnotatedFields(presenterElement.asType(), FragmentParameter.class);
@@ -180,6 +172,15 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
         if (!routingState.isEmpty() || !pathParameters.isEmpty() || !fragmentParameters.isEmpty() || !queryParameters.isEmpty()) {
             codeBlock.addStatement("presenter.setState(state)");
         }
+
+        String[] revealConditionMethods = revealConditionMethods();
+        if (revealConditionMethods.length > 0) {
+            String methodsCondition = Arrays.stream(revealConditionMethods)
+                    .map(method -> "presenter.$L()")
+                    .collect(Collectors.joining(" && "));
+            codeBlock.beginControlFlow("if(" + methodsCondition + ")", revealConditionMethods);
+        }
+
 
         List<Element> onRoutingMethods = processorUtil.getAnnotatedMethods(presenterElement.asType(), OnRouting.class);
 

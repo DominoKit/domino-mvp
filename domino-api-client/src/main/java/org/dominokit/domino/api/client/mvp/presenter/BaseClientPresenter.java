@@ -50,10 +50,10 @@ public abstract class BaseClientPresenter extends ClientPresenter implements Pre
     }
 
     protected void fireStateEvent(boolean state) {
-        fireActivationEvent(new ActivationEventContext(state));
+        fireActivationEvent(state);
     }
 
-    protected void fireActivationEvent(ActivationEventContext context) {
+    protected void fireActivationEvent(boolean state) {
     }
 
     private void registerListeners() {

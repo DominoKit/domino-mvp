@@ -75,7 +75,7 @@ public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter
     }
 
     @Override
-    protected void fireActivationEvent(ActivationEventContext context) {
+    protected void fireActivationEvent(boolean stats) {
     }
 
     @Override
@@ -91,7 +91,7 @@ public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter
                 removeHandler.onRemoved();
             }
             activated =false;
-            fireActivationEvent(new ActivationEventContext(false));
+            fireActivationEvent(false);
         };
     }
 

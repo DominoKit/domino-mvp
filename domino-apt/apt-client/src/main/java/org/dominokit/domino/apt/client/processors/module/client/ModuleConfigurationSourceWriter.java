@@ -87,6 +87,8 @@ public class ModuleConfigurationSourceWriter extends AbstractSourceBuilder {
                     } else {
                         methodBuilder.addStatement("$L.setPresenterSupplier(new $T<$T>($L, ()-> new $T()))", configName, TypeName.get(PresenterSupplier.class), TypeName.get(presenter.asType()), singleton, TypeName.get(presenter.asType()));
                     }
+
+                    methodBuilder.addCode("\n");
                 });
 
         return methodBuilder.build();

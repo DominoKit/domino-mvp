@@ -4,8 +4,8 @@ public abstract class ActivationEvent implements DominoEvent<ActivationEventCont
 
     private final ActivationEventContext context;
 
-    public ActivationEvent(ActivationEventContext context) {
-        this.context = context;
+    public ActivationEvent(boolean active) {
+        this.context = new ActivationEventContext(active);
     }
 
     @Override

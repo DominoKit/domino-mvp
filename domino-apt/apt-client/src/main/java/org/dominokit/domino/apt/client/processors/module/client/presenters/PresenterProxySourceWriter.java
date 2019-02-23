@@ -274,8 +274,8 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
                     .addModifiers(Modifier.PROTECTED)
                     .addAnnotation(Override.class)
                     .returns(TypeName.VOID)
-                    .addParameter(TypeName.get(ActivationEventContext.class), "context")
-                    .addStatement("fireEvent($T.class, new $T(context))", TypeName.get(eventType.get()),TypeName.get(eventType.get()))
+                    .addParameter(TypeName.BOOLEAN, "state")
+                    .addStatement("fireEvent($T.class, new $T(state))", TypeName.get(eventType.get()),TypeName.get(eventType.get()))
                     .build());
         }
     }
