@@ -100,7 +100,10 @@ public class ModuleConfigurationSourceWriter extends AbstractSourceBuilder {
                 .addAnnotation(Override.class)
                 .addModifiers(Modifier.PUBLIC);
 
-        views.stream().map(elements::getTypeElement)
+        views.stream().map(charSequence -> {
+            String viewElement = charSequence;
+            return elements.getTypeElement(viewElement);
+        })
                 .forEach(view -> {
                     Optional<TypeMirror> presenterType = processorUtil.getClassValueFromAnnotation(view, UiView.class, "presentable");
                     boolean proxy = view.getAnnotation(UiView.class).proxy();

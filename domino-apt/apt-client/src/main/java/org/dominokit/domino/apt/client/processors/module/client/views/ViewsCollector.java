@@ -38,7 +38,7 @@ public class ViewsCollector {
     private boolean addView(ProcessorElement v) {
         isView(v);
 
-        return views.add(v.fullQualifiedNoneGenericName());
+        return views.add(v.asTypeElement().getQualifiedName().toString());
     }
 
     private boolean isProxy(ProcessorElement view){
