@@ -26,6 +26,7 @@ public interface HistoryToken {
     HistoryToken appendPath(String path);
 
     HistoryToken replacePath(String path, String replacement);
+    HistoryToken replacePaths(String path, String replacement);
 
     HistoryToken replaceLastPath(String replacement);
 
@@ -52,6 +53,8 @@ public interface HistoryToken {
     HistoryToken appendParameter(String name, String value);
 
     HistoryToken replaceFragment(String fragment, String replacement);
+
+    HistoryToken replaceFragments(String fragment, String replacement);
 
     HistoryToken replaceParameter(String name, String replacementName, String replacementValue);
 

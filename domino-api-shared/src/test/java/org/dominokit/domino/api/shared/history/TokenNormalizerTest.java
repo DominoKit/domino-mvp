@@ -74,9 +74,6 @@ public class TokenNormalizerTest {
                 .replace("path3", ":path3param")
                 .replace("fragment3", ":fragment3param"));
 
-//        System.out.println(normalized.getToken().value());
-//        System.out.println(expected.value());
-
         assertThat(normalized.getPathParameters().size()).isEqualTo(1);
         assertThat(normalized.getFragmentParameters().size()).isEqualTo(1);
         assertThat(normalized.getPathParameter("path3param")).isEqualTo("path3");
@@ -98,6 +95,22 @@ public class TokenNormalizerTest {
         assertThat(normalized.getPathParameters()).isEmpty();
         assertThat(normalized.getFragmentParameters().size()).isEqualTo(1);
         assertThat(normalized.getFragmentParameter("fragment3param")).isEqualTo("fragment3");
+
+        assertThat(normalized.getToken()).isEqualTo(expected);
+    }
+
+    @Test
+    public void testNormalizeTokenWithDuplicatePaths(){
+        HistoryToken historyToken = new StateHistoryToken(SAMPLE_TOKEN);
+        historyToken.appendPath("path3")
+        .clearFragments()
+        .clearQuery();
+
+        NormalizedToken normalized = TokenNormalizer.normalizePathTail(historyToken.value(), "path1/path2/:pathx/:pathy");
+        StateHistoryToken expected = new StateHistoryToken("path1/path2/:pathx/:pathy");
+
+        System.out.println(normalized.getToken().value());
+        System.out.println(expected.value());
 
         assertThat(normalized.getToken()).isEqualTo(expected);
     }

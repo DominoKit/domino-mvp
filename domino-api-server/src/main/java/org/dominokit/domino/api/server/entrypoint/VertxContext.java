@@ -18,12 +18,14 @@ public class VertxContext implements ServerContext {
     private final VertxServiceDiscovery serviceDiscovery;
     private final DominoHttpServerOptions httpServerOptions;
     private final ConfigRetriever configRetriever;
+    private final io.vertx.reactivex.core.Vertx rxVertx;
 
     private VertxContext(Vertx vertx, Router router, ServerConfiguration config, VertxServiceDiscovery serviceDiscovery,
                          DominoHttpServerOptions httpServerOptions, ConfigRetriever configRetriever) {
         this.router = router;
         this.config = config;
         this.vertx = vertx;
+        this.rxVertx = new io.vertx.reactivex.core.Vertx(vertx);
         this.serviceDiscovery = serviceDiscovery;
         this.httpServerOptions = httpServerOptions;
         this.configRetriever = configRetriever;
@@ -52,6 +54,10 @@ public class VertxContext implements ServerContext {
 
     public Vertx vertx() {
         return this.vertx;
+    }
+
+    public io.vertx.reactivex.core.Vertx rxVertx() {
+        return rxVertx;
     }
 
     public VertxServiceDiscovery serviceDiscovery() {
