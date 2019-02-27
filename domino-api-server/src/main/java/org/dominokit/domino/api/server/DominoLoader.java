@@ -12,6 +12,7 @@ import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.StaticHandler;
+import io.vertx.reactivex.core.http.HttpServer;
 import org.dominokit.domino.api.server.config.HttpServerConfigurator;
 import org.dominokit.domino.api.server.config.ServerConfigurationLoader;
 import org.dominokit.domino.api.server.config.VertxConfiguration;
@@ -26,6 +27,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ServiceLoader;
+import java.util.function.Consumer;
 
 import static java.util.Objects.nonNull;
 
@@ -60,12 +62,17 @@ public class DominoLoader {
     }
 
     public void start() {
+        start(httpServer -> {
+        });
+    }
+
+    public void start(Consumer<HttpServer> httpServerConsumer) {
         ImmutableHttpServerOptions immutableHttpServerOptions = new ImmutableHttpServerOptions();
         VertxContext vertxContext = initializeContext(immutableHttpServerOptions);
 
         Future<HttpServerOptions> future = Future.future();
         future.setHandler(
-                options -> onHttpServerConfigurationCompleted(immutableHttpServerOptions, vertxContext, options));
+                options -> onHttpServerConfigurationCompleted(immutableHttpServerOptions, vertxContext, options, httpServerConsumer));
 
         configureHttpServer(vertxContext, future);
     }
@@ -80,7 +87,8 @@ public class DominoLoader {
     }
 
     private void onHttpServerConfigurationCompleted(ImmutableHttpServerOptions immutableHttpServerOptions,
-                                                    VertxContext vertxContext, AsyncResult<HttpServerOptions> options) {
+                                                    VertxContext vertxContext, AsyncResult<HttpServerOptions> options,
+                                                    Consumer<HttpServer> httpServerConsumer) {
         immutableHttpServerOptions.init(options.result(), options.result().getPort(), options.result().getHost());
 
         new ServerConfigurationLoader(vertxContext).loadModules();
@@ -109,13 +117,10 @@ public class DominoLoader {
                 .rxListen(options.result().getPort())
                 .doOnSuccess(httpServer -> {
                     LOGGER.info("Server started on port : " + httpServer.actualPort());
+                    httpServerConsumer.accept(httpServer);
                 })
-                .doOnError(throwable -> {
-                    LOGGER.error("Failed to start server", throwable);
-                })
-                .subscribe((httpServer, throwable) -> {
-                    LOGGER.info("================ SERVER STARTUP COMPLETED [PORT : " + httpServer.actualPort() + "]=============== ");
-                });
+                .doOnError(throwable -> LOGGER.error("Failed to start server", throwable))
+                .subscribe();
     }
 
     protected VertxResteasyDeployment setupResteasy(Class<?>... resourceOrProviderClasses) {
@@ -138,7 +143,7 @@ public class DominoLoader {
         rxVertx = new io.vertx.reactivex.core.Vertx(vertx);
         VertxPluginRequestHandler resteasyHandler = new VertxPluginRequestHandler(rxVertx, deployment, new ArrayList<>());
 
-        rxRouter.route(config.getString("resource.root.path","")+"/*")
+        rxRouter.route(config.getString("resource.root.path", "") + "/*")
                 .order(Integer.MAX_VALUE - 1)
                 .handler(routingContext -> {
                     ResteasyProviderFactory.pushContext(ResourceContext.class, new ResourceContext(rxVertx, rxRouter, vertxContext, routingContext));
