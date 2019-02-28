@@ -49,11 +49,6 @@ public abstract class PresenterCommand<P extends Presentable> extends BaseReques
         }
     }
 
-    @Override
-    public String getKey() {
-        return this.key;
-    }
-
     public interface PresenterHandler<P> {
         void onReady(P presenter);
     }
