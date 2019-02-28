@@ -36,8 +36,6 @@ public interface Request {
 
     void startRouting();
 
-    String getKey();
-
     void applyState(RequestStateContext context);
 
     class InvalidRequestState extends RuntimeException{

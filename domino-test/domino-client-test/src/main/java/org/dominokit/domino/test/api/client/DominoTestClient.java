@@ -11,16 +11,13 @@ import org.dominokit.domino.api.client.ApplicationStartHandler;
 import org.dominokit.domino.api.client.ModuleConfiguration;
 import org.dominokit.domino.api.client.ModuleConfigurator;
 import org.dominokit.domino.api.client.mvp.presenter.ViewBaseClientPresenter;
-import org.dominokit.domino.api.client.mvp.slots.Slot;
 import org.dominokit.domino.api.client.mvp.slots.SlotRegistry;
 import org.dominokit.domino.api.client.request.ServerRequest;
 import org.dominokit.domino.api.server.config.ServerConfiguration;
 import org.dominokit.domino.api.server.config.ServerConfigurationLoader;
 import org.dominokit.domino.api.server.config.VertxConfiguration;
-import org.dominokit.domino.api.server.entrypoint.ServerEntryPointContext;
 import org.dominokit.domino.api.server.entrypoint.VertxContext;
 import org.dominokit.domino.api.server.entrypoint.VertxEntryPointContext;
-import org.dominokit.domino.api.shared.extension.Content;
 import org.dominokit.domino.api.shared.extension.DominoEventListener;
 import org.dominokit.domino.api.shared.request.ResponseBean;
 import org.dominokit.domino.service.discovery.VertxServiceDiscovery;
@@ -118,7 +115,7 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
                 .build();
         new ServerConfigurationLoader(vertxContext).loadModules();
 
-        init(testEntryPointContext);
+        init();
         Arrays.stream(modules).forEach(this::configureModule);
 
         this.configOverrideHandler.overrideConfig();
@@ -152,8 +149,8 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
         LOGGER.info("Test client started.");
     }
 
-    private void init(ServerEntryPointContext entryPointContext) {
-        TestClientAppFactory.make(entryPointContext, testContext);
+    private void init() {
+        TestClientAppFactory.make(testContext);
     }
 
     private void configureModule(ModuleConfiguration configuration) {

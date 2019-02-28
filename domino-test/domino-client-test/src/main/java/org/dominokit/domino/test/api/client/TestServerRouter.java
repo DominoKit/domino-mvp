@@ -9,7 +9,6 @@ import org.dominokit.domino.api.client.events.ServerRequestEventFactory;
 import org.dominokit.domino.api.client.request.Request;
 import org.dominokit.domino.api.client.request.RequestRouter;
 import org.dominokit.domino.api.client.request.ServerRequest;
-import org.dominokit.domino.api.server.entrypoint.ServerEntryPointContext;
 import org.dominokit.domino.api.server.resource.ResourcesRepository;
 import org.dominokit.domino.api.shared.request.FailedResponseBean;
 import org.dominokit.domino.api.shared.request.ResponseBean;
@@ -18,8 +17,10 @@ import org.dominokit.domino.gwt.client.request.GwtRequestAsyncSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 import static java.util.Objects.nonNull;
 
@@ -44,13 +45,11 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
         }
     };
 
-    private ServerEntryPointContext entryPointContext;
     private TestContext testContext;
-    private Map<String, Async> requestsAsync = new HashMap<>();
+    private Map<String, Deque<Async>> requestsAsync = new HashMap<>();
 
-    public TestServerRouter(ServerEntryPointContext entryPointContext, TestContext testContext) {
+    public TestServerRouter(TestContext testContext) {
         this.requestAsyncRunner = new GwtRequestAsyncSender(eventFactory);
-        this.entryPointContext = entryPointContext;
         this.testContext = testContext;
     }
 
@@ -66,26 +65,31 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
     public void routeRequest(ServerRequest request) {
         ResponseBean response;
         try {
-            if (fakeResponses.containsKey(request.getKey())) {
-                response = fakeResponses.get(request.getKey()).reply();
+            if (fakeResponses.containsKey(getRequestKey(request))) {
+                response = fakeResponses.get(getRequestKey(request)).reply();
                 listener.onRouteRequest(request, response);
                 eventFactory.makeSuccess(request, response).fire();
             } else {
                 if (nonNull(testContext)) {
                     Async async = testContext.async();
-                    requestsAsync.put(request.getKey(), async);
+                    if (!requestsAsync.containsKey(getRequestKey(request))) {
+                        requestsAsync.put(getRequestKey(request), new ConcurrentLinkedDeque<>());
+                    }
+                    requestsAsync.get(getRequestKey(request)).push(async);
                 }
                 requestAsyncRunner.send(request);
             }
         } catch (ResourcesRepository.RequestHandlerNotFound ex) {
             LOGGER.error("Request resource not found for request [" + request.getClass().getSimpleName() + "]! either fake the request or start an actual server");
             eventFactory.makeFailed(request, new FailedResponseBean(ex)).fire();
-            return;
         } catch (Exception ex) {
             LOGGER.error("could not execute request : ", ex);
             eventFactory.makeFailed(request, new FailedResponseBean(ex)).fire();
-            return;
         }
+    }
+
+    private String getRequestKey(ServerRequest request) {
+        return request.getClass().getCanonicalName();
     }
 
     public void fakeResponse(String requestKey, ResponseReply reply) {
@@ -129,10 +133,15 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
     }
 
     private void completeIfAsync(ServerRequest request) {
-        if (requestsAsync.containsKey(request.getKey())) {
-            Async async = requestsAsync.get(request.getKey());
-            async.complete();
-            requestsAsync.remove(request.getKey());
+        if (requestsAsync.containsKey(getRequestKey(request))) {
+            Deque<Async> deque = requestsAsync.get(getRequestKey(request));
+            if (!deque.isEmpty()) {
+                Async async = deque.poll();
+                async.complete();
+            }
+            if (deque.isEmpty()) {
+                requestsAsync.remove(getRequestKey(request));
+            }
         }
     }
 
