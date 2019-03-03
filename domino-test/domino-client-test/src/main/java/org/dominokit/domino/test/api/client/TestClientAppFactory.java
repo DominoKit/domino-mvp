@@ -19,10 +19,10 @@ public class TestClientAppFactory {
     private TestClientAppFactory() {
     }
 
-    public static ClientApp make(ServerEntryPointContext entryPointContext, TestContext testContext) {
+    public static ClientApp make(TestContext testContext) {
 
         clientRouter = new TestClientRouter();
-        serverRouter = new TestServerRouter(entryPointContext, testContext);
+        serverRouter = new TestServerRouter(testContext);
         requestEventProcessor = new RequestEventProcessor();
         eventBus = new TestEventBus(requestEventProcessor);
 

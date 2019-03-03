@@ -3,12 +3,12 @@ package org.dominokit.domino.test.api;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpMethod;
-import io.vertx.core.http.HttpServer;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.WebClient;
 import io.vertx.ext.web.handler.CSRFHandler;
+import io.vertx.reactivex.core.http.HttpServer;
 import org.dominokit.domino.api.server.DominoLoader;
 import org.dominokit.domino.api.server.RouterConfigurator;
 import org.dominokit.domino.api.server.SecretKey;
@@ -38,7 +38,10 @@ public class DominoTestServer implements TestServerContext {
         RouterConfigurator routerConfigurator = new RouterConfigurator(vertx, config, secret);
         router = routerConfigurator.configuredRouter();
         beforeLoad();
-        new DominoLoader(vertx, router, config).start();
+        new DominoLoader(vertx, router, config).start(httpServer -> {
+            this.httpServer = httpServer;
+            afterLoad();
+        });
     }
 
     private void beforeLoad() {

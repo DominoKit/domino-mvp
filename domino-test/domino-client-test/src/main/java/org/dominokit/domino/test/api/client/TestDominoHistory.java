@@ -1,5 +1,6 @@
 package org.dominokit.domino.test.api.client;
 
+import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.shared.history.*;
 import org.dominokit.domino.client.commons.history.DominoDirectState;
 
@@ -35,7 +36,7 @@ public class TestDominoHistory implements AppHistory {
     }
 
     private State currentState() {
-        if(forwards.isEmpty())
+        if (forwards.isEmpty())
             return new TestState(nullState());
         return new TestState(forwards.peek());
     }
@@ -45,8 +46,30 @@ public class TestDominoHistory implements AppHistory {
     }
 
     private void inform(HistoryState state) {
-        listeners.stream().filter(l -> l.tokenFilter.filter(new StateHistoryToken(state.token)))
-                .forEach(l -> l.listener.onPopState(new TestState(state)));
+        List<HistoryListener> completedListeners = new ArrayList<>();
+        listeners.stream()
+                .filter(l -> {
+                    NormalizedToken normalized = getNormalizedToken(state.token, l);
+                    if (isNull(normalized)) {
+                        normalized = new DefaultNormalizedToken(state.token);
+                    }
+                    return l.tokenFilter.filter(new TestState(new HistoryState(normalized.getToken().value(), "test")).token());
+                })
+                .forEach(l -> {
+                    if (l.isRemoveOnComplete()) {
+                        completedListeners.add(l);
+                    }
+                    ClientApp.make().getAsyncRunner().runAsync(() -> {
+                        NormalizedToken normalized = getNormalizedToken(state.token, l);
+                        l.listener.onPopState(new TestState(normalized, new HistoryState(normalized.getToken().value(), "test")));
+                    });
+                });
+
+        listeners.removeAll(completedListeners);
+    }
+
+    private NormalizedToken getNormalizedToken(String token, HistoryListener listener) {
+        return listener.tokenFilter.normalizeToken(token);
     }
 
     @Override
@@ -139,8 +162,8 @@ public class TestDominoHistory implements AppHistory {
 
     private String replaceParameters(String token, List<TokenParameter> parametersList) {
         String result = token;
-        for (TokenParameter parameter:parametersList) {
-            result=result.replace(":"+parameter.getName(), parameter.getValue());
+        for (TokenParameter parameter : parametersList) {
+            result = result.replace(":" + parameter.getName(), parameter.getValue());
         }
         return result;
     }
@@ -161,6 +184,10 @@ public class TestDominoHistory implements AppHistory {
             this.tokenFilter = tokenFilter;
             this.removeOnComplete = removeOnComplete;
         }
+
+        public boolean isRemoveOnComplete() {
+            return removeOnComplete;
+        }
     }
 
     public Set<HistoryListener> getListeners() {
@@ -178,8 +205,14 @@ public class TestDominoHistory implements AppHistory {
     private class TestState implements State {
 
         private final HistoryState historyState;
+        private NormalizedToken normalizedToken;
 
         private TestState(HistoryState historyState) {
+            this.historyState = historyState;
+        }
+
+        private TestState(NormalizedToken normalizedToken, HistoryState historyState) {
+            this.normalizedToken = normalizedToken;
             this.historyState = historyState;
         }
 
@@ -200,12 +233,12 @@ public class TestDominoHistory implements AppHistory {
 
         @Override
         public NormalizedToken normalizedToken() {
-            return new DefaultNormalizedToken(new StateHistoryToken(historyState.token));
+            return normalizedToken;
         }
 
         @Override
         public void setNormalizedToken(NormalizedToken normalizedToken) {
-
+            this.normalizedToken = normalizedToken;
         }
     }
 
