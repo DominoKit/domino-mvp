@@ -1,7 +1,7 @@
 package org.dominokit.domino.service.discovery;
 
-import org.dominokit.domino.service.discovery.configuration.DataSourceServiceConfiguration;
 import io.vertx.core.json.JsonObject;
+import org.dominokit.domino.service.discovery.configuration.DataSourceServiceConfiguration;
 
 public abstract class DataSourceServiceDiscoveryTest extends BaseVertxServiceDiscoveryTest {
 

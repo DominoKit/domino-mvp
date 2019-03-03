@@ -4,7 +4,6 @@ import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.async.AsyncRunner;
 import org.dominokit.domino.api.client.extension.DominoEvents;
 import org.dominokit.domino.api.client.startup.BaseRoutingStartupTask;
-import org.dominokit.domino.api.shared.extension.ActivationEventContext;
 import org.dominokit.domino.api.shared.extension.DominoEvent;
 import org.dominokit.domino.api.shared.extension.DominoEventListener;
 import org.dominokit.domino.api.shared.history.AppHistory;

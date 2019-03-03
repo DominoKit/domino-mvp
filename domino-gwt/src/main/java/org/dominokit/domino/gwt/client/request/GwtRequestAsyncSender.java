@@ -4,7 +4,6 @@ import org.dominokit.domino.api.client.events.ServerRequestEventFactory;
 import org.dominokit.domino.api.client.request.ServerRequest;
 import org.dominokit.domino.api.client.request.ServerRequestCallBack;
 import org.dominokit.domino.api.shared.request.FailedResponseBean;
-import org.dominokit.domino.api.shared.request.ResponseBean;
 import org.dominokit.domino.client.commons.request.AbstractRequestAsyncSender;
 
 public class GwtRequestAsyncSender extends AbstractRequestAsyncSender {

@@ -1,9 +1,9 @@
 package org.dominokit.domino.api.server.logging;
 
-import org.dominokit.domino.api.shared.logging.SerializableLogRecord;
 import io.vertx.core.Handler;
 import io.vertx.core.json.Json;
 import io.vertx.ext.web.RoutingContext;
+import org.dominokit.domino.api.shared.logging.SerializableLogRecord;
 
 import static org.dominokit.domino.api.server.logging.SerializableLogRecordMapper.asLogRecord;
 

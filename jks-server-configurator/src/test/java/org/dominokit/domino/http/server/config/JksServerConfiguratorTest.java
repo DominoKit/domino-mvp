@@ -1,13 +1,13 @@
 package org.dominokit.domino.http.server.config;
 
-import org.dominokit.domino.api.server.config.VertxConfiguration;
-import org.dominokit.domino.api.server.entrypoint.VertxContext;
-import org.dominokit.domino.service.discovery.VertxServiceDiscovery;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.net.JksOptions;
 import io.vertx.ext.web.Router;
+import org.dominokit.domino.api.server.config.VertxConfiguration;
+import org.dominokit.domino.api.server.entrypoint.VertxContext;
+import org.dominokit.domino.service.discovery.VertxServiceDiscovery;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

@@ -9,8 +9,15 @@ import javax.lang.model.element.Modifier;
 
 public class DominoTypeBuilder {
 
-    public static TypeSpec.Builder build(String name, Class<? extends Processor> processorClass) {
+    public static TypeSpec.Builder classBuilder(String name, Class<? extends Processor> processorClass) {
         return TypeSpec.classBuilder(name)
+                .addAnnotation(generatedAnnotation(processorClass))
+                .addModifiers(Modifier.PUBLIC)
+                .addJavadoc("This is generated class, please don't modify\n");
+    }
+
+    public static TypeSpec.Builder interfaceBuilder(String name, Class<? extends Processor> processorClass) {
+        return TypeSpec.interfaceBuilder(name)
                 .addAnnotation(generatedAnnotation(processorClass))
                 .addModifiers(Modifier.PUBLIC)
                 .addJavadoc("This is generated class, please don't modify\n");

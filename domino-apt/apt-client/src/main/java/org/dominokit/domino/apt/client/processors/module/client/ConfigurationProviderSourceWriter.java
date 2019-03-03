@@ -2,15 +2,15 @@ package org.dominokit.domino.apt.client.processors.module.client;
 
 import com.google.auto.service.AutoService;
 import com.google.gwt.core.shared.GwtIncompatible;
-import org.dominokit.domino.api.client.ModuleConfigurationProvider;
-import org.dominokit.domino.api.client.ModuleConfiguration;
-import org.dominokit.domino.api.client.annotations.ClientModule;
-import org.dominokit.domino.apt.commons.DominoTypeBuilder;
-import org.dominokit.domino.apt.commons.ProcessorElement;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
+import org.dominokit.domino.api.client.ModuleConfiguration;
+import org.dominokit.domino.api.client.ModuleConfigurationProvider;
+import org.dominokit.domino.api.client.annotations.ClientModule;
+import org.dominokit.domino.apt.commons.DominoTypeBuilder;
+import org.dominokit.domino.apt.commons.ProcessorElement;
 
 import javax.lang.model.element.Modifier;
 import java.io.IOException;
@@ -27,7 +27,7 @@ public class ConfigurationProviderSourceWriter {
         AnnotationSpec autoService = AnnotationSpec.builder(AutoService.class).addMember("value", "ModuleConfigurationProvider.class").build();
         AnnotationSpec gwtIncompatible = AnnotationSpec.builder(GwtIncompatible.class).addMember("value", "\"Unused in GWT compilation\"").build();
 
-        TypeSpec configurationProvider = DominoTypeBuilder.build(element.getAnnotation(ClientModule.class).name() + "ModuleConfiguration_Provider", ConfigurationProviderAnnotationProcessor.class)
+        TypeSpec configurationProvider = DominoTypeBuilder.classBuilder(element.getAnnotation(ClientModule.class).name() + "ModuleConfiguration_Provider", ConfigurationProviderAnnotationProcessor.class)
                 .addAnnotation(gwtIncompatible)
                 .addAnnotation(autoService)
                 .addSuperinterface(ModuleConfigurationProvider.class)

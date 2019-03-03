@@ -1,6 +1,5 @@
 package org.dominokit.domino.service.discovery;
 
-import org.dominokit.domino.service.discovery.type.*;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
@@ -8,6 +7,7 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.servicediscovery.Record;
 import io.vertx.servicediscovery.ServiceDiscovery;
 import io.vertx.servicediscovery.ServiceReference;
+import org.dominokit.domino.service.discovery.type.*;
 
 import java.util.List;
 import java.util.function.Function;

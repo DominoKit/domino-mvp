@@ -11,6 +11,8 @@ import org.dominokit.domino.apt.commons.DominoTypeBuilder;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.*;
 import javax.lang.model.type.DeclaredType;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public class DominoEventListenerSourceWriter extends AbstractSourceBuilder {
@@ -36,10 +38,10 @@ public class DominoEventListenerSourceWriter extends AbstractSourceBuilder {
     }
 
     @Override
-    public TypeSpec.Builder asTypeBuilder() {
+    public List<TypeSpec.Builder> asTypeBuilder() {
 
         String eventClassName = presenterElement.getSimpleName() + "ListenFor" + eventType.getSimpleName();
-        TypeSpec.Builder listenerType = DominoTypeBuilder.build(eventClassName, PresenterProcessor.class)
+        TypeSpec.Builder listenerType = DominoTypeBuilder.classBuilder(eventClassName, PresenterProcessor.class)
                 .addAnnotation(Listener.class)
                 .addSuperinterface(ParameterizedTypeName.get(ClassName.get(DominoEventListener.class), TypeName.get(eventType.asType())))
                 .addField(FieldSpec.builder(TypeName.get(presenterElement.asType()), "presenter", Modifier.PRIVATE, Modifier.FINAL).build())
@@ -49,7 +51,7 @@ public class DominoEventListenerSourceWriter extends AbstractSourceBuilder {
                         .addStatement("this.presenter = presenter")
                         .build())
                 .addMethod(makeListenMethod());
-        return listenerType;
+        return Collections.singletonList(listenerType);
     }
 
     private TypeElement getEventType(Element e) {

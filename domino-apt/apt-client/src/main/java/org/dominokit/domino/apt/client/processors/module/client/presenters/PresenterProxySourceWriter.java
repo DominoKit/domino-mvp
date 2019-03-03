@@ -1,10 +1,9 @@
 package org.dominokit.domino.apt.client.processors.module.client.presenters;
 
 import com.squareup.javapoet.*;
-import org.dominokit.domino.api.client.annotations.*;
+import org.dominokit.domino.api.client.annotations.Aggregate;
 import org.dominokit.domino.api.client.annotations.presenter.*;
 import org.dominokit.domino.api.client.mvp.presenter.ViewBaseClientPresenter;
-import org.dominokit.domino.api.shared.extension.ActivationEventContext;
 import org.dominokit.domino.api.shared.extension.DominoEvent;
 import org.dominokit.domino.api.shared.extension.DominoEventListener;
 import org.dominokit.domino.api.shared.history.DominoHistory;
@@ -13,7 +12,8 @@ import org.dominokit.domino.apt.commons.DominoTypeBuilder;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.*;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.Modifier;
 import javax.lang.model.type.TypeMirror;
 import java.util.*;
 
@@ -29,9 +29,9 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
     }
 
     @Override
-    public TypeSpec.Builder asTypeBuilder() {
+    public List<TypeSpec.Builder> asTypeBuilder() {
         String proxyClassName = proxyElement.getSimpleName() + "_Presenter";
-        TypeSpec.Builder proxyType = DominoTypeBuilder.build(proxyClassName, PresenterProcessor.class)
+        TypeSpec.Builder proxyType = DominoTypeBuilder.classBuilder(proxyClassName, PresenterProcessor.class)
                 .addAnnotation(Presenter.class)
                 .addModifiers(Modifier.PUBLIC)
                 .superclass(TypeName.get(proxyElement.asType()));
@@ -67,7 +67,7 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
         generateSetState(proxyType);
         generateFireActivationEvent(proxyType);
 
-        return proxyType;
+        return Collections.singletonList(proxyType);
     }
 
     private void generateSetState(TypeSpec.Builder proxyType) {

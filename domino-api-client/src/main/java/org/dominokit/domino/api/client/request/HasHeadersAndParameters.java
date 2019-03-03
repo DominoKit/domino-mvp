@@ -1,8 +1,5 @@
 package org.dominokit.domino.api.client.request;
 
-import org.dominokit.domino.api.shared.request.RequestBean;
-import org.dominokit.domino.api.shared.request.ResponseBean;
-
 import java.util.Map;
 
 public interface HasHeadersAndParameters<R, S> {

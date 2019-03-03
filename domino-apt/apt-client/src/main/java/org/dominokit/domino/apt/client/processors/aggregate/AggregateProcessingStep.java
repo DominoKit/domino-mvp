@@ -15,14 +15,6 @@
  */
 package org.dominokit.domino.apt.client.processors.aggregate;
 
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.SetMultimap;
-import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.TypeSpec;
-import org.dominokit.domino.api.client.annotations.*;
-import org.dominokit.domino.apt.client.processors.module.client.presenters.DominoEventListenerSourceWriter;
-import org.dominokit.domino.apt.client.processors.module.client.presenters.HistoryStartupTaskSourceWriter;
-import org.dominokit.domino.apt.client.processors.module.client.presenters.PresenterCommandSourceWriter;
 import org.dominokit.domino.apt.commons.AbstractProcessingStep;
 import org.dominokit.domino.apt.commons.ExceptionUtil;
 import org.dominokit.domino.apt.commons.StepBuilder;
@@ -31,17 +23,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeKind;
-import javax.lang.model.type.TypeMirror;
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-
-import static java.util.Objects.nonNull;
 
 public class AggregateProcessingStep extends AbstractProcessingStep {
 
@@ -74,12 +56,8 @@ public class AggregateProcessingStep extends AbstractProcessingStep {
     }
 
     private void generateAggregate(ExecutableElement methodElement) {
-        TypeSpec.Builder typeBuilder = new AggregateSourceWriter(methodElement, processingEnv)
-                .asTypeBuilder();
-
-        JavaFile javaFile = JavaFile.builder(elements.getPackageOf(methodElement.getEnclosingElement()).getQualifiedName().toString(), typeBuilder.build()).build();
-
-        writeSource(javaFile);
+        writeSource(new AggregateSourceWriter(methodElement, processingEnv)
+                .asTypeBuilder(), elements.getPackageOf(methodElement.getEnclosingElement()).getQualifiedName().toString());
     }
 
 

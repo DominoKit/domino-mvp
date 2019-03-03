@@ -1,6 +1,5 @@
 package org.dominokit.domino.service.discovery;
 
-import org.dominokit.domino.service.discovery.generation.TestService;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
@@ -9,6 +8,7 @@ import io.vertx.servicediscovery.Record;
 import io.vertx.servicediscovery.ServiceReference;
 import io.vertx.servicediscovery.Status;
 import io.vertx.servicediscovery.types.EventBusService;
+import org.dominokit.domino.service.discovery.generation.TestService;
 import org.junit.Test;
 
 import java.util.List;

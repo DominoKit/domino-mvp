@@ -1,10 +1,10 @@
 package org.dominokit.domino.api.server;
 
-import org.dominokit.domino.api.server.entrypoint.DominoHttpServerOptions;
 import io.vertx.core.http.Http2Settings;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.http.HttpVersion;
 import io.vertx.core.json.JsonObject;
+import org.dominokit.domino.api.server.entrypoint.DominoHttpServerOptions;
 
 import java.util.List;
 

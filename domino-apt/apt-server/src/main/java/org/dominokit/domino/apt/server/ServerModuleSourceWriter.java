@@ -28,7 +28,7 @@ public class ServerModuleSourceWriter extends JavaSourceWriter {
     public String write() throws IOException {
         AnnotationSpec autoServiceAnnotation = AnnotationSpec.builder(AutoService.class)
                 .addMember("value", "$T.class", ServerModuleConfiguration.class).build();
-        TypeSpec.Builder serverModuleTypeBuilder = DominoTypeBuilder.build(processorElement.getAnnotation(ServerModule.class).name() +
+        TypeSpec.Builder serverModuleTypeBuilder = DominoTypeBuilder.classBuilder(processorElement.getAnnotation(ServerModule.class).name() +
                 "ServerModule", ServerModuleAnnotationProcessor.class)
                 .addAnnotation(autoServiceAnnotation)
                 .addSuperinterface(ServerModuleConfiguration.class);

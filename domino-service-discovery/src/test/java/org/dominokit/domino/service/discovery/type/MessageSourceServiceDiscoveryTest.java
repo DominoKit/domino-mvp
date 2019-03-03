@@ -1,14 +1,14 @@
 package org.dominokit.domino.service.discovery.type;
 
-import org.dominokit.domino.service.discovery.BaseVertxServiceDiscoveryTest;
-import org.dominokit.domino.service.discovery.configuration.AddressableServiceConfiguration;
-import org.dominokit.domino.service.discovery.configuration.BaseServiceConfiguration;
-import org.dominokit.domino.service.discovery.configuration.MessageSourceConfiguration;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.TestContext;
 import io.vertx.servicediscovery.Record;
+import org.dominokit.domino.service.discovery.BaseVertxServiceDiscoveryTest;
+import org.dominokit.domino.service.discovery.configuration.AddressableServiceConfiguration;
+import org.dominokit.domino.service.discovery.configuration.BaseServiceConfiguration;
+import org.dominokit.domino.service.discovery.configuration.MessageSourceConfiguration;
 import org.junit.Test;
 
 public class MessageSourceServiceDiscoveryTest extends BaseVertxServiceDiscoveryTest {

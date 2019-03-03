@@ -1,11 +1,11 @@
 package org.dominokit.domino.http.server.config;
 
 import com.google.auto.service.AutoService;
+import io.vertx.core.http.HttpServerOptions;
+import io.vertx.core.net.JksOptions;
 import org.dominokit.domino.api.server.config.HttpServerConfigurator;
 import org.dominokit.domino.api.server.config.ServerConfiguration;
 import org.dominokit.domino.api.server.entrypoint.VertxContext;
-import io.vertx.core.http.HttpServerOptions;
-import io.vertx.core.net.JksOptions;
 
 import static java.lang.Boolean.TRUE;
 

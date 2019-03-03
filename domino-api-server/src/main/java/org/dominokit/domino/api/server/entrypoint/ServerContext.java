@@ -1,7 +1,6 @@
 package org.dominokit.domino.api.server.entrypoint;
 
 import org.dominokit.domino.api.server.config.ServerConfiguration;
-import org.dominokit.domino.api.server.config.ServerConfiguration;
 
 import java.util.function.Supplier;
 

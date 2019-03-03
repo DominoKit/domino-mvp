@@ -4,7 +4,6 @@ package org.dominokit.domino.test.api.client;
 import io.vertx.ext.unit.TestContext;
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.server.entrypoint.ServerEntryPointContext;
-import org.dominokit.domino.api.shared.extension.MainEventContext;
 import org.dominokit.domino.gwt.client.events.RequestEventProcessor;
 
 public class TestClientAppFactory {

@@ -15,8 +15,6 @@
  */
 package org.dominokit.domino.apt.client.processors.service;
 
-import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.TypeSpec;
 import org.dominokit.domino.apt.commons.AbstractProcessingStep;
 import org.dominokit.domino.apt.commons.ExceptionUtil;
 import org.dominokit.domino.apt.commons.StepBuilder;
@@ -54,10 +52,7 @@ public class RequestFactoryProcessingStep extends AbstractProcessingStep {
     }
 
     private void generateFactory(Element serviceElement) {
-        TypeSpec.Builder typeBuilder = new RequestFactorySourceWriter(serviceElement, processingEnv).asTypeBuilder();
-
-        JavaFile javaFile = JavaFile.builder(elements.getPackageOf(serviceElement).getQualifiedName().toString(), typeBuilder.build()).build();
-        writeSource(javaFile);
+        writeSource(new RequestFactorySourceWriter(serviceElement, processingEnv).asTypeBuilder(), elements.getPackageOf(serviceElement).getQualifiedName().toString());
     }
 
 }

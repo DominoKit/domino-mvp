@@ -9,6 +9,8 @@ import org.dominokit.domino.apt.commons.DominoTypeBuilder;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
+import java.util.Collections;
+import java.util.List;
 
 public class PresenterCommandSourceWriter extends AbstractSourceBuilder {
     private final Element presenterElement;
@@ -19,13 +21,13 @@ public class PresenterCommandSourceWriter extends AbstractSourceBuilder {
     }
 
     @Override
-    public TypeSpec.Builder asTypeBuilder() {
-        return DominoTypeBuilder.build(presenterElement.getSimpleName().toString() + "Command", PresenterProcessor.class)
+    public List<TypeSpec.Builder> asTypeBuilder() {
+        return Collections.singletonList(DominoTypeBuilder.classBuilder(presenterElement.getSimpleName().toString() + "Command", PresenterProcessor.class)
                 .addAnnotation(Command.class)
                 .superclass(ParameterizedTypeName.get(ClassName.get(PresenterCommand.class), TypeName.get(presenterElement.asType())))
                 .addMethod(MethodSpec.constructorBuilder()
                         .addModifiers(Modifier.PUBLIC)
-                        .addStatement("configure(new $T())", ClassName.bestGuess(elements.getPackageOf(presenterElement).getQualifiedName().toString()+"."+presenterElement.getSimpleName().toString()+"_Config"))
-                        .build());
+                        .addStatement("configure(new $T())", ClassName.bestGuess(elements.getPackageOf(presenterElement).getQualifiedName().toString() + "." + presenterElement.getSimpleName().toString() + "_Config"))
+                        .build()));
     }
 }

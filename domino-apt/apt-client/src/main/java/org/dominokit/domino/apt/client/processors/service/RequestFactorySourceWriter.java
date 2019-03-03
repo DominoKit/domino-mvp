@@ -3,7 +3,6 @@ package org.dominokit.domino.apt.client.processors.service;
 
 import com.squareup.javapoet.*;
 import org.dominokit.domino.api.client.annotations.service.*;
-import org.dominokit.domino.api.client.request.SenderSupplier;
 import org.dominokit.domino.api.client.request.ServerRequest;
 import org.dominokit.domino.api.shared.request.ArrayResponse;
 import org.dominokit.domino.api.shared.request.RequestBean;
@@ -22,6 +21,7 @@ import javax.lang.model.type.TypeMirror;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
@@ -42,7 +42,7 @@ public class RequestFactorySourceWriter extends AbstractSourceBuilder {
     }
 
     @Override
-    public TypeSpec.Builder asTypeBuilder() {
+    public List<TypeSpec.Builder> asTypeBuilder() {
         String factoryName = serviceElement.getSimpleName().toString() + "Factory";
 
         FieldSpec instanceField = FieldSpec.builder(ClassName.bestGuess(factoryName), "INSTANCE", Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
@@ -61,14 +61,14 @@ public class RequestFactorySourceWriter extends AbstractSourceBuilder {
                 .map(this::makeRequestFactoryMethod)
                 .collect(toList());
 
-        TypeSpec.Builder factory = DominoTypeBuilder.build(factoryName, RequestFactoryProcessor.class)
+        TypeSpec.Builder factory = DominoTypeBuilder.classBuilder(factoryName, RequestFactoryProcessor.class)
                 .addSuperinterface(TypeName.get(serviceElement.asType()))
                 .addField(instanceField)
                 .addTypes(requests)
                 .addMethods(overrideMethods);
 
 
-        return factory;
+        return Collections.singletonList(factory);
     }
 
     private MethodSpec makeRequestFactoryMethod(ExecutableElement method) {

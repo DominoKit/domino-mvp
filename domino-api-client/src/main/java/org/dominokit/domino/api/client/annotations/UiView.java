@@ -14,6 +14,4 @@ public @interface UiView {
 
     @NotNull
     Class<? extends Presentable> presentable();
-
-    boolean proxy() default false;
 }

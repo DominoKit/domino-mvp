@@ -1,8 +1,5 @@
 package org.dominokit.domino.service.discovery.type;
 
-import org.dominokit.domino.service.discovery.BaseVertxServiceDiscoveryTest;
-import org.dominokit.domino.service.discovery.configuration.BaseServiceConfiguration;
-import org.dominokit.domino.service.discovery.configuration.HttpEndpointConfiguration;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpClient;
@@ -10,6 +7,9 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.TestContext;
 import io.vertx.ext.web.client.WebClient;
 import io.vertx.servicediscovery.Record;
+import org.dominokit.domino.service.discovery.BaseVertxServiceDiscoveryTest;
+import org.dominokit.domino.service.discovery.configuration.BaseServiceConfiguration;
+import org.dominokit.domino.service.discovery.configuration.HttpEndpointConfiguration;
 import org.junit.Assert;
 import org.junit.Test;
 

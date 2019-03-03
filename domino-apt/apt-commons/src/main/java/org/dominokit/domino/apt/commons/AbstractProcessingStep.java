@@ -16,6 +16,7 @@
 package org.dominokit.domino.apt.commons;
 
 import com.squareup.javapoet.JavaFile;
+import com.squareup.javapoet.TypeSpec;
 
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
@@ -23,6 +24,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import java.io.IOException;
+import java.util.List;
 
 public abstract class AbstractProcessingStep implements BaseProcessor.ProcessingStep {
 
@@ -48,6 +50,13 @@ public abstract class AbstractProcessingStep implements BaseProcessor.Processing
         } catch (IOException e) {
             ExceptionUtil.messageStackTrace(messager, e);
         }
+    }
+
+    protected void writeSource(List<TypeSpec.Builder> builders, String rootPackage) {
+        builders.forEach(builder -> {
+            JavaFile javaFile = JavaFile.builder(rootPackage, builder.build()).build();
+            writeSource(javaFile);
+        });
     }
 
 }

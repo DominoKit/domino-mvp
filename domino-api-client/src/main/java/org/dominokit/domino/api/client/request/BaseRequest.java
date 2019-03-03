@@ -1,9 +1,6 @@
 package org.dominokit.domino.api.client.request;
 
 import org.dominokit.domino.api.client.ClientApp;
-import org.dominokit.domino.api.client.mvp.presenter.Presentable;
-
-import java.util.function.Supplier;
 
 public abstract class BaseRequest implements Request {
 

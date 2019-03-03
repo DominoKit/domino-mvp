@@ -7,8 +7,9 @@ import com.squareup.javapoet.TypeSpec;
 import org.dominokit.domino.api.client.InitialTaskRegistry;
 import org.dominokit.domino.api.client.ModuleConfiguration;
 import org.dominokit.domino.api.client.annotations.ClientModule;
-import org.dominokit.domino.api.client.annotations.presenter.Singleton;
 import org.dominokit.domino.api.client.annotations.UiView;
+import org.dominokit.domino.api.client.annotations.presenter.PresenterProxy;
+import org.dominokit.domino.api.client.annotations.presenter.Singleton;
 import org.dominokit.domino.api.client.mvp.presenter.PresenterSupplier;
 import org.dominokit.domino.api.client.mvp.presenter.ViewBaseClientPresenter;
 import org.dominokit.domino.api.client.mvp.presenter.ViewablePresenterSupplier;
@@ -20,6 +21,8 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.type.TypeMirror;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -45,8 +48,8 @@ public class ModuleConfigurationSourceWriter extends AbstractSourceBuilder {
     }
 
     @Override
-    public TypeSpec.Builder asTypeBuilder() {
-        TypeSpec.Builder clientModuleTypeBuilder = DominoTypeBuilder.build(moduleElement.getAnnotation(ClientModule.class).name() + "ModuleConfiguration",
+    public List<TypeSpec.Builder> asTypeBuilder() {
+        TypeSpec.Builder clientModuleTypeBuilder = DominoTypeBuilder.classBuilder(moduleElement.getAnnotation(ClientModule.class).name() + "ModuleConfiguration",
                 ClientModuleAnnotationProcessor.class)
                 .addSuperinterface(ModuleConfiguration.class);
 
@@ -62,7 +65,7 @@ public class ModuleConfigurationSourceWriter extends AbstractSourceBuilder {
             clientModuleTypeBuilder.addMethod(registerInitialTasks());
         }
 
-        return clientModuleTypeBuilder;
+        return Collections.singletonList(clientModuleTypeBuilder);
     }
 
     private MethodSpec registerPresenters() {
@@ -106,10 +109,11 @@ public class ModuleConfigurationSourceWriter extends AbstractSourceBuilder {
         })
                 .forEach(view -> {
                     Optional<TypeMirror> presenterType = processorUtil.getClassValueFromAnnotation(view, UiView.class, "presentable");
-                    boolean proxy = view.getAnnotation(UiView.class).proxy();
+
                     if(!presenterType.isPresent()){
                         throw new IllegalArgumentException();
                     }
+                    boolean proxy = nonNull(types.asElement(presenterType.get()).getAnnotation(PresenterProxy.class));
 
                     presenterType.ifPresent(presenter -> {
                         String postfix = (proxy ? "_Presenter" : "") + "_Config";

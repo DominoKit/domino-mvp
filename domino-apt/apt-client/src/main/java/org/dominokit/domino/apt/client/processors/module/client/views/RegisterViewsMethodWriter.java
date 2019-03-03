@@ -1,12 +1,12 @@
 package org.dominokit.domino.apt.client.processors.module.client.views;
 
+import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.TypeSpec;
 import org.dominokit.domino.api.client.mvp.ViewRegistry;
 import org.dominokit.domino.api.client.mvp.view.LazyViewLoader;
 import org.dominokit.domino.api.client.mvp.view.View;
 import org.dominokit.domino.apt.commons.AbstractRegisterMethodWriter;
-import com.squareup.javapoet.ClassName;
-import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.TypeSpec;
 
 import javax.lang.model.element.Modifier;
 

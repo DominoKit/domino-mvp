@@ -1,12 +1,12 @@
 package org.dominokit.domino.service.discovery.type;
 
-import org.dominokit.domino.service.discovery.DataSourceServiceDiscoveryTest;
-import org.dominokit.domino.service.discovery.configuration.BaseServiceConfiguration;
-import org.dominokit.domino.service.discovery.configuration.DataSourceServiceConfiguration;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.ext.unit.TestContext;
 import io.vertx.servicediscovery.Record;
+import org.dominokit.domino.service.discovery.DataSourceServiceDiscoveryTest;
+import org.dominokit.domino.service.discovery.configuration.BaseServiceConfiguration;
+import org.dominokit.domino.service.discovery.configuration.DataSourceServiceConfiguration;
 import org.junit.Test;
 
 public class JDBCServiceDiscoveryTest extends DataSourceServiceDiscoveryTest {

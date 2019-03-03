@@ -5,7 +5,6 @@ import org.dominokit.domino.api.client.mvp.slots.RevealViewWithNoContentExceptio
 import org.dominokit.domino.api.client.mvp.slots.Slot;
 import org.dominokit.domino.api.client.mvp.slots.SlotRegistry;
 import org.dominokit.domino.api.client.mvp.view.*;
-import org.dominokit.domino.api.shared.extension.ActivationEventContext;
 
 import java.util.function.Supplier;
 

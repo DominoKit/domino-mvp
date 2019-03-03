@@ -1,14 +1,14 @@
 package org.dominokit.domino.service.discovery.type;
 
+import io.vertx.core.AsyncResult;
+import io.vertx.core.Handler;
+import io.vertx.ext.unit.TestContext;
+import io.vertx.servicediscovery.Record;
 import org.dominokit.domino.service.discovery.BaseVertxServiceDiscoveryTest;
 import org.dominokit.domino.service.discovery.configuration.AddressableServiceConfiguration;
 import org.dominokit.domino.service.discovery.configuration.BaseServiceConfiguration;
 import org.dominokit.domino.service.discovery.configuration.EventBusServiceConfiguration;
 import org.dominokit.domino.service.discovery.generation.TestService;
-import io.vertx.core.AsyncResult;
-import io.vertx.core.Handler;
-import io.vertx.ext.unit.TestContext;
-import io.vertx.servicediscovery.Record;
 import org.junit.Assert;
 import org.junit.Test;
 

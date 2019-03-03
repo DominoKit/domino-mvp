@@ -15,8 +15,6 @@
  */
 package org.dominokit.domino.apt.client.processors.module.client.presenters;
 
-import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.TypeSpec;
 import org.dominokit.domino.api.client.annotations.presenter.AutoRoute;
 import org.dominokit.domino.api.client.annotations.presenter.ListenTo;
 import org.dominokit.domino.apt.commons.AbstractProcessingStep;
@@ -62,10 +60,8 @@ public class PresenterProcessingStep extends AbstractProcessingStep {
     }
 
     private void generateConfig(Element presenterElement) {
-        TypeSpec.Builder typeBuilder = new PresenterConfigSourceWriter(presenterElement, processingEnv).asTypeBuilder();
 
-        JavaFile javaFile = JavaFile.builder(elements.getPackageOf(presenterElement).getQualifiedName().toString(), typeBuilder.build()).build();
-        writeSource(javaFile);
+        writeSource(new PresenterConfigSourceWriter(presenterElement, processingEnv).asTypeBuilder(), elements.getPackageOf(presenterElement).getQualifiedName().toString());
     }
 
 
@@ -77,12 +73,8 @@ public class PresenterProcessingStep extends AbstractProcessingStep {
     }
 
     private void generateHistoryStartupTask(String token, Element presenterElement) {
-        TypeSpec.Builder typeBuilder = new HistoryStartupTaskSourceWriter(token, presenterElement, processingEnv)
-                .asTypeBuilder();
-
-        JavaFile javaFile = JavaFile.builder(elements.getPackageOf(presenterElement).getQualifiedName().toString().replace("presenters", "routing"), typeBuilder.build()).build();
-
-        writeSource(javaFile);
+        writeSource(new HistoryStartupTaskSourceWriter(token, presenterElement, processingEnv)
+                .asTypeBuilder(), elements.getPackageOf(presenterElement).getQualifiedName().toString().replace("presenters", "routing"));
     }
 
     private void generateEventListeners(Element presenterElement) {
@@ -93,22 +85,13 @@ public class PresenterProcessingStep extends AbstractProcessingStep {
 
 
     private void generateEventListener(Element listenerElement, Element presenterElement) {
-
-        TypeSpec.Builder typeBuilder = new DominoEventListenerSourceWriter(presenterElement, listenerElement, processingEnv)
-                .asTypeBuilder();
-
-        JavaFile javaFile = JavaFile.builder(elements.getPackageOf(presenterElement).getQualifiedName().toString().replace("presenters", "listeners"), typeBuilder.build()).build();
-
-        writeSource(javaFile);
+        writeSource(new DominoEventListenerSourceWriter(presenterElement, listenerElement, processingEnv)
+                .asTypeBuilder(), elements.getPackageOf(presenterElement).getQualifiedName().toString().replace("presenters", "listeners"));
     }
 
 
     private void generateCommand(Element presenterElement) {
-
-        TypeSpec.Builder typeBuilder = new PresenterCommandSourceWriter(presenterElement, processingEnv).asTypeBuilder();
-
-        JavaFile javaFile = JavaFile.builder(elements.getPackageOf(presenterElement).getQualifiedName().toString(), typeBuilder.build()).build();
-        writeSource(javaFile);
+        writeSource(new PresenterCommandSourceWriter(presenterElement, processingEnv).asTypeBuilder(), elements.getPackageOf(presenterElement).getQualifiedName().toString());
     }
 
 }

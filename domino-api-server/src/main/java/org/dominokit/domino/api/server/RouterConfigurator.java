@@ -1,17 +1,20 @@
 package org.dominokit.domino.api.server;
 
-import org.dominokit.domino.api.server.logging.DefaultRemoteLogger;
-import org.dominokit.domino.api.server.logging.RemoteLogger;
-import org.dominokit.domino.api.server.logging.RemoteLoggingHandler;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
-import io.vertx.ext.web.handler.*;
+import io.vertx.ext.web.handler.BodyHandler;
+import io.vertx.ext.web.handler.CookieHandler;
+import io.vertx.ext.web.handler.CorsHandler;
+import io.vertx.ext.web.handler.SessionHandler;
 import io.vertx.ext.web.sstore.ClusteredSessionStore;
 import io.vertx.ext.web.sstore.LocalSessionStore;
 import io.vertx.ext.web.sstore.SessionStore;
+import org.dominokit.domino.api.server.logging.DefaultRemoteLogger;
+import org.dominokit.domino.api.server.logging.RemoteLogger;
+import org.dominokit.domino.api.server.logging.RemoteLoggingHandler;
 
 import java.util.Arrays;
 import java.util.HashSet;

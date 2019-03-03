@@ -2,7 +2,9 @@ package org.dominokit.domino.apt.client.processors.module.client;
 
 import com.google.auto.service.AutoService;
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.dominokit.domino.api.client.annotations.*;
+import org.dominokit.domino.api.client.annotations.ClientModule;
+import org.dominokit.domino.api.client.annotations.StartupTask;
+import org.dominokit.domino.api.client.annotations.UiView;
 import org.dominokit.domino.api.client.annotations.presenter.Command;
 import org.dominokit.domino.api.client.annotations.presenter.Presenter;
 import org.dominokit.domino.api.client.annotations.service.RequestSender;

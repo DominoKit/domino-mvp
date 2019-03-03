@@ -1,8 +1,10 @@
 package org.dominokit.domino.client.commons.extensions;
 
 import org.dominokit.domino.api.client.extension.DominoEventsListenersRepository;
-import org.dominokit.domino.api.shared.extension.DominoEventListener;
 import org.dominokit.domino.api.shared.extension.DominoEvent;
+import org.dominokit.domino.api.shared.extension.DominoEventListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -10,6 +12,8 @@ import java.util.stream.Collectors;
 import static java.util.Objects.isNull;
 
 public class InMemoryDominoEventsListenerRepository implements DominoEventsListenersRepository {
+
+    public static final Logger LOGGER = LoggerFactory.getLogger(InMemoryDominoEventsListenerRepository.class);
 
     private final Map<String, List<ListenerWrapper>> listeners = new HashMap<>();
 
@@ -26,10 +30,15 @@ public class InMemoryDominoEventsListenerRepository implements DominoEventsListe
                 Collectors.toSet());
     }
 
+    private List<ListenerWrapper> getEventListenersWrapper(Class<? extends DominoEvent> dominoEvent) {
+        initializeEventListeners(dominoEvent);
+        return listeners.get(dominoEvent.getCanonicalName());
+    }
+
     @Override
     public void removeListener(Class<? extends DominoEvent> event, DominoEventListener listener) {
-        Set<DominoEventListener> eventListeners = getEventListeners(event);
-        eventListeners.remove(listener);
+        List<ListenerWrapper> eventListeners = getEventListenersWrapper(event);
+        eventListeners.remove(new ListenerWrapper(listener));
 
         if(eventListeners.isEmpty()){
             listeners.remove(event.getCanonicalName());

@@ -12,6 +12,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.VariableElement;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,10 +28,10 @@ public class AggregateSourceWriter extends AbstractSourceBuilder {
     }
 
     @Override
-    public TypeSpec.Builder asTypeBuilder() {
+    public List<TypeSpec.Builder> asTypeBuilder() {
         String aggregateClassName = methodElement.getAnnotation(Aggregate.class).name();
 
-        TypeSpec.Builder aggregateType = DominoTypeBuilder.build(aggregateClassName, AggregateProcessor.class)
+        TypeSpec.Builder aggregateType = DominoTypeBuilder.classBuilder(aggregateClassName, AggregateProcessor.class)
                 .addModifiers(Modifier.PUBLIC);
 
         List<? extends VariableElement> parameters = methodElement.getParameters();
@@ -69,7 +70,7 @@ public class AggregateSourceWriter extends AbstractSourceBuilder {
             .build());
         });
 
-        return aggregateType;
+        return Collections.singletonList(aggregateType);
     }
 
     private String getEventsNames(List<? extends VariableElement> parameters) {

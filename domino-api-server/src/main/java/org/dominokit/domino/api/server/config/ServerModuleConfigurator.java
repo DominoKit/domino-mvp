@@ -1,7 +1,6 @@
 package org.dominokit.domino.api.server.config;
 
 import org.dominokit.domino.api.server.ServerApp;
-import org.dominokit.domino.api.server.ServerApp;
 
 public final class ServerModuleConfigurator {
 

@@ -15,8 +15,6 @@
  */
 package org.dominokit.domino.apt.client.processors.module.client;
 
-import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.TypeSpec;
 import org.dominokit.domino.apt.commons.AbstractProcessingStep;
 import org.dominokit.domino.apt.commons.ExceptionUtil;
 import org.dominokit.domino.apt.commons.StepBuilder;
@@ -69,17 +67,11 @@ public class ClientModuleProcessingStep extends AbstractProcessingStep {
     }
 
 
-    public void process(
-            Set<? extends Element> elementsByAnnotation) {
-
+    public void process(Set<? extends Element> elementsByAnnotation) {
         for (Element element : elementsByAnnotation) {
             try {
-                TypeSpec.Builder typeBuilder = new ModuleConfigurationSourceWriter(element, presenters, views, initialTasks, processingEnv)
-                        .asTypeBuilder();
-
-                JavaFile javaFile = JavaFile.builder(elements.getPackageOf(element).getQualifiedName().toString(), typeBuilder.build()).build();
-
-                writeSource(javaFile);
+                writeSource(new ModuleConfigurationSourceWriter(element, presenters, views, initialTasks, processingEnv)
+                        .asTypeBuilder(), elements.getPackageOf(element).getQualifiedName().toString());
             } catch (Exception e) {
                 ExceptionUtil.messageStackTrace(messager, e);
             }

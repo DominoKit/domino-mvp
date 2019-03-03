@@ -1,8 +1,8 @@
 package org.dominokit.domino.api.server.entrypoint;
 
-import org.dominokit.domino.api.server.config.ServerConfiguration;
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.RoutingContext;
+import org.dominokit.domino.api.server.config.ServerConfiguration;
 
 public class VertxEntryPointContext implements ServerEntryPointContext {
 

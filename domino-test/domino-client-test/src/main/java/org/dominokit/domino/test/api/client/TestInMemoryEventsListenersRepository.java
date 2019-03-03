@@ -1,7 +1,7 @@
 package org.dominokit.domino.test.api.client;
 
-import org.dominokit.domino.api.shared.extension.DominoEventListener;
 import org.dominokit.domino.api.shared.extension.DominoEvent;
+import org.dominokit.domino.api.shared.extension.DominoEventListener;
 import org.dominokit.domino.client.commons.extensions.InMemoryDominoEventsListenerRepository;
 
 import java.util.HashMap;

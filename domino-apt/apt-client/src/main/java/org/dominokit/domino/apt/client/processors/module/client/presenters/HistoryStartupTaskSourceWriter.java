@@ -35,9 +35,9 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
     }
 
     @Override
-    public TypeSpec.Builder asTypeBuilder() {
+    public List<TypeSpec.Builder> asTypeBuilder() {
         String taskClassName = presenterElement.getSimpleName() + "HistoryListenerTask";
-        TypeSpec.Builder taskType = DominoTypeBuilder.build(taskClassName, PresenterProcessor.class);
+        TypeSpec.Builder taskType = DominoTypeBuilder.classBuilder(taskClassName, PresenterProcessor.class);
         taskType.addAnnotation(StartupTask.class)
                 .superclass(TypeName.get(BaseRoutingStartupTask.class))
                 .addMethod(MethodSpec.constructorBuilder()
@@ -58,7 +58,7 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
             taskType.addMethod(reRouteActivatedMethod());
         }
 
-        return taskType;
+        return Collections.singletonList(taskType);
     }
 
     private MethodSpec routOnceMethod() {

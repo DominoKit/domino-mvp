@@ -1,10 +1,10 @@
 package org.dominokit.domino.apt.client.processors.module.client.listeners;
 
-import org.dominokit.domino.api.client.extension.DominoEventsRegistry;
-import org.dominokit.domino.apt.commons.AbstractRegisterMethodWriter;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
+import org.dominokit.domino.api.client.extension.DominoEventsRegistry;
+import org.dominokit.domino.apt.commons.AbstractRegisterMethodWriter;
 
 public class RegisterListenersMethodWriter extends AbstractRegisterMethodWriter<ListenerEntry, String> {
 

@@ -40,6 +40,6 @@ public class AggregateProcessor extends BaseProcessor {
 //        return ImmutableList.of(
 //                new AggregateProcessingStep.Builder()
 //                        .setProcessingEnv(processingEnv)
-//                        .build());
+//                        .classBuilder());
 //    }
 }

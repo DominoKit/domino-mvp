@@ -1,6 +1,5 @@
 package org.dominokit.domino.service.discovery.type;
 
-import org.dominokit.domino.service.discovery.configuration.DataSourceServiceConfiguration;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
@@ -8,6 +7,7 @@ import io.vertx.redis.RedisClient;
 import io.vertx.servicediscovery.Record;
 import io.vertx.servicediscovery.ServiceDiscovery;
 import io.vertx.servicediscovery.types.RedisDataSource;
+import org.dominokit.domino.service.discovery.configuration.DataSourceServiceConfiguration;
 
 import java.util.function.Function;
 

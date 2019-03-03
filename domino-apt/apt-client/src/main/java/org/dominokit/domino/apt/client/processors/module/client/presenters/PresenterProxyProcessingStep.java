@@ -15,8 +15,6 @@
  */
 package org.dominokit.domino.apt.client.processors.module.client.presenters;
 
-import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.TypeSpec;
 import org.dominokit.domino.api.client.annotations.presenter.PresenterProxy;
 import org.dominokit.domino.apt.commons.AbstractProcessingStep;
 import org.dominokit.domino.apt.commons.ExceptionUtil;
@@ -59,13 +57,8 @@ public class PresenterProxyProcessingStep extends AbstractProcessingStep {
 
         PresenterProxy presenterProxy = presenterElement.getAnnotation(PresenterProxy.class);
         if (nonNull(presenterProxy)) {
-
-            TypeSpec.Builder typeBuilder = new PresenterProxySourceWriter(presenterElement, processingEnv)
-                    .asTypeBuilder();
-
-            JavaFile javaFile = JavaFile.builder(elements.getPackageOf(presenterElement).getQualifiedName().toString(), typeBuilder.build()).build();
-
-            writeSource(javaFile);
+            writeSource(new PresenterProxySourceWriter(presenterElement, processingEnv)
+                    .asTypeBuilder(), elements.getPackageOf(presenterElement).getQualifiedName().toString());
         }
     }
 

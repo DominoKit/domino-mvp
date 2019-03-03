@@ -13,6 +13,8 @@ import org.dominokit.domino.apt.commons.DominoTypeBuilder;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Supplier;
 
 public class PresenterConfigSourceWriter extends AbstractSourceBuilder {
@@ -24,8 +26,8 @@ public class PresenterConfigSourceWriter extends AbstractSourceBuilder {
     }
 
     @Override
-    public TypeSpec.Builder asTypeBuilder() {
-        TypeSpec.Builder configType = DominoTypeBuilder.build(presenterElement.getSimpleName().toString() + "_Config", PresenterProcessor.class);
+    public List<TypeSpec.Builder> asTypeBuilder() {
+        TypeSpec.Builder configType = DominoTypeBuilder.classBuilder(presenterElement.getSimpleName().toString() + "_Config", PresenterProcessor.class);
         ClassName _self = ClassName.bestGuess(elements.getPackageOf(presenterElement).getQualifiedName().toString() + "." + presenterElement.getSimpleName().toString() + "_Config");
 
         if (processorUtil.isAssignableFrom(presenterElement, ViewBaseClientPresenter.class)) {
@@ -82,6 +84,6 @@ public class PresenterConfigSourceWriter extends AbstractSourceBuilder {
                             .build());
         }
 
-        return configType;
+        return Collections.singletonList(configType);
     }
 }

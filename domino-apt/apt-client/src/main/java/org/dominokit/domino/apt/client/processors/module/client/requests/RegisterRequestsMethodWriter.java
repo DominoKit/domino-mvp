@@ -1,9 +1,9 @@
 package org.dominokit.domino.apt.client.processors.module.client.requests;
 
-import org.dominokit.domino.apt.commons.AbstractRegisterMethodWriter;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
+import org.dominokit.domino.apt.commons.AbstractRegisterMethodWriter;
 
 public class RegisterRequestsMethodWriter extends AbstractRegisterMethodWriter<RequestEntry, String> {
 

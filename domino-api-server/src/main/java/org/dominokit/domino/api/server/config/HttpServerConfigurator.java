@@ -1,7 +1,7 @@
 package org.dominokit.domino.api.server.config;
 
-import org.dominokit.domino.api.server.entrypoint.VertxContext;
 import io.vertx.core.http.HttpServerOptions;
+import org.dominokit.domino.api.server.entrypoint.VertxContext;
 
 @FunctionalInterface
 public interface HttpServerConfigurator {

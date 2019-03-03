@@ -2,7 +2,9 @@ package org.dominokit.domino.apt.commons;
 
 import com.squareup.javapoet.TypeSpec;
 
+import java.util.List;
+
 public interface SourceBuilder {
 
-    TypeSpec.Builder asTypeBuilder();
+    List<TypeSpec.Builder> asTypeBuilder();
 }

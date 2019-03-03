@@ -1,7 +1,6 @@
 package org.dominokit.domino.api.server;
 
 import org.dominokit.domino.api.server.entrypoint.ServerEntryPointContext;
-import org.dominokit.domino.api.server.entrypoint.ServerEntryPointContext;
 
 public class TestServerEntryPointContext implements ServerEntryPointContext {
 

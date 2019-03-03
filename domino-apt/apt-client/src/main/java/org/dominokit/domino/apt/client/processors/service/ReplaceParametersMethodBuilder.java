@@ -1,15 +1,10 @@
 package org.dominokit.domino.apt.client.processors.service;
 
 import com.squareup.javapoet.CodeBlock;
-import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.TypeName;
-import org.dominokit.domino.api.shared.history.HistoryToken;
 import org.dominokit.domino.api.shared.history.StateHistoryToken;
 import org.dominokit.domino.apt.commons.ExceptionUtil;
 
 import javax.annotation.processing.Messager;
-import javax.lang.model.element.Modifier;
-import javax.lang.model.type.TypeMirror;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
