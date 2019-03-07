@@ -5,18 +5,23 @@ import org.dominokit.domino.api.shared.history.StateHistoryToken;
 import org.dominokit.domino.apt.commons.ExceptionUtil;
 
 import javax.annotation.processing.Messager;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.VariableElement;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 class ReplaceParametersMethodBuilder {
-    private Messager messager;
+    private final ExecutableElement method;
+    private final Messager messager;
     private final String path;
 
-    public ReplaceParametersMethodBuilder(Messager messager, String path) {
+    public ReplaceParametersMethodBuilder(Messager messager, String path, ExecutableElement method) {
         this.messager = messager;
         this.path = path;
+        this.method =method;
     }
 
     CodeBlock build() {
@@ -27,11 +32,14 @@ class ReplaceParametersMethodBuilder {
             CodeBlock.Builder bodyBuilder = CodeBlock.builder()
                     .beginControlFlow("if (token.value().contains(\":\"))");
             StateHistoryToken token = new StateHistoryToken(path);
+            Set<String> methodParams = this.method.getParameters().stream().map(methodParam -> methodParam.getSimpleName().toString())
+                    .collect(Collectors.toSet());
 
             token.paths()
                     .stream()
-                    .filter(tokenPath -> tokenPath.startsWith(":"))
+                    .filter(tokenPath -> tokenPath.startsWith(":") && !methodParams.contains(tokenPath.replace(":","")))
                     .forEach(tokenPath -> bodyBuilder.addStatement("token.replacePath(\"" + tokenPath + "\", " + convertParameterToGetter(tokenPath.replace(":", "")) + "+\"\")", Objects.class));
+
             token.queryParameters()
                     .entrySet()
                     .stream()

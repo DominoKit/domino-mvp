@@ -188,7 +188,7 @@ public class RequestFactorySourceWriter extends AbstractSourceBuilder {
         }
 
         if(!isVoidRequest(method)){
-            constructorBuilder.addCode(new ReplaceParametersMethodBuilder(messager, getPath(method)).build());
+            constructorBuilder.addCode(new ReplaceParametersMethodBuilder(messager, getPath(method), method).build());
         }
 
         return constructorBuilder.build();
