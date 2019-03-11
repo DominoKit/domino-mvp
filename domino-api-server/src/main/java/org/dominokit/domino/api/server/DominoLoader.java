@@ -1,6 +1,5 @@
 package org.dominokit.domino.api.server;
 
-import io.reactivex.disposables.Disposable;
 import io.vertx.config.ConfigRetriever;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
@@ -18,6 +17,7 @@ import org.dominokit.domino.service.discovery.VertxServiceDiscovery;
 
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ServiceLoader;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -82,35 +82,59 @@ public class DominoLoader implements IsDominoLoader {
                                                     Consumer<HttpServer> httpServerConsumer) {
         immutableHttpServerOptions.init(options.result(), options.result().getPort(), options.result().getHost());
 
+        PluginContext pluginContext = new PluginContext(
+                DominoLoader.this,
+                vertxContext,
+                options,
+                httpServerConsumer);
+
         ServiceLoader<DominoLoaderPlugin> plugins = ServiceLoader.load(DominoLoaderPlugin.class);
 
         Iterator<DominoLoaderPlugin> iterator = plugins.iterator();
         Iterable<DominoLoaderPlugin> iterable = () -> iterator;
-        StreamSupport.stream(iterable.spliterator(), false)
+
+
+        List<DominoLoaderPlugin> pluginsList = StreamSupport.stream(iterable.spliterator(), false)
                 .sorted(Comparator.comparingInt(DominoLoaderPlugin::order))
-                .map(plugin -> plugin.init(new PluginContext(
-                        DominoLoader.this,
-                        vertxContext,
-                        options
-                )))
-                .filter(DominoLoaderPlugin::isEnabled)
-                .collect(Collectors.toList())
-                .forEach(DominoLoaderPlugin::apply);
+                .collect(Collectors.toList());
 
-        startHttpServer(options, httpServerConsumer);
+        if (pluginsList.size() > 1) {
+            for (int i = 0; i < pluginsList.size() - 1; i++) {
+                pluginsList.get(i).init(pluginContext)
+                .setNext(pluginsList.get(i + 1));
+            }
+
+            pluginsList.get(pluginsList.size()-1).init(pluginContext);
+        } else if (pluginsList.size() > 0) {
+            pluginsList.get(0).init(pluginContext);
+        }
+
+
+        if (pluginsList.size() > 0) {
+            pluginsList.get(0).apply();
+        }
+
+//        Iterator<DominoLoaderPlugin> pluginIter = pluginsList.iterator();
+//        DominoLoaderPlugin currentPlugin;
+//        if (pluginIter.hasNext()) {
+//            currentPlugin = pluginIter.next();
+//            while (pluginIter.hasNext()) {
+//                DominoLoaderPlugin plugin = pluginIter.next();
+//                currentPlugin.init(pluginContext, plugin);
+//                currentPlugin = plugin;
+//            }
+//        }
+
+
+//        pluginIter
+//                .map(plugin -> plugin.init())
+//                .filter(DominoLoaderPlugin::isEnabled)
+//                .forEach(DominoLoaderPlugin::apply);
+
+
     }
 
-    private Disposable startHttpServer(AsyncResult<HttpServerOptions> options, Consumer<HttpServer> httpServerConsumer) {
-        return rxVertx.createHttpServer(options.result())
-                .requestHandler(rxRouter)
-                .rxListen(options.result().getPort())
-                .doOnSuccess(httpServer -> {
-                    LOGGER.info("Server started on port : " + httpServer.actualPort());
-                    httpServerConsumer.accept(httpServer);
-                })
-                .doOnError(throwable -> LOGGER.error("Failed to start server", throwable))
-                .subscribe();
-    }
+
 
     private void configureHttpServer(VertxContext vertxContext, Future<HttpServerOptions> future) {
         HttpServerOptions httpServerOptions = new HttpServerOptions();

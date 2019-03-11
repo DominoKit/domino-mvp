@@ -12,18 +12,10 @@ import java.nio.file.Paths;
 import static java.util.Objects.nonNull;
 
 @AutoService(DominoLoaderPlugin.class)
-public class StaticResourcesConfiguratorPlugin implements DominoLoaderPlugin {
-
-    private PluginContext context;
+public class StaticResourcesConfiguratorPlugin extends BaseDominoLoaderPlugin {
 
     @Override
-    public DominoLoaderPlugin init(PluginContext context) {
-        this.context = context;
-        return this;
-    }
-
-    @Override
-    public void apply() {
+    public void applyPlugin(CompleteHandler completeHandler) {
         StaticHandler staticHandler = StaticHandler.create();
         if (nonNull(System.getProperty("domino.webroot.location"))) {
             staticHandler.setAllowRootFileSystemAccess(true);
@@ -42,6 +34,7 @@ public class StaticResourcesConfiguratorPlugin implements DominoLoaderPlugin {
         context.getRouter().route("/*").order(Integer.MAX_VALUE)
                 .handler(this::serveResource);
 
+        completeHandler.onCompleted();
     }
 
     private String systemWebRoot() {

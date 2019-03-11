@@ -5,7 +5,10 @@ import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
+import io.vertx.reactivex.core.http.HttpServer;
 import org.dominokit.domino.api.server.entrypoint.VertxContext;
+
+import java.util.function.Consumer;
 
 public class PluginContext {
 
@@ -26,9 +29,10 @@ public class PluginContext {
     private final JsonObject config;
     private final VertxContext vertxContext;
     private final AsyncResult<HttpServerOptions> options;
+    private final Consumer<HttpServer> httpServerConsumer;
 
     public PluginContext(IsDominoLoader dominoLoader,
-                         VertxContext vertxContext, AsyncResult<HttpServerOptions> options) {
+                         VertxContext vertxContext, AsyncResult<HttpServerOptions> options, Consumer<HttpServer> httpServerConsumer) {
 
         this.defaultPort = dominoLoader.getDefaultPort();
         this.httpPortKey = dominoLoader.getHttpPortKey();
@@ -40,6 +44,7 @@ public class PluginContext {
         this.config = dominoLoader.getConfig();
         this.vertxContext = vertxContext;
         this.options = options;
+        this.httpServerConsumer = httpServerConsumer;
     }
 
     public int getDefaultPort() {
@@ -80,5 +85,9 @@ public class PluginContext {
 
     public AsyncResult<HttpServerOptions> getOptions() {
         return options;
+    }
+
+    public Consumer<HttpServer> getHttpServerConsumer() {
+        return httpServerConsumer;
     }
 }

@@ -71,7 +71,7 @@ public class VertxPluginRequestHandler implements Handler<HttpServerRequest> {
                 vertxResponse.setStatus(failure.getErrorCode());
                 LogMessages.LOGGER.error(Messages.MESSAGES.unexpected(), failure.getCause());
             } catch (Exception ex) {
-                vertxResponse.setStatus(500);
+                vertxResponse.setStatus(401);
                 LogMessages.LOGGER.error(Messages.MESSAGES.unexpected(), ex);
             } finally {
                 AppGlobals.set(null);

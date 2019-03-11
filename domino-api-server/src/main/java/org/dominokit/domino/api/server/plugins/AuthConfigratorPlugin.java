@@ -7,20 +7,15 @@ import org.dominokit.domino.api.server.plugins.jwt.JWTHandlersConfigurator;
 import org.dominokit.domino.api.server.plugins.jwt.KeycloakJWTOptionsProvider;
 
 @AutoService(DominoLoaderPlugin.class)
-public class AuthConfigratorPlugin implements DominoLoaderPlugin {
-
-    private PluginContext context;
+public class AuthConfigratorPlugin extends BaseDominoLoaderPlugin {
 
     @Override
-    public DominoLoaderPlugin init(PluginContext context) {
-        this.context = context;
-        return this;
-    }
-
-    @Override
-    public void apply() {
-        KeycloakJWTOptionsProvider.create(context.getVertxContext())
-                .load(jwtAuthOptions -> JWTHandlersConfigurator.create(context.getVertxContext(), jwtAuthOptions).configure());
+    public void applyPlugin(CompleteHandler completeHandler) {
+        KeycloakJWTOptionsProvider.create(context)
+                .load(jwtAuthOptions -> {
+                    JWTHandlersConfigurator.create(context, jwtAuthOptions).configure();
+                    completeHandler.onCompleted();
+                });
     }
 
     @Override

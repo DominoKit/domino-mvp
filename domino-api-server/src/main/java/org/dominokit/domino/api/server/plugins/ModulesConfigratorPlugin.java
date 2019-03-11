@@ -8,20 +8,13 @@ import org.dominokit.domino.api.server.config.ServerConfigurationLoader;
 import static org.dominokit.domino.api.server.PluginContext.MODULES_LOADER_ORDER;
 
 @AutoService(DominoLoaderPlugin.class)
-public class ModulesConfigratorPlugin implements DominoLoaderPlugin {
-
-    private PluginContext context;
+public class ModulesConfigratorPlugin extends BaseDominoLoaderPlugin {
 
     @Override
-    public DominoLoaderPlugin init(PluginContext context) {
-        this.context = context;
-        return this;
-    }
-
-    @Override
-    public void apply() {
+    public void applyPlugin(CompleteHandler completeHandler) {
         new ServerConfigurationLoader(context.getVertxContext())
                 .loadModules();
+        completeHandler.onCompleted();
     }
 
     @Override

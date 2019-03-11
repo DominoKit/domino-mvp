@@ -1,27 +1,32 @@
 package org.dominokit.domino.api.server.plugins.jwt;
 
+import io.vertx.core.json.JsonArray;
 import io.vertx.ext.auth.jwt.JWTAuth;
 import io.vertx.ext.auth.jwt.JWTAuthOptions;
 import io.vertx.ext.web.handler.JWTAuthHandler;
-import org.dominokit.domino.api.server.entrypoint.VertxContext;
+import org.dominokit.domino.api.server.PluginContext;
+
+import java.util.Collections;
 
 public class JWTHandlersConfigurator {
 
-    private VertxContext vertxContext;
+    private final PluginContext context;
     private final JWTAuth jwtAuth;
 
-    private JWTHandlersConfigurator(VertxContext vertxContext, JWTAuthOptions jwtAuthOptions) {
-        this.vertxContext = vertxContext;
-        jwtAuth = JWTAuth.create(vertxContext.vertx(), jwtAuthOptions);
+    private JWTHandlersConfigurator(PluginContext context, JWTAuthOptions jwtAuthOptions) {
+        this.context = context;
+        jwtAuth = JWTAuth.create(context.getVertx(), jwtAuthOptions);
     }
 
-    public static JWTHandlersConfigurator create(VertxContext vertxContext, JWTAuthOptions jwtAuthOptions) {
-        return new JWTHandlersConfigurator(vertxContext, jwtAuthOptions);
+    public static JWTHandlersConfigurator create(PluginContext context, JWTAuthOptions jwtAuthOptions) {
+        return new JWTHandlersConfigurator(context, jwtAuthOptions);
     }
 
     public void configure() {
         JWTAuthHandler jwtAuthHandler = JWTAuthHandler.create(jwtAuth);
-        vertxContext.router().route("/service/*")
-                .handler(jwtAuthHandler);
+        JsonArray protectedPathsJson = context.getConfig().getJsonArray("jwt.protected.resources", new JsonArray(Collections.singletonList("/service/*")));
+        protectedPathsJson.iterator()
+                .forEachRemaining(resourcePath -> context.getRouter().route(resourcePath.toString())
+                        .handler(jwtAuthHandler));
     }
 }

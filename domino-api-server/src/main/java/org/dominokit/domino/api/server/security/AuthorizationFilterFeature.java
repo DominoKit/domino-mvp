@@ -1,6 +1,7 @@
 package org.dominokit.domino.api.server.security;
 
 import com.google.auto.service.AutoService;
+import org.dominokit.domino.api.server.AppGlobals;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Priorities;
@@ -26,22 +27,24 @@ public class AuthorizationFilterFeature implements DynamicFeature {
 
     @Override
     public void configure(ResourceInfo resourceInfo, FeatureContext context) {
+        if (AppGlobals.get().getConfig().getBoolean("security.filters.enabled", false)) {
 
-        List<Annotation> authzSpecs = new ArrayList<>();
-        for (Class<? extends Annotation> annotationClass : filterAnnotations) {
-            Annotation classAuthzSpec = resourceInfo.getResourceClass().getAnnotation(annotationClass);
-            Annotation methodAuthzSpec = resourceInfo.getResourceMethod().getAnnotation(annotationClass);
+            List<Annotation> authzSpecs = new ArrayList<>();
+            for (Class<? extends Annotation> annotationClass : filterAnnotations) {
+                Annotation classAuthzSpec = resourceInfo.getResourceClass().getAnnotation(annotationClass);
+                Annotation methodAuthzSpec = resourceInfo.getResourceMethod().getAnnotation(annotationClass);
 
-            if (classAuthzSpec != null) authzSpecs.add(classAuthzSpec);
-            if (methodAuthzSpec != null) authzSpecs.add(methodAuthzSpec);
-            
-            if(resourceInfo.getResourceClass().isAnnotationPresent(NoAuthFilter.class)
-            		|| resourceInfo.getResourceMethod().isAnnotationPresent(NoAuthFilter.class))
-            	return;
-        }
+                if (classAuthzSpec != null) authzSpecs.add(classAuthzSpec);
+                if (methodAuthzSpec != null) authzSpecs.add(methodAuthzSpec);
 
-        if (!authzSpecs.isEmpty()) {
-            context.register(new AuthorizationFilter(authzSpecs), Priorities.AUTHORIZATION);
+                if (resourceInfo.getResourceClass().isAnnotationPresent(NoAuthFilter.class)
+                        || resourceInfo.getResourceMethod().isAnnotationPresent(NoAuthFilter.class))
+                    return;
+            }
+
+            if (!authzSpecs.isEmpty()) {
+                context.register(new AuthorizationFilter(authzSpecs), Priorities.AUTHORIZATION);
+            }
         }
     }
 

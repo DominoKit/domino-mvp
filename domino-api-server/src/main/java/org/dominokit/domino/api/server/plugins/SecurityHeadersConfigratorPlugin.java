@@ -7,21 +7,14 @@ import org.dominokit.domino.api.server.PluginContext;
 import org.dominokit.domino.api.server.config.ServerConfigurationLoader;
 
 @AutoService(DominoLoaderPlugin.class)
-public class SecurityHeadersConfigratorPlugin implements DominoLoaderPlugin {
+public class SecurityHeadersConfigratorPlugin extends BaseDominoLoaderPlugin {
 
     private static final int AROUND_6_MONTHS = 15768000;
 
-    private PluginContext context;
-
     @Override
-    public DominoLoaderPlugin init(PluginContext context) {
-        this.context = context;
-        return this;
-    }
-
-    @Override
-    public void apply() {
+    public void applyPlugin(CompleteHandler completeHandler) {
         addSecurityHeadersHandler(context.getRouter());
+        completeHandler.onCompleted();
     }
 
     private void addSecurityHeadersHandler(Router router) {

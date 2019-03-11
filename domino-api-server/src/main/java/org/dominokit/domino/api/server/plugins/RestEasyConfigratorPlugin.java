@@ -15,18 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @AutoService(DominoLoaderPlugin.class)
-public class RestEasyConfigratorPlugin implements DominoLoaderPlugin {
-
-    private PluginContext context;
+public class RestEasyConfigratorPlugin extends BaseDominoLoaderPlugin {
 
     @Override
-    public DominoLoaderPlugin init(PluginContext context) {
-        this.context = context;
-        return this;
-    }
-
-    @Override
-    public void apply() {
+    public void applyPlugin(CompleteHandler completeHandler) {
         VertxResteasyDeployment vertxResteasyDeployment = setupResteasy(loadResources());
 
         AppGlobals globals = AppGlobals.get();
@@ -45,12 +37,14 @@ public class RestEasyConfigratorPlugin implements DominoLoaderPlugin {
                     try {
                         resteasyHandler.handle(routingContext.request());
                     } catch (Exception ex) {
-                        routingContext.fail(500, ex);
+                        routingContext.fail(401, ex);
                     }
                 })
                 .failureHandler(routingContext -> {
                     routingContext.fail(routingContext.statusCode(), routingContext.failure().getCause());
                 });
+
+        completeHandler.onCompleted();
     }
 
     protected VertxResteasyDeployment setupResteasy(Class<?>... resourceOrProviderClasses) {
