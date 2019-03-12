@@ -69,7 +69,6 @@ class ReplaceParametersMethodBuilder {
         return replacerBuilder.build();
     }
 
-
     private String convertParameterToGetter(String parameter) {
         String names = parameter
                 .replace("{", "")

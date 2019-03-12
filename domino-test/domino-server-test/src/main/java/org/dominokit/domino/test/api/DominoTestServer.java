@@ -31,8 +31,10 @@ public class DominoTestServer implements TestServerContext {
         webClient = WebClient.create(vertx);
     }
 
-    public void start() {
-        config = new JsonObject().put("http.port", 0);
+    public void start(JsonObject config, String configFileName) {
+        this.config = new TestConfigReader(vertx,configFileName).getTestConfig();
+        config.mergeIn(this.config);
+        this.config.put("http.port", 0);
         String secret = SecretKey.generate();
         csrfToken = new CSRFToken(secret).generate();
         RouterConfigurator routerConfigurator = new RouterConfigurator(vertx, config, secret);
@@ -42,6 +44,18 @@ public class DominoTestServer implements TestServerContext {
             this.httpServer = httpServer;
             afterLoad();
         });
+    }
+
+    public void start() {
+        start(new JsonObject());
+    }
+
+    public void start(String configFileName) {
+        start(new JsonObject(), configFileName);
+    }
+
+    public void start(JsonObject config) {
+        start(config, "config.json");
     }
 
     private void beforeLoad() {

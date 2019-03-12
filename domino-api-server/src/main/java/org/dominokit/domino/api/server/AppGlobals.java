@@ -14,6 +14,13 @@ public class AppGlobals {
 	
 	private static ThreadLocal<AppGlobals> global = new ThreadLocal<AppGlobals>();
 
+	private JsonObject config;
+	private Vertx vertx;
+	private Router router;
+	private Map<String, Object> namedGlobals = new HashMap<>();
+	private Map<Class<?>, Object> typedGlobals = new HashMap<>();
+	private VertxResteasyDeployment deployment;
+
 	static AppGlobals init() {
 		AppGlobals globals = new AppGlobals();
 		global.set(globals);
@@ -33,13 +40,6 @@ public class AppGlobals {
 	public static void clear() {
 		global.remove();
 	}
-
-	private JsonObject config;
-	private Vertx vertx;
-	private Router router;
-	private Map<String, Object> namedGlobals = new HashMap<>();
-	private Map<Class<?>, Object> typedGlobals = new HashMap<>();
-	private VertxResteasyDeployment deployment;
 
 	public JsonObject getConfig() {
 		return config;
@@ -82,7 +82,7 @@ public class AppGlobals {
 	public <T> T getGlobal(Class<T> klass){
 		return (T) typedGlobals.get(klass);
 	}
-	
+
 	public void injectGlobals() {
 		// FIXME: inject using the more precise Type using the new resteasy injection API
 		for (Entry<Class<?>, Object> entry : typedGlobals.entrySet()) {

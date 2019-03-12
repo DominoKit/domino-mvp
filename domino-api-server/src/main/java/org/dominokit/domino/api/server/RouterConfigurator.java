@@ -76,7 +76,7 @@ public class RouterConfigurator {
         RemoteLogger remoteLogger = StreamSupport.stream(ServiceLoader.load(RemoteLogger.class).spliterator(), false)
                 .filter(logger -> logger.getClass().getName().equals(config.getString(REMOTE_LOGGER)))
                 .findFirst().orElseGet(DefaultRemoteLogger::new);
-        router.route("/service/remoteLogging")
+        router.route("/logging/remoteLogging")
                 .handler(new RemoteLoggingHandler(remoteLogger));
     }
 
@@ -87,10 +87,10 @@ public class RouterConfigurator {
 
     private void addCSRFHandler(Router router) {
         JsonArray jsonArray = config.getJsonArray("csrf.whitelist", new JsonArray());
-        Set<String> whiteList=new HashSet<>();
-        jsonArray.forEach(o-> whiteList.add(o.toString()));
+        Set<String> whiteList = new HashSet<>();
+        jsonArray.forEach(o -> whiteList.add(o.toString()));
 
-        router.route().handler(new DominoCSRFHandler(secret,config));
+        router.route().handler(new DominoCSRFHandler(secret, config));
     }
 
     private void addSessionHandler(Vertx vertx, Router router) {
