@@ -1,4 +1,4 @@
-package org.dominokit.domino.api.server;
+package org.dominokit.domino.api.server.plugins;
 
 import io.vertx.reactivex.core.Vertx;
 import io.vertx.reactivex.ext.web.Router;
