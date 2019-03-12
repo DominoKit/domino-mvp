@@ -37,11 +37,8 @@ public class RestEasyConfigratorPlugin extends BaseDominoLoaderPlugin {
                     try {
                         resteasyHandler.handle(routingContext.request());
                     } catch (Exception ex) {
-                        routingContext.fail(401, ex);
+                        routingContext.fail(500, ex);
                     }
-                })
-                .failureHandler(routingContext -> {
-                    routingContext.fail(routingContext.statusCode(), routingContext.failure().getCause());
                 });
 
         completeHandler.onCompleted();
@@ -79,5 +76,6 @@ public class RestEasyConfigratorPlugin extends BaseDominoLoaderPlugin {
     @Override
     public boolean isEnabled() {
         return context.getConfig().getBoolean("resteasy.enabled", true);
+//        return false;
     }
 }

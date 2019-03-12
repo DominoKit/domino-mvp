@@ -103,8 +103,10 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
     }
 
     @Override
-    public void start() {
-        ServerConfiguration testServerConfiguration = new VertxConfiguration(new JsonObject());
+    public void start(String configFileName, JsonObject additionalConfig) {
+        JsonObject config = new TestConfigReader(vertx, configFileName).getTestConfig();
+        additionalConfig.mergeIn(config);
+        ServerConfiguration testServerConfiguration = new VertxConfiguration(config);
         testEntryPointContext = new VertxEntryPointContext(createMock(RoutingContext.class), testServerConfiguration,
                 vertx);
         VertxContext vertxContext = VertxContext.VertxContextBuilder.vertx(vertx)
@@ -141,6 +143,22 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
             doStart(() -> startCompleted.onStarted(this));
         }
     }
+
+    @Override
+    public void start() {
+        start("config.json");
+    }
+
+    @Override
+    public void start(String configFileName) {
+        start(configFileName, new JsonObject());
+    }
+
+    @Override
+    public void start(JsonObject additionalConfig) {
+        start("config.json", additionalConfig);
+    }
+
 
     private void doStart(ApplicationStartHandler applicationStartHandler) {
         beforeClientStart.onBeforeStart(this);

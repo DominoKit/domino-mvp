@@ -99,41 +99,22 @@ public class DominoLoader implements IsDominoLoader {
                 .collect(Collectors.toList());
 
         if (pluginsList.size() > 1) {
-            for (int i = 0; i < pluginsList.size() - 1; i++) {
-                pluginsList.get(i).init(pluginContext)
-                .setNext(pluginsList.get(i + 1));
+
+            for (int i = 1; i < pluginsList.size(); i++) {
+                DominoLoaderPlugin prevPlugin = pluginsList.get(i - 1);
+                prevPlugin
+                        .init(pluginContext)
+                        .setNext(pluginsList.get(i));
             }
 
-            pluginsList.get(pluginsList.size()-1).init(pluginContext);
+            pluginsList.get(pluginsList.size() - 1).init(pluginContext);
         } else if (pluginsList.size() > 0) {
             pluginsList.get(0).init(pluginContext);
         }
 
-
-        if (pluginsList.size() > 0) {
-            pluginsList.get(0).apply();
-        }
-
-//        Iterator<DominoLoaderPlugin> pluginIter = pluginsList.iterator();
-//        DominoLoaderPlugin currentPlugin;
-//        if (pluginIter.hasNext()) {
-//            currentPlugin = pluginIter.next();
-//            while (pluginIter.hasNext()) {
-//                DominoLoaderPlugin plugin = pluginIter.next();
-//                currentPlugin.init(pluginContext, plugin);
-//                currentPlugin = plugin;
-//            }
-//        }
-
-
-//        pluginIter
-//                .map(plugin -> plugin.init())
-//                .filter(DominoLoaderPlugin::isEnabled)
-//                .forEach(DominoLoaderPlugin::apply);
-
+        pluginsList.get(0).apply();
 
     }
-
 
 
     private void configureHttpServer(VertxContext vertxContext, Future<HttpServerOptions> future) {
