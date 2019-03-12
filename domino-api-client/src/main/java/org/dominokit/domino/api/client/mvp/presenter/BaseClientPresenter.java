@@ -19,7 +19,7 @@ public abstract class BaseClientPresenter extends ClientPresenter implements Pre
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseClientPresenter.class);
     private PresenterState state;
-    private boolean activated;
+    protected boolean activated;
     private BaseRoutingStartupTask routingTask;
 
     private final PresenterState initialized = () ->
@@ -39,12 +39,11 @@ public abstract class BaseClientPresenter extends ClientPresenter implements Pre
         }
     }
 
-    protected void postConstruct() {
+    protected void postConstruct(){
 
     }
 
     protected void activate() {
-        activated = true;
         fireStateEvent(true);
         onActivated();
     }
@@ -79,7 +78,6 @@ public abstract class BaseClientPresenter extends ClientPresenter implements Pre
 
     protected final void deActivate() {
         removeListeners();
-        activated = false;
         fireStateEvent(false);
         onDeactivated();
     }
