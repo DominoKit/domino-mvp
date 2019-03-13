@@ -24,50 +24,51 @@ public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter
             ((DominoView) view).setRevealHandler(getViewRevealHandler());
             ((DominoView) view).setRemoveHandler(getViewRemoveHandler());
         }
-        if (this instanceof UiHandlers && view instanceof HasUiHandlers) {
+        if(this instanceof UiHandlers && view instanceof HasUiHandlers){
             ((HasUiHandlers) view).setUiHandlers((UiHandlers) this);
         }
         super.initialize();
     }
 
-    public String revealSlot() {
+    public String revealSlot(){
         return null;
     }
 
-    public void revealInSlot(String key) {
+    public void revealInSlot(String key){
         Slot slot = SlotRegistry.get(key);
-        if (nonNull(slot)) {
+        if(nonNull(slot)) {
             revealInSlot(slot);
-        } else {
+        }else{
             throw new InvalidSlotException(key);
         }
     }
 
-    public void reveal() {
-        if (nonNull(revealSlot()) && !revealSlot().trim().isEmpty()) {
+    public void reveal(){
+        if(nonNull(revealSlot()) && !revealSlot().trim().isEmpty()){
             revealInSlot(revealSlot());
         }
     }
 
-    public void revealInSlot(Slot slot) {
-        if (view instanceof HasContent) {
+    public void revealInSlot(Slot slot){
+        if(view instanceof HasContent) {
             onBeforeReveal();
             slot.updateContent(((HasContent) view).getContent());
-        } else {
+        }else{
             throw new RevealViewWithNoContentException(view.getClass().getCanonicalName());
         }
     }
 
-    protected void onBeforeReveal() {
+    protected void onBeforeReveal(){
 
     }
 
     private DominoView.RevealedHandler getViewRevealHandler() {
         return () -> {
             RevealedHandler revealHandler = getRevealHandler();
-            if (nonNull(revealHandler)) {
+            if(nonNull(revealHandler)){
                 revealHandler.onRevealed();
             }
+            activated = true;
             activate();
         };
     }
@@ -83,11 +84,13 @@ public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter
 
     private DominoView.RemovedHandler getViewRemoveHandler() {
         return () -> {
+            deActivate();
             RemovedHandler removeHandler = getRemoveHandler();
-            if (nonNull(removeHandler)) {
+            if(nonNull(removeHandler)){
                 removeHandler.onRemoved();
             }
-            deActivate();
+            activated =false;
+            fireActivationEvent(false);
         };
     }
 

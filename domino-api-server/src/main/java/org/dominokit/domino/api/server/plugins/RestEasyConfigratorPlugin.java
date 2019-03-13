@@ -76,6 +76,5 @@ public class RestEasyConfigratorPlugin extends BaseDominoLoaderPlugin {
     @Override
     public boolean isEnabled() {
         return context.getConfig().getBoolean("resteasy.enabled", true);
-//        return false;
     }
 }
