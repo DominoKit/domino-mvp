@@ -19,13 +19,7 @@ public abstract class BaseClientPresenter extends ClientPresenter implements Pre
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseClientPresenter.class);
     private PresenterState state;
-
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
-
-    boolean activated;
+    protected boolean activated;
     private BaseRoutingStartupTask routingTask;
 
     private final PresenterState initialized = () ->
