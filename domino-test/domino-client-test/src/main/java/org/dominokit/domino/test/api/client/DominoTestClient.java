@@ -22,6 +22,7 @@ import org.dominokit.domino.api.shared.extension.DominoEventListener;
 import org.dominokit.domino.api.shared.request.ResponseBean;
 import org.dominokit.domino.service.discovery.VertxServiceDiscovery;
 import org.dominokit.domino.test.api.DominoTestServer;
+import org.dominokit.domino.test.api.TestConfigReader;
 
 import java.util.ArrayList;
 import java.util.Arrays;
