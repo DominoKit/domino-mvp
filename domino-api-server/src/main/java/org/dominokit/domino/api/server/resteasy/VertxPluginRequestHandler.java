@@ -120,11 +120,11 @@ public class VertxPluginRequestHandler implements BodyHandler {
                 if (!vertxRequest.getAsyncContext().isSuspended()) {
                     try {
                         vertxResponse.finish();
+                        handler.end();
                     } catch (IOException e) {
                         LOGGER.error("Could not finish response!", e);
                     }
                 }
-                handler.end();
             });
             context.put(BODY_HANDLED, true);
 
