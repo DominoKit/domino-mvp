@@ -81,8 +81,11 @@ public class RouterConfigurator {
     }
 
     private void addBodyHandler(Router router) {
-        Integer bodyLimit = config.getInteger("body.limit");
-        router.route().handler(BodyHandler.create().setBodyLimit((isNull(bodyLimit) ? DEFAULT_BODY_LIMIT : bodyLimit) * MB));
+        Integer bodyLimit = config.getInteger("body.limit", DEFAULT_BODY_LIMIT);
+        router.route()
+                .handler(BodyHandler.create()
+                .setUploadsDirectory("uploads")
+                .setBodyLimit(bodyLimit * MB));
     }
 
     private void addCSRFHandler(Router router) {

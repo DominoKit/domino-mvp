@@ -24,10 +24,15 @@ public class RestEasyConfigratorPlugin extends BaseDominoLoaderPlugin {
         AppGlobals globals = AppGlobals.get();
         globals.setDeployment(vertxResteasyDeployment);
 
-        VertxPluginRequestHandler resteasyHandler = new VertxPluginRequestHandler(context.getRxVertx(), vertxResteasyDeployment, new ArrayList<>());
+        VertxPluginRequestHandler resteasyHandler = new VertxPluginRequestHandler(context, vertxResteasyDeployment, new ArrayList<>());
+
+        resteasyHandler
+                .setUploadsDirectory("file-uploads")
+                .setHandleFileUploads(true);
 
         String serviceRoot = context.getConfig().getString("resource.root.path", "/service");
-        context.getRxRouter().route(serviceRoot + "/*")
+        context.getRxRouter()
+                .route(serviceRoot + "/*")
                 .order(Integer.MAX_VALUE - 1)
                 .handler(routingContext -> {
 
@@ -35,7 +40,7 @@ public class RestEasyConfigratorPlugin extends BaseDominoLoaderPlugin {
                     ResteasyProviderFactory.pushContext(RoutingContext.class, routingContext);
                     ResteasyProviderFactory.pushContext(ResourceContext.class, new ResourceContext(context.getRxVertx(), context.getRxRouter(), context.getVertxContext(), routingContext));
                     try {
-                        resteasyHandler.handle(routingContext.request());
+                        resteasyHandler.handle(routingContext.getDelegate());
                     } catch (Exception ex) {
                         routingContext.fail(500, ex);
                     }

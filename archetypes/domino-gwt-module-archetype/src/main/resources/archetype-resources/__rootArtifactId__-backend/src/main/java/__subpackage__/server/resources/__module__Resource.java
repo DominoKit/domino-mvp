@@ -3,10 +3,14 @@
 #set( $symbol_escape = '\' )
 package ${package}.${subpackage}.server.resources;
 
+<<<<<<< Updated upstream
 import org.dominokit.domino.api.server.resource.Handler;
 import org.dominokit.domino.api.server.resource.RequestHandler;
 import org.dominokit.domino.api.server.context.ExecutionContext;{package}.${subpackage}.shared.response.${module}Response;
 import ${package}.${subpackage}.shared.request.${module}Request;
+=======
+import ${package}.${subpackage}.shared.response.${module}Response;
+>>>>>>> Stashed changes
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
