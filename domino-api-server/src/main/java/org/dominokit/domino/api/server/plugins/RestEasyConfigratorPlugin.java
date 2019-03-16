@@ -27,7 +27,7 @@ public class RestEasyConfigratorPlugin extends BaseDominoLoaderPlugin {
         VertxPluginRequestHandler resteasyHandler = new VertxPluginRequestHandler(context, vertxResteasyDeployment, new ArrayList<>());
 
         resteasyHandler
-                .setUploadsDirectory("file-uploads")
+                .setUploadsDirectory(context.getConfig().getString("file.upload.temp", "file-uploads"))
                 .setHandleFileUploads(true);
 
         String serviceRoot = context.getConfig().getString("resource.root.path", "/service");
