@@ -10,6 +10,8 @@ import io.vertx.ext.web.RoutingContext;
 import org.dominokit.domino.api.client.ApplicationStartHandler;
 import org.dominokit.domino.api.client.ModuleConfiguration;
 import org.dominokit.domino.api.client.ModuleConfigurator;
+import org.dominokit.domino.api.client.mvp.Store;
+import org.dominokit.domino.api.client.mvp.StoreRegistry;
 import org.dominokit.domino.api.client.mvp.presenter.ViewBaseClientPresenter;
 import org.dominokit.domino.api.client.mvp.slots.SlotRegistry;
 import org.dominokit.domino.api.client.request.ServerRequest;
@@ -225,6 +227,10 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
         return TestClientAppFactory.dominoOptions;
     }
 
+    @Override
+    public void registerStore(String key, Object data) {
+        StoreRegistry.INSTANCE.registerStore(key, new Store<>(data));
+    }
 
     private static class ListenerOf {
         private final Class<? extends DominoEventListener> listenerName;
