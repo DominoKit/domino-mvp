@@ -43,15 +43,17 @@ public class StaticResourcesConfiguratorPlugin extends BaseDominoLoaderPlugin {
 
     private HttpServerResponse serveIndexPage(RoutingContext event) {
         return event.response().putHeader("Content-type", "text/html")
-                .sendFile( context.getWebRoot()+ "/index.html");
+                .sendFile(context.getWebRoot() + "/index.html");
     }
 
     private void serveResource(RoutingContext routingContext) {
-        routingContext.response()
-                .sendFile( context.getWebRoot() + routingContext.request().path().replace("/static", ""), event -> {
-                    if (event.failed())
-                        serveIndexPage(routingContext);
-                });
+        if (!routingContext.response().ended()) {
+            routingContext.response()
+                    .sendFile(context.getWebRoot() + routingContext.request().path().replace("/static", ""), event -> {
+                        if (event.failed())
+                            serveIndexPage(routingContext);
+                    });
+        }
     }
 
     @Override
