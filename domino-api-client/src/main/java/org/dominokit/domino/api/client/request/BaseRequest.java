@@ -12,7 +12,7 @@ public abstract class BaseRequest implements Request {
     protected final RequestState<DefaultRequestStateContext> ready = context -> startRouting();
 
     protected final RequestState<DefaultRequestStateContext> completed = context -> {
-        throw new InvalidRequestState("This request have already been completed!.");
+        throw new InvalidRequestState("This request have already been completed!. ["+this.getClass().getCanonicalName()+"]");
     };
 
     public BaseRequest() {

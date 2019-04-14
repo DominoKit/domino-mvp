@@ -1,6 +1,7 @@
 package org.dominokit.domino.api.client.request;
 
 import org.dominokit.domino.api.client.ClientApp;
+import org.dominokit.domino.api.client.extension.ContextAggregator;
 import org.dominokit.domino.api.shared.request.FailedResponseBean;
 import org.dominokit.domino.api.shared.request.VoidResponse;
 import org.dominokit.rest.client.RequestTimeoutException;
@@ -11,6 +12,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.Objects.nonNull;
 
 public abstract class RequestSender<R, S> implements RequestRestSender<R, S> {
 
@@ -21,19 +25,30 @@ public abstract class RequestSender<R, S> implements RequestRestSender<R, S> {
     @Override
     public void send(ServerRequest<R, S> request, ServerRequestCallBack callBack) {
         request.normalizeUrl();
-        final int[] retriesCounter = new int[]{0};
-        ClientApp.make().dominoOptions().getRequestInterceptor()
-                .interceptRequest(request, () -> {
-                    RestfulRequest restfulRequest = RestfulRequest.request(request.getUrl(), request.getHttpMethod().toUpperCase());
-                    restfulRequest
-                            .putHeaders(request.headers())
-                            .putParameters(request.parameters())
-                            .onSuccess(response -> handleResponse(request, callBack, response))
-                            .onError(throwable -> handleError(request, callBack, retriesCounter, restfulRequest, throwable));
+        List<RequestInterceptor> interceptors = ClientApp.make().dominoOptions().getRequestInterceptors();
 
-                    setTimeout(request, restfulRequest);
-                    doSendRequest(request, restfulRequest);
-                });
+        if (nonNull(interceptors) && !interceptors.isEmpty()) {
+            List<InterceptorRequestWait> interceptorsWaitList = interceptors.stream().map(InterceptorRequestWait::new)
+                    .collect(Collectors.toList());
+            ContextAggregator.waitFor(interceptorsWaitList)
+                    .onReady(() -> onAfterInterception(request, callBack));
+            interceptorsWaitList.forEach(interceptorWait -> interceptorWait.getInterceptor().interceptRequest(request, interceptorWait));
+        } else {
+            onAfterInterception(request, callBack);
+        }
+    }
+
+    private void onAfterInterception(ServerRequest<R, S> request, ServerRequestCallBack callBack) {
+        final int[] retriesCounter = new int[]{0};
+        RestfulRequest restfulRequest = RestfulRequest.request(request.getUrl(), request.getHttpMethod().toUpperCase());
+        restfulRequest
+                .putHeaders(request.headers())
+                .putParameters(request.parameters())
+                .onSuccess(response -> handleResponse(request, callBack, response))
+                .onError(throwable -> handleError(request, callBack, retriesCounter, restfulRequest, throwable));
+
+        setTimeout(request, restfulRequest);
+        doSendRequest(request, restfulRequest);
     }
 
     private void handleError(ServerRequest<R, S> request, ServerRequestCallBack callBack, int[] retriesCounter, RestfulRequest restfulRequest, Throwable throwable) {

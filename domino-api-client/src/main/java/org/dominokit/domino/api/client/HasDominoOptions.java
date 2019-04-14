@@ -11,7 +11,7 @@ public interface HasDominoOptions {
 
     List<DynamicServiceRoot> getServiceRoots();
 
-    RequestInterceptor getRequestInterceptor();
+    List<RequestInterceptor> getRequestInterceptors();
 
     ApplicationStartHandler getApplicationStartHandler();
 

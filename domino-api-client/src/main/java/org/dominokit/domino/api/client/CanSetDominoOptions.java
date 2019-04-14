@@ -9,7 +9,8 @@ public interface CanSetDominoOptions {
 
     CanSetDominoOptions addDynamicServiceRoot(DynamicServiceRoot dynamicServiceRoot);
 
-    CanSetDominoOptions setRequestInterceptor(RequestInterceptor interceptor);
+    CanSetDominoOptions addRequestInterceptor(RequestInterceptor interceptor);
+    CanSetDominoOptions removeRequestInterceptor(RequestInterceptor interceptor);
 
     CanSetDominoOptions setApplicationStartHandler(ApplicationStartHandler applicationStartHandler);
 

@@ -1,13 +1,7 @@
 package org.dominokit.domino.api.client.request;
 
-@FunctionalInterface
+import org.dominokit.domino.api.client.extension.ContextAggregator;
+
 public interface RequestInterceptor {
-
-    void interceptRequest(ServerRequest request, InterceptorCallBack callBack);
-
-    @FunctionalInterface
-    interface InterceptorCallBack{
-        void onComplete();
-    }
-
+    void interceptRequest(ServerRequest request, ContextAggregator.ContextWait<ServerRequest> contextWait);
 }
