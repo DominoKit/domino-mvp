@@ -1,6 +1,7 @@
 package org.dominokit.domino.gwt.client.options;
 
 import com.google.gwt.core.client.GWT;
+import elemental2.dom.DomGlobal;
 import org.dominokit.domino.api.client.ApplicationStartHandler;
 import org.dominokit.domino.api.client.CanSetDominoOptions;
 import org.dominokit.domino.api.client.DominoOptions;
@@ -18,7 +19,7 @@ public class DefaultDominoOptions implements DominoOptions {
     private String defaultResourceRootPath = "service";
     private String defaultJsonDateFormat = null;
     private List<DynamicServiceRoot> dynamicServiceRoots = new ArrayList<>();
-    private RequestInterceptor requestInterceptor = (request, callBack) -> callBack.onComplete();
+    private final List<RequestInterceptor> interceptors = new ArrayList<>();
     private ApplicationStartHandler applicationStartHandler;
 
     @Override
@@ -45,8 +46,14 @@ public class DefaultDominoOptions implements DominoOptions {
     }
 
     @Override
-    public CanSetDominoOptions setRequestInterceptor(RequestInterceptor interceptor) {
-        this.requestInterceptor = interceptor;
+    public CanSetDominoOptions addRequestInterceptor(RequestInterceptor interceptor) {
+        this.interceptors.add(interceptor);
+        return this;
+    }
+
+    @Override
+    public CanSetDominoOptions removeRequestInterceptor(RequestInterceptor interceptor) {
+        this.interceptors.remove(interceptor);
         return this;
     }
 
@@ -57,8 +64,8 @@ public class DefaultDominoOptions implements DominoOptions {
     }
 
     @Override
-    public RequestInterceptor getRequestInterceptor() {
-        return requestInterceptor;
+    public List<RequestInterceptor> getRequestInterceptors() {
+        return interceptors;
     }
 
     @Override

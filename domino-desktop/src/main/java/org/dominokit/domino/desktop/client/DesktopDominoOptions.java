@@ -18,7 +18,7 @@ public class DesktopDominoOptions implements DominoOptions {
     private String defaultResourceRootPath = "service";
     private String defaultJsonDateFormat = null;
     private List<DynamicServiceRoot> dynamicServiceRoots = new ArrayList<>();
-    private RequestInterceptor requestInterceptor = (request, callBack) -> callBack.onComplete();
+    private List<RequestInterceptor> interceptors = new ArrayList<>();
     private ApplicationStartHandler applicationStartHandler;
 
     @Override
@@ -45,8 +45,14 @@ public class DesktopDominoOptions implements DominoOptions {
     }
 
     @Override
-    public CanSetDominoOptions setRequestInterceptor(RequestInterceptor interceptor) {
-        this.requestInterceptor = interceptor;
+    public CanSetDominoOptions addRequestInterceptor(RequestInterceptor interceptor) {
+        this.interceptors.add(interceptor);
+        return this;
+    }
+
+    @Override
+    public CanSetDominoOptions removeRequestInterceptor(RequestInterceptor interceptor) {
+        this.interceptors.remove(interceptor);
         return this;
     }
 
@@ -65,8 +71,8 @@ public class DesktopDominoOptions implements DominoOptions {
     }
 
     @Override
-    public RequestInterceptor getRequestInterceptor() {
-        return requestInterceptor;
+    public List<RequestInterceptor> getRequestInterceptors() {
+        return interceptors;
     }
 
     @Override
