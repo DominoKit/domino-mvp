@@ -8,6 +8,8 @@ import static java.util.Objects.nonNull;
 
 public abstract class FakeView extends BaseDominoView<FakeElement> {
 
+    private boolean revealed = false;
+
     @Override
     protected void initRoot(FakeElement root) {
 
@@ -22,13 +24,19 @@ public abstract class FakeView extends BaseDominoView<FakeElement> {
                     slotsEntries.getSlots().forEach(SlotRegistry::registerSlot);
                 }
                 revealHandler.onRevealed();
+                revealed = true;
             }else{
                 SlotsEntries slotsEntries = getSlots();
                 if (nonNull(slotsEntries)) {
                     slotsEntries.getSlots().forEach((key, slot) -> SlotRegistry.removeSlot(key));
                 }
                 removeHandler.onRemoved();
+                revealed = false;
             }
         });
+    }
+
+    public boolean isRevealed(){
+        return revealed;
     }
 }

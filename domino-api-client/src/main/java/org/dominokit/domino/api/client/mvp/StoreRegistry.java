@@ -9,8 +9,8 @@ import java.util.function.Consumer;
 public class StoreRegistry {
     public static final StoreRegistry INSTANCE = new StoreRegistry();
 
-    private Map<String, IsStore> stores = new HashMap<>();
-    private Map<String, List<Consumer<IsStore>>> consumers = new HashMap<>();
+    private Map<String, IsStore<?>> stores = new HashMap<>();
+    private Map<String, List<Consumer<IsStore<?>>>> consumers = new HashMap<>();
 
     private StoreRegistry() {
 
@@ -29,7 +29,7 @@ public class StoreRegistry {
         };
     }
 
-    private void addConsumer(String key, Consumer<IsStore> consumer) {
+    private void addConsumer(String key, Consumer<IsStore<?>> consumer) {
         if (!consumers.containsKey(key)) {
             consumers.put(key, new ArrayList<>());
         }
@@ -40,12 +40,23 @@ public class StoreRegistry {
         return (IsStore<T>) stores.get(key);
     }
 
-    public <T> RegistrationHandler consumeStore(String key, Consumer<IsStore> consumer) {
+    public <T> RegistrationHandler consumeStore(String key, Consumer<IsStore<?>> consumer) {
         addConsumer(key, consumer);
 
         if (stores.containsKey(key)) {
-            consumer.accept((IsStore<T>) stores.get(key));
+            consumer.accept(stores.get(key));
         }
         return () -> consumers.get(key).remove(consumer);
+    }
+
+    public <T> RegistrationHandler consumeData(String storeKey, Consumer<T> consumer) {
+        RegistrationHandler[] registrationHandler =new RegistrationHandler[0];
+        Consumer<IsStore<?>> isStoreConsumer = isStore -> registrationHandler[0] = ((IsStore<T>) isStore).consumeData(consumer);
+        addConsumer(storeKey, isStoreConsumer);
+
+        if (stores.containsKey(storeKey)) {
+            isStoreConsumer.accept(stores.get(storeKey));
+        }
+        return registrationHandler[0];
     }
 }
