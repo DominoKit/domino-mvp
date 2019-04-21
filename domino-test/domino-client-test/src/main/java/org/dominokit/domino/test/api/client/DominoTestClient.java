@@ -116,6 +116,11 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
 
     @Override
     public void start(String configFileName, JsonObject additionalConfig) {
+        start(configFileName, additionalConfig, () -> {});
+    }
+
+    @Override
+    public void start(String configFileName, JsonObject additionalConfig, StartCompletedHandler onCompleteHandler) {
         JsonObject config = new TestConfigReader(vertx, configFileName).getTestConfig();
         additionalConfig.mergeIn(config);
         ServerConfiguration testServerConfiguration = new VertxConfiguration(config);
@@ -146,31 +151,49 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
                         afterLoadHandler.handle(serverContext);
                         doStart(() -> {
                             startCompleted.onStarted(this);
+                            onCompleteHandler.onStarted();
                             LOGGER.info("Server started on port [" + serverContext.getActualPort() + "]");
                             async.complete();
                         });
                     })
                     .start();
         } else {
-            doStart(() -> startCompleted.onStarted(this));
+            doStart(() -> {
+                startCompleted.onStarted(this);
+                onCompleteHandler.onStarted();
+            });
         }
     }
 
     @Override
     public void start() {
-        start("config.json");
+        start("config.json", () -> {});
+    }
+
+    @Override
+    public void start(DominoTestClient.StartCompletedHandler onCompletedHandler) {
+        start("config.json", onCompletedHandler);
     }
 
     @Override
     public void start(String configFileName) {
-        start(configFileName, new JsonObject());
+        start(configFileName, new JsonObject(), () -> {});
+    }
+
+    @Override
+    public void start(String configFileName, DominoTestClient.StartCompletedHandler onCompletedHandler) {
+        start(configFileName, new JsonObject(), onCompletedHandler);
     }
 
     @Override
     public void start(JsonObject additionalConfig) {
-        start("config.json", additionalConfig);
+        start("config.json", additionalConfig, () -> {});
     }
 
+    @Override
+    public void start(JsonObject additionalConfig, DominoTestClient.StartCompletedHandler onCompletedHandler) {
+        start("config.json", additionalConfig, onCompletedHandler);
+    }
 
     private void doStart(ApplicationStartHandler applicationStartHandler) {
         getDominoOptions().setApplicationStartHandler(applicationStartHandler);
@@ -272,4 +295,8 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
         void overrideConfig();
     }
 
+    @FunctionalInterface
+    public interface StartCompletedHandler {
+        void onStarted();
+    }
 }
