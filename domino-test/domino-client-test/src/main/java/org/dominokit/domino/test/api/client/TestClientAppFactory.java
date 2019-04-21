@@ -6,6 +6,8 @@ import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.server.entrypoint.ServerEntryPointContext;
 import org.dominokit.domino.gwt.client.events.RequestEventProcessor;
 
+import java.util.function.Supplier;
+
 public class TestClientAppFactory {
 
     protected static TestServerRouter serverRouter;
@@ -19,7 +21,7 @@ public class TestClientAppFactory {
     private TestClientAppFactory() {
     }
 
-    public static ClientApp make(TestContext testContext) {
+    public static ClientApp make(Supplier<TestContext> testContext) {
 
         clientRouter = new TestClientRouter();
         serverRouter = new TestServerRouter(testContext);

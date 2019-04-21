@@ -20,9 +20,10 @@ public abstract class DominoTestCase implements DominoTest {
     public void prepareTestClient(TestContext testContext) {
         this.testContext = testContext;
         testClient = (DominoTestClient) DominoTestClient.useModules(testConfig.getModules());
+        testClient.setTestContext(testContext);
+        this.clientContext = testClient;
         testClient
                 .onBeforeClientStart(clientContext -> {
-                    this.clientContext = clientContext;
                     testConfig.bindSpies(DominoTestCase.this);
                     testConfig.bindFakeViews(DominoTestCase.this);
                     onBeforeClientStart(clientContext, testContext);

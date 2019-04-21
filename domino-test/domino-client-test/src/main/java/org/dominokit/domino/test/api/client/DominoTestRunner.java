@@ -41,6 +41,12 @@ public class DominoTestRunner extends VertxUnitRunner {
                         throw new IllegalStateException(e);
                     }
                 });
+            }else{
+                try {
+                    doInvokeTestMethod(fMethod, test, context);
+                } catch (InvocationTargetException | IllegalAccessException e) {
+                    throw new IllegalStateException(e);
+                }
             }
         }else {
             doInvokeTestMethod(fMethod, test, context);

@@ -66,6 +66,7 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
 
     private DominoTestClient(List<ModuleConfiguration> configurations) {
         this.modules = configurations;
+        init();
     }
 
     public static CanCustomizeClient useModules(ModuleConfiguration... configurations) {
@@ -116,7 +117,8 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
 
     @Override
     public void start(String configFileName, JsonObject additionalConfig) {
-        start(configFileName, additionalConfig, () -> {});
+        start(configFileName, additionalConfig, () -> {
+        });
     }
 
     @Override
@@ -134,7 +136,6 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
                 .build();
         new ServerConfigurationLoader(vertxContext).loadModules();
 
-        init();
         modules.forEach(this::configureModule);
 
         this.configOverrideHandler.overrideConfig();
@@ -167,7 +168,8 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
 
     @Override
     public void start() {
-        start("config.json", () -> {});
+        start("config.json", () -> {
+        });
     }
 
     @Override
@@ -177,7 +179,8 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
 
     @Override
     public void start(String configFileName) {
-        start(configFileName, new JsonObject(), () -> {});
+        start(configFileName, new JsonObject(), () -> {
+        });
     }
 
     @Override
@@ -187,7 +190,8 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
 
     @Override
     public void start(JsonObject additionalConfig) {
-        start("config.json", additionalConfig, () -> {});
+        start("config.json", additionalConfig, () -> {
+        });
     }
 
     @Override
@@ -202,7 +206,7 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
     }
 
     private void init() {
-        TestClientAppFactory.make(testContext);
+        TestClientAppFactory.make(() -> testContext);
     }
 
     private void configureModule(ModuleConfiguration configuration) {
@@ -261,6 +265,10 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
     @Override
     public void registerStore(String key, Object data) {
         StoreRegistry.INSTANCE.registerStore(key, new Store<>(data));
+    }
+
+    public void setTestContext(TestContext testContext) {
+        this.testContext = testContext;
     }
 
     private static class ListenerOf {

@@ -21,6 +21,7 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.function.Supplier;
 
 import static java.util.Objects.nonNull;
 
@@ -45,12 +46,12 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
         }
     };
 
-    private TestContext testContext;
+    private Supplier<TestContext> testContextSupplier;
     private Map<String, Deque<Async>> requestsAsync = new HashMap<>();
 
-    public TestServerRouter(TestContext testContext) {
+    public TestServerRouter(Supplier<TestContext> testContextSupplier) {
         this.requestAsyncRunner = new GwtRequestAsyncSender(eventFactory);
-        this.testContext = testContext;
+        this.testContextSupplier = testContextSupplier;
     }
 
     public void setRoutingListener(RoutingListener listener) {
@@ -70,8 +71,8 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
                 listener.onRouteRequest(request, response);
                 eventFactory.makeSuccess(request, response).fire();
             } else {
-                if (nonNull(testContext)) {
-                    Async async = testContext.async();
+                if (nonNull(testContextSupplier)) {
+                    Async async = testContextSupplier.get().async();
                     if (!requestsAsync.containsKey(getRequestKey(request))) {
                         requestsAsync.put(getRequestKey(request), new ConcurrentLinkedDeque<>());
                     }
@@ -117,8 +118,8 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
 
         @Override
         public void process() {
-            if (nonNull(testContext)) {
-                testContext.verify(event -> {
+            if (nonNull(testContextSupplier)) {
+                testContextSupplier.get().verify(event -> {
                     request.applyState(new Request.ServerResponseReceivedStateContext(makeSuccessContext()));
                     completeIfAsync(request);
                 });
@@ -176,8 +177,8 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
 
         @Override
         public void process() {
-            if (nonNull(testContext)) {
-                testContext.verify(event -> {
+            if (nonNull(testContextSupplier)) {
+                testContextSupplier.get().verify(event -> {
                     request.applyState(new Request.ServerResponseReceivedStateContext(makeFailedContext()));
                     completeIfAsync(request);
                 });
