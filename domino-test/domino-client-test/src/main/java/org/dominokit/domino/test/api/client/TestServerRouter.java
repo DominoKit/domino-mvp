@@ -71,7 +71,7 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
                 listener.onRouteRequest(request, response);
                 eventFactory.makeSuccess(request, response).fire();
             } else {
-                if (nonNull(testContextSupplier)) {
+                if (nonNull(testContextSupplier.get())) {
                     Async async = testContextSupplier.get().async();
                     if (!requestsAsync.containsKey(getRequestKey(request))) {
                         requestsAsync.put(getRequestKey(request), new ConcurrentLinkedDeque<>());
@@ -118,7 +118,7 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
 
         @Override
         public void process() {
-            if (nonNull(testContextSupplier)) {
+            if (nonNull(testContextSupplier.get())) {
                 testContextSupplier.get().verify(event -> {
                     request.applyState(new Request.ServerResponseReceivedStateContext(makeSuccessContext()));
                     completeIfAsync(request);
@@ -177,7 +177,7 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
 
         @Override
         public void process() {
-            if (nonNull(testContextSupplier)) {
+            if (nonNull(testContextSupplier.get())) {
                 testContextSupplier.get().verify(event -> {
                     request.applyState(new Request.ServerResponseReceivedStateContext(makeFailedContext()));
                     completeIfAsync(request);
