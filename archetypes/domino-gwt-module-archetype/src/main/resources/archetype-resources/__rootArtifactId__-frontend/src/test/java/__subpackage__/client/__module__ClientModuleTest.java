@@ -1,60 +1,58 @@
 #set( $symbol_pound = '#' )
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
+#set( $token = ${module.toLowerCase()} )
 package ${package}.${subpackage}.client;
 
 import org.dominokit.domino.api.client.annotations.ClientModule;
-import org.dominokit.domino.api.client.mvp.presenter.ViewablePresenterSupplier;
 import org.dominokit.domino.test.api.client.ClientContext;
-import org.dominokit.domino.test.api.client.DominoTestClient;
+import org.dominokit.domino.test.api.client.annotations.FakeView;
+import org.dominokit.domino.test.api.client.annotations.OnBeforeClientStart;
+import org.dominokit.domino.test.api.client.annotations.PresenterSpy;
+import org.dominokit.domino.test.api.client.annotations.TestConfig;
+import org.dominokit.domino.test.api.client.DominoTestCase;
+import org.dominokit.domino.test.api.client.DominoTestRunner;
 import ${package}.${subpackage}.client.presenters.${module}PresenterSpy;
-import ${package}.${subpackage}.client.presenters.${module}Proxy_Presenter_Config;
+import ${package}.${subpackage}.client.presenters.${module}Proxy;
 import ${package}.${subpackage}.client.services.${module}ServiceFactory;
 import ${package}.${subpackage}.client.views.Fake${module}View;
 import ${package}.${subpackage}.shared.request.${module}Request;
 import ${package}.${subpackage}.shared.response.${module}Response;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
+@RunWith(DominoTestRunner.class)
 @ClientModule(name = "Test${module}")
-public class ${module}ClientModuleTest {
+@TestConfig(modules= {${module}ModuleConfiguration.class})
+public class ${module}ClientModuleTest extends DominoTestCase{
 
-    private ${module}PresenterSpy presenterSpy;
-    private Fake${module}View fakeView;
-    private ClientContext clientContext;
+    @PresenterSpy(${module}Proxy.class)
+    ${module}PresenterSpy presenterSpy;
 
-    @Before
-    public void setUp() {
-        DominoTestClient.useModules(new ${module}ModuleConfiguration(), new Test${module}ModuleConfiguration())
-                .overrideConfig(() -> {
-                        ${module}Proxy_Presenter_Config ${module}Proxy_presenter_config = new ${module}Proxy_Presenter_Config();
-                        ${module}Proxy_presenter_config.setPresenterSupplier(new ViewablePresenterSupplier<>(false, () -> {
-                        presenterSpy = new ${module}PresenterSpy();
-                        return presenterSpy;
-                    }));
-                        ${module}Proxy_presenter_config.setViewSupplier(() -> {
-                        fakeView = new Fake${module}View();
-                        return fakeView;
-                    });
-                })
-                .onClientStarted(clientContext -> this.clientContext = clientContext)
-                .start();
+    @FakeView(${module}Proxy.class)
+    Fake${module}View fakeView;
+
+    public ${module}ClientModuleTest() {
+        super(new ${module}ClientModuleTest_Config());
+    }
+
+    @OnBeforeClientStart
+    public void mockRequest(ClientContext clientContext) {
+        clientContext.forRequest(${module}ServiceFactory.${module}Service_request.class)
+            .returnResponse(new ${module}Response("Server message"));
     }
 
     @Test
     public void given${module}Module_whenRoutingTo${module}_thenShould${module}Proxy_PresenterShouldBeActivated() {
-        clientContext.history().fireState("${module}");
+        clientContext.history().fireState("${token}");
         assertThat(presenterSpy.isActivated()).isTrue();
     }
 
     @Test
     public void given${module}ClientModule_when${module}ServerRequestIsSent_thenServerMessageShouldBeRecieved() {
-        clientContext.forRequest(${module}ServiceFactory.${module}Service_request.class)
-                .returnResponse(new ${module}Response("Server message"));
-
         ${module}ServiceFactory.INSTANCE.request(new ${module}Request("client message"))
                 .onSuccess(response -> assertThat(response.getServerMessage()).isEqualTo("Server message"))
                 .onFailed(failedResponse -> fail(failedResponse.getThrowable().getMessage()))

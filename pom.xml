@@ -102,6 +102,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <vertx.version>3.6.3</vertx.version>
         <elemental.version>1.0.0-RC1</elemental.version>
+        <domino.rest.version>1.0-SNAPSHOT</domino.rest.version>
     </properties>
 
     <dependencyManagement>

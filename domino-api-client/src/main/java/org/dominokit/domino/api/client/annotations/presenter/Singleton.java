@@ -11,5 +11,5 @@ import java.lang.annotation.Target;
 public @interface Singleton {
 
     @NotNull
-    boolean value() default false;
+    boolean value() default true;
 }

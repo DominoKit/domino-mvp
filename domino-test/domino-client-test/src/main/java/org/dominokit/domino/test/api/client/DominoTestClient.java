@@ -28,6 +28,7 @@ import org.dominokit.domino.test.api.TestConfigReader;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -39,7 +40,7 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
 
     public static final Logger LOGGER = Logger.getLogger(DominoTestClient.class.getName());
 
-    private ModuleConfiguration[] modules;
+    private List<ModuleConfiguration> modules;
     private List<ListenerOf> listenersOf = new ArrayList<>();
 
     private VertxEntryPointContext testEntryPointContext;
@@ -60,10 +61,18 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
     };
 
     private DominoTestClient(ModuleConfiguration... configurations) {
+        this(Arrays.asList(configurations));
+    }
+
+    private DominoTestClient(List<ModuleConfiguration> configurations) {
         this.modules = configurations;
     }
 
     public static CanCustomizeClient useModules(ModuleConfiguration... configurations) {
+        return new DominoTestClient(configurations);
+    }
+
+    public static CanCustomizeClient useModules(List<ModuleConfiguration> configurations) {
         return new DominoTestClient(configurations);
     }
 
@@ -121,7 +130,7 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
         new ServerConfigurationLoader(vertxContext).loadModules();
 
         init();
-        Arrays.stream(modules).forEach(this::configureModule);
+        modules.forEach(this::configureModule);
 
         this.configOverrideHandler.overrideConfig();
         SlotRegistry.registerSlot(ViewBaseClientPresenter.DOCUMENT_BODY, new FakeSlot());
@@ -164,9 +173,8 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
 
 
     private void doStart(ApplicationStartHandler applicationStartHandler) {
-        beforeClientStart.onBeforeStart(this);
         getDominoOptions().setApplicationStartHandler(applicationStartHandler);
-        make().run();
+        make().run(dominoOptions -> beforeClientStart.onBeforeStart(DominoTestClient.this));
         LOGGER.info("Test client started.");
     }
 

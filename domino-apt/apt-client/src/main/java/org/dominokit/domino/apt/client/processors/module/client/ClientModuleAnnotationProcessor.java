@@ -66,9 +66,7 @@ public class ClientModuleAnnotationProcessor extends BaseProcessor {
                 commandsRegister.writeItems();
                 initialTasksRegister.writeItems();
                 if (roundEnv.processingOver())
-                    clientModules.stream()
-                            .filter(e -> validateElementKind(e, ElementKind.CLASS))
-                            .forEach(e -> generateModuleConfiguration(newProcessorElement(e)));
+                    generateModuleConfiguration();
                 return true;
             }
 
@@ -82,7 +80,7 @@ public class ClientModuleAnnotationProcessor extends BaseProcessor {
         return false;
     }
 
-    private void generateModuleConfiguration(ProcessorElement element) {
+    private void generateModuleConfiguration() {
 
         new ClientModuleProcessingStep.Builder()
                 .setPresenters(presenters)

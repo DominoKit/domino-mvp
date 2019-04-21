@@ -10,10 +10,7 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -102,6 +99,10 @@ public class ProcessorUtil {
         return input.substring(0, 1).toUpperCase() + input.substring(1);
     }
 
+    public String smallFirstLetter(String input) {
+        return input.substring(0, 1).toLowerCase() + input.substring(1);
+    }
+
     public String lowerFirstLetter(String input) {
         return input.substring(0, 1).toLowerCase() + input.substring(1);
     }
@@ -127,6 +128,31 @@ public class ProcessorUtil {
         }
         return Optional.empty();
     }
+
+
+    public List<TypeMirror> getClassArrayValueFromAnnotation(Element element, Class<? extends Annotation> annotation, String paramName) {
+
+        List<TypeMirror> values = new ArrayList<>();
+
+        for (AnnotationMirror am : element.getAnnotationMirrors()) {
+            if (types.isSameType(am.getAnnotationType(), elements.getTypeElement(annotation.getCanonicalName()).asType())) {
+                for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : am.getElementValues().entrySet()) {
+                    if (paramName.equals(entry.getKey().getSimpleName().toString())) {
+                        List<AnnotationValue> classesTypes = (List<AnnotationValue>) entry.getValue().getValue();
+                        Iterator<? extends AnnotationValue> iterator = classesTypes.iterator();
+
+                        while (iterator.hasNext()) {
+                            AnnotationValue next = iterator.next();
+                            values.add((TypeMirror) next.getValue());
+                        }
+                    }
+                }
+            }
+        }
+        return values;
+    }
+
+
 
     public List<ExecutableElement> getElementMethods(Element element) {
         return element.getEnclosedElements()

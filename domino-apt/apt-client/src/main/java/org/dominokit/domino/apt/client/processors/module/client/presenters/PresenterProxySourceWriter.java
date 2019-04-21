@@ -57,6 +57,13 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
                     .build());
         }
 
+        if (nonNull(proxyElement.getAnnotation(Singleton.class))) {
+            Singleton singleton = proxyElement.getAnnotation(Singleton.class);
+            proxyType.addAnnotation(AnnotationSpec.builder(Singleton.class)
+                    .addMember("value", "$L", singleton.value())
+                    .build());
+        }
+
         generateAutoReveal(proxyType);
         generateOnInit(proxyType);
         generateOnReveal(proxyType);

@@ -21,6 +21,7 @@ import org.dominokit.domino.apt.commons.StepBuilder;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
 import java.util.Set;
 
 public class ClientModuleProcessingStep extends AbstractProcessingStep {
@@ -66,18 +67,17 @@ public class ClientModuleProcessingStep extends AbstractProcessingStep {
         }
     }
 
-
     public void process(Set<? extends Element> elementsByAnnotation) {
-        for (Element element : elementsByAnnotation) {
-            try {
-                writeSource(new ModuleConfigurationSourceWriter(element, presenters, views, initialTasks, processingEnv)
-                        .asTypeBuilder(), elements.getPackageOf(element).getQualifiedName().toString());
-            } catch (Exception e) {
-                ExceptionUtil.messageStackTrace(messager, e);
-            }
-        }
-
+        elementsByAnnotation
+                .stream()
+                .filter(element -> ElementKind.CLASS.equals(element.getKind()))
+                .forEach(element -> {
+                    try {
+                        writeSource(new ModuleConfigurationSourceWriter(element, presenters, views, initialTasks, processingEnv)
+                                .asTypeBuilder(), elements.getPackageOf(element).getQualifiedName().toString());
+                    } catch (Exception e) {
+                        ExceptionUtil.messageStackTrace(messager, e);
+                    }
+                });
     }
-
-
 }
