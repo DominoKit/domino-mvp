@@ -83,7 +83,7 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
         List<Element> fragmentParameters = processorUtil.getAnnotatedFields(proxyElement.asType(), FragmentParameter.class);
         List<Element> queryParameters = processorUtil.getAnnotatedFields(proxyElement.asType(), QueryParameter.class);
 
-        if(!routingState.isEmpty() || !pathParameters.isEmpty() || !fragmentParameters.isEmpty() || !queryParameters.isEmpty()){
+        if (!routingState.isEmpty() || !pathParameters.isEmpty() || !fragmentParameters.isEmpty() || !queryParameters.isEmpty()) {
 
             MethodSpec.Builder stateMethod = MethodSpec.methodBuilder("setState")
                     .addAnnotation(Override.class)
@@ -95,19 +95,19 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
 
             pathParameters.forEach(element -> {
                 PathParameter annotation = element.getAnnotation(PathParameter.class);
-                String paramName = annotation.value().trim().isEmpty()?element.getSimpleName().toString(): annotation.value();
+                String paramName = annotation.value().trim().isEmpty() ? element.getSimpleName().toString() : annotation.value();
                 stateMethod.addStatement("this.$L = state.normalizedToken().getPathParameter($S)", element.getSimpleName().toString(), paramName);
             });
 
             fragmentParameters.forEach(element -> {
                 FragmentParameter annotation = element.getAnnotation(FragmentParameter.class);
-                String paramName = annotation.value().trim().isEmpty()?element.getSimpleName().toString(): annotation.value();
+                String paramName = annotation.value().trim().isEmpty() ? element.getSimpleName().toString() : annotation.value();
                 stateMethod.addStatement("this.$L = state.normalizedToken().getFragmentParameter($S)", element.getSimpleName().toString(), paramName);
             });
 
             queryParameters.forEach(element -> {
                 QueryParameter annotation = element.getAnnotation(QueryParameter.class);
-                String paramName = annotation.value().trim().isEmpty()?element.getSimpleName().toString(): annotation.value();
+                String paramName = annotation.value().trim().isEmpty() ? element.getSimpleName().toString() : annotation.value();
                 stateMethod.addStatement("this.$L = state.token().getQueryParameter($S)", element.getSimpleName().toString(), paramName);
             });
 
@@ -130,33 +130,14 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
     private void generateOnInit(TypeSpec.Builder proxyType) {
 
         List<Element> initMethods = processorUtil.getAnnotatedMethods(proxyElement.asType(), OnInit.class);
-        List<Element> aggregateMethods = processorUtil.getAnnotatedMethods(proxyElement.asType(), Aggregate.class);
-
-        aggregateMethods.forEach(element -> {
-            String aggregateName = element.getAnnotation(Aggregate.class).name();
-            proxyType.addMethod(MethodSpec.methodBuilder(processorUtil.lowerFirstLetter(aggregateName) + "_init")
-                    .addModifiers(Modifier.PRIVATE)
-                    .returns(TypeName.VOID)
-                    .addStatement("$L = new $T().init(this)", processorUtil.lowerFirstLetter(aggregateName), ClassName.get(elements.getPackageOf(element.getEnclosingElement()).toString(), aggregateName))
-                    .build());
-        });
 
         CodeBlock.Builder methodsCall = CodeBlock.builder();
         boolean generateMethod = false;
-
-        if (nonNull(aggregateMethods) && !aggregateMethods.isEmpty()) {
-            generateMethod = true;
-            aggregateMethods.forEach(element -> {
-                String aggregateName = element.getAnnotation(Aggregate.class).name();
-                methodsCall.addStatement(processorUtil.lowerFirstLetter(aggregateName) + "_init()");
-            });
-        }
 
         if (nonNull(initMethods) && !initMethods.isEmpty()) {
             generateMethod = true;
             initMethods.forEach(element -> methodsCall.addStatement(element.getSimpleName() + "()"));
         }
-
 
         if (generateMethod) {
             proxyType.addMethod(MethodSpec.methodBuilder("onActivated")
@@ -200,11 +181,35 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
     }
 
     private void generateOnPostConstruct(TypeSpec.Builder proxyType) {
+        List<Element> aggregateMethods = processorUtil.getAnnotatedMethods(proxyElement.asType(), Aggregate.class);
+
+        aggregateMethods.forEach(element -> {
+            String aggregateName = element.getAnnotation(Aggregate.class).name();
+            proxyType.addMethod(MethodSpec.methodBuilder(processorUtil.lowerFirstLetter(aggregateName) + "_init")
+                    .addModifiers(Modifier.PRIVATE)
+                    .returns(TypeName.VOID)
+                    .addStatement("$L = new $T().init(this)", processorUtil.lowerFirstLetter(aggregateName), ClassName.get(elements.getPackageOf(element.getEnclosingElement()).toString(), aggregateName))
+                    .build());
+        });
+
+        CodeBlock.Builder methodsCall = CodeBlock.builder();
+        boolean generateMethod = false;
+
+        if (nonNull(aggregateMethods) && !aggregateMethods.isEmpty()) {
+            generateMethod = true;
+            aggregateMethods.forEach(element -> {
+                String aggregateName = element.getAnnotation(Aggregate.class).name();
+                methodsCall.addStatement(processorUtil.lowerFirstLetter(aggregateName) + "_init()");
+            });
+        }
+
+
         List<Element> onPostConstructMethods = processorUtil.getAnnotatedMethods(proxyElement.asType(), PostConstruct.class);
         if (nonNull(onPostConstructMethods) && !onPostConstructMethods.isEmpty()) {
-            CodeBlock.Builder methodsCall = CodeBlock.builder();
+            generateMethod = true;
             onPostConstructMethods.forEach(element -> methodsCall.addStatement(element.getSimpleName().toString() + "()"));
-
+        }
+        if (generateMethod) {
             proxyType.addMethod(MethodSpec.methodBuilder("postConstruct")
                     .addAnnotation(Override.class)
                     .addModifiers(Modifier.PROTECTED)
@@ -260,8 +265,8 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
                     event.ifPresent(eventType -> {
                         String listenerName = elements.getPackageOf(proxyElement).getQualifiedName().toString()
                                 .replace(".presenters", ".listeners")
-                                +"."+ proxyElement.getSimpleName().toString()
-                                +"_PresenterListenFor"+types.asElement(eventType).getSimpleName().toString();
+                                + "." + proxyElement.getSimpleName().toString()
+                                + "_PresenterListenFor" + types.asElement(eventType).getSimpleName().toString();
                         listenersMethod.addStatement("listenersMap.put($T.class, new $L(this))", TypeName.get(eventType), ClassName.bestGuess(listenerName));
                     });
                 });
@@ -274,7 +279,7 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
 
 
     private void generateFireActivationEvent(TypeSpec.Builder proxyType) {
-        if(nonNull(proxyElement.getAnnotation(OnStateChanged.class))){
+        if (nonNull(proxyElement.getAnnotation(OnStateChanged.class))) {
             Optional<TypeMirror> eventType = processorUtil.getClassValueFromAnnotation(proxyElement, OnStateChanged.class, "value");
 
             proxyType.addMethod(MethodSpec.methodBuilder("fireActivationEvent")
@@ -282,7 +287,7 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
                     .addAnnotation(Override.class)
                     .returns(TypeName.VOID)
                     .addParameter(TypeName.BOOLEAN, "state")
-                    .addStatement("fireEvent($T.class, new $T(state))", TypeName.get(eventType.get()),TypeName.get(eventType.get()))
+                    .addStatement("fireEvent($T.class, new $T(state))", TypeName.get(eventType.get()), TypeName.get(eventType.get()))
                     .build());
         }
     }

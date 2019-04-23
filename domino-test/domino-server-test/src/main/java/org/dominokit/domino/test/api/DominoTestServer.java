@@ -33,14 +33,14 @@ public class DominoTestServer implements TestServerContext {
 
     public void start(JsonObject config, String configFileName) {
         this.config = new TestConfigReader(vertx,configFileName).getTestConfig();
-        config.mergeIn(this.config);
+        this.config.mergeIn(config);
         this.config.put("http.port", 0);
         String secret = SecretKey.generate();
         csrfToken = new CSRFToken(secret).generate();
-        RouterConfigurator routerConfigurator = new RouterConfigurator(vertx, config, secret);
+        RouterConfigurator routerConfigurator = new RouterConfigurator(vertx, this.config, secret);
         router = routerConfigurator.configuredRouter();
         beforeLoad();
-        new DominoLoader(vertx, router, config).start(httpServer -> {
+        new DominoLoader(vertx, router, this.config).start(httpServer -> {
             this.httpServer = httpServer;
             afterLoad();
         });
