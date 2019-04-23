@@ -7,17 +7,23 @@ import static java.util.Objects.nonNull;
 
 public class FakeSlot implements Slot {
 
+    private boolean revealed;
     private Content<FakeElement> old;
 
     @Override
     public void updateContent(Content content) {
-        if(content.get() instanceof FakeElement){
-            if(nonNull(old)){
+        if (content.get() instanceof FakeElement) {
+            if (nonNull(old)) {
                 old.get().remove();
             }
 
             this.old = content;
             ((FakeElement) content.get()).append();
         }
+        revealed = true;
+    }
+
+    public boolean isRevealed() {
+        return revealed;
     }
 }
