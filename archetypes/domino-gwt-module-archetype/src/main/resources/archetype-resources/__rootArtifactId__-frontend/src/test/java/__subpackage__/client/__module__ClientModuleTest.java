@@ -14,7 +14,7 @@ import org.dominokit.domino.test.api.client.DominoTestCase;
 import org.dominokit.domino.test.api.client.DominoTestRunner;
 import ${package}.${subpackage}.client.presenters.${module}PresenterSpy;
 import ${package}.${subpackage}.client.presenters.${module}Proxy;
-import ${package}.${subpackage}.client.services.${module}ServiceFactory;
+import ${package}.${subpackage}.shared.services.${module}ServiceFactory;
 import ${package}.${subpackage}.client.views.Fake${module}View;
 import ${package}.${subpackage}.shared.request.${module}Request;
 import ${package}.${subpackage}.shared.response.${module}Response;
