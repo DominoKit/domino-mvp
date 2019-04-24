@@ -1,7 +1,7 @@
 package org.dominokit.domino.test.api.client;
 
-import org.dominokit.domino.api.client.request.ServerRequest;
 import org.dominokit.domino.api.shared.request.ResponseBean;
+import org.dominokit.domino.api.shared.request.ServerRequest;
 
 import java.util.HashMap;
 import java.util.Map;

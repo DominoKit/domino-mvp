@@ -2,8 +2,8 @@ package org.dominokit.domino.desktop.client;
 
 import org.dominokit.domino.api.client.events.Event;
 import org.dominokit.domino.api.client.events.ServerRequestEventFactory;
-import org.dominokit.domino.api.client.request.ServerRequest;
 import org.dominokit.domino.api.shared.request.FailedResponseBean;
+import org.dominokit.domino.api.shared.request.ServerRequest;
 import org.dominokit.domino.desktop.client.events.DesktopFailedServerEvent;
 import org.dominokit.domino.desktop.client.events.DesktopSuccessServerEvent;
 

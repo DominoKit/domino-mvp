@@ -14,7 +14,6 @@ import org.dominokit.domino.api.client.mvp.Store;
 import org.dominokit.domino.api.client.mvp.StoreRegistry;
 import org.dominokit.domino.api.client.mvp.presenter.ViewBaseClientPresenter;
 import org.dominokit.domino.api.client.mvp.slots.SlotRegistry;
-import org.dominokit.domino.api.client.request.ServerRequest;
 import org.dominokit.domino.api.server.config.ServerConfiguration;
 import org.dominokit.domino.api.server.config.ServerConfigurationLoader;
 import org.dominokit.domino.api.server.config.VertxConfiguration;
@@ -22,13 +21,13 @@ import org.dominokit.domino.api.server.entrypoint.VertxContext;
 import org.dominokit.domino.api.server.entrypoint.VertxEntryPointContext;
 import org.dominokit.domino.api.shared.extension.DominoEventListener;
 import org.dominokit.domino.api.shared.request.ResponseBean;
+import org.dominokit.domino.api.shared.request.ServerRequest;
 import org.dominokit.domino.service.discovery.VertxServiceDiscovery;
 import org.dominokit.domino.test.api.DominoTestServer;
 import org.dominokit.domino.test.api.TestConfigReader;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 

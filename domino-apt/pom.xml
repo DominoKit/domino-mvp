@@ -18,6 +18,7 @@
 
     <modules>
         <module>apt-client</module>
+        <module>apt-shared</module>
         <module>apt-client-test</module>
         <module>apt-server</module>
         <module>apt-commons</module>

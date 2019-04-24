@@ -1,6 +1,6 @@
 package org.dominokit.domino.api.client.history;
 
-import org.dominokit.domino.api.client.DynamicServiceRoot;
+import org.dominokit.domino.api.shared.request.DynamicServiceRoot;
 import org.junit.Test;
 
 public class DynamicServiceRootTest {

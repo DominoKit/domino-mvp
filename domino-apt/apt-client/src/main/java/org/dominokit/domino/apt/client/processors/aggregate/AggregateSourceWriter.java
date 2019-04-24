@@ -2,7 +2,7 @@ package org.dominokit.domino.apt.client.processors.aggregate;
 
 import com.squareup.javapoet.*;
 import org.dominokit.domino.api.client.annotations.Aggregate;
-import org.dominokit.domino.api.client.extension.ContextAggregator;
+import org.dominokit.domino.api.shared.extension.ContextAggregator;
 import org.dominokit.domino.apt.commons.AbstractSourceBuilder;
 import org.dominokit.domino.apt.commons.DominoTypeBuilder;
 

@@ -1,7 +1,7 @@
 package org.dominokit.domino.api.client.events;
 
 import org.dominokit.domino.api.client.ClientApp;
-import org.dominokit.domino.api.client.extension.ContextAggregator;
+import org.dominokit.domino.api.shared.extension.ContextAggregator;
 import org.dominokit.domino.api.shared.extension.ActivationEvent;
 import org.dominokit.domino.api.shared.extension.ActivationEventContext;
 import org.dominokit.domino.api.shared.extension.DominoEvent;

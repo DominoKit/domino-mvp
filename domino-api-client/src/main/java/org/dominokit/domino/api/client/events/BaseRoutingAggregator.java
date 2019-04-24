@@ -1,6 +1,6 @@
 package org.dominokit.domino.api.client.events;
 
-import org.dominokit.domino.api.client.extension.ContextAggregator;
+import org.dominokit.domino.api.shared.extension.ContextAggregator;
 import org.dominokit.domino.api.shared.extension.ActivationEvent;
 import org.dominokit.domino.api.shared.history.DominoHistory;
 import org.slf4j.Logger;

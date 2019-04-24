@@ -2,8 +2,8 @@ package org.dominokit.domino.desktop.client.events;
 
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.events.Event;
-import org.dominokit.domino.api.client.request.Request;
-import org.dominokit.domino.api.client.request.ServerRequest;
+import org.dominokit.domino.api.shared.request.Request;
+import org.dominokit.domino.api.shared.request.ServerRequest;
 
 public class DesktopSuccessServerEvent<T> implements Event {
     private final ServerRequest request;

@@ -3,7 +3,7 @@ package org.dominokit.domino.desktop.client.events;
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.events.Event;
 import org.dominokit.domino.api.client.request.PresenterCommand;
-import org.dominokit.domino.api.client.request.Request;
+import org.dominokit.domino.api.shared.request.Request;
 
 public class DesktopClientEvent implements Event {
 

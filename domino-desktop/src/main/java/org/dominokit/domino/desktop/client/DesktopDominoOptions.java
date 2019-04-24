@@ -2,9 +2,13 @@ package org.dominokit.domino.desktop.client;
 
 import org.dominokit.domino.api.client.ApplicationStartHandler;
 import org.dominokit.domino.api.client.CanSetDominoOptions;
+import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.DominoOptions;
-import org.dominokit.domino.api.client.DynamicServiceRoot;
-import org.dominokit.domino.api.client.request.RequestInterceptor;
+import org.dominokit.domino.api.client.request.PresenterCommand;
+import org.dominokit.domino.api.shared.request.DynamicServiceRoot;
+import org.dominokit.domino.api.shared.request.RequestInterceptor;
+import org.dominokit.domino.api.shared.request.RequestRouter;
+import org.dominokit.domino.api.shared.request.ServerRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,5 +105,17 @@ public class DesktopDominoOptions implements DominoOptions {
     @Override
     public List<DynamicServiceRoot> getServiceRoots() {
         return dynamicServiceRoots;
+    }
+
+
+
+    @Override
+    public RequestRouter<PresenterCommand> getClientRouter() {
+        return ClientApp.make().getClientRouter();
+    }
+
+    @Override
+    public RequestRouter<ServerRequest> getServerRouter() {
+        return ClientApp.make().getServerRouter();
     }
 }

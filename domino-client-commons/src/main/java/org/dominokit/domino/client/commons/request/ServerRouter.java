@@ -1,7 +1,7 @@
 package org.dominokit.domino.client.commons.request;
 
-import org.dominokit.domino.api.client.request.RequestRouter;
-import org.dominokit.domino.api.client.request.ServerRequest;
+import org.dominokit.domino.api.shared.request.RequestRouter;
+import org.dominokit.domino.api.shared.request.ServerRequest;
 
 public class ServerRouter implements RequestRouter<ServerRequest> {
 

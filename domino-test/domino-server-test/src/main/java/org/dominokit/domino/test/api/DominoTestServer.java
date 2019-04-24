@@ -136,7 +136,7 @@ public class DominoTestServer implements TestServerContext {
 
     @FunctionalInterface
     public interface BeforeLoadHandler {
-        void handle(TestRoutingContext context);
+        void handle(TestServerContext context);
     }
 
     @FunctionalInterface

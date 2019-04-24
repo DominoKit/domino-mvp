@@ -4,7 +4,6 @@ import org.apache.commons.io.IOUtils;
 import org.dominokit.domino.apt.client.processors.module.client.ClientModuleAnnotationProcessor;
 import org.dominokit.domino.apt.client.processors.module.client.ConfigurationProviderAnnotationProcessor;
 import org.dominokit.domino.apt.client.processors.module.client.presenters.PresenterProcessor;
-import org.dominokit.domino.apt.client.processors.service.RequestFactoryProcessor;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -159,14 +158,4 @@ public class ClientModuleAnnotationProcessorTest {
                         "RequestSendersRegistrationsModuleConfiguration.java"));
     }
 
-    @Test
-    @Ignore
-    public void givenInterfaceAnnotatedWithRequestGroup_whenProcess_shouldGenerateFactory() throws Exception {
-        assertProcessing(BASE_PACKAGE + "AnnotatedInterfaceWithRequestGroup.java",
-                BASE_PACKAGE + "SomeRequest.java",
-                BASE_PACKAGE + "SomeResponse.java")
-                .withProcessor(new RequestFactoryProcessor())
-                .generates(getExpectedResultFileContent(
-                        "AnnotatedInterfaceWithRequestGroupFactory.java"));
-    }
 }

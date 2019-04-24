@@ -2,8 +2,6 @@ package org.dominokit.domino.apt.client;
 
 import javax.annotation.Generated;
 import org.dominokit.domino.api.client.ModuleConfiguration;
-import org.dominokit.domino.api.client.request.SenderSupplier;
-import org.dominokit.domino.api.client.request.RequestRestSender;
 import org.dominokit.domino.api.client.request.RequestRestSendersRegistry;
 
 /**

@@ -38,6 +38,11 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>org.dominokit.domino.apt</groupId>
+            <artifactId>apt-shared</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.dominokit.domino.test</groupId>
             <artifactId>domino-client-test</artifactId>
             <scope>test</scope>

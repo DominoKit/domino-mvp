@@ -5,7 +5,7 @@ import org.dominokit.domino.api.client.events.Event;
 import org.dominokit.domino.api.client.events.EventProcessor;
 import org.dominokit.domino.api.client.events.EventsBus;
 import org.dominokit.domino.api.client.request.PresenterCommand;
-import org.dominokit.domino.api.client.request.Request;
+import org.dominokit.domino.api.shared.request.Request;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class ClientRequestEvent extends ClientRequestGwtEvent implements Event {

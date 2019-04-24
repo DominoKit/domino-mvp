@@ -2,12 +2,10 @@ package org.dominokit.domino.api.client;
 
 import org.dominokit.domino.api.client.async.AsyncRunner;
 import org.dominokit.domino.api.client.events.EventsBus;
-import org.dominokit.domino.api.client.extension.ContextAggregator;
+import org.dominokit.domino.api.shared.extension.ContextAggregator;
 import org.dominokit.domino.api.client.extension.DominoEventsListenersRepository;
 import org.dominokit.domino.api.client.extension.DominoEventsRegistry;
 import org.dominokit.domino.api.client.request.PresenterCommand;
-import org.dominokit.domino.api.client.request.RequestRouter;
-import org.dominokit.domino.api.client.request.ServerRequest;
 import org.dominokit.domino.api.client.startup.AsyncClientStartupTask;
 import org.dominokit.domino.api.client.startup.ClientStartupTask;
 import org.dominokit.domino.api.client.startup.TasksAggregator;
@@ -15,6 +13,7 @@ import org.dominokit.domino.api.shared.extension.DominoEvent;
 import org.dominokit.domino.api.shared.extension.DominoEventListener;
 import org.dominokit.domino.api.shared.extension.MainDominoEvent;
 import org.dominokit.domino.api.shared.history.AppHistory;
+import org.dominokit.domino.api.shared.request.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -22,7 +21,7 @@ import java.util.stream.Collectors;
 import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.groupingBy;
 
-public class ClientApp implements InitialTaskRegistry, DominoEventsRegistry {
+public class ClientApp implements InitialTaskRegistry, DominoEventsRegistry, RequestConfig {
 
     private static final AttributeHolder<RequestRouter<PresenterCommand>> CLIENT_ROUTER_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<RequestRouter<ServerRequest>> SERVER_ROUTER_HOLDER =
@@ -64,6 +63,31 @@ public class ClientApp implements InitialTaskRegistry, DominoEventsRegistry {
         return SERVER_ROUTER_HOLDER.attribute;
     }
 
+    @Override
+    public String getDefaultServiceRoot() {
+        return dominoOptions().getDefaultServiceRoot();
+    }
+
+    @Override
+    public String getDefaultJsonDateFormat() {
+        return dominoOptions().getDefaultJsonDateFormat();
+    }
+
+    @Override
+    public List<DynamicServiceRoot> getServiceRoots() {
+        return dominoOptions().getServiceRoots();
+    }
+
+    @Override
+    public List<RequestInterceptor> getRequestInterceptors() {
+        return dominoOptions().getRequestInterceptors();
+    }
+
+    @Override
+    public String getDefaultResourceRootPath() {
+        return dominoOptions().getDefaultResourceRootPath();
+    }
+
     public EventsBus getEventsBus() {
         return EVENTS_BUS_HOLDER.attribute;
     }
@@ -99,6 +123,7 @@ public class ClientApp implements InitialTaskRegistry, DominoEventsRegistry {
     }
 
     public void run(DominoOptionsHandler dominoOptionsHandler) {
+        RequestContext.init(this);
         modules.forEach(configuration -> {
             configuration.registerPresenters();
             configuration.registerViews();

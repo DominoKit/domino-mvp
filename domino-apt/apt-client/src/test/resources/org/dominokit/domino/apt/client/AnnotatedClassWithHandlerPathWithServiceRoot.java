@@ -1,8 +1,7 @@
 package org.dominokit.domino.apt.client;
 
-import org.dominokit.domino.api.client.annotations.service.Path;
-import org.dominokit.domino.api.client.request.ServerRequest;
-import org.dominokit.domino.api.client.annotations.service.Request;
+import org.dominokit.domino.api.shared.request.annotations.service.Path;
+import org.dominokit.domino.api.shared.request.service.annotations.Request;
 
 import javax.ws.rs.HttpMethod;
 

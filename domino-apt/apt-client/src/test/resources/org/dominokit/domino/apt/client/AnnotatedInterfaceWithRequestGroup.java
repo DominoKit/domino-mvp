@@ -1,8 +1,7 @@
 package org.dominokit.domino.apt.client;
 
-import org.dominokit.domino.api.client.annotations.service.Path;
-import org.dominokit.domino.api.client.annotations.service.RequestFactory;
-import org.dominokit.domino.api.client.request.Response;
+import org.dominokit.domino.api.shared.request.annotations.service.Path;
+import org.dominokit.domino.api.shared.request.service.annotations.RequestFactory;
 import org.dominokit.domino.api.shared.request.RequestBean;
 import org.dominokit.domino.api.shared.request.ResponseBean;
 

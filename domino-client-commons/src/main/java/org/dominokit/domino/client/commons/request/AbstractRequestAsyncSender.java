@@ -3,7 +3,7 @@ package org.dominokit.domino.client.commons.request;
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.async.AsyncRunner;
 import org.dominokit.domino.api.client.events.ServerRequestEventFactory;
-import org.dominokit.domino.api.client.request.ServerRequest;
+import org.dominokit.domino.api.shared.request.ServerRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

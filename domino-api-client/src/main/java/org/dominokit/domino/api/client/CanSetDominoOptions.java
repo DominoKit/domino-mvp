@@ -1,6 +1,7 @@
 package org.dominokit.domino.api.client;
 
-import org.dominokit.domino.api.client.request.RequestInterceptor;
+import org.dominokit.domino.api.shared.request.DynamicServiceRoot;
+import org.dominokit.domino.api.shared.request.RequestInterceptor;
 
 public interface CanSetDominoOptions {
     CanSetDominoOptions setDefaultServiceRoot(String defaultServiceRoot);

@@ -5,9 +5,8 @@ import org.dominokit.domino.api.client.events.ClientRequestEventFactory;
 import org.dominokit.domino.api.client.events.Event;
 import org.dominokit.domino.api.client.events.EventsBus;
 import org.dominokit.domino.api.client.request.PresenterCommand;
-import org.dominokit.domino.api.client.request.Request;
-import org.dominokit.domino.api.client.request.RequestRouter;
-
+import org.dominokit.domino.api.shared.request.Request;
+import org.dominokit.domino.api.shared.request.RequestRouter;
 
 public class TestClientRouter implements RequestRouter<PresenterCommand> {
 
@@ -50,6 +49,4 @@ public class TestClientRouter implements RequestRouter<PresenterCommand> {
             return event;
         }
     }
-
-
 }

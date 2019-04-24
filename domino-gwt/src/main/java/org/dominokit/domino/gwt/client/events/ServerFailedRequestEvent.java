@@ -4,9 +4,9 @@ import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.events.Event;
 import org.dominokit.domino.api.client.events.EventProcessor;
 import org.dominokit.domino.api.client.events.EventsBus;
-import org.dominokit.domino.api.client.request.Request;
-import org.dominokit.domino.api.client.request.ServerRequest;
 import org.dominokit.domino.api.shared.request.FailedResponseBean;
+import org.dominokit.domino.api.shared.request.Request;
+import org.dominokit.domino.api.shared.request.ServerRequest;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class ServerFailedRequestEvent extends ServerFailedRequestGwtEvent implements Event {

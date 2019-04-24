@@ -2,8 +2,8 @@ package org.dominokit.domino.gwt.client.events;
 
 import org.dominokit.domino.api.client.events.Event;
 import org.dominokit.domino.api.client.events.ServerRequestEventFactory;
-import org.dominokit.domino.api.client.request.ServerRequest;
 import org.dominokit.domino.api.shared.request.FailedResponseBean;
+import org.dominokit.domino.api.shared.request.ServerRequest;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class ServerEventFactory implements ServerRequestEventFactory {

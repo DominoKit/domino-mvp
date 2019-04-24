@@ -4,7 +4,7 @@ import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.async.AsyncRunner;
 import org.dominokit.domino.api.client.events.ClientRequestEventFactory;
 import org.dominokit.domino.api.client.request.PresenterCommand;
-import org.dominokit.domino.api.client.request.RequestRouter;
+import org.dominokit.domino.api.shared.request.RequestRouter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

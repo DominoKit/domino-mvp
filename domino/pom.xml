@@ -73,6 +73,11 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.dominokit.domino.apt</groupId>
+                <artifactId>apt-shared</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.dominokit.domino.api</groupId>
                 <artifactId>domino-api-client</artifactId>
                 <version>${project.version}</version>

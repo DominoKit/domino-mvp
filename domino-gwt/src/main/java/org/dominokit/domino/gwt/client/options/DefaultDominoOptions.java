@@ -1,12 +1,12 @@
 package org.dominokit.domino.gwt.client.options;
 
 import com.google.gwt.core.client.GWT;
-import elemental2.dom.DomGlobal;
 import org.dominokit.domino.api.client.ApplicationStartHandler;
 import org.dominokit.domino.api.client.CanSetDominoOptions;
+import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.DominoOptions;
-import org.dominokit.domino.api.client.DynamicServiceRoot;
-import org.dominokit.domino.api.client.request.RequestInterceptor;
+import org.dominokit.domino.api.client.request.PresenterCommand;
+import org.dominokit.domino.api.shared.request.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,6 +97,16 @@ public class DefaultDominoOptions implements DominoOptions {
             this.defaultResourceRootPath = rootPath;
         }
         return this;
+    }
+
+    @Override
+    public RequestRouter<PresenterCommand> getClientRouter() {
+        return ClientApp.make().getClientRouter();
+    }
+
+    @Override
+    public RequestRouter<ServerRequest> getServerRouter() {
+        return ClientApp.make().getServerRouter();
     }
 
     @Override

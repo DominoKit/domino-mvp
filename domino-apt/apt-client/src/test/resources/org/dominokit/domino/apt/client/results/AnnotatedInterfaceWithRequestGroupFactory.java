@@ -1,10 +1,8 @@
 package org.dominokit.domino.apt.client;
 
 import javax.annotation.Generated;
-import org.dominokit.domino.api.client.annotations.service.Path;
-import org.dominokit.domino.api.client.annotations.service.Request;
-import org.dominokit.domino.api.client.request.Response;
-import org.dominokit.domino.api.client.request.ServerRequest;
+import org.dominokit.domino.api.shared.request.annotations.service.Path;
+import org.dominokit.domino.api.shared.request.service.annotations.Request;
 import org.dominokit.domino.api.shared.request.RequestBean;
 import org.dominokit.domino.api.shared.request.ResponseBean;
 import org.dominokit.domino.api.shared.request.VoidRequest;

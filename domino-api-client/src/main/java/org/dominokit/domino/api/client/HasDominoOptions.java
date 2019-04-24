@@ -1,19 +1,7 @@
 package org.dominokit.domino.api.client;
 
-import org.dominokit.domino.api.client.request.RequestInterceptor;
+import org.dominokit.domino.api.shared.request.RequestConfig;
 
-import java.util.List;
-
-public interface HasDominoOptions {
-    String getDefaultServiceRoot();
-
-    String getDefaultJsonDateFormat();
-
-    List<DynamicServiceRoot> getServiceRoots();
-
-    List<RequestInterceptor> getRequestInterceptors();
-
+public interface HasDominoOptions extends RequestConfig {
     ApplicationStartHandler getApplicationStartHandler();
-
-    String getDefaultResourceRootPath();
 }
