@@ -14,6 +14,12 @@ $hash How to run
     - In another terminal `cd ${rootArtifactId}-backend`
     - execute `mvn exec:java`
     - the server port will be printed in the logs access the application on `http://localhost:[port]`
+    
+    - For debuging client code in intellij please install the following chrome plugin
+    
+    https://chrome.google.com/webstore/detail/jetbrains-ide-support/hmhgeddbohgjknpmjagkdomcpobmllji
+    
+    then execute the `js-debug` run configuration in debug mode. 
 
   - $hash5 For gwt compiled mode 
   
