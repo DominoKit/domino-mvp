@@ -1,10 +1,9 @@
 #set( $symbol_pound = '#' )
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
-#set( $packagePath = ${package.replace(".","/")} )
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="js-debug" type="JavascriptDebugType" uri="http://localhost:8080">
-    <mapping url="http://localhost:9876/sourcemaps/app/${packagePath}" local-file="$PROJECT_DIR$" />
+    <mapping url="http://localhost:9876/sourcemaps/app" local-file="$PROJECT_DIR$" />
     <method v="2" />
   </configuration>
 </component>
