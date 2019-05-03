@@ -20,6 +20,7 @@ import org.dominokit.domino.api.server.config.VertxConfiguration;
 import org.dominokit.domino.api.server.entrypoint.VertxContext;
 import org.dominokit.domino.api.server.entrypoint.VertxEntryPointContext;
 import org.dominokit.domino.api.shared.extension.DominoEventListener;
+import org.dominokit.domino.api.shared.request.FailedResponseBean;
 import org.dominokit.domino.api.shared.request.ResponseBean;
 import org.dominokit.domino.api.shared.request.ServerRequest;
 import org.dominokit.domino.service.discovery.VertxServiceDiscovery;
@@ -29,6 +30,7 @@ import org.dominokit.domino.test.api.TestConfigReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import static org.dominokit.domino.api.client.ClientApp.make;
@@ -283,19 +285,53 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
     public static class TestResponse {
 
         private String request;
+        private TestFailedResponseBean failedResponseBean;
+
 
         private TestResponse(String request) {
             this.request = request;
+            this.failedResponseBean = new TestFailedResponseBean();
         }
 
         public void returnResponse(ResponseBean response) {
             TestClientAppFactory.serverRouter.fakeResponse(request, new TestServerRouter.SuccessReply(response));
         }
 
+        public TestResponse failStatusCode(int status){
+            failedResponseBean.setStatusCode(status);
+            return this;
+        }
+
+        public TestResponse failStatusText(String statusText){
+            failedResponseBean.setStatusText(statusText);
+            return this;
+        }
+
+        public TestResponse failHeaders(Map<String, String> headers){
+            failedResponseBean.setHeaders(headers);
+            return this;
+        }
+
+        public TestResponse failBody(String body){
+            failedResponseBean.setBody(body);
+            return this;
+        }
+
+        public TestResponse failError(Throwable error){
+            failedResponseBean.setThrowable(error);
+            return this;
+        }
+
+        public void thenFail(){
+            TestClientAppFactory.serverRouter.fakeResponse(request, new TestServerRouter.FailedReply(this.failedResponseBean));
+        }
+
         public void failWith(Exception error) {
-            TestClientAppFactory.serverRouter.fakeResponse(request, new TestServerRouter.FailedReply(error));
+            this.failedResponseBean.setThrowable(error);
+            TestClientAppFactory.serverRouter.fakeResponse(request, new TestServerRouter.FailedReply(this.failedResponseBean));
         }
     }
+
 
     @FunctionalInterface
     public interface ConfigOverrideHandler {

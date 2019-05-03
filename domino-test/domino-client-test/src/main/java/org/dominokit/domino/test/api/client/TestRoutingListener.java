@@ -1,6 +1,5 @@
 package org.dominokit.domino.test.api.client;
 
-import org.dominokit.domino.api.shared.request.ResponseBean;
 import org.dominokit.domino.api.shared.request.ServerRequest;
 
 import java.util.HashMap;
@@ -12,11 +11,11 @@ public class TestRoutingListener implements TestServerRouter.RoutingListener {
 
     private class RequestResponsePair {
         private ServerRequest request;
-        private ResponseBean response;
+        private Object response;
         private int executionsCount;
 
 
-        public RequestResponsePair(ServerRequest request, ResponseBean response) {
+        public RequestResponsePair(ServerRequest request, Object response) {
             this.request = request;
             this.response = response;
             this.executionsCount = 0;
@@ -25,7 +24,7 @@ public class TestRoutingListener implements TestServerRouter.RoutingListener {
         public int getExecutionsCount() {
             return executionsCount;
         }
-        private void increment(ServerRequest request, ResponseBean response) {
+        private void increment(ServerRequest request, Object response) {
             this.request = request;
             this.response = response;
             this.executionsCount++;
@@ -34,7 +33,7 @@ public class TestRoutingListener implements TestServerRouter.RoutingListener {
     }
 
     @Override
-    public void onRouteRequest(ServerRequest request, ResponseBean response) {
+    public void onRouteRequest(ServerRequest request, Object response) {
         if (receivedRequests.containsKey(request.getClass().getCanonicalName()))
             receivedRequests.get(request.getClass().getCanonicalName()).increment(request, response);
         else
@@ -49,7 +48,7 @@ public class TestRoutingListener implements TestServerRouter.RoutingListener {
         return receivedRequests.containsKey(request.getCanonicalName()) && receivedRequests.get(request.getCanonicalName()).executionsCount==executionCount;
     }
 
-    public <S extends ResponseBean, R extends ServerRequest> S getResponse(Class<R> request) {
+    public <S, R extends ServerRequest> S getResponse(Class<R> request) {
         return (S) receivedRequests.get(request.getCanonicalName()).response;
     }
 

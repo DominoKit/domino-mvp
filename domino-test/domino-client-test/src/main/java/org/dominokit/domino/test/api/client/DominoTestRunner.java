@@ -27,6 +27,9 @@ public class DominoTestRunner extends VertxUnitRunner {
             DominoTest dominoTest = (DominoTest) test;
 
             StartServer startServer = fMethod.getAnnotation(StartServer.class);
+            if(isNull(startServer)){
+                startServer = testClass.getAnnotation(StartServer.class);
+            }
             if (nonNull(startServer) && startServer.value()) {
                 dominoTest.getTestClient().withServer(context);
             }

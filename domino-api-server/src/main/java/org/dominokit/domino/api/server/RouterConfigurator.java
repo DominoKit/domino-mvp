@@ -101,10 +101,14 @@ public class RouterConfigurator {
                 sessionStore = clustered ? ClusteredSessionStore.create(vertx) : LocalSessionStore
                 .create(vertx);
         router.route().handler(CookieHandler.create());
-        router.route().handler(SessionHandler
-                .create(sessionStore)
-                .setCookieHttpOnlyFlag(true)
-                .setCookieSecureFlag(true)
-        );
+        if(config.getBoolean("ssl.enabled", false)) {
+            router.route().handler(SessionHandler
+                    .create(sessionStore)
+                    .setCookieHttpOnlyFlag(true)
+                    .setCookieSecureFlag(true));
+        }else{
+            router.route().handler(SessionHandler
+                    .create(sessionStore));
+        }
     }
 }

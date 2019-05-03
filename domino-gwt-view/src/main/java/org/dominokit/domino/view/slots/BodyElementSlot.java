@@ -15,7 +15,6 @@ public class BodyElementSlot implements Slot {
 
     private static final BodyElementSlot INSTANCE = new BodyElementSlot();
 
-    private Content currentContent;
 
     public static BodyElementSlot create(){
         return INSTANCE;
@@ -25,12 +24,7 @@ public class BodyElementSlot implements Slot {
 
     @Override
     public void updateContent(Content content) {
-        if(nonNull(currentContent)){
-            HTMLElement contentElement = Js.uncheckedCast(content.get());
-            DominoElement.of(contentElement)
-                    .remove();
-        }
-        currentContent = content;
+        body.clearElement();
         body.appendChild(Js.<HTMLElement>uncheckedCast(content.get()));
     }
 }

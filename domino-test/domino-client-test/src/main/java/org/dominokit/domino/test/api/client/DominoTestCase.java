@@ -1,7 +1,6 @@
 package org.dominokit.domino.test.api.client;
 
 import io.vertx.core.json.JsonObject;
-import io.vertx.ext.unit.Async;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Before;
 
@@ -11,6 +10,7 @@ public abstract class DominoTestCase implements DominoTest {
     private DominoTestConfig testConfig;
     private TestContext testContext;
     protected ClientContext clientContext;
+    protected TestRoutingListener requests;
 
     public DominoTestCase(DominoTestConfig testConfig) {
         this.testConfig = testConfig;
@@ -26,6 +26,7 @@ public abstract class DominoTestCase implements DominoTest {
                 .onBeforeClientStart(clientContext -> {
                     testConfig.bindSpies(DominoTestCase.this);
                     testConfig.bindFakeViews(DominoTestCase.this);
+                    this.requests = clientContext.getDefaultRoutingListener();
                     onBeforeClientStart(clientContext, testContext);
                 })
                 .onClientStarted(context -> {

@@ -33,11 +33,13 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
     private final ServerRequestEventFactory eventFactory = new ServerRequestEventFactory() {
         @Override
         public <T> Event makeSuccess(ServerRequest request, T responseBean) {
+            defaultListener.onRouteRequest(request, responseBean);
             return new TestServerSuccessEvent(request, responseBean);
         }
 
         @Override
         public Event makeFailed(ServerRequest request, FailedResponseBean failedResponseBean) {
+            defaultListener.onRouteRequest(request, failedResponseBean);
             return new TestServerFailedEvent(request, failedResponseBean);
         }
     };
@@ -64,7 +66,6 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
         try {
             if (fakeResponses.containsKey(getRequestKey(request))) {
                 response = fakeResponses.get(getRequestKey(request)).reply();
-                listener.onRouteRequest(request, response);
                 eventFactory.makeSuccess(request, response).fire();
             } else {
                 if (nonNull(testContextSupplier.get())) {
@@ -81,7 +82,11 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
             eventFactory.makeFailed(request, new FailedResponseBean(ex)).fire();
         } catch (Exception ex) {
             LOGGER.error("could not execute request : ", ex);
-            eventFactory.makeFailed(request, new FailedResponseBean(ex)).fire();
+            if (ex instanceof FakeRequestFailure) {
+                eventFactory.makeFailed(request, ((FakeRequestFailure) ex).failedResponseBean).fire();
+            } else {
+                eventFactory.makeFailed(request, new FailedResponseBean(ex)).fire();
+            }
         }
     }
 
@@ -204,7 +209,7 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
 
     public interface RoutingListener {
         void onRouteRequest(ServerRequest request,
-                            ResponseBean response);
+                            Object response);
     }
 
     public interface ResponseReply {
@@ -225,15 +230,23 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
     }
 
     public static class FailedReply implements ResponseReply {
-        private final Exception error;
+        private final FailedResponseBean failedResponseBean;
 
-        public FailedReply(Exception error) {
-            this.error = error;
+        public FailedReply(FailedResponseBean failedResponseBean) {
+            this.failedResponseBean = failedResponseBean;
         }
 
         @Override
         public ResponseBean reply() throws Exception {
-            throw error;
+            throw new FakeRequestFailure(failedResponseBean);
+        }
+    }
+
+    private static class FakeRequestFailure extends Exception {
+        private final FailedResponseBean failedResponseBean;
+
+        public FakeRequestFailure(FailedResponseBean failedResponseBean) {
+            this.failedResponseBean = failedResponseBean;
         }
     }
 }

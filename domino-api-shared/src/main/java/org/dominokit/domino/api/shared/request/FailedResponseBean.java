@@ -12,6 +12,9 @@ public class FailedResponseBean implements ResponseBean {
     private Map<String, String> headers;
     private Throwable throwable;
 
+    public FailedResponseBean() {
+    }
+
     public FailedResponseBean(Throwable throwable) {
         this.throwable = throwable;
     }
@@ -41,5 +44,25 @@ public class FailedResponseBean implements ResponseBean {
 
     public Throwable getThrowable() {
         return throwable;
+    }
+
+    protected void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
+    }
+
+    protected void setStatusText(String statusText) {
+        this.statusText = statusText;
+    }
+
+    protected void setBody(String body) {
+        this.body = body;
+    }
+
+    protected void setHeaders(Map<String, String> headers) {
+        this.headers = headers;
+    }
+
+    protected void setThrowable(Throwable throwable) {
+        this.throwable = throwable;
     }
 }

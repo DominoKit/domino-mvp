@@ -50,7 +50,7 @@ public class StoreRegistry {
     }
 
     public <T> RegistrationHandler consumeData(String storeKey, Consumer<T> consumer) {
-        RegistrationHandler[] registrationHandler =new RegistrationHandler[0];
+        RegistrationHandler[] registrationHandler = new RegistrationHandler[1];
         Consumer<IsStore<?>> isStoreConsumer = isStore -> registrationHandler[0] = ((IsStore<T>) isStore).consumeData(consumer);
         addConsumer(storeKey, isStoreConsumer);
 
@@ -58,5 +58,9 @@ public class StoreRegistry {
             isStoreConsumer.accept(stores.get(storeKey));
         }
         return registrationHandler[0];
+    }
+
+    public boolean containsStore(String storeKey) {
+        return stores.containsKey(storeKey);
     }
 }
