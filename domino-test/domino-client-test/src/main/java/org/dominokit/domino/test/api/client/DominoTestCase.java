@@ -1,6 +1,7 @@
 package org.dominokit.domino.test.api.client;
 
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.unit.Async;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Before;
 

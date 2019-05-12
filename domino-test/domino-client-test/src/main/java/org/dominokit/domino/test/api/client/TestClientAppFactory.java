@@ -1,12 +1,10 @@
 package org.dominokit.domino.test.api.client;
 
 
-import io.vertx.ext.unit.TestContext;
+import io.vertx.core.Vertx;
 import org.dominokit.domino.api.client.ClientApp;
-import org.dominokit.domino.api.server.entrypoint.ServerEntryPointContext;
+import org.dominokit.domino.api.shared.request.RequestContext;
 import org.dominokit.domino.gwt.client.events.RequestEventProcessor;
-
-import java.util.function.Supplier;
 
 public class TestClientAppFactory {
 
@@ -21,10 +19,10 @@ public class TestClientAppFactory {
     private TestClientAppFactory() {
     }
 
-    public static ClientApp make(Supplier<TestContext> testContext) {
+    public static ClientApp make(Vertx vertx) {
 
         clientRouter = new TestClientRouter();
-        serverRouter = new TestServerRouter(testContext);
+        serverRouter = new TestServerRouter(vertx);
         requestEventProcessor = new RequestEventProcessor();
         eventBus = new TestEventBus(requestEventProcessor);
 
@@ -32,7 +30,7 @@ public class TestClientAppFactory {
         history = new TestDominoHistory();
         dominoOptions = new FakeDominoOptions();
 
-        return ClientApp.ClientAppBuilder
+        ClientApp clientApp = ClientApp.ClientAppBuilder
                 .clientRouter(clientRouter)
                 .serverRouter(serverRouter)
                 .eventsBus(eventBus)
@@ -41,5 +39,8 @@ public class TestClientAppFactory {
                 .asyncRunner(new TestAsyncRunner())
                 .dominoOptions(dominoOptions)
                 .build();
+
+        RequestContext.init(clientApp);
+        return clientApp;
     }
 }

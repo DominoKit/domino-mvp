@@ -1,7 +1,6 @@
 package org.dominokit.domino.test.api.client;
 
-import io.vertx.ext.unit.Async;
-import io.vertx.ext.unit.TestContext;
+import io.vertx.core.Vertx;
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.events.Event;
 import org.dominokit.domino.api.client.events.EventsBus;
@@ -9,23 +8,19 @@ import org.dominokit.domino.api.client.events.ServerRequestEventFactory;
 import org.dominokit.domino.api.server.resource.ResourcesRepository;
 import org.dominokit.domino.api.shared.request.*;
 import org.dominokit.domino.client.commons.request.RequestAsyncSender;
-import org.dominokit.domino.gwt.client.request.GwtRequestAsyncSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.function.Supplier;
-
-import static java.util.Objects.nonNull;
 
 public class TestServerRouter implements RequestRouter<ServerRequest> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TestServerRouter.class);
 
     private Map<String, ResponseReply> fakeResponses = new HashMap<>();
+    private Map<String, DominoTestClient.RequestCompleteHandler> requestSuccessCompleteHandlers = new HashMap<>();
+    private Map<String, DominoTestClient.RequestCompleteHandler> requestFailCompleteHandlers = new HashMap<>();
     private final RequestAsyncSender requestAsyncRunner;
     private TestRoutingListener defaultListener = new TestRoutingListener();
     private RoutingListener listener = defaultListener;
@@ -44,12 +39,8 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
         }
     };
 
-    private Supplier<TestContext> testContextSupplier;
-    private Map<String, Deque<Async>> requestsAsync = new HashMap<>();
-
-    public TestServerRouter(Supplier<TestContext> testContextSupplier) {
-        this.requestAsyncRunner = new GwtRequestAsyncSender(eventFactory);
-        this.testContextSupplier = testContextSupplier;
+    public TestServerRouter(Vertx vertx) {
+        this.requestAsyncRunner = new TestRequestAsyncSender(eventFactory);
     }
 
     public void setRoutingListener(RoutingListener listener) {
@@ -68,13 +59,7 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
                 response = fakeResponses.get(getRequestKey(request)).reply();
                 eventFactory.makeSuccess(request, response).fire();
             } else {
-                if (nonNull(testContextSupplier.get())) {
-                    Async async = testContextSupplier.get().async();
-                    if (!requestsAsync.containsKey(getRequestKey(request))) {
-                        requestsAsync.put(getRequestKey(request), new ConcurrentLinkedDeque<>());
-                    }
-                    requestsAsync.get(getRequestKey(request)).push(async);
-                }
+
                 requestAsyncRunner.send(request);
             }
         } catch (ResourcesRepository.RequestHandlerNotFound ex) {
@@ -94,12 +79,24 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
         return request.getClass().getCanonicalName();
     }
 
+    private String getRequestKey(Class<? extends ServerRequest> request) {
+        return request.getCanonicalName();
+    }
+
     public void fakeResponse(String requestKey, ResponseReply reply) {
         fakeResponses.put(requestKey, reply);
     }
 
     public TestRoutingListener getDefaultRoutingListener() {
         return defaultListener;
+    }
+
+    public void addRequestSuccessCompleteHandler(Class<? extends ServerRequest> request, DominoTestClient.RequestCompleteHandler completeHandler) {
+        requestSuccessCompleteHandlers.put(getRequestKey(request), completeHandler);
+    }
+
+    public void addRequestFailCompleteHandler(Class<? extends ServerRequest> request, DominoTestClient.RequestCompleteHandler completeHandler) {
+        requestFailCompleteHandlers.put(getRequestKey(request), completeHandler);
     }
 
     public class TestServerSuccessEvent<T> implements Event {
@@ -119,14 +116,9 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
 
         @Override
         public void process() {
-            if (nonNull(testContextSupplier.get())) {
-                testContextSupplier.get().verify(event -> {
-                    request.applyState(new Request.ServerResponseReceivedStateContext(makeSuccessContext()));
-                    completeIfAsync(request);
-                });
-            } else {
-                request.applyState(new Request.ServerResponseReceivedStateContext(makeSuccessContext()));
-            }
+            request.applyState(new Request.ServerResponseReceivedStateContext(makeSuccessContext()));
+            completeSuccessRequest(request);
+
         }
 
         private Request.ServerSuccessRequestStateContext makeSuccessContext() {
@@ -134,16 +126,21 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
         }
     }
 
-    private void completeIfAsync(ServerRequest request) {
-        if (requestsAsync.containsKey(getRequestKey(request))) {
-            Deque<Async> deque = requestsAsync.get(getRequestKey(request));
-            if (!deque.isEmpty()) {
-                Async async = deque.poll();
-                async.complete();
-            }
-            if (deque.isEmpty()) {
-                requestsAsync.remove(getRequestKey(request));
-            }
+    private void completeSuccessRequest(ServerRequest request) {
+        String requestKey = getRequestKey(request);
+        if (requestSuccessCompleteHandlers.containsKey(requestKey)) {
+            requestSuccessCompleteHandlers.get(requestKey)
+                    .onCompleted();
+            requestSuccessCompleteHandlers.remove(requestKey);
+        }
+    }
+
+    private void completeFailRequest(ServerRequest request) {
+        String requestKey = getRequestKey(request);
+        if (requestFailCompleteHandlers.containsKey(requestKey)) {
+            requestFailCompleteHandlers.get(requestKey)
+                    .onCompleted();
+            requestFailCompleteHandlers.remove(requestKey);
         }
     }
 
@@ -178,14 +175,9 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
 
         @Override
         public void process() {
-            if (nonNull(testContextSupplier.get())) {
-                testContextSupplier.get().verify(event -> {
-                    request.applyState(new Request.ServerResponseReceivedStateContext(makeFailedContext()));
-                    completeIfAsync(request);
-                });
-            } else {
-                request.applyState(new Request.ServerResponseReceivedStateContext(makeFailedContext()));
-            }
+            request.applyState(new Request.ServerResponseReceivedStateContext(makeFailedContext()));
+            completeFailRequest(request);
+
         }
 
         private Request.ServerFailedRequestStateContext makeFailedContext() {

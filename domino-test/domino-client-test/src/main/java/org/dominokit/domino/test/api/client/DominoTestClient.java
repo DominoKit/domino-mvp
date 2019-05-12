@@ -2,6 +2,7 @@ package org.dominokit.domino.test.api.client;
 
 import io.vertx.config.ConfigRetriever;
 import io.vertx.core.Vertx;
+import io.vertx.core.VertxOptions;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.Async;
 import io.vertx.ext.unit.TestContext;
@@ -20,7 +21,6 @@ import org.dominokit.domino.api.server.config.VertxConfiguration;
 import org.dominokit.domino.api.server.entrypoint.VertxContext;
 import org.dominokit.domino.api.server.entrypoint.VertxEntryPointContext;
 import org.dominokit.domino.api.shared.extension.DominoEventListener;
-import org.dominokit.domino.api.shared.request.FailedResponseBean;
 import org.dominokit.domino.api.shared.request.ResponseBean;
 import org.dominokit.domino.api.shared.request.ServerRequest;
 import org.dominokit.domino.service.discovery.VertxServiceDiscovery;
@@ -45,7 +45,7 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
     private List<ListenerOf> listenersOf = new ArrayList<>();
 
     private VertxEntryPointContext testEntryPointContext;
-    private Vertx vertx = Vertx.vertx();
+    private Vertx vertx;
     private boolean withServer = false;
     private TestContext testContext;
 
@@ -67,6 +67,10 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
 
     private DominoTestClient(List<ModuleConfiguration> configurations) {
         this.modules = configurations;
+        VertxOptions vertxOptions = new VertxOptions();
+        vertxOptions.setBlockedThreadCheckInterval(1000 * 60 * 60);
+        vertxOptions.setWorkerPoolSize(50);
+        vertx =Vertx.vertx(vertxOptions);
         init();
     }
 
@@ -124,6 +128,7 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
 
     @Override
     public void start(String configFileName, JsonObject additionalConfig, StartCompletedHandler onCompleteHandler) {
+
         JsonObject config = new TestConfigReader(vertx, configFileName).getTestConfig();
         additionalConfig.mergeIn(config);
         ServerConfiguration testServerConfiguration = new VertxConfiguration(config);
@@ -207,7 +212,7 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
     }
 
     private void init() {
-        TestClientAppFactory.make(() -> testContext);
+        TestClientAppFactory.make(vertx);
     }
 
     private void configureModule(ModuleConfiguration configuration) {
@@ -246,6 +251,14 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
     @Override
     public TestResponse forRequest(Class<? extends ServerRequest> request) {
         return forRequest(request.getCanonicalName());
+    }
+
+    public void onRequestSuccessCompleted(Class<? extends ServerRequest> request, RequestCompleteHandler completeHandler) {
+        TestClientAppFactory.serverRouter.addRequestSuccessCompleteHandler(request, completeHandler);
+    }
+
+    public void onRequestFailedCompleted(Class<? extends ServerRequest> request, RequestCompleteHandler completeHandler) {
+        TestClientAppFactory.serverRouter.addRequestFailCompleteHandler(request, completeHandler);
     }
 
     @Override
@@ -341,5 +354,10 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
     @FunctionalInterface
     public interface StartCompletedHandler {
         void onStarted();
+    }
+
+    @FunctionalInterface
+    public interface RequestCompleteHandler{
+        void onCompleted();
     }
 }
