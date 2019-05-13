@@ -1,5 +1,6 @@
 package org.dominokit.domino.api.shared.request;
 
+import org.dominokit.domino.api.shared.extension.ContextAggregator;
 import org.dominokit.domino.api.shared.history.StateHistoryToken;
 import org.gwtproject.regexp.shared.MatchResult;
 import org.gwtproject.regexp.shared.RegExp;
@@ -43,6 +44,8 @@ public class ServerRequest<R, S>
     private RequestWriter<R> requestWriter = request -> null;
     private ResponseReader<S> responseReader = request -> null;
     private RequestParametersReplacer<R> requestParametersReplacer = (token, request) -> token.value();
+
+    private ContextAggregator.ContextWait<S> contextWait = ContextAggregator.ContextWait.create();
 
     private Success<S> success = response -> {
     };

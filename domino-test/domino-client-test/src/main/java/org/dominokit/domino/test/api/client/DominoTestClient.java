@@ -1,6 +1,7 @@
 package org.dominokit.domino.test.api.client;
 
 import io.vertx.config.ConfigRetriever;
+import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.json.JsonObject;
@@ -253,12 +254,30 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
         return forRequest(request.getCanonicalName());
     }
 
-    public void onRequestSuccessCompleted(Class<? extends ServerRequest> request, RequestCompleteHandler completeHandler) {
-        TestClientAppFactory.serverRouter.addRequestSuccessCompleteHandler(request, completeHandler);
+    public Future<Void> onRequestSuccessCompleted(Class<? extends ServerRequest> request) {
+        Future<Void> completeFuture = Future.future();
+        TestClientAppFactory.serverRouter.addRequestSuccessCompleteHandler(request, completeFuture);
+        return completeFuture;
     }
 
-    public void onRequestFailedCompleted(Class<? extends ServerRequest> request, RequestCompleteHandler completeHandler) {
-        TestClientAppFactory.serverRouter.addRequestFailCompleteHandler(request, completeHandler);
+    public Future<Void> onRequestFailedCompleted(Class<? extends ServerRequest> request) {
+        Future<Void> completeFuture = Future.future();
+        TestClientAppFactory.serverRouter.addRequestFailCompleteHandler(request, completeFuture);
+        return completeFuture;
+    }
+
+    public Future<Void> onRequestSuccessCompleted(Class<? extends ServerRequest> request, RequestCompleteHandler completeHandler) {
+        Future<Void> completeFuture = Future.future();
+        completeFuture.setHandler(event -> completeHandler.onCompleted());
+        TestClientAppFactory.serverRouter.addRequestSuccessCompleteHandler(request, completeFuture);
+        return completeFuture;
+    }
+
+    public Future<Void> onRequestFailedCompleted(Class<? extends ServerRequest> request, RequestCompleteHandler completeHandler) {
+        Future<Void> completeFuture = Future.future();
+        completeFuture.setHandler(event -> completeHandler.onCompleted());
+        TestClientAppFactory.serverRouter.addRequestFailCompleteHandler(request, completeFuture);
+        return completeFuture;
     }
 
     @Override

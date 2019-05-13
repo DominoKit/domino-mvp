@@ -183,8 +183,6 @@ public class TestConfigSourceWriter extends AbstractSourceBuilder {
 
     }
 
-
-
     private CodeBlock generateSpyBinding(Element element) {
         Optional<TypeMirror> targetPresenter = processorUtil.getClassValueFromAnnotation(element, PresenterSpy.class, "value");
         if(targetPresenter.isPresent()){
@@ -208,7 +206,7 @@ public class TestConfigSourceWriter extends AbstractSourceBuilder {
             ClassName configType = ClassName.bestGuess(elements.getPackageOf(presenterTypeElement).toString() + "." + configName);
             builder.addStatement("$T $L = new $T()", configType, processorUtil.smallFirstLetter(configName), configType);
             builder.beginControlFlow("$L.setPresenterSupplier(new $T<>($L, () ->", processorUtil.smallFirstLetter(configName), supplierType, nonNull(presenterTypeElement.getAnnotation(Singleton.class)));
-            builder.addStatement("test.$L = new $T()", element.getSimpleName().toString(), ClassName.get(element.asType()));
+            builder.addStatement("test.$L = new $T()", element.getSimpleName().toString(), ClassName.bestGuess(elements.getPackageOf(types.asElement(targetPresenter.get())).getQualifiedName().toString()+"."+types.asElement(element.asType()).getSimpleName().toString()));
             builder.addStatement("return test.$L", element.getSimpleName().toString());
             builder.endControlFlow("))");
 

@@ -23,6 +23,13 @@ public class DominoTypeBuilder {
                 .addJavadoc("This is generated class, please don't modify\n");
     }
 
+    public static TypeSpec.Builder enumBuilder(String name, Class<? extends Processor> processorClass) {
+        return TypeSpec.enumBuilder(name)
+                .addAnnotation(generatedAnnotation(processorClass))
+                .addModifiers(Modifier.PUBLIC)
+                .addJavadoc("This is generated class, please don't modify\n");
+    }
+
     private static AnnotationSpec generatedAnnotation(Class<? extends Processor> processorClass) {
         return AnnotationSpec.builder(Generated.class)
                 .addMember("value", "\"" + processorClass.getCanonicalName() + "\"")

@@ -1,5 +1,6 @@
 package org.dominokit.domino.test.api.client;
 
+import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.events.Event;
@@ -19,8 +20,8 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
     private static final Logger LOGGER = LoggerFactory.getLogger(TestServerRouter.class);
 
     private Map<String, ResponseReply> fakeResponses = new HashMap<>();
-    private Map<String, DominoTestClient.RequestCompleteHandler> requestSuccessCompleteHandlers = new HashMap<>();
-    private Map<String, DominoTestClient.RequestCompleteHandler> requestFailCompleteHandlers = new HashMap<>();
+    private Map<String, Future<Void>> requestSuccessCompleteHandlers = new HashMap<>();
+    private Map<String, Future<Void>> requestFailCompleteHandlers = new HashMap<>();
     private final RequestAsyncSender requestAsyncRunner;
     private TestRoutingListener defaultListener = new TestRoutingListener();
     private RoutingListener listener = defaultListener;
@@ -91,11 +92,11 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
         return defaultListener;
     }
 
-    public void addRequestSuccessCompleteHandler(Class<? extends ServerRequest> request, DominoTestClient.RequestCompleteHandler completeHandler) {
+    public void addRequestSuccessCompleteHandler(Class<? extends ServerRequest> request, Future<Void> completeHandler) {
         requestSuccessCompleteHandlers.put(getRequestKey(request), completeHandler);
     }
 
-    public void addRequestFailCompleteHandler(Class<? extends ServerRequest> request, DominoTestClient.RequestCompleteHandler completeHandler) {
+    public void addRequestFailCompleteHandler(Class<? extends ServerRequest> request, Future<Void> completeHandler) {
         requestFailCompleteHandlers.put(getRequestKey(request), completeHandler);
     }
 
@@ -118,7 +119,6 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
         public void process() {
             request.applyState(new Request.ServerResponseReceivedStateContext(makeSuccessContext()));
             completeSuccessRequest(request);
-
         }
 
         private Request.ServerSuccessRequestStateContext makeSuccessContext() {
@@ -130,7 +130,7 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
         String requestKey = getRequestKey(request);
         if (requestSuccessCompleteHandlers.containsKey(requestKey)) {
             requestSuccessCompleteHandlers.get(requestKey)
-                    .onCompleted();
+                    .complete();
             requestSuccessCompleteHandlers.remove(requestKey);
         }
     }
@@ -139,7 +139,7 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
         String requestKey = getRequestKey(request);
         if (requestFailCompleteHandlers.containsKey(requestKey)) {
             requestFailCompleteHandlers.get(requestKey)
-                    .onCompleted();
+                    .complete();
             requestFailCompleteHandlers.remove(requestKey);
         }
     }
