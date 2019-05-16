@@ -1,6 +1,7 @@
 package org.dominokit.domino.test.api.client;
 
 import io.vertx.config.ConfigRetriever;
+import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
@@ -27,6 +28,7 @@ import org.dominokit.domino.api.shared.request.ServerRequest;
 import org.dominokit.domino.service.discovery.VertxServiceDiscovery;
 import org.dominokit.domino.test.api.DominoTestServer;
 import org.dominokit.domino.test.api.TestConfigReader;
+import org.dominokit.domino.test.api.client.TestServerRouter.SuccessReply;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,6 +37,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import static org.dominokit.domino.api.client.ClientApp.make;
+import static org.dominokit.domino.test.api.client.TestServerRouter.*;
 import static org.easymock.EasyMock.createMock;
 
 public class DominoTestClient implements CanCustomizeClient, CanStartClient,
@@ -230,7 +233,7 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
     }
 
     @Override
-    public void setRoutingListener(TestServerRouter.RoutingListener routingListener) {
+    public void setRoutingListener(RoutingListener routingListener) {
         TestClientAppFactory.serverRouter.setRoutingListener(routingListener);
     }
 
@@ -254,29 +257,17 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
         return forRequest(request.getCanonicalName());
     }
 
-    public Future<Void> onRequestSuccessCompleted(Class<? extends ServerRequest> request) {
-        Future<Void> completeFuture = Future.future();
-        TestClientAppFactory.serverRouter.addRequestSuccessCompleteHandler(request, completeFuture);
+    public Future<ResponseReply> onRequestCompleted(Class<? extends ServerRequest> request) {
+        Future<ResponseReply> completeFuture = Future.future();
+        TestClientAppFactory.serverRouter.onRequestCompleted(request, completeFuture);
         return completeFuture;
     }
 
-    public Future<Void> onRequestFailedCompleted(Class<? extends ServerRequest> request) {
-        Future<Void> completeFuture = Future.future();
-        TestClientAppFactory.serverRouter.addRequestFailCompleteHandler(request, completeFuture);
-        return completeFuture;
-    }
 
-    public Future<Void> onRequestSuccessCompleted(Class<? extends ServerRequest> request, RequestCompleteHandler completeHandler) {
-        Future<Void> completeFuture = Future.future();
-        completeFuture.setHandler(event -> completeHandler.onCompleted());
-        TestClientAppFactory.serverRouter.addRequestSuccessCompleteHandler(request, completeFuture);
-        return completeFuture;
-    }
-
-    public Future<Void> onRequestFailedCompleted(Class<? extends ServerRequest> request, RequestCompleteHandler completeHandler) {
-        Future<Void> completeFuture = Future.future();
-        completeFuture.setHandler(event -> completeHandler.onCompleted());
-        TestClientAppFactory.serverRouter.addRequestFailCompleteHandler(request, completeFuture);
+    public Future<ResponseReply> onRequestCompleted(Class<? extends ServerRequest> request, RequestCompleteHandler completeHandler) {
+        Future<ResponseReply> completeFuture = Future.future();
+        completeFuture.setHandler(completeHandler::onCompleted);
+        TestClientAppFactory.serverRouter.onRequestCompleted(request, completeFuture);
         return completeFuture;
     }
 
@@ -326,7 +317,7 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
         }
 
         public void returnResponse(ResponseBean response) {
-            TestClientAppFactory.serverRouter.fakeResponse(request, new TestServerRouter.SuccessReply(response));
+            TestClientAppFactory.serverRouter.fakeResponse(request, new SuccessReply(response));
         }
 
         public TestResponse failStatusCode(int status){
@@ -355,12 +346,12 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
         }
 
         public void thenFail(){
-            TestClientAppFactory.serverRouter.fakeResponse(request, new TestServerRouter.FailedReply(this.failedResponseBean));
+            TestClientAppFactory.serverRouter.fakeResponse(request, new FailedReply(this.failedResponseBean));
         }
 
         public void failWith(Exception error) {
             this.failedResponseBean.setThrowable(error);
-            TestClientAppFactory.serverRouter.fakeResponse(request, new TestServerRouter.FailedReply(this.failedResponseBean));
+            TestClientAppFactory.serverRouter.fakeResponse(request, new FailedReply(this.failedResponseBean));
         }
     }
 
@@ -377,6 +368,6 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
 
     @FunctionalInterface
     public interface RequestCompleteHandler{
-        void onCompleted();
+        void onCompleted(AsyncResult<ResponseReply> event);
     }
 }
