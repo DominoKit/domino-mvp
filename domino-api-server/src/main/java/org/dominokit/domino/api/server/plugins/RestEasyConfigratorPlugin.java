@@ -3,10 +3,8 @@ package org.dominokit.domino.api.server.plugins;
 import com.google.auto.service.AutoService;
 import io.vertx.reactivex.ext.auth.User;
 import io.vertx.reactivex.ext.web.RoutingContext;
+import io.vertx.reactivex.ext.web.handler.BodyHandler;
 import org.dominokit.domino.api.server.*;
-import org.dominokit.domino.api.server.entrypoint.VertxContext;
-import org.dominokit.domino.api.server.resteasy.MainResource;
-import org.dominokit.domino.api.server.resteasy.VertxPluginRequestHandler;
 import org.jboss.resteasy.plugins.server.vertx.VertxResteasyDeployment;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
@@ -24,23 +22,21 @@ public class RestEasyConfigratorPlugin extends BaseDominoLoaderPlugin {
         AppGlobals globals = AppGlobals.get();
         globals.setDeployment(vertxResteasyDeployment);
 
-        VertxPluginRequestHandler resteasyHandler = new VertxPluginRequestHandler(context, vertxResteasyDeployment, new ArrayList<>());
-
-        resteasyHandler
-                .setUploadsDirectory(context.getConfig().getString("file.upload.temp", "file-uploads"))
-                .setHandleFileUploads(true);
+        RestEasyDispatcherHandler restEasyDispatcherHandler = new RestEasyDispatcherHandler(context, vertxResteasyDeployment, new ArrayList<>());
 
         String serviceRoot = context.getConfig().getString("resource.root.path", "/service");
         context.getRxRouter()
                 .route(serviceRoot + "/*")
                 .order(Integer.MAX_VALUE - 1)
+                .handler(BodyHandler.create()
+                        .setUploadsDirectory(context.getConfig().getString("file.upload.temp", "file-uploads"))
+                        .setHandleFileUploads(true))
                 .handler(routingContext -> {
-
                     ResteasyProviderFactory.pushContext(User.class, routingContext.user());
                     ResteasyProviderFactory.pushContext(RoutingContext.class, routingContext);
                     ResteasyProviderFactory.pushContext(ResourceContext.class, new ResourceContext(context.getRxVertx(), context.getRxRouter(), context.getVertxContext(), routingContext));
                     try {
-                        resteasyHandler.handle(routingContext.getDelegate());
+                        restEasyDispatcherHandler.handle(routingContext.getDelegate());
                     } catch (Exception ex) {
                         routingContext.fail(500, ex);
                     }
