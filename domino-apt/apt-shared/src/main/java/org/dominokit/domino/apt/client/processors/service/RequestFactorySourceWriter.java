@@ -2,14 +2,17 @@ package org.dominokit.domino.apt.client.processors.service;
 
 
 import com.squareup.javapoet.*;
-import org.dominokit.domino.api.shared.request.service.annotations.*;
 import org.dominokit.domino.api.shared.request.*;
 import org.dominokit.domino.api.shared.request.service.annotations.Request;
+import org.dominokit.domino.api.shared.request.service.annotations.*;
 import org.dominokit.domino.apt.commons.AbstractSourceBuilder;
 import org.dominokit.domino.apt.commons.DominoTypeBuilder;
 
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.*;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.Modifier;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.ws.rs.*;
@@ -176,11 +179,11 @@ public class RequestFactorySourceWriter extends AbstractSourceBuilder {
             constructorBuilder.addCode(getRequestWriter(method));
         }
 
-        if(!isVoidResponse(method)){
+        if (!isVoidResponse(method)) {
             constructorBuilder.addCode(getResponseReader(method));
         }
 
-        if(!isVoidRequest(method)){
+        if (!isVoidRequest(method)) {
             constructorBuilder.addCode(new ReplaceParametersMethodBuilder(messager, getPath(method), method).build());
         }
 
@@ -190,13 +193,17 @@ public class RequestFactorySourceWriter extends AbstractSourceBuilder {
     private CodeBlock getRequestWriter(ExecutableElement method) {
         CodeBlock.Builder builder = CodeBlock.builder();
 
-        Writer annotation = method.getAnnotation(Writer.class);
-        if (nonNull(annotation)) {
-            Optional<TypeMirror> value = processorUtil.getClassValueFromAnnotation(method, Writer.class, "value");
-            value.ifPresent(writerType -> builder.addStatement("setRequestWriter(bean -> new $T().write(bean))", TypeName.get(writerType)));
+        if (processorUtil.isStringType(getRequestBeanType(method))) {
+            builder.addStatement("setRequestWriter(bean -> new $T().write(bean))", TypeName.get(StringWriter.class));
         } else {
-            Element requestType = types.asElement(getRequestBeanType(method));
-            builder.addStatement("setRequestWriter(bean -> $T.INSTANCE.write(bean))", mapperClassName(requestType));
+            Writer annotation = method.getAnnotation(Writer.class);
+            if (nonNull(annotation)) {
+                Optional<TypeMirror> value = processorUtil.getClassValueFromAnnotation(method, Writer.class, "value");
+                value.ifPresent(writerType -> builder.addStatement("setRequestWriter(bean -> new $T().write(bean))", TypeName.get(writerType)));
+            } else {
+                Element requestType = types.asElement(getRequestBeanType(method));
+                builder.addStatement("setRequestWriter(bean -> $T.INSTANCE.write(bean))", mapperClassName(requestType));
+            }
         }
 
         return builder.build();
@@ -239,7 +246,7 @@ public class RequestFactorySourceWriter extends AbstractSourceBuilder {
             return Arrays.stream(method.getAnnotation(Produces.class).value()).map(s -> "\"" + s + "\"")
                     .collect(joining(","));
         } else {
-            return "\""+MediaType.APPLICATION_JSON+"\"";
+            return "\"" + MediaType.APPLICATION_JSON + "\"";
         }
     }
 
@@ -248,7 +255,7 @@ public class RequestFactorySourceWriter extends AbstractSourceBuilder {
             return Arrays.stream(method.getAnnotation(Consumes.class).value()).map(s -> "\"" + s + "\"")
                     .collect(joining(","));
         } else {
-            return "\""+MediaType.APPLICATION_JSON+"\"";
+            return "\"" + MediaType.APPLICATION_JSON + "\"";
         }
     }
 

@@ -153,12 +153,16 @@ public class ProcessorUtil {
     }
 
 
-
     public List<ExecutableElement> getElementMethods(Element element) {
         return element.getEnclosedElements()
                 .stream()
                 .filter(e -> e.getKind() == ElementKind.METHOD)
                 .map(e -> (ExecutableElement) e)
                 .collect(Collectors.toList());
+    }
+
+    public boolean isStringType(TypeMirror typeMirror) {
+        TypeMirror stringType = elements.getTypeElement("java.lang.String").asType();
+        return types.isAssignable(stringType, typeMirror);
     }
 }
