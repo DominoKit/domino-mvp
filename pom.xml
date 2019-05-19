@@ -18,7 +18,7 @@
         <module>domino-test</module>
         <module>domino-apt</module>
         <module>archetypes</module>
-        <module>jks-server-configurator</module>
+        <module>ssl-server-configurator</module>
         <module>domino-service-discovery</module>
         <module>domino-remote-logging</module>
         <module>domino-desktop</module>
@@ -183,7 +183,7 @@
             </dependency>
             <dependency>
                 <groupId>org.dominokit.domino</groupId>
-                <artifactId>jks-server-cofigurator</artifactId>
+                <artifactId>ssl-server-cofigurator</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

@@ -8,12 +8,12 @@
         <version>1.0-rc.4-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jks-server-configurator</artifactId>
+    <artifactId>ssl-server-configurator</artifactId>
     <version>1.0-rc.4-SNAPSHOT</version>
 
     <packaging>jar</packaging>
 
-    <name>jks-server-configurator</name>
+    <name>ssl-server-configurator</name>
     <url>https://github.com/DominoKit/domino</url>
     <description>GWT Domino</description>
 

@@ -12,13 +12,6 @@ import static java.lang.Boolean.TRUE;
 @AutoService(HttpServerConfigurator.class)
 public class JksServerConfigurator implements HttpServerConfigurator {
 
-    private static final String SSL_CONFIGURATION_KEY = "ssl.enabled";
-    private static final String SSL_JKS_PATH = "ssl.jks.path";
-    private static final String SSL_JKS_SECRET = "ssl.jks.password";
-    private static final String DEFAULT_EMPTY = "";
-    private static final String HTTPS_PORT = "https.port";
-    private static final int DEFAULT_HTTPS_PORT = 443;
-
     @Override
     public void configureHttpServer(VertxContext context, HttpServerOptions options) {
         applyConfigurations(context.config(), options);
@@ -41,15 +34,15 @@ public class JksServerConfigurator implements HttpServerConfigurator {
     }
 
     private String getPath(ServerConfiguration configuration) {
-        return configuration.getString(SSL_JKS_PATH);
+        return configuration.getString(ConfigKies.SSL_JKS_PATH);
     }
 
     private String getSecret(ServerConfiguration configuration) {
-        return configuration.getString(SSL_JKS_SECRET);
+        return configuration.getString(ConfigKies.SSL_JKS_SECRET);
     }
 
     private int getPort(ServerConfiguration configuration) {
-        return configuration.getInteger(HTTPS_PORT, DEFAULT_HTTPS_PORT);
+        return configuration.getInteger(ConfigKies.HTTPS_PORT, ConfigKies.DEFAULT_HTTPS_PORT);
     }
 
     private void validateConfiguration(ServerConfiguration configuration) {
@@ -58,7 +51,7 @@ public class JksServerConfigurator implements HttpServerConfigurator {
     }
 
     private Boolean sslEnabled(ServerConfiguration configuration) {
-        return configuration.getBoolean(SSL_CONFIGURATION_KEY, false);
+        return configuration.getBoolean(ConfigKies.SSL_CONFIGURATION_KEY, false);
     }
 
     private void validateSslPathAndPassword(ServerConfiguration configuration) {
@@ -69,11 +62,11 @@ public class JksServerConfigurator implements HttpServerConfigurator {
     }
 
     private boolean missingSslJksPath(ServerConfiguration configuration) {
-        return configuration.getString(SSL_JKS_PATH, DEFAULT_EMPTY).isEmpty();
+        return configuration.getString(ConfigKies.SSL_JKS_PATH, ConfigKies.DEFAULT_EMPTY).isEmpty();
     }
 
     private boolean missingSslJksPassword(ServerConfiguration configuration) {
-        return configuration.getString(SSL_JKS_SECRET, DEFAULT_EMPTY).isEmpty();
+        return configuration.getString(ConfigKies.SSL_JKS_SECRET, ConfigKies.DEFAULT_EMPTY).isEmpty();
     }
 
     class MissingJksPathInConfigurationException extends RuntimeException {

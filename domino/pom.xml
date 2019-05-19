@@ -132,7 +132,7 @@
             </dependency>
             <dependency>
                 <groupId>org.dominokit.domino</groupId>
-                <artifactId>jks-server-cofigurator</artifactId>
+                <artifactId>ssl-server-cofigurator</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
