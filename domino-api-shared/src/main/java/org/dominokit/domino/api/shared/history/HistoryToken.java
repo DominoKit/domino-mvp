@@ -26,12 +26,17 @@ public interface HistoryToken {
     HistoryToken appendPath(String path);
 
     HistoryToken replacePath(String path, String replacement);
+
+    HistoryToken replaceLastPath(String path, String replacement);
+
     HistoryToken replacePaths(String path, String replacement);
 
     HistoryToken replaceLastPath(String replacement);
 
     HistoryToken replaceLastFragment(String replacement);
+
     HistoryToken removeLastFragment();
+
     HistoryToken removeLastPath();
 
     HistoryToken replaceAllPaths(String newPath);

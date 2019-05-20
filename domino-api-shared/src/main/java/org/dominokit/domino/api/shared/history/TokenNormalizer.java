@@ -44,7 +44,7 @@ public class TokenNormalizer {
 
             for (int i = targetIndex; resultIndex >= 0 && i >= 0; i--) {
                 resultIndex = originalIndex - (targetIndex - i);
-                checkAndReplacePath(normalizedToken, originalToken, originalPaths, targetPaths, resultIndex, i);
+                checkAndReplaceLastPath(normalizedToken, originalToken, originalPaths, targetPaths, resultIndex, i);
             }
         }
     }
@@ -55,6 +55,17 @@ public class TokenNormalizer {
             if (resultIndex> -1 && resultIndex < originalPaths.size()) {
                 String originalPath = originalPaths.get(resultIndex);
                 originalToken.replacePath(originalPath, path);
+                normalizedToken.addPathParameter(path.replace(":", ""), originalPath);
+            }
+        }
+    }
+
+    private static void checkAndReplaceLastPath(DefaultNormalizedToken normalizedToken, StateHistoryToken originalToken, List<String> originalPaths, List<String> targetPaths, int resultIndex, int i) {
+        String path = targetPaths.get(i);
+        if (path.startsWith(":")) {
+            if (resultIndex> -1 && resultIndex < originalPaths.size()) {
+                String originalPath = originalPaths.get(resultIndex);
+                originalToken.replaceLastPath(originalPath, path);
                 normalizedToken.addPathParameter(path.replace(":", ""), originalPath);
             }
         }

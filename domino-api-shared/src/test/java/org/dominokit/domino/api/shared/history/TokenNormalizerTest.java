@@ -100,13 +100,29 @@ public class TokenNormalizerTest {
     }
 
     @Test
-    public void testNormalizeTokenWithDuplicatePaths(){
+    public void testNormalizeTokenStartingFromTailWithDuplicatePaths(){
         HistoryToken historyToken = new StateHistoryToken(SAMPLE_TOKEN);
         historyToken.appendPath("path3")
         .clearFragments()
         .clearQuery();
 
         NormalizedToken normalized = TokenNormalizer.normalizePathTail(historyToken.value(), "path1/path2/:pathx/:pathy");
+        StateHistoryToken expected = new StateHistoryToken("path1/path2/:pathx/:pathy");
+
+        System.out.println(normalized.getToken().value());
+        System.out.println(expected.value());
+
+        assertThat(normalized.getToken()).isEqualTo(expected);
+    }
+
+    @Test
+    public void testNormalizeTokenStartingFromHeadWithDuplicatePaths(){
+        HistoryToken historyToken = new StateHistoryToken(SAMPLE_TOKEN);
+        historyToken.appendPath("path3")
+                .clearFragments()
+                .clearQuery();
+
+        NormalizedToken normalized = TokenNormalizer.normalizePaths(historyToken.value(), "path1/path2/:pathx/:pathy");
         StateHistoryToken expected = new StateHistoryToken("path1/path2/:pathx/:pathy");
 
         System.out.println(normalized.getToken().value());

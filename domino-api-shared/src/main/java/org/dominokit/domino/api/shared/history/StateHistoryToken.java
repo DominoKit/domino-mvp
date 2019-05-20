@@ -195,6 +195,18 @@ public class StateHistoryToken implements HistoryToken {
     public HistoryToken replacePath(String path, String replacement) {
         List<String> paths = asPathsList(path());
         if(paths.contains(path)) {
+            int i = paths.indexOf(path);
+            paths.add(i, replacement);
+            paths.remove(i + 1);
+            this.paths = paths;
+        }
+        return this;
+    }
+
+    @Override
+    public HistoryToken replaceLastPath(String path, String replacement) {
+        List<String> paths = asPathsList(path());
+        if(paths.contains(path)) {
             int i = paths.lastIndexOf(path);
             paths.add(i, replacement);
             paths.remove(i + 1);
