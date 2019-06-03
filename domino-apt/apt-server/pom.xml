@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.dominokit.domino.apt</groupId>
         <artifactId>domino-apt</artifactId>
-        <version>1.0-rc.4-SNAPSHOT</version>
+        <version>1.0-rc.4</version>
     </parent>
     <packaging>jar</packaging>
     <artifactId>apt-server</artifactId>

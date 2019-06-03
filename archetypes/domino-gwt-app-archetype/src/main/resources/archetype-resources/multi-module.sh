@@ -2,7 +2,7 @@
 mvn archetype:generate \
     -DarchetypeGroupId=org.dominokit.domino.archetypes \
     -DarchetypeArtifactId=domino-gwt-module-archetype \
-    -DarchetypeVersion=1.0-rc.4-SNAPSHOT \
+    -DarchetypeVersion=1.0-rc.4 \
     -DarchetypeParentGroupId=${groupId} \
     -DarchetypeParentArtifactId=${artifactId} \
     -DarchetypeParentVersion=${version} \
