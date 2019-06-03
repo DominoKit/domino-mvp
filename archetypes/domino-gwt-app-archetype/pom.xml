@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.dominokit.domino.archetypes</groupId>
         <artifactId>archetypes</artifactId>
-        <version>1.0-rc.4</version>
+        <version>1.0-rc.5-SNAPSHOT</version>
     </parent>
 
     <artifactId>domino-gwt-app-archetype</artifactId>
