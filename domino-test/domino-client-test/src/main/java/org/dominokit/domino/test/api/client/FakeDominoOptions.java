@@ -3,6 +3,8 @@ package org.dominokit.domino.test.api.client;
 import org.dominokit.domino.api.client.ApplicationStartHandler;
 import org.dominokit.domino.api.client.CanSetDominoOptions;
 import org.dominokit.domino.api.client.DominoOptions;
+import org.dominokit.domino.rest.DominoRestConfig;
+import org.dominokit.domino.rest.shared.request.DynamicServiceRoot;
 
 public class FakeDominoOptions implements DominoOptions {
 
@@ -11,6 +13,12 @@ public class FakeDominoOptions implements DominoOptions {
     @Override
     public void applyOptions() {
         //no need to apply things now
+    }
+
+    @Override
+    public DominoOptions addDynamicServiceRoot(DynamicServiceRoot dynamicServiceRoot) {
+        DominoRestConfig.getInstance().addDynamicServiceRoot(dynamicServiceRoot);
+        return this;
     }
 
     @Override
