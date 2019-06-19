@@ -28,9 +28,6 @@ public class CoreModule {
     public static void init() {
         GWT.setUncaughtExceptionHandler(throwable -> LOGGER.error("Uncaught Exception", throwable));
         ClientRouter clientRouter = new ClientRouter(new ClientEventFactory());
-        SlotRegistry.registerSlot("root", content -> {
-            DomGlobal.document.body.appendChild(Js.<HTMLElement>cast(content.get()));
-        });
 
         ((DominoSimpleEventsBus)DominoSimpleEventsBus.INSTANCE).addEvent(ClientRequestGwtEvent.CLIENT_REQUEST_EVENT_TYPE);
 
