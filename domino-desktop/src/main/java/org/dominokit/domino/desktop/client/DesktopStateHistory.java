@@ -1,7 +1,6 @@
 package org.dominokit.domino.desktop.client;
 
-import org.dominokit.domino.api.shared.history.*;
-import org.dominokit.domino.client.commons.history.DominoDirectState;
+import org.dominokit.domino.history.*;
 
 import java.util.HashSet;
 import java.util.Set;

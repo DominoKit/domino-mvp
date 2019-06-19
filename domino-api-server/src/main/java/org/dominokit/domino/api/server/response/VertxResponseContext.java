@@ -2,7 +2,7 @@ package org.dominokit.domino.api.server.response;
 
 import io.vertx.core.json.Json;
 import io.vertx.ext.web.RoutingContext;
-import org.dominokit.domino.api.shared.request.ResponseBean;
+import org.dominokit.domino.rest.shared.request.ResponseBean;
 
 import java.util.List;
 

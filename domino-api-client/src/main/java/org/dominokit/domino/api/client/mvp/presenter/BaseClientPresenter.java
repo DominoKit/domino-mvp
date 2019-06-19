@@ -6,9 +6,9 @@ import org.dominokit.domino.api.client.extension.DominoEvents;
 import org.dominokit.domino.api.client.startup.BaseRoutingStartupTask;
 import org.dominokit.domino.api.shared.extension.DominoEvent;
 import org.dominokit.domino.api.shared.extension.DominoEventListener;
-import org.dominokit.domino.api.shared.history.AppHistory;
-import org.dominokit.domino.api.shared.history.DominoHistory;
-import org.dominokit.domino.api.shared.history.TokenParameter;
+import org.dominokit.domino.history.AppHistory;
+import org.dominokit.domino.history.DominoHistory;
+import org.dominokit.domino.history.TokenParameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

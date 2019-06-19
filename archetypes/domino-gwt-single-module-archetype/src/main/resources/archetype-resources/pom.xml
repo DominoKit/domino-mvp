@@ -29,17 +29,17 @@
             <classifier>sources</classifier>
         </dependency>
         <dependency>
-            <groupId>org.dominokit.domino.logging</groupId>
-            <artifactId>domino-gwt-logger</artifactId>
+            <groupId>org.dominokit</groupId>
+            <artifactId>domino-slf4j-logger</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.dominokit.domino.apt</groupId>
-            <artifactId>apt-client</artifactId>
+            <groupId>org.dominokit</groupId>
+            <artifactId>domino-aggregator-apt</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.dominokit.domino.apt</groupId>
-            <artifactId>apt-shared</artifactId>
+            <artifactId>apt-client</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -76,9 +76,22 @@
             <version>${jackson.version}</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>org.dominokit.domino</groupId>
             <artifactId>domino-gwt-view</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.dominokit</groupId>
+            <artifactId>domino-rest-gwt</artifactId>
+            <version>1.0-rc.4-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.dominokit</groupId>
+            <artifactId>domino-rest-apt</artifactId>
+            <version>1.0-rc.4-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

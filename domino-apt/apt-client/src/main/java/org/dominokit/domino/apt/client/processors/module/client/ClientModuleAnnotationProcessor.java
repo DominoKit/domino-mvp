@@ -6,7 +6,6 @@ import org.dominokit.domino.api.client.annotations.ClientModule;
 import org.dominokit.domino.api.client.annotations.StartupTask;
 import org.dominokit.domino.api.client.annotations.UiView;
 import org.dominokit.domino.api.client.annotations.presenter.Presenter;
-import org.dominokit.domino.api.shared.request.service.annotations.RequestSender;
 import org.dominokit.domino.apt.client.processors.module.client.initialtasks.InitialTasksCollector;
 import org.dominokit.domino.apt.client.processors.module.client.presenters.PresentersCollector;
 import org.dominokit.domino.apt.client.processors.module.client.views.ViewsCollector;
@@ -42,7 +41,6 @@ public class ClientModuleAnnotationProcessor extends BaseProcessor {
             roundEnv.getElementsAnnotatedWith(Presenter.class);
             roundEnv.getElementsAnnotatedWith(UiView.class);
             roundEnv.getElementsAnnotatedWith(StartupTask.class);
-            roundEnv.getElementsAnnotatedWith(RequestSender.class);
 
             Register presentersRegister = new Register("presenters", presenters, messager, processingEnv);
             Register viewsRegister = new Register("views", views, messager, processingEnv);

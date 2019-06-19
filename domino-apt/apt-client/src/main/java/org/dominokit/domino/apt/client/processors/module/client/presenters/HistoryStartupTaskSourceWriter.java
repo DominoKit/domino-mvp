@@ -6,12 +6,12 @@ import org.dominokit.domino.api.client.annotations.presenter.*;
 import org.dominokit.domino.api.client.events.BaseRoutingAggregator;
 import org.dominokit.domino.api.client.events.DefaultEventAggregator;
 import org.dominokit.domino.api.client.startup.BaseRoutingStartupTask;
-import org.dominokit.domino.api.shared.history.DominoHistory;
-import org.dominokit.domino.api.shared.history.TokenFilter;
 import org.dominokit.domino.apt.client.processors.module.client.presenters.model.DependsOnModel;
 import org.dominokit.domino.apt.client.processors.module.client.presenters.model.EventsGroup;
 import org.dominokit.domino.apt.commons.AbstractSourceBuilder;
 import org.dominokit.domino.apt.commons.DominoTypeBuilder;
+import org.dominokit.domino.history.DominoHistory;
+import org.dominokit.domino.history.TokenFilter;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.*;

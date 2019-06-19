@@ -21,9 +21,8 @@
             <artifactId>domino-api-server</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.dominokit.domino.apt</groupId>
-            <artifactId>apt-commons</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.dominokit</groupId>
+            <artifactId>domino-apt-commons</artifactId>
         </dependency>
         <dependency>
             <groupId>io.vertx</groupId>

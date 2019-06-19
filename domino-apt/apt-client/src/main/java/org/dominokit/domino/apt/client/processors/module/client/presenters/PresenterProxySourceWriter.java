@@ -1,14 +1,14 @@
 package org.dominokit.domino.apt.client.processors.module.client.presenters;
 
 import com.squareup.javapoet.*;
-import org.dominokit.domino.api.client.annotations.Aggregate;
 import org.dominokit.domino.api.client.annotations.presenter.*;
 import org.dominokit.domino.api.client.mvp.presenter.ViewBaseClientPresenter;
+import org.dominokit.domino.api.shared.extension.Aggregate;
 import org.dominokit.domino.api.shared.extension.DominoEvent;
 import org.dominokit.domino.api.shared.extension.DominoEventListener;
-import org.dominokit.domino.api.shared.history.DominoHistory;
 import org.dominokit.domino.apt.commons.AbstractSourceBuilder;
 import org.dominokit.domino.apt.commons.DominoTypeBuilder;
+import org.dominokit.domino.history.DominoHistory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.processing.ProcessingEnvironment;

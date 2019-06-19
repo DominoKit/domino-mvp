@@ -1,6 +1,7 @@
 package org.dominokit.domino.api.server;
 
-import org.dominokit.domino.api.shared.request.RequestBean;
+
+import org.dominokit.domino.rest.shared.request.RequestBean;
 
 public class TestRequest implements RequestBean {
 

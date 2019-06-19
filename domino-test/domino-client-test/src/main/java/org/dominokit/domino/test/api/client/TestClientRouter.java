@@ -2,11 +2,11 @@ package org.dominokit.domino.test.api.client;
 
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.events.ClientRequestEventFactory;
-import org.dominokit.domino.api.client.events.Event;
-import org.dominokit.domino.api.client.events.EventsBus;
 import org.dominokit.domino.api.client.request.PresenterCommand;
-import org.dominokit.domino.api.shared.request.Request;
-import org.dominokit.domino.api.shared.request.RequestRouter;
+import org.dominokit.domino.rest.shared.Event;
+import org.dominokit.domino.rest.shared.EventsBus;
+import org.dominokit.domino.rest.shared.request.Request;
+import org.dominokit.domino.rest.shared.request.RequestRouter;
 
 public class TestClientRouter implements RequestRouter<PresenterCommand> {
 

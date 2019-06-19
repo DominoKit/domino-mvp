@@ -2,7 +2,8 @@ package org.dominokit.domino.test.api.client;
 
 import io.vertx.core.Vertx;
 import org.dominokit.domino.api.server.entrypoint.VertxEntryPointContext;
-import org.dominokit.domino.api.shared.request.ServerRequest;
+import org.dominokit.domino.rest.shared.request.ServerRequest;
+import org.dominokit.domino.test.history.TestDominoHistory;
 
 public interface ClientContext {
     TestDominoHistory history();

@@ -1,19 +1,19 @@
 package org.dominokit.domino.api.client;
 
 import org.dominokit.domino.api.client.async.AsyncRunner;
-import org.dominokit.domino.api.client.events.EventsBus;
-import org.dominokit.domino.api.shared.extension.ContextAggregator;
 import org.dominokit.domino.api.client.extension.DominoEventsListenersRepository;
 import org.dominokit.domino.api.client.extension.DominoEventsRegistry;
 import org.dominokit.domino.api.client.request.PresenterCommand;
 import org.dominokit.domino.api.client.startup.AsyncClientStartupTask;
 import org.dominokit.domino.api.client.startup.ClientStartupTask;
 import org.dominokit.domino.api.client.startup.TasksAggregator;
+import org.dominokit.domino.api.shared.extension.ContextAggregator;
 import org.dominokit.domino.api.shared.extension.DominoEvent;
 import org.dominokit.domino.api.shared.extension.DominoEventListener;
 import org.dominokit.domino.api.shared.extension.MainDominoEvent;
-import org.dominokit.domino.api.shared.history.AppHistory;
-import org.dominokit.domino.api.shared.request.*;
+import org.dominokit.domino.history.AppHistory;
+import org.dominokit.domino.rest.shared.EventsBus;
+import org.dominokit.domino.rest.shared.request.RequestRouter;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -21,11 +21,9 @@ import java.util.stream.Collectors;
 import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.groupingBy;
 
-public class ClientApp implements InitialTaskRegistry, DominoEventsRegistry, RequestConfig {
+public class ClientApp implements InitialTaskRegistry, DominoEventsRegistry {
 
     private static final AttributeHolder<RequestRouter<PresenterCommand>> CLIENT_ROUTER_HOLDER = new AttributeHolder<>();
-    private static final AttributeHolder<RequestRouter<ServerRequest>> SERVER_ROUTER_HOLDER =
-            new AttributeHolder<>();
     private static final AttributeHolder<EventsBus> EVENTS_BUS_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<DominoEventsListenersRepository> LISTENERS_REPOSITORY_HOLDER =
             new AttributeHolder<>();
@@ -55,37 +53,9 @@ public class ClientApp implements InitialTaskRegistry, DominoEventsRegistry, Req
         return instance;
     }
 
+
     public RequestRouter<PresenterCommand> getClientRouter() {
         return CLIENT_ROUTER_HOLDER.attribute;
-    }
-
-    public RequestRouter<ServerRequest> getServerRouter() {
-        return SERVER_ROUTER_HOLDER.attribute;
-    }
-
-    @Override
-    public String getDefaultServiceRoot() {
-        return dominoOptions().getDefaultServiceRoot();
-    }
-
-    @Override
-    public String getDefaultJsonDateFormat() {
-        return dominoOptions().getDefaultJsonDateFormat();
-    }
-
-    @Override
-    public List<DynamicServiceRoot> getServiceRoots() {
-        return dominoOptions().getServiceRoots();
-    }
-
-    @Override
-    public List<RequestInterceptor> getRequestInterceptors() {
-        return dominoOptions().getRequestInterceptors();
-    }
-
-    @Override
-    public String getDefaultResourceRootPath() {
-        return dominoOptions().getDefaultResourceRootPath();
     }
 
     public EventsBus getEventsBus() {
@@ -123,7 +93,6 @@ public class ClientApp implements InitialTaskRegistry, DominoEventsRegistry, Req
     }
 
     public void run(DominoOptionsHandler dominoOptionsHandler) {
-        RequestContext.init(this);
         modules.forEach(configuration -> {
             configuration.registerPresenters();
             configuration.registerViews();
@@ -191,13 +160,9 @@ public class ClientApp implements InitialTaskRegistry, DominoEventsRegistry, Req
 
     @FunctionalInterface
     public interface HasClientRouter {
-        HasServerRouter serverRouter(RequestRouter<ServerRequest> serverRouter);
-    }
-
-    @FunctionalInterface
-    public interface HasServerRouter {
         HasEventBus eventsBus(EventsBus eventsBus);
     }
+
 
     @FunctionalInterface
     public interface HasEventBus {
@@ -225,11 +190,10 @@ public class ClientApp implements InitialTaskRegistry, DominoEventsRegistry, Req
     }
 
     public static class ClientAppBuilder
-            implements HasClientRouter, HasServerRouter, HasEventBus, HasDominoEventListenersRepository,
+            implements HasClientRouter, HasEventBus, HasDominoEventListenersRepository,
             HasHistory, HasOptions, CanBuildClientApp {
 
         private RequestRouter<PresenterCommand> clientRouter;
-        private RequestRouter<ServerRequest> serverRouter;
         private EventsBus eventsBus;
         private DominoEventsListenersRepository dominoEventsListenersRepository;
         private AppHistory history;
@@ -242,12 +206,6 @@ public class ClientApp implements InitialTaskRegistry, DominoEventsRegistry, Req
 
         public static HasClientRouter clientRouter(RequestRouter<PresenterCommand> clientRouter) {
             return new ClientAppBuilder(clientRouter);
-        }
-
-        @Override
-        public HasServerRouter serverRouter(RequestRouter<ServerRequest> serverRouter) {
-            this.serverRouter = serverRouter;
-            return this;
         }
 
         @Override
@@ -288,7 +246,6 @@ public class ClientApp implements InitialTaskRegistry, DominoEventsRegistry, Req
 
         private void initClientApp() {
             ClientApp.CLIENT_ROUTER_HOLDER.hold(clientRouter);
-            ClientApp.SERVER_ROUTER_HOLDER.hold(serverRouter);
             ClientApp.EVENTS_BUS_HOLDER.hold(eventsBus);
             ClientApp.LISTENERS_REPOSITORY_HOLDER.hold(dominoEventsListenersRepository);
             ClientApp.HISTORY_HOLDER.hold(history);

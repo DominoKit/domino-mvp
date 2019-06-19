@@ -3,19 +3,17 @@ package org.dominokit.domino.test.api.client;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import org.dominokit.domino.api.client.ClientApp;
-import org.dominokit.domino.api.client.events.Event;
-import org.dominokit.domino.api.client.events.EventsBus;
-import org.dominokit.domino.api.client.events.ServerRequestEventFactory;
 import org.dominokit.domino.api.server.resource.ResourcesRepository;
-import org.dominokit.domino.api.shared.request.*;
-import org.dominokit.domino.client.commons.request.RequestAsyncSender;
+import org.dominokit.domino.rest.shared.Event;
+import org.dominokit.domino.rest.shared.EventsBus;
+import org.dominokit.domino.rest.shared.request.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.dominokit.domino.api.shared.request.Request.*;
+import static org.dominokit.domino.rest.shared.request.Request.*;
 
 public class TestServerRouter implements RequestRouter<ServerRequest> {
 

@@ -1,7 +1,7 @@
 package org.dominokit.domino.test.api.client;
 
-import org.dominokit.domino.api.shared.request.RequestBean;
-import org.dominokit.domino.api.shared.request.ResponseBean;
+import org.dominokit.domino.rest.shared.request.RequestBean;
+import org.dominokit.domino.rest.shared.request.ResponseBean;
 
 @FunctionalInterface
 public interface TestServerService {

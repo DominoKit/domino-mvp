@@ -1,13 +1,12 @@
 package org.dominokit.domino.api.client.request;
 
+import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.mvp.PresenterConfig;
 import org.dominokit.domino.api.client.mvp.ViewablePresenterConfig;
 import org.dominokit.domino.api.client.mvp.presenter.Presentable;
 import org.dominokit.domino.api.client.mvp.presenter.ViewablePresenterSupplier;
-import org.dominokit.domino.api.shared.request.BaseRequest;
-import org.dominokit.domino.api.shared.request.Request;
-import org.dominokit.domino.api.shared.request.RequestContext;
-import org.dominokit.domino.api.shared.request.RequestState;
+import org.dominokit.domino.rest.shared.request.BaseRequest;
+import org.dominokit.domino.rest.shared.request.RequestState;
 
 import java.util.function.Supplier;
 
@@ -31,7 +30,7 @@ public abstract class PresenterCommand<P extends Presentable> extends BaseReques
     @Override
     public void startRouting() {
         state = sent;
-        RequestContext.make().getConfig().getClientRouter().routeRequest(this);
+        ClientApp.make().getClientRouter().routeRequest(this);
     }
 
     public final void send() {

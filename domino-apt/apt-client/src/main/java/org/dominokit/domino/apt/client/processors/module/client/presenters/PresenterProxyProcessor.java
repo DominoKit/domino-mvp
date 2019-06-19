@@ -16,9 +16,7 @@
 package org.dominokit.domino.apt.client.processors.module.client.presenters;
 
 import com.google.auto.service.AutoService;
-import org.dominokit.domino.api.client.annotations.Aggregate;
 import org.dominokit.domino.api.client.annotations.presenter.PresenterProxy;
-import org.dominokit.domino.apt.client.processors.aggregate.AggregateProcessingStep;
 import org.dominokit.domino.apt.commons.BaseProcessor;
 
 import javax.annotation.processing.Processor;
@@ -35,7 +33,6 @@ public class PresenterProxyProcessor extends BaseProcessor {
 
   public PresenterProxyProcessor() {
     supportedAnnotations.add(PresenterProxy.class.getCanonicalName());
-    supportedAnnotations.add(Aggregate.class.getCanonicalName());
   }
 
   @Override
@@ -50,10 +47,6 @@ public class PresenterProxyProcessor extends BaseProcessor {
 
   @Override
   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-    new AggregateProcessingStep.Builder()
-            .setProcessingEnv(processingEnv)
-            .build()
-            .process(roundEnv.getElementsAnnotatedWith(Aggregate.class));
 
     new PresenterProxyProcessingStep.Builder()
             .setProcessingEnv(processingEnv)

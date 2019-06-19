@@ -3,8 +3,9 @@ package org.dominokit.domino.test.api.client;
 
 import io.vertx.core.Vertx;
 import org.dominokit.domino.api.client.ClientApp;
-import org.dominokit.domino.api.shared.request.RequestContext;
-import org.dominokit.domino.gwt.client.events.RequestEventProcessor;
+import org.dominokit.domino.rest.DominoRestConfig;
+import org.dominokit.domino.rest.gwt.RequestEventProcessor;
+import org.dominokit.domino.test.history.TestDominoHistory;
 
 public class TestClientAppFactory {
 
@@ -29,10 +30,10 @@ public class TestClientAppFactory {
         listenersRepository = new TestInMemoryEventsListenersRepository();
         history = new TestDominoHistory();
         dominoOptions = new FakeDominoOptions();
+        DominoRestConfig.initDefaults();
 
         ClientApp clientApp = ClientApp.ClientAppBuilder
                 .clientRouter(clientRouter)
-                .serverRouter(serverRouter)
                 .eventsBus(eventBus)
                 .eventsListenersRepository(listenersRepository)
                 .history(history)
@@ -40,7 +41,6 @@ public class TestClientAppFactory {
                 .dominoOptions(dominoOptions)
                 .build();
 
-        RequestContext.init(clientApp);
         return clientApp;
     }
 }
