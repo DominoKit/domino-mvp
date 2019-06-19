@@ -6,6 +6,8 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.reactivex.core.http.HttpServer;
 import org.dominokit.domino.api.server.DominoLoaderPlugin;
+import org.dominokit.domino.api.server.ServerApp;
+import org.dominokit.domino.api.server.entrypoint.VertxContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

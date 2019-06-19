@@ -17,28 +17,31 @@ import org.dominokit.domino.api.client.mvp.Store;
 import org.dominokit.domino.api.client.mvp.StoreRegistry;
 import org.dominokit.domino.api.client.mvp.presenter.ViewBaseClientPresenter;
 import org.dominokit.domino.api.client.mvp.slots.SlotRegistry;
+import org.dominokit.domino.api.server.ServerApp;
 import org.dominokit.domino.api.server.config.ServerConfiguration;
 import org.dominokit.domino.api.server.config.ServerConfigurationLoader;
 import org.dominokit.domino.api.server.config.VertxConfiguration;
 import org.dominokit.domino.api.server.entrypoint.VertxContext;
 import org.dominokit.domino.api.server.entrypoint.VertxEntryPointContext;
 import org.dominokit.domino.api.shared.extension.DominoEventListener;
+import org.dominokit.domino.rest.DominoRestConfig;
+import org.dominokit.domino.rest.VertxInstanceProvider;
+import org.dominokit.domino.rest.server.DefaultProvider;
 import org.dominokit.domino.rest.shared.request.ResponseBean;
 import org.dominokit.domino.rest.shared.request.ServerRequest;
 import org.dominokit.domino.service.discovery.VertxServiceDiscovery;
 import org.dominokit.domino.test.api.DominoTestServer;
 import org.dominokit.domino.test.api.TestConfigReader;
+import org.dominokit.domino.test.api.client.TestServerRouter.FailedReply;
+import org.dominokit.domino.test.api.client.TestServerRouter.ResponseReply;
+import org.dominokit.domino.test.api.client.TestServerRouter.RoutingListener;
 import org.dominokit.domino.test.api.client.TestServerRouter.SuccessReply;
 import org.dominokit.domino.test.history.TestDominoHistory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 import static org.dominokit.domino.api.client.ClientApp.make;
-import static org.dominokit.domino.test.api.client.TestServerRouter.*;
 import static org.easymock.EasyMock.createMock;
 
 public class DominoTestClient implements CanCustomizeClient, CanStartClient,
@@ -75,7 +78,7 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
         VertxOptions vertxOptions = new VertxOptions();
         vertxOptions.setBlockedThreadCheckInterval(1000 * 60 * 60);
         vertxOptions.setWorkerPoolSize(50);
-        vertx =Vertx.vertx(vertxOptions);
+        vertx = Vertx.vertx(vertxOptions);
         init();
     }
 
@@ -159,7 +162,12 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
             LOGGER.info("Starting server ... ");
             DominoTestServer.vertx(vertx())
                     .onAfterLoad(serverContext -> {
-//                        getDominoOptions().setPort(serverContext.getActualPort());
+                        ((VertxContext) ServerApp.make().serverContext())
+                                .httpServerOptions()
+                                .setPort(serverContext.getActualPort());
+
+                        DominoRestConfig.getInstance().setServerRouter(TestClientAppFactory.serverRouter);
+
                         afterLoadHandler.handle(serverContext);
                         doStart(() -> {
                             startCompleted.onStarted(this);
@@ -175,6 +183,22 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
                 onCompleteHandler.onStarted();
             });
         }
+    }
+
+    public String get() {
+        Iterator<VertxInstanceProvider> iterator = ServiceLoader.load(VertxInstanceProvider.class).iterator();
+        VertxInstanceProvider provider;
+        if (iterator.hasNext()) {
+            provider = iterator.next();
+        } else {
+            provider = new DefaultProvider();
+        }
+
+        String protocol = provider.getProtocol();
+        String host = provider.getHost();
+        int port = provider.getPort();
+
+        return protocol + "://" + host + ":" + port + "/";
     }
 
     @Override
@@ -320,32 +344,32 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
             TestClientAppFactory.serverRouter.fakeResponse(request, new SuccessReply(response));
         }
 
-        public TestResponse failStatusCode(int status){
+        public TestResponse failStatusCode(int status) {
             failedResponseBean.setStatusCode(status);
             return this;
         }
 
-        public TestResponse failStatusText(String statusText){
+        public TestResponse failStatusText(String statusText) {
             failedResponseBean.setStatusText(statusText);
             return this;
         }
 
-        public TestResponse failHeaders(Map<String, String> headers){
+        public TestResponse failHeaders(Map<String, String> headers) {
             failedResponseBean.setHeaders(headers);
             return this;
         }
 
-        public TestResponse failBody(String body){
+        public TestResponse failBody(String body) {
             failedResponseBean.setBody(body);
             return this;
         }
 
-        public TestResponse failError(Throwable error){
+        public TestResponse failError(Throwable error) {
             failedResponseBean.setThrowable(error);
             return this;
         }
 
-        public void thenFail(){
+        public void thenFail() {
             TestClientAppFactory.serverRouter.fakeResponse(request, new FailedReply(this.failedResponseBean));
         }
 
@@ -367,7 +391,7 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
     }
 
     @FunctionalInterface
-    public interface RequestCompleteHandler{
+    public interface RequestCompleteHandler {
         void onCompleted(AsyncResult<ResponseReply> event);
     }
 }

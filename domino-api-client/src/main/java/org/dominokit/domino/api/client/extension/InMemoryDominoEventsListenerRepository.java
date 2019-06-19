@@ -1,6 +1,5 @@
-package org.dominokit.domino.client.commons.extensions;
+package org.dominokit.domino.api.client.extension;
 
-import org.dominokit.domino.api.client.extension.DominoEventsListenersRepository;
 import org.dominokit.domino.api.shared.extension.DominoEvent;
 import org.dominokit.domino.api.shared.extension.DominoEventListener;
 import org.slf4j.Logger;

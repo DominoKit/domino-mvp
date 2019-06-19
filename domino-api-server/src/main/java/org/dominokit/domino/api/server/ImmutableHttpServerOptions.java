@@ -13,7 +13,7 @@ class ImmutableHttpServerOptions implements DominoHttpServerOptions {
     private int port;
     private String host;
 
-    public void init(HttpServerOptions options, int port, String host){
+    public void init(HttpServerOptions options, int port, String host) {
         this.options = options;
         this.port = port;
         this.host = host;
@@ -22,6 +22,11 @@ class ImmutableHttpServerOptions implements DominoHttpServerOptions {
     @Override
     public int getPort() {
         return port;
+    }
+
+    @Override
+    public void setPort(int port) {
+        this.port = port;
     }
 
     @Override

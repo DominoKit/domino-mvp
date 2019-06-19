@@ -2,7 +2,7 @@ package org.dominokit.domino.desktop.client;
 
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.async.AsyncRunner;
-import org.dominokit.domino.client.commons.extensions.InMemoryDominoEventsListenerRepository;
+import org.dominokit.domino.api.client.extension.InMemoryDominoEventsListenerRepository;
 import org.dominokit.domino.client.commons.request.ClientRouter;
 import org.dominokit.domino.desktop.client.events.DesktopClientEventFactory;
 import org.dominokit.domino.desktop.client.events.DesktopEventBus;

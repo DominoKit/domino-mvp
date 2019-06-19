@@ -4,7 +4,7 @@ package org.dominokit.domino.test.api.client;
 import io.vertx.core.Vertx;
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.rest.DominoRestConfig;
-import org.dominokit.domino.rest.gwt.RequestEventProcessor;
+import org.dominokit.domino.rest.shared.EventProcessor;
 import org.dominokit.domino.test.history.TestDominoHistory;
 
 public class TestClientAppFactory {
@@ -13,7 +13,7 @@ public class TestClientAppFactory {
     protected static TestInMemoryEventsListenersRepository listenersRepository;
     protected static TestDominoHistory history;
     protected static TestClientRouter clientRouter;
-    protected static RequestEventProcessor requestEventProcessor;
+    protected static EventProcessor requestEventProcessor;
     protected static TestEventBus eventBus;
     protected static FakeDominoOptions dominoOptions;
 
@@ -24,7 +24,7 @@ public class TestClientAppFactory {
 
         clientRouter = new TestClientRouter();
         serverRouter = new TestServerRouter(vertx);
-        requestEventProcessor = new RequestEventProcessor();
+        requestEventProcessor = new EventProcessor();
         eventBus = new TestEventBus(requestEventProcessor);
 
         listenersRepository = new TestInMemoryEventsListenersRepository();
