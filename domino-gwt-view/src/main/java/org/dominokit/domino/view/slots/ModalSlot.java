@@ -11,6 +11,7 @@ public class ModalSlot implements Slot<ModalView> {
 
     @Override
     public void updateContent(ModalView view) {
+        view.getContent();
         view.open();
     }
 }
