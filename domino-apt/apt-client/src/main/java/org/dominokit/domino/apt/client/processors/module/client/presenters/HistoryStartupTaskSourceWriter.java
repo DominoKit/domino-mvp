@@ -44,10 +44,9 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
                         .addModifiers(Modifier.PUBLIC)
                         .addCode(getSuperCall(taskType))
                         .build());
-
-        getDirectUrlFilterTokenMethod(taskType);
-
-        taskType.addMethod(getFilterTokenMethod())
+        taskType
+                .addMethod(getFilterTokenMethod())
+                .addMethod(getStartupFilterTokenMethod())
                 .addMethod(onStateReadyMethod());
 
         if (presenterElement.getAnnotation(AutoRoute.class).routeOnce()) {
@@ -80,22 +79,21 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
     }
 
 
-    private void getDirectUrlFilterTokenMethod(TypeSpec.Builder taskType) {
+    private MethodSpec getStartupFilterTokenMethod() {
+
+        MethodSpec.Builder method = MethodSpec.methodBuilder("getStartupTokenFilter")
+                .addAnnotation(Override.class)
+                .addModifiers(Modifier.PROTECTED)
+                .returns(TokenFilter.class);
 
         Optional<String> tokenFilterMethodName = getTokenFilterMethodName(presenterElement, StartupTokenFilter.class);
+        if (tokenFilterMethodName.isPresent()) {
+            method.addStatement("return $T." + tokenFilterMethodName.get() + "(\"" + token + "\")", TypeName.get(presenterElement.asType()));
+        } else {
+            method.addStatement("return $T." + (token.trim().isEmpty() ? "any()" : "endsWithPathFilter(\"" + token + "\")"), TypeName.get(TokenFilter.class));
+        }
 
-        tokenFilterMethodName.ifPresent(methodName -> {
-            MethodSpec.Builder method = MethodSpec.methodBuilder("getStartupTokenFilter")
-                    .addAnnotation(Override.class)
-                    .addModifiers(Modifier.PROTECTED)
-                    .returns(TokenFilter.class);
-
-
-            method.addStatement("return $T." + methodName + "(\"" + token + "\")", TypeName.get(presenterElement.asType()));
-
-            taskType.addMethod(method.build());
-
-        });
+        return method.build();
     }
 
     private MethodSpec getFilterTokenMethod() {
@@ -109,7 +107,7 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
         if (tokenFilterMethodName.isPresent()) {
             method.addStatement("return $T." + tokenFilterMethodName.get() + "(\"" + token + "\")", TypeName.get(presenterElement.asType()));
         } else {
-            method.addStatement("return $T." + (token.trim().isEmpty() ? "any()" : "exactMatch(\"" + token + "\")"), TypeName.get(TokenFilter.class));
+            method.addStatement("return $T." + (token.trim().isEmpty() ? "any()" : "startsWithPathFilter(\"" + token + "\")"), TypeName.get(TokenFilter.class));
         }
 
         return method.build();
