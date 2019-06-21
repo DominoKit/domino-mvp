@@ -1,13 +1,12 @@
 package org.dominokit.domino.test.api.client;
 
-import org.dominokit.domino.api.client.mvp.slots.Slot;
+import org.dominokit.domino.api.client.mvp.slots.IsSlot;
 import org.dominokit.domino.api.client.mvp.view.ContentView;
-import org.dominokit.domino.api.client.mvp.view.View;
 import org.dominokit.domino.api.shared.extension.Content;
 
 import static java.util.Objects.nonNull;
 
-public class FakeSlot implements Slot<ContentView> {
+public class FakeIsSlot implements IsSlot<ContentView> {
 
     private boolean revealed;
     private Content<FakeElement> old;

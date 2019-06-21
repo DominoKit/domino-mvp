@@ -2,33 +2,32 @@ package org.dominokit.domino.view.slots;
 
 import elemental2.dom.HTMLElement;
 import jsinterop.base.Js;
-import org.dominokit.domino.api.client.mvp.slots.Slot;
+import org.dominokit.domino.api.client.mvp.slots.IsSlot;
 import org.dominokit.domino.api.client.mvp.view.ContentView;
-import org.dominokit.domino.api.shared.extension.Content;
 import org.dominokit.domino.ui.utils.DominoElement;
 import org.jboss.gwt.elemento.core.IsElement;
 
-public class SingleElementSlot implements Slot<ContentView> {
+public class SingleElementIsSlot implements IsSlot<ContentView> {
 
     private DominoElement<HTMLElement> element;
 
-    public static SingleElementSlot of(HTMLElement element) {
-        return new SingleElementSlot(element);
+    public static SingleElementIsSlot of(HTMLElement element) {
+        return new SingleElementIsSlot(element);
     }
 
-    public static SingleElementSlot of(IsElement element) {
-        return new SingleElementSlot(element);
+    public static SingleElementIsSlot of(IsElement element) {
+        return new SingleElementIsSlot(element);
     }
 
-    public SingleElementSlot(HTMLElement element) {
+    public SingleElementIsSlot(HTMLElement element) {
         this.element = DominoElement.of(element);
     }
 
-    public SingleElementSlot(DominoElement<HTMLElement> element) {
+    public SingleElementIsSlot(DominoElement<HTMLElement> element) {
         this.element = element;
     }
 
-    public SingleElementSlot(IsElement<HTMLElement> element) {
+    public SingleElementIsSlot(IsElement<HTMLElement> element) {
         this.element = DominoElement.of(element);
     }
 
