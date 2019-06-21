@@ -37,6 +37,11 @@ public class DesktopStateHistory implements AppHistory {
         return new DominoDirectState(tokenFilter, currentState(), listener);
     }
 
+    @Override
+    public void removeListener(StateListener stateListener) {
+        listeners.remove(stateListener);
+    }
+
     private State currentState() {
         return new DominoHistoryState("", "", stateData(state()));
     }
