@@ -90,7 +90,7 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
         if (tokenFilterMethodName.isPresent()) {
             method.addStatement("return $T." + tokenFilterMethodName.get() + "(\"" + token + "\")", TypeName.get(presenterElement.asType()));
         } else {
-            method.addStatement("return $T." + (token.trim().isEmpty() ? "any()" : "endsWithPathFilter(\"" + token + "\")"), TypeName.get(TokenFilter.class));
+            method.addStatement("return $T." + (token.trim().isEmpty() ? "any()" : "startsWithPathFilter(\"" + token + "\")"), TypeName.get(TokenFilter.class));
         }
 
         return method.build();
@@ -107,7 +107,7 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
         if (tokenFilterMethodName.isPresent()) {
             method.addStatement("return $T." + tokenFilterMethodName.get() + "(\"" + token + "\")", TypeName.get(presenterElement.asType()));
         } else {
-            method.addStatement("return $T." + (token.trim().isEmpty() ? "any()" : "startsWithPathFilter(\"" + token + "\")"), TypeName.get(TokenFilter.class));
+            method.addStatement("return $T." + (token.trim().isEmpty() ? "any()" : "endsWithPathFilter(\"" + token + "\")"), TypeName.get(TokenFilter.class));
         }
 
         return method.build();
