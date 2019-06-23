@@ -1,9 +1,6 @@
 package org.dominokit.domino.api.client.mvp.presenter;
 
-import org.dominokit.domino.api.client.mvp.slots.InvalidSlotException;
-import org.dominokit.domino.api.client.mvp.slots.RevealViewWithNoContentException;
-import org.dominokit.domino.api.client.mvp.slots.Slot;
-import org.dominokit.domino.api.client.mvp.slots.SlotRegistry;
+import org.dominokit.domino.api.client.mvp.slots.*;
 import org.dominokit.domino.api.client.mvp.view.*;
 
 import java.util.function.Supplier;
@@ -35,7 +32,7 @@ public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter
     }
 
     public void revealInSlot(String key) {
-        Slot slot = SlotRegistry.get(key);
+        IsSlot slot = SlotRegistry.get(key);
         if (nonNull(slot)) {
             revealInSlot(slot);
         } else {
@@ -49,7 +46,7 @@ public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter
         }
     }
 
-    public void revealInSlot(Slot slot) {
+    public void revealInSlot(IsSlot slot) {
         if (view instanceof HasContent) {
             onBeforeReveal();
             slot.updateContent(view);
@@ -64,12 +61,24 @@ public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter
 
     private DominoView.RevealedHandler getViewRevealHandler() {
         return () -> {
+            registerSlots();
             RevealedHandler revealHandler = getRevealHandler();
             if (nonNull(revealHandler)) {
                 revealHandler.onRevealed();
             }
             activate();
         };
+    }
+
+    private void registerSlots() {
+        SlotsEntries slotsEntries = getSlots();
+        if (nonNull(slotsEntries)) {
+            slotsEntries.getSlots().forEach(SlotRegistry::registerSlot);
+        }
+    }
+
+    protected SlotsEntries getSlots() {
+        return SlotsEntries.create();
     }
 
     @Override
@@ -83,6 +92,10 @@ public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter
 
     private DominoView.RemovedHandler getViewRemoveHandler() {
         return () -> {
+            SlotsEntries slotsEntries = getSlots();
+            if (nonNull(slotsEntries)) {
+                slotsEntries.getSlots().forEach((key, slot) -> SlotRegistry.removeSlot(key));
+            }
             RemovedHandler removeHandler = getRemoveHandler();
             if (nonNull(removeHandler)) {
                 removeHandler.onRemoved();

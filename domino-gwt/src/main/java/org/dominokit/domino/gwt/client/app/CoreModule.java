@@ -1,11 +1,7 @@
 package org.dominokit.domino.gwt.client.app;
 
 import com.google.gwt.core.client.GWT;
-import elemental2.dom.DomGlobal;
-import elemental2.dom.HTMLElement;
-import jsinterop.base.Js;
 import org.dominokit.domino.api.client.ClientApp;
-import org.dominokit.domino.api.client.mvp.slots.SlotRegistry;
 import org.dominokit.domino.api.client.extension.InMemoryDominoEventsListenerRepository;
 import org.dominokit.domino.client.commons.request.ClientRouter;
 import org.dominokit.domino.gwt.client.async.GwtAsyncRunner;

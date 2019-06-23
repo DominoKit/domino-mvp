@@ -13,9 +13,6 @@ public interface DominoView<T> extends ContentView {
     T createRoot();
 
     void clear();
-    default SlotsEntries getSlots(){
-        return SlotsEntries.create();
-    }
 
     default void setRevealHandler(RevealedHandler revealHandler) {
     }

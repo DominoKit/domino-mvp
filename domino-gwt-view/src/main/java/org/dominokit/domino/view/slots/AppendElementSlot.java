@@ -7,27 +7,27 @@ import org.dominokit.domino.api.client.mvp.view.ContentView;
 import org.dominokit.domino.ui.utils.DominoElement;
 import org.jboss.gwt.elemento.core.IsElement;
 
-public class AppendElementIsSlot implements IsSlot<ContentView> {
+public class AppendElementSlot implements IsSlot<ContentView> {
 
     private DominoElement<HTMLElement> element;
 
-    public static AppendElementIsSlot of(HTMLElement element) {
-        return new AppendElementIsSlot(element);
+    public static AppendElementSlot of(HTMLElement element) {
+        return new AppendElementSlot(element);
     }
 
-    public static AppendElementIsSlot of(IsElement element) {
-        return new AppendElementIsSlot(element);
+    public static AppendElementSlot of(IsElement element) {
+        return new AppendElementSlot(element);
     }
 
-    public AppendElementIsSlot(HTMLElement element) {
+    public AppendElementSlot(HTMLElement element) {
         this.element = DominoElement.of(element);
     }
 
-    public AppendElementIsSlot(DominoElement<HTMLElement> element) {
+    public AppendElementSlot(DominoElement<HTMLElement> element) {
         this.element = element;
     }
 
-    public AppendElementIsSlot(IsElement<HTMLElement> element) {
+    public AppendElementSlot(IsElement<HTMLElement> element) {
         this.element = DominoElement.of(element);
     }
 

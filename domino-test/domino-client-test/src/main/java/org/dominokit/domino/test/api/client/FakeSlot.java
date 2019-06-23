@@ -6,7 +6,7 @@ import org.dominokit.domino.api.shared.extension.Content;
 
 import static java.util.Objects.nonNull;
 
-public class FakeIsSlot implements IsSlot<ContentView> {
+public class FakeSlot implements IsSlot<ContentView> {
 
     private boolean revealed;
     private Content<FakeElement> old;

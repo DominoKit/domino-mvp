@@ -7,34 +7,33 @@ import org.dominokit.domino.api.client.mvp.view.ContentView;
 import org.dominokit.domino.ui.utils.DominoElement;
 import org.jboss.gwt.elemento.core.IsElement;
 
-public class SingleElementIsSlot implements IsSlot<ContentView> {
+public class SingleElementSlot implements IsSlot<ContentView> {
 
     private DominoElement<HTMLElement> element;
 
-    public static SingleElementIsSlot of(HTMLElement element) {
-        return new SingleElementIsSlot(element);
+    public static SingleElementSlot of(HTMLElement element) {
+        return new SingleElementSlot(element);
     }
 
-    public static SingleElementIsSlot of(IsElement element) {
-        return new SingleElementIsSlot(element);
+    public static SingleElementSlot of(IsElement element) {
+        return new SingleElementSlot(element);
     }
 
-    public SingleElementIsSlot(HTMLElement element) {
+    public SingleElementSlot(HTMLElement element) {
         this.element = DominoElement.of(element);
     }
 
-    public SingleElementIsSlot(DominoElement<HTMLElement> element) {
+    public SingleElementSlot(DominoElement<HTMLElement> element) {
         this.element = element;
     }
 
-    public SingleElementIsSlot(IsElement<HTMLElement> element) {
+    public SingleElementSlot(IsElement<HTMLElement> element) {
         this.element = DominoElement.of(element);
     }
 
     @Override
     public void updateContent(ContentView view) {
-        DominoElement.of(element)
-                .clearElement()
+       element.clearElement()
                 .appendChild(Js.<HTMLElement>uncheckedCast(view.getContent().get()));
     }
 }
