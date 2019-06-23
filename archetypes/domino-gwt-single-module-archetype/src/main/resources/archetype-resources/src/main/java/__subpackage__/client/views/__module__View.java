@@ -5,5 +5,5 @@ package ${package}.${subpackage}.client.views;
 
 import org.dominokit.domino.api.client.mvp.view.ContentView;
 
-public interface ${module}View extends ContentView{
+public interface ${module}View extends ContentView {
 }
