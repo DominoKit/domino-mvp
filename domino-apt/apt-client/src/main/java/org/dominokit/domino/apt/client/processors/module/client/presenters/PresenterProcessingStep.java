@@ -53,7 +53,7 @@ public class PresenterProcessingStep extends AbstractProcessingStep {
                 generateEventListeners(element);
                 generateRouter(element);
             } catch (Exception e) {
-                ExceptionUtil.messageStackTrace(messager, e);
+                ExceptionUtil.messageStackTrace(messager, e, element);
             }
         }
 

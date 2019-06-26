@@ -47,7 +47,7 @@ public class TestConfigProcessingStep extends AbstractProcessingStep {
                     generateTestConfig(element);
                 }
             } catch (Exception e) {
-                ExceptionUtil.messageStackTrace(messager, e);
+                ExceptionUtil.messageStackTrace(messager, e, element);
             }
         }
 

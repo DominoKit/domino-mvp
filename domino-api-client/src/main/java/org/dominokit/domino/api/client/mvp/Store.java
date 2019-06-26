@@ -10,12 +10,22 @@ public class Store<T> implements IsStore<T> {
 
     private T data;
     private List<Consumer<T>> consumers = new ArrayList<>();
+    private boolean removeWhenConsumed = false;
 
     public Store() {
     }
 
     public Store(T data) {
         this.data = data;
+    }
+
+    public Store(T data, boolean removeWhenConsumed) {
+        this.data = data;
+        this.removeWhenConsumed = removeWhenConsumed;
+    }
+
+    public boolean isRemoveWhenConsumed() {
+        return removeWhenConsumed;
     }
 
     public void updateData(T data) {
@@ -25,6 +35,11 @@ public class Store<T> implements IsStore<T> {
 
     @Override
     public T getData() {
+        if(removeWhenConsumed){
+            T temp = data;
+            reset();
+            return temp;
+        }
         return data;
     }
 
@@ -33,8 +48,16 @@ public class Store<T> implements IsStore<T> {
         consumers.add(consumer);
         if (nonNull(data)) {
             consumer.accept(data);
+            if(removeWhenConsumed){
+                reset();
+            }
         }
         return () -> consumers.remove(consumer);
+    }
+
+    @Override
+    public boolean hasData() {
+        return nonNull(data);
     }
 
     public void reset() {

@@ -18,7 +18,6 @@ public class StoreRegistry {
 
     public RegistrationHandler registerStore(String key, IsStore<?> store) {
         stores.put(key, store);
-
         if (consumers.containsKey(key)) {
             consumers.get(key).forEach(consumer -> consumer.accept(store));
         }

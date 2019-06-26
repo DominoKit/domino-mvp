@@ -10,6 +10,7 @@ import org.dominokit.domino.apt.client.processors.module.client.presenters.model
 import org.dominokit.domino.apt.client.processors.module.client.presenters.model.EventsGroup;
 import org.dominokit.domino.apt.commons.AbstractSourceBuilder;
 import org.dominokit.domino.apt.commons.DominoTypeBuilder;
+import org.dominokit.domino.apt.commons.ExceptionUtil;
 import org.dominokit.domino.history.DominoHistory;
 import org.dominokit.domino.history.TokenFilter;
 
@@ -206,50 +207,57 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
     }
 
     private DependsOnModel getDependsOnModel(TypeElement element) {
+
+
         DependsOnModel dependsOnModel = new DependsOnModel();
-        TypeMirror superclass = element.getSuperclass();
-        if (superclass.getKind().equals(TypeKind.NONE)) {
-            return dependsOnModel;
-        }
-
-        if (nonNull(element.getAnnotation(DependsOn.class))) {
-            List<? extends AnnotationMirror> annotations = element.getAnnotationMirrors();
-            for (AnnotationMirror annotationMirror : annotations) {
-
-                if (types.isSameType(annotationMirror.getAnnotationType(), elements.getTypeElement(DependsOn.class.getName()).asType())) {
-                    Map<? extends ExecutableElement, ? extends AnnotationValue> elementValues = annotationMirror.getElementValues();
-
-                    elementValues.values()
-                            .stream()
-                            .findFirst()
-                            .ifPresent(annotationValue -> {
-                                List<AnnotationMirror> eventsGroupsAnnotations = (List<AnnotationMirror>) annotationValue.getValue();
-                                eventsGroupsAnnotations.stream()
-                                        .forEach(eventGroupAnnotationMirror -> {
-                                            Collection<? extends AnnotationValue> values = eventGroupAnnotationMirror.getElementValues()
-                                                    .values();
-                                            AnnotationValue groupValue = values.stream().findFirst().get();
-                                            List<AnnotationValue> eventTypes = (List<AnnotationValue>) groupValue.getValue();
-                                            Iterator<? extends AnnotationValue> iterator = eventTypes.iterator();
-
-                                            List<TypeMirror> eventTypesMirrors = new ArrayList<>();
-
-                                            while (iterator.hasNext()) {
-                                                AnnotationValue next = iterator.next();
-                                                eventTypesMirrors.add((TypeMirror) next.getValue());
-                                            }
-
-                                            if (!eventTypesMirrors.isEmpty()) {
-                                                dependsOnModel.addEventGroup(new EventsGroup(eventTypesMirrors));
-                                            }
-                                        });
-                            });
-                }
+        try {
+            TypeMirror superclass = element.getSuperclass();
+            if (superclass.getKind().equals(TypeKind.NONE)) {
+                return dependsOnModel;
             }
-            return dependsOnModel;
-        } else {
-            return getDependsOnModel((TypeElement) types.asElement(element.getSuperclass()));
+
+            if (nonNull(element.getAnnotation(DependsOn.class))) {
+                List<? extends AnnotationMirror> annotations = element.getAnnotationMirrors();
+                for (AnnotationMirror annotationMirror : annotations) {
+
+                    if (types.isSameType(annotationMirror.getAnnotationType(), elements.getTypeElement(DependsOn.class.getName()).asType())) {
+                        Map<? extends ExecutableElement, ? extends AnnotationValue> elementValues = annotationMirror.getElementValues();
+
+                        elementValues.values()
+                                .stream()
+                                .findFirst()
+                                .ifPresent(annotationValue -> {
+                                    List<AnnotationMirror> eventsGroupsAnnotations = (List<AnnotationMirror>) annotationValue.getValue();
+                                    eventsGroupsAnnotations.stream()
+                                            .forEach(eventGroupAnnotationMirror -> {
+                                                Collection<? extends AnnotationValue> values = eventGroupAnnotationMirror.getElementValues()
+                                                        .values();
+                                                AnnotationValue groupValue = values.stream().findFirst().get();
+                                                List<AnnotationValue> eventTypes = (List<AnnotationValue>) groupValue.getValue();
+                                                Iterator<? extends AnnotationValue> iterator = eventTypes.iterator();
+
+                                                List<TypeMirror> eventTypesMirrors = new ArrayList<>();
+
+                                                while (iterator.hasNext()) {
+                                                    AnnotationValue next = iterator.next();
+                                                    eventTypesMirrors.add((TypeMirror) next.getValue());
+                                                }
+
+                                                if (!eventTypesMirrors.isEmpty()) {
+                                                    dependsOnModel.addEventGroup(new EventsGroup(eventTypesMirrors));
+                                                }
+                                            });
+                                });
+                    }
+                }
+                return dependsOnModel;
+            } else {
+                return getDependsOnModel((TypeElement) types.asElement(element.getSuperclass()));
+            }
+        } catch (Exception error) {
+            ExceptionUtil.messageStackTrace(messager, error, element);
         }
+        return dependsOnModel;
     }
 
     private String[] revealConditionMethods() {

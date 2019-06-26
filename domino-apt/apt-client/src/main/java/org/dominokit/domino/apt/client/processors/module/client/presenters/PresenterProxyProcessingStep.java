@@ -48,7 +48,7 @@ public class PresenterProxyProcessingStep extends AbstractProcessingStep {
             try {
                 generateProxy(element);
             } catch (Exception e) {
-                ExceptionUtil.messageStackTrace(messager, e);
+                ExceptionUtil.messageStackTrace(messager, e, element);
             }
         }
     }
