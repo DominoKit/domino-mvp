@@ -2,12 +2,16 @@ package org.dominokit.domino.api.client.mvp.presenter;
 
 import org.dominokit.domino.api.client.mvp.slots.*;
 import org.dominokit.domino.api.client.mvp.view.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.function.Supplier;
 
 import static java.util.Objects.nonNull;
 
 public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter {
+
+    public static final Logger LOGGER = LoggerFactory.getLogger(ViewBaseClientPresenter.class);
 
     public static final String DOCUMENT_BODY = "document-body";
 
@@ -36,7 +40,7 @@ public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter
         if (nonNull(slot)) {
             revealInSlot(slot);
         } else {
-            throw new InvalidSlotException(key);
+            throw new InvalidSlotException(this.getClass(), key);
         }
     }
 
@@ -49,7 +53,7 @@ public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter
     public void revealInSlot(IsSlot slot) {
         if (view instanceof HasContent) {
             onBeforeReveal();
-            slot.updateContent(view);
+            slot.updateContent(view, this::registerSlots);
         } else {
             throw new RevealViewWithNoContentException(view.getClass().getCanonicalName());
         }
@@ -61,7 +65,6 @@ public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter
 
     private DominoView.RevealedHandler getViewRevealHandler() {
         return () -> {
-            registerSlots();
             RevealedHandler revealHandler = getRevealHandler();
             if (nonNull(revealHandler)) {
                 revealHandler.onRevealed();
@@ -73,7 +76,10 @@ public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter
     private void registerSlots() {
         SlotsEntries slotsEntries = getSlots();
         if (nonNull(slotsEntries)) {
-            slotsEntries.getSlots().forEach(SlotRegistry::registerSlot);
+            slotsEntries.getSlots().forEach((key, slot) -> {
+                LOGGER.info("Presenter ["+this.getClass().getCanonicalName()+"] is registering slot ["+key+"]");
+                SlotRegistry.registerSlot(key, slot);
+            });
         }
     }
 

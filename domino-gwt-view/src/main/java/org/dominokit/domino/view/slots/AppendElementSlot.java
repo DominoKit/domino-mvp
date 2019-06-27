@@ -4,6 +4,7 @@ import elemental2.dom.HTMLElement;
 import jsinterop.base.Js;
 import org.dominokit.domino.api.client.mvp.slots.IsSlot;
 import org.dominokit.domino.api.client.mvp.view.ContentView;
+import org.dominokit.domino.api.client.mvp.view.HasContent;
 import org.dominokit.domino.ui.utils.DominoElement;
 import org.jboss.gwt.elemento.core.IsElement;
 
@@ -32,8 +33,8 @@ public class AppendElementSlot implements IsSlot<ContentView> {
     }
 
     @Override
-    public void updateContent(ContentView view) {
+    public void updateContent(ContentView view, HasContent.CreateHandler createHandler) {
         DominoElement.of(element)
-                .appendChild(Js.<HTMLElement>uncheckedCast(view.getContent().get()));
+                .appendChild(Js.<HTMLElement>uncheckedCast(view.getContent(createHandler).get()));
     }
 }
