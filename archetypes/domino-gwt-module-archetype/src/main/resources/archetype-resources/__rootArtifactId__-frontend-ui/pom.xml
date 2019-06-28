@@ -28,8 +28,8 @@
             <classifier>sources</classifier>
         </dependency>
         <dependency>
-            <groupId>org.dominokit.domino.logging</groupId>
-            <artifactId>domino-gwt-logger</artifactId>
+            <groupId>org.dominokit</groupId>
+            <artifactId>domino-slf4j-logger</artifactId>
         </dependency>
         <dependency>
             <groupId>org.dominokit.domino</groupId>

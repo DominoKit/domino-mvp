@@ -1,14 +1,16 @@
 package org.dominokit.domino.apt.client.processors.module.client.presenters;
 
 import com.squareup.javapoet.*;
-import org.dominokit.domino.api.client.annotations.Aggregate;
 import org.dominokit.domino.api.client.annotations.presenter.*;
 import org.dominokit.domino.api.client.mvp.presenter.ViewBaseClientPresenter;
+import org.dominokit.domino.api.client.mvp.slots.IsSlot;
+import org.dominokit.domino.api.client.mvp.slots.SlotsEntries;
+import org.dominokit.domino.api.shared.extension.Aggregate;
 import org.dominokit.domino.api.shared.extension.DominoEvent;
 import org.dominokit.domino.api.shared.extension.DominoEventListener;
-import org.dominokit.domino.api.shared.history.DominoHistory;
 import org.dominokit.domino.apt.commons.AbstractSourceBuilder;
 import org.dominokit.domino.apt.commons.DominoTypeBuilder;
+import org.dominokit.domino.history.DominoHistory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -16,6 +18,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.type.TypeMirror;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.util.Objects.nonNull;
 
@@ -73,8 +76,14 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
         generateListenersMethod(proxyType);
         generateSetState(proxyType);
         generateFireActivationEvent(proxyType);
+        generateGetSlotsMethod(proxyType);
 
-        return Collections.singletonList(proxyType);
+        List<TypeSpec.Builder> types = new ArrayList<>();
+        types.add(proxyType);
+        if (nonNull(proxyElement.getAnnotation(RegisterSlots.class))) {
+            types.add(generateSlotsInterface(proxyType));
+        }
+        return types;
     }
 
     private void generateSetState(TypeSpec.Builder proxyType) {
@@ -292,4 +301,44 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
         }
     }
 
+
+    private void generateGetSlotsMethod(TypeSpec.Builder proxyType) {
+        if (nonNull(proxyElement.getAnnotation(RegisterSlots.class))) {
+            List<String> slots = Arrays.asList(proxyElement.getAnnotation(RegisterSlots.class).value());
+
+            MethodSpec.Builder slotsMethodBuilder = MethodSpec.methodBuilder("getSlots")
+                    .addModifiers(Modifier.PROTECTED)
+                    .addAnnotation(Override.class)
+                    .returns(TypeName.get(SlotsEntries.class))
+                    .addStatement("$T slotsEntries = $T.create()", TypeName.get(SlotsEntries.class), TypeName.get(SlotsEntries.class));
+
+            slots.forEach(slot -> slotsMethodBuilder.addStatement("slotsEntries.add($S, view.$L())", slot, slotAsMethodName(slot)));
+
+            slotsMethodBuilder.addStatement("return slotsEntries");
+
+            proxyType.addMethod(slotsMethodBuilder.build());
+        }
+    }
+
+    private TypeSpec.Builder generateSlotsInterface(TypeSpec.Builder proxyType) {
+
+        List<String> slots = Arrays.asList(proxyElement.getAnnotation(RegisterSlots.class).value());
+        TypeVariableName typeVariableName = TypeVariableName.get("?");
+        TypeSpec.Builder slotsInterfaceBuilder = TypeSpec.interfaceBuilder(proxyElement.getSimpleName().toString() + "Slots")
+                .addModifiers(Modifier.PUBLIC);
+        slots.forEach(slot -> slotsInterfaceBuilder
+                .addMethod(MethodSpec.methodBuilder(slotAsMethodName(slot))
+                        .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
+                        .returns(ParameterizedTypeName.get(ClassName.get(IsSlot.class), typeVariableName))
+                        .build()));
+
+        return slotsInterfaceBuilder;
+    }
+
+    public String slotAsMethodName(String slotName) {
+        String methodName = Arrays.stream(slotName.split("-|\\."))
+                .map(processorUtil::capitalizeFirstLetter)
+                .collect(Collectors.joining());
+        return "get" + methodName + "Slot";
+    }
 }

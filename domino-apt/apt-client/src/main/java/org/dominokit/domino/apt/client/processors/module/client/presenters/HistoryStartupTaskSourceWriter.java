@@ -6,12 +6,13 @@ import org.dominokit.domino.api.client.annotations.presenter.*;
 import org.dominokit.domino.api.client.events.BaseRoutingAggregator;
 import org.dominokit.domino.api.client.events.DefaultEventAggregator;
 import org.dominokit.domino.api.client.startup.BaseRoutingStartupTask;
-import org.dominokit.domino.api.shared.history.DominoHistory;
-import org.dominokit.domino.api.shared.history.TokenFilter;
 import org.dominokit.domino.apt.client.processors.module.client.presenters.model.DependsOnModel;
 import org.dominokit.domino.apt.client.processors.module.client.presenters.model.EventsGroup;
 import org.dominokit.domino.apt.commons.AbstractSourceBuilder;
 import org.dominokit.domino.apt.commons.DominoTypeBuilder;
+import org.dominokit.domino.apt.commons.ExceptionUtil;
+import org.dominokit.domino.history.DominoHistory;
+import org.dominokit.domino.history.TokenFilter;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.*;
@@ -44,10 +45,9 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
                         .addModifiers(Modifier.PUBLIC)
                         .addCode(getSuperCall(taskType))
                         .build());
-
-        getDirectUrlFilterTokenMethod(taskType);
-
-        taskType.addMethod(getFilterTokenMethod())
+        taskType
+                .addMethod(getFilterTokenMethod())
+                .addMethod(getStartupFilterTokenMethod())
                 .addMethod(onStateReadyMethod());
 
         if (presenterElement.getAnnotation(AutoRoute.class).routeOnce()) {
@@ -80,22 +80,21 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
     }
 
 
-    private void getDirectUrlFilterTokenMethod(TypeSpec.Builder taskType) {
+    private MethodSpec getStartupFilterTokenMethod() {
+
+        MethodSpec.Builder method = MethodSpec.methodBuilder("getStartupTokenFilter")
+                .addAnnotation(Override.class)
+                .addModifiers(Modifier.PROTECTED)
+                .returns(TokenFilter.class);
 
         Optional<String> tokenFilterMethodName = getTokenFilterMethodName(presenterElement, StartupTokenFilter.class);
+        if (tokenFilterMethodName.isPresent()) {
+            method.addStatement("return $T." + tokenFilterMethodName.get() + "(\"" + token + "\")", TypeName.get(presenterElement.asType()));
+        } else {
+            method.addStatement("return $T." + (token.trim().isEmpty() ? "any()" : "startsWithPathFilter(\"" + token + "\")"), TypeName.get(TokenFilter.class));
+        }
 
-        tokenFilterMethodName.ifPresent(methodName -> {
-            MethodSpec.Builder method = MethodSpec.methodBuilder("getStartupTokenFilter")
-                    .addAnnotation(Override.class)
-                    .addModifiers(Modifier.PROTECTED)
-                    .returns(TokenFilter.class);
-
-
-            method.addStatement("return $T." + methodName + "(\"" + token + "\")", TypeName.get(presenterElement.asType()));
-
-            taskType.addMethod(method.build());
-
-        });
+        return method.build();
     }
 
     private MethodSpec getFilterTokenMethod() {
@@ -109,7 +108,7 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
         if (tokenFilterMethodName.isPresent()) {
             method.addStatement("return $T." + tokenFilterMethodName.get() + "(\"" + token + "\")", TypeName.get(presenterElement.asType()));
         } else {
-            method.addStatement("return $T." + (token.trim().isEmpty() ? "any()" : "exactMatch(\"" + token + "\")"), TypeName.get(TokenFilter.class));
+            method.addStatement("return $T." + (token.trim().isEmpty() ? "any()" : "endsWithPathFilter(\"" + token + "\")"), TypeName.get(TokenFilter.class));
         }
 
         return method.build();
@@ -208,50 +207,57 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
     }
 
     private DependsOnModel getDependsOnModel(TypeElement element) {
+
+
         DependsOnModel dependsOnModel = new DependsOnModel();
-        TypeMirror superclass = element.getSuperclass();
-        if (superclass.getKind().equals(TypeKind.NONE)) {
-            return dependsOnModel;
-        }
-
-        if (nonNull(element.getAnnotation(DependsOn.class))) {
-            List<? extends AnnotationMirror> annotations = element.getAnnotationMirrors();
-            for (AnnotationMirror annotationMirror : annotations) {
-
-                if (types.isSameType(annotationMirror.getAnnotationType(), elements.getTypeElement(DependsOn.class.getName()).asType())) {
-                    Map<? extends ExecutableElement, ? extends AnnotationValue> elementValues = annotationMirror.getElementValues();
-
-                    elementValues.values()
-                            .stream()
-                            .findFirst()
-                            .ifPresent(annotationValue -> {
-                                List<AnnotationMirror> eventsGroupsAnnotations = (List<AnnotationMirror>) annotationValue.getValue();
-                                eventsGroupsAnnotations.stream()
-                                        .forEach(eventGroupAnnotationMirror -> {
-                                            Collection<? extends AnnotationValue> values = eventGroupAnnotationMirror.getElementValues()
-                                                    .values();
-                                            AnnotationValue groupValue = values.stream().findFirst().get();
-                                            List<AnnotationValue> eventTypes = (List<AnnotationValue>) groupValue.getValue();
-                                            Iterator<? extends AnnotationValue> iterator = eventTypes.iterator();
-
-                                            List<TypeMirror> eventTypesMirrors = new ArrayList<>();
-
-                                            while (iterator.hasNext()) {
-                                                AnnotationValue next = iterator.next();
-                                                eventTypesMirrors.add((TypeMirror) next.getValue());
-                                            }
-
-                                            if (!eventTypesMirrors.isEmpty()) {
-                                                dependsOnModel.addEventGroup(new EventsGroup(eventTypesMirrors));
-                                            }
-                                        });
-                            });
-                }
+        try {
+            TypeMirror superclass = element.getSuperclass();
+            if (superclass.getKind().equals(TypeKind.NONE)) {
+                return dependsOnModel;
             }
-            return dependsOnModel;
-        } else {
-            return getDependsOnModel((TypeElement) types.asElement(element.getSuperclass()));
+
+            if (nonNull(element.getAnnotation(DependsOn.class))) {
+                List<? extends AnnotationMirror> annotations = element.getAnnotationMirrors();
+                for (AnnotationMirror annotationMirror : annotations) {
+
+                    if (types.isSameType(annotationMirror.getAnnotationType(), elements.getTypeElement(DependsOn.class.getName()).asType())) {
+                        Map<? extends ExecutableElement, ? extends AnnotationValue> elementValues = annotationMirror.getElementValues();
+
+                        elementValues.values()
+                                .stream()
+                                .findFirst()
+                                .ifPresent(annotationValue -> {
+                                    List<AnnotationMirror> eventsGroupsAnnotations = (List<AnnotationMirror>) annotationValue.getValue();
+                                    eventsGroupsAnnotations.stream()
+                                            .forEach(eventGroupAnnotationMirror -> {
+                                                Collection<? extends AnnotationValue> values = eventGroupAnnotationMirror.getElementValues()
+                                                        .values();
+                                                AnnotationValue groupValue = values.stream().findFirst().get();
+                                                List<AnnotationValue> eventTypes = (List<AnnotationValue>) groupValue.getValue();
+                                                Iterator<? extends AnnotationValue> iterator = eventTypes.iterator();
+
+                                                List<TypeMirror> eventTypesMirrors = new ArrayList<>();
+
+                                                while (iterator.hasNext()) {
+                                                    AnnotationValue next = iterator.next();
+                                                    eventTypesMirrors.add((TypeMirror) next.getValue());
+                                                }
+
+                                                if (!eventTypesMirrors.isEmpty()) {
+                                                    dependsOnModel.addEventGroup(new EventsGroup(eventTypesMirrors));
+                                                }
+                                            });
+                                });
+                    }
+                }
+                return dependsOnModel;
+            } else {
+                return getDependsOnModel((TypeElement) types.asElement(element.getSuperclass()));
+            }
+        } catch (Exception error) {
+            ExceptionUtil.messageStackTrace(messager, error, element);
         }
+        return dependsOnModel;
     }
 
     private String[] revealConditionMethods() {

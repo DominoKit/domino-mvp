@@ -10,13 +10,8 @@ import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.WebClient;
 import org.apache.commons.beanutils.BeanUtils;
-import org.dominokit.domino.api.shared.request.ServerRequest;
-import org.dominokit.domino.api.shared.request.ServiceRootMatcher;
-import org.dominokit.domino.api.shared.request.service.annotations.ServiceRoot;
-import org.dominokit.domino.api.client.events.ServerRequestEventFactory;
-import org.dominokit.domino.api.shared.request.FailedResponseBean;
-import org.dominokit.domino.api.shared.request.ResponseBean;
-import org.dominokit.domino.client.commons.request.AbstractRequestAsyncSender;
+import org.dominokit.domino.rest.shared.request.*;
+import org.dominokit.domino.rest.shared.request.service.annotations.ServiceRoot;
 
 import javax.ws.rs.*;
 import java.lang.reflect.InvocationTargetException;

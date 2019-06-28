@@ -1,7 +1,6 @@
 package org.dominokit.domino.desktop.client;
 
-import org.dominokit.domino.api.shared.history.*;
-import org.dominokit.domino.client.commons.history.DominoDirectState;
+import org.dominokit.domino.history.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -36,6 +35,11 @@ public class DesktopStateHistory implements AppHistory {
     public DirectState listen(TokenFilter tokenFilter, StateListener listener, boolean removeOnComplete) {
         listeners.add(new HistoryListener(listener, tokenFilter, removeOnComplete));
         return new DominoDirectState(tokenFilter, currentState(), listener);
+    }
+
+    @Override
+    public void removeListener(StateListener stateListener) {
+        listeners.remove(stateListener);
     }
 
     private State currentState() {

@@ -1,10 +1,7 @@
 package org.dominokit.domino.test.api.client;
 
-import org.dominokit.domino.api.client.events.ServerRequestEventFactory;
-import org.dominokit.domino.api.shared.request.FailedResponseBean;
-import org.dominokit.domino.api.shared.request.ServerRequest;
-import org.dominokit.domino.api.shared.request.ServerRequestCallBack;
-import org.dominokit.domino.client.commons.request.AbstractRequestAsyncSender;
+
+import org.dominokit.domino.rest.shared.request.*;
 
 public class TestRequestAsyncSender extends AbstractRequestAsyncSender {
 

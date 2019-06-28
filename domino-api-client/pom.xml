@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.dominokit.domino</groupId>
         <artifactId>domino-parent</artifactId>
-        <version>1.0-rc.4</version>
+        <version>1.0-rc.5-SNAPSHOT</version>
     </parent>
 
     <groupId>org.dominokit.domino.api</groupId>
@@ -38,6 +38,15 @@
             <artifactId>jaxrs-super</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.dominokit</groupId>
+            <artifactId>domino-aggregator-shared</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.dominokit</groupId>
+            <artifactId>domino-aggregator-apt</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.dominokit.domino.api</groupId>
             <artifactId>jaxrs-super</artifactId>
             <classifier>sources</classifier>
@@ -61,14 +70,8 @@
         </dependency>
         <dependency>
             <groupId>org.dominokit</groupId>
-            <artifactId>domino-rest</artifactId>
+            <artifactId>domino-rest-shared</artifactId>
             <version>${domino.rest.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.dominokit</groupId>
-            <artifactId>domino-rest</artifactId>
-            <version>${domino.rest.version}</version>
-            <classifier>sources</classifier>
         </dependency>
         <dependency>
             <groupId>org.gwtproject.regexp</groupId>
@@ -86,22 +89,6 @@
                 <configuration>
                     <moduleName>org.dominokit.domino.api.Domino</moduleName>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

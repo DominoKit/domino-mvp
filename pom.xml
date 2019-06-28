@@ -5,7 +5,7 @@
 
     <groupId>org.dominokit.domino</groupId>
     <artifactId>domino-parent</artifactId>
-    <version>1.0-rc.4</version>
+    <version>1.0-rc.5-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>domino-parent</name>
@@ -23,7 +23,6 @@
         <module>domino-remote-logging</module>
         <module>domino-desktop</module>
         <module>domino-client-commons</module>
-        <module>domino-gwt-logger</module>
         <module>domino-gwt-view</module>
         <module>domino-log4j-server-logging</module>
         <module>domino</module>
@@ -102,7 +101,11 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <vertx.version>3.6.3</vertx.version>
         <elemental.version>1.0.0-RC1</elemental.version>
-        <domino.rest.version>1.0-SNAPSHOT</domino.rest.version>
+        <domino.rest.version>1.0-rc.4-SNAPSHOT</domino.rest.version>
+        <domino.logger.version>1.0-rc.4-SNAPSHOT</domino.logger.version>
+        <domino.aggregator.version>1.0-rc.4-SNAPSHOT</domino.aggregator.version>
+        <domino.history.version>1.0-rc.4-SNAPSHOT</domino.history.version>
+        <domino.apt.commons.version>1.0-rc.4-SNAPSHOT</domino.apt.commons.version>
     </properties>
 
     <dependencyManagement>
@@ -150,9 +153,40 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.dominokit.domino.logging</groupId>
-                <artifactId>domino-gwt-logger</artifactId>
-                <version>${project.version}</version>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-slf4j-logger</artifactId>
+                <version>${domino.logger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-aggregator-shared</artifactId>
+                <version>${domino.aggregator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-aggregator-apt</artifactId>
+                <version>${domino.aggregator.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-history-shared</artifactId>
+                <version>${domino.history.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-history-gwt</artifactId>
+                <version>${domino.history.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-history-test</artifactId>
+                <version>${domino.history.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-apt-commons</artifactId>
+                <version>${domino.apt.commons.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.dominokit.domino.logging</groupId>
@@ -326,7 +360,11 @@
                 <artifactId>validation-api</artifactId>
                 <version>2.0.1.Final</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-rest-server</artifactId>
+                <version>${domino.rest.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <dependencies>
@@ -350,24 +388,6 @@
     </dependencies>
 
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
         <pluginManagement>
             <plugins>
                 <plugin>

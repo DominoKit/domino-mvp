@@ -1,6 +1,7 @@
 package org.dominokit.domino.test.api.client;
 
-import org.dominokit.domino.api.shared.request.FailedResponseBean;
+
+import org.dominokit.domino.rest.shared.request.FailedResponseBean;
 
 import java.util.Map;
 

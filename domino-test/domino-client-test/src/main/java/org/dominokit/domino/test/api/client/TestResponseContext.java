@@ -4,7 +4,7 @@ import org.dominokit.domino.api.server.request.DefaultMultiMap;
 import org.dominokit.domino.api.server.request.MultiMap;
 import org.dominokit.domino.api.server.response.ResponseContext;
 import org.dominokit.domino.api.server.response.ResponseEndHandler;
-import org.dominokit.domino.api.shared.request.ResponseBean;
+import org.dominokit.domino.rest.shared.request.ResponseBean;
 
 import java.util.List;
 

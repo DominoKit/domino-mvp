@@ -76,7 +76,7 @@ public class ClientModuleProcessingStep extends AbstractProcessingStep {
                         writeSource(new ModuleConfigurationSourceWriter(element, presenters, views, initialTasks, processingEnv)
                                 .asTypeBuilder(), elements.getPackageOf(element).getQualifiedName().toString());
                     } catch (Exception e) {
-                        ExceptionUtil.messageStackTrace(messager, e);
+                        ExceptionUtil.messageStackTrace(messager, e, element);
                     }
                 });
     }

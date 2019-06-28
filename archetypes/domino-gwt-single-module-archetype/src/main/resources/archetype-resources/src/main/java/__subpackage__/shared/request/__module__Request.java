@@ -3,11 +3,10 @@
 #set( $symbol_escape = '\' )
 package ${package}.${subpackage}.shared.request;
 
-import org.dominokit.domino.api.shared.request.RequestBean;
 import org.dominokit.jacksonapt.annotation.JSONMapper;
 
 @JSONMapper
-public class ${module}Request implements RequestBean {
+public class ${module}Request {
 
     private String message;
 

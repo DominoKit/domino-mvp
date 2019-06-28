@@ -3,7 +3,7 @@
 
     <groupId>org.dominokit.domino.archetypes</groupId>
     <artifactId>archetypes</artifactId>
-    <version>1.0-rc.4</version>
+    <version>1.0-rc.5-SNAPSHOT</version>
     <modelVersion>4.0.0</modelVersion>
 
 
@@ -60,24 +60,6 @@
     </distributionManagement>
 
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -199,7 +181,6 @@
             </build>
         </profile>
     </profiles>
-
 
     <modules>
         <module>domino-gwt-app-archetype</module>

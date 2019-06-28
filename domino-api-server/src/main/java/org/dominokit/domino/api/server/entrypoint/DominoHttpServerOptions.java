@@ -11,6 +11,8 @@ public interface DominoHttpServerOptions {
 
     int getPort();
 
+    void setPort(int port);
+
     String getHost();
 
     JsonObject toJson();

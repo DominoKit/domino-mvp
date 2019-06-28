@@ -5,18 +5,18 @@ import java.util.Map;
 
 public class SlotsEntries {
 
-    private final Map<String, Slot> slots = new HashMap<>();
+    private final Map<String, IsSlot> slots = new HashMap<>();
 
     public static SlotsEntries create(){
         return new SlotsEntries();
     }
 
-    public SlotsEntries add(String key, Slot slot){
+    public SlotsEntries add(String key, IsSlot slot){
         slots.put(key, slot);
         return this;
     }
 
-    public Map<String, Slot> getSlots(){
+    public Map<String, IsSlot> getSlots(){
         return new HashMap<>(slots);
     }
 

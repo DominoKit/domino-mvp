@@ -16,6 +16,7 @@
 
         <vertx.version>3.6.2</vertx.version>
         <jackson.version>1.0-SNAPSHOT</jackson.version>
+
     </properties>
 
     <repositories>
@@ -35,7 +36,7 @@
             <dependency>
                 <groupId>org.dominokit.domino</groupId>
                 <artifactId>domino</artifactId>
-                <version>1.0-rc.4</version>
+                <version>1.0-rc.5-SNAPSHOT</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

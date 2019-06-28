@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.dominokit.domino.test</groupId>
         <artifactId>domino-test</artifactId>
-        <version>1.0-rc.4</version>
+        <version>1.0-rc.5-SNAPSHOT</version>
     </parent>
     <artifactId>domino-server-test</artifactId>
     <packaging>jar</packaging>
@@ -49,24 +49,4 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 </project>

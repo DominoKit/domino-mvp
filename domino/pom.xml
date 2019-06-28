@@ -5,7 +5,7 @@
 
     <groupId>org.dominokit.domino</groupId>
     <artifactId>domino</artifactId>
-    <version>1.0-rc.4</version>
+    <version>1.0-rc.5-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>domino</name>
 
@@ -15,6 +15,11 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <domino.logger.version>1.0-rc.4-SNAPSHOT</domino.logger.version>
+        <domino.aggregator.version>1.0-rc.4-SNAPSHOT</domino.aggregator.version>
+        <domino.history.version>1.0-rc.4-SNAPSHOT</domino.history.version>
+        <domino.apt.commons.version>1.0-rc.4-SNAPSHOT</domino.apt.commons.version>
+        <domino.rest.version>1.0-rc.4-SNAPSHOT</domino.rest.version>
     </properties>
 
     <url>https://github.com/DominoKit/domino</url>
@@ -73,11 +78,6 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.dominokit.domino.apt</groupId>
-                <artifactId>apt-shared</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.dominokit.domino.api</groupId>
                 <artifactId>domino-api-client</artifactId>
                 <version>${project.version}</version>
@@ -110,9 +110,40 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.dominokit.domino.logging</groupId>
-                <artifactId>domino-gwt-logger</artifactId>
-                <version>${project.version}</version>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-slf4j-logger</artifactId>
+                <version>${domino.logger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-aggregator-shared</artifactId>
+                <version>${domino.aggregator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-aggregator-apt</artifactId>
+                <version>${domino.aggregator.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-history-shared</artifactId>
+                <version>${domino.history.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-history-gwt</artifactId>
+                <version>${domino.history.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-history-test</artifactId>
+                <version>${domino.history.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-apt-commons</artifactId>
+                <version>${domino.apt.commons.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.dominokit.domino.logging</groupId>

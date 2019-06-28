@@ -1,12 +1,11 @@
 package org.dominokit.domino.gwt.client.events;
 
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.web.bindery.event.shared.Event;
-import org.dominokit.domino.api.client.events.EventProcessor;
+import org.dominokit.domino.rest.shared.EventProcessor;
+import org.gwtproject.event.shared.Event;
 
 public abstract class ClientRequestGwtEvent extends Event<EventProcessor> {
 
-    protected static final GwtEvent.Type<EventProcessor> CLIENT_REQUEST_EVENT_TYPE = new GwtEvent.Type<>();
+    public static final Event.Type<EventProcessor> CLIENT_REQUEST_EVENT_TYPE = new Event.Type<>();
 
     @Override
     public Type<EventProcessor> getAssociatedType() {

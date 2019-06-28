@@ -1,11 +1,11 @@
 package org.dominokit.domino.desktop.client;
 
-import org.dominokit.domino.api.client.events.Event;
-import org.dominokit.domino.api.client.events.ServerRequestEventFactory;
-import org.dominokit.domino.api.shared.request.FailedResponseBean;
-import org.dominokit.domino.api.shared.request.ServerRequest;
 import org.dominokit.domino.desktop.client.events.DesktopFailedServerEvent;
 import org.dominokit.domino.desktop.client.events.DesktopSuccessServerEvent;
+import org.dominokit.domino.rest.shared.Event;
+import org.dominokit.domino.rest.shared.request.FailedResponseBean;
+import org.dominokit.domino.rest.shared.request.ServerRequest;
+import org.dominokit.domino.rest.shared.request.ServerRequestEventFactory;
 
 public class DesktopServerRequestEventFactory implements ServerRequestEventFactory {
     @Override

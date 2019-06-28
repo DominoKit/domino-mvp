@@ -37,7 +37,6 @@ public class ConfigurationProviderAnnotationProcessor extends BaseProcessor {
             String clazz = new ConfigurationProviderSourceWriter(element).write();
             sourceWriter.write(clazz);
             sourceWriter.flush();
-            sourceWriter.close();
         } catch (Exception e) {
             messager.printMessage(Diagnostic.Kind.ERROR,
                     "could not generate class " + ExceptionUtils.getFullStackTrace(e));

@@ -1,10 +1,10 @@
 package org.dominokit.domino.desktop.client.events;
 
 import org.dominokit.domino.api.client.ClientApp;
-import org.dominokit.domino.api.client.events.Event;
-import org.dominokit.domino.api.shared.request.FailedResponseBean;
-import org.dominokit.domino.api.shared.request.Request;
-import org.dominokit.domino.api.shared.request.ServerRequest;
+import org.dominokit.domino.rest.shared.Event;
+import org.dominokit.domino.rest.shared.request.FailedResponseBean;
+import org.dominokit.domino.rest.shared.request.Request;
+import org.dominokit.domino.rest.shared.request.ServerRequest;
 
 public class DesktopFailedServerEvent implements Event {
     private final ServerRequest request;

@@ -3,8 +3,8 @@ package org.dominokit.domino.api.client.startup;
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.events.BaseRoutingAggregator;
 import org.dominokit.domino.api.client.mvp.presenter.BaseClientPresenter;
-import org.dominokit.domino.api.shared.history.DominoHistory;
-import org.dominokit.domino.api.shared.history.TokenFilter;
+import org.dominokit.domino.history.DominoHistory;
+import org.dominokit.domino.history.TokenFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
