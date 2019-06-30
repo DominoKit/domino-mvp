@@ -88,6 +88,11 @@
             <version>4.0.0.Beta5</version>
         </dependency>
         <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.198</version>
+        </dependency>
+        <dependency>
             <groupId>org.dominokit</groupId>
             <artifactId>domino-rest-server</artifactId>
             <version>1.0-rc.4-SNAPSHOT</version>
