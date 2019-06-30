@@ -110,7 +110,7 @@ public abstract class BaseClientPresenter extends ClientPresenter implements Pre
 
     }
 
-    public void RegisterStore(String key, IsStore<?> store){
+    public void registerStore(String key, IsStore<?> store){
         RegistrationHandler registrationHandler = StoreRegistry.INSTANCE.registerStore(key, store);
         storeRegisterations.add(registrationHandler);
 
