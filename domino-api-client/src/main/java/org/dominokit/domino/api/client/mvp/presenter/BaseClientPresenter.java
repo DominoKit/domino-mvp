@@ -3,6 +3,9 @@ package org.dominokit.domino.api.client.mvp.presenter;
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.async.AsyncRunner;
 import org.dominokit.domino.api.client.extension.DominoEvents;
+import org.dominokit.domino.api.client.mvp.IsStore;
+import org.dominokit.domino.api.client.mvp.RegistrationHandler;
+import org.dominokit.domino.api.client.mvp.StoreRegistry;
 import org.dominokit.domino.api.client.startup.BaseRoutingStartupTask;
 import org.dominokit.domino.api.shared.extension.DominoEvent;
 import org.dominokit.domino.api.shared.extension.DominoEventListener;
@@ -12,7 +15,9 @@ import org.dominokit.domino.history.TokenParameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class BaseClientPresenter extends ClientPresenter implements Presentable {
@@ -28,6 +33,7 @@ public abstract class BaseClientPresenter extends ClientPresenter implements Pre
     private final PresenterState uninitialized = this::initialize;
 
     private Map<Class<? extends DominoEvent>, DominoEventListener> listeners;
+    private final List<RegistrationHandler> storeRegisterations= new ArrayList<>();
 
     protected void initialize() {
         postConstruct();
@@ -81,7 +87,13 @@ public abstract class BaseClientPresenter extends ClientPresenter implements Pre
         removeListeners();
         activated = false;
         fireStateEvent(false);
+        removeStores();
         onDeactivated();
+    }
+
+    private void removeStores(){
+        storeRegisterations.forEach(RegistrationHandler::remove);
+        storeRegisterations.clear();
     }
 
     @Override
@@ -95,6 +107,12 @@ public abstract class BaseClientPresenter extends ClientPresenter implements Pre
     }
 
     public void setState(DominoHistory.State state) {
+
+    }
+
+    public void RegisterStore(String key, IsStore<?> store){
+        RegistrationHandler registrationHandler = StoreRegistry.INSTANCE.registerStore(key, store);
+        storeRegisterations.add(registrationHandler);
 
     }
 
