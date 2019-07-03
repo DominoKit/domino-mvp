@@ -340,7 +340,7 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
             this.failedResponseBean = new TestFailedResponseBean();
         }
 
-        public void returnResponse(ResponseBean response) {
+        public void returnResponse(Object response) {
             TestClientAppFactory.serverRouter.fakeResponse(request, new SuccessReply(response));
         }
 
