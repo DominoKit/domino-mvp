@@ -14,13 +14,14 @@ public class FakeSlot implements IsSlot<ContentView> {
 
     @Override
     public void updateContent(ContentView view, HasContent.CreateHandler createHandler) {
-        if (view.getContent(createHandler).get() instanceof FakeElement) {
+        Content content = view.getContent(createHandler);
+        if (content.get() instanceof FakeElement) {
             if (nonNull(old)) {
                 old.get().remove();
             }
 
-            this.old = view.getContent(createHandler);
-            ((FakeElement) view.getContent(createHandler).get()).append();
+            this.old = content;
+            ((FakeElement) content.get()).append();
         }
         revealed = true;
     }

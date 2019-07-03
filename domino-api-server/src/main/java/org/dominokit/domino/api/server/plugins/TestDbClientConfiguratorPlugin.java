@@ -15,6 +15,8 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.sql.SQLException;
 
+import static java.util.Objects.nonNull;
+
 @AutoService(DominoLoaderPlugin.class)
 public class TestDbClientConfiguratorPlugin extends BaseDominoLoaderPlugin {
 
@@ -28,12 +30,16 @@ public class TestDbClientConfiguratorPlugin extends BaseDominoLoaderPlugin {
         DBContext.dbClient = JDBCClient.createShared(context.getRxVertx(), dbConfigurations);
 
         String dbScriptFile = dbConfigurations.getString("db_script_file");
-        context.getRxVertx()
-                .fileSystem()
-                .rxReadFile(dbScriptFile)
-                .flatMapCompletable(this::runScript)
-                .doFinally(completeHandler::onCompleted)
-                .subscribe();
+        if (nonNull(dbScriptFile)) {
+            context.getRxVertx()
+                    .fileSystem()
+                    .rxReadFile(dbScriptFile)
+                    .flatMapCompletable(this::runScript)
+                    .doFinally(completeHandler::onCompleted)
+                    .subscribe();
+        } else {
+            completeHandler.onCompleted();
+        }
     }
 
     private Completable runScript(Buffer buffer) {
