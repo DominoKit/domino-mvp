@@ -91,6 +91,6 @@ public abstract class BaseRoutingStartupTask implements ClientStartupTask {
     }
 
     protected boolean isReRouteActivated() {
-        return true;
+        return false;
     }
 }
