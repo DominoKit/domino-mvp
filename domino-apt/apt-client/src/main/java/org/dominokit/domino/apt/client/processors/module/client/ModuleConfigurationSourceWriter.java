@@ -16,6 +16,7 @@ import org.dominokit.domino.api.client.mvp.presenter.ViewablePresenterSupplier;
 import org.dominokit.domino.api.client.mvp.view.View;
 import org.dominokit.domino.apt.commons.AbstractSourceBuilder;
 import org.dominokit.domino.apt.commons.DominoTypeBuilder;
+import org.dominokit.domino.apt.commons.ExceptionUtil;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
@@ -57,11 +58,11 @@ public class ModuleConfigurationSourceWriter extends AbstractSourceBuilder {
             clientModuleTypeBuilder.addMethod(registerPresenters());
         }
 
-        if(!views.isEmpty()){
+        if (!views.isEmpty()) {
             clientModuleTypeBuilder.addMethod(registerViews());
         }
 
-        if(!initialTasks.isEmpty()){
+        if (!initialTasks.isEmpty()) {
             clientModuleTypeBuilder.addMethod(registerInitialTasks());
         }
 
@@ -103,27 +104,32 @@ public class ModuleConfigurationSourceWriter extends AbstractSourceBuilder {
                 .addAnnotation(Override.class)
                 .addModifiers(Modifier.PUBLIC);
 
-        views.stream().map(charSequence -> {
-            String viewElement = charSequence;
-            return elements.getTypeElement(viewElement);
-        })
+        views.stream()
+                .map(charSequence -> {
+                    String viewElement = charSequence;
+                    return elements.getTypeElement(viewElement);
+                })
                 .forEach(view -> {
-                    Optional<TypeMirror> presenterType = processorUtil.getClassValueFromAnnotation(view, UiView.class, "presentable");
+                    try {
+                        Optional<TypeMirror> presenterType = processorUtil.getClassValueFromAnnotation(view, UiView.class, "presentable");
 
-                    if(!presenterType.isPresent()){
-                        throw new IllegalArgumentException();
+                        if (!presenterType.isPresent()) {
+                            throw new IllegalArgumentException();
+                        }
+                        boolean proxy = nonNull(types.asElement(presenterType.get()).getAnnotation(PresenterProxy.class));
+
+                        presenterType.ifPresent(presenter -> {
+                            String postfix = (proxy ? "_Presenter" : "") + "_Config";
+                            ClassName configClassName = ClassName.bestGuess(elements.getPackageOf(types.asElement(presenter)).getQualifiedName().toString() + "." + types.asElement(presenter).getSimpleName().toString() + postfix);
+                            String configName = processorUtil.lowerFirstLetter(types.asElement(presenter).getSimpleName().toString() + postfix);
+
+                            methodBuilder.addStatement("$T $L = new $T()", configClassName, configName, configClassName);
+                            methodBuilder.addStatement("$L.setViewSupplier(()-> new $T())", configName, TypeName.get(view.asType()));
+
+                        });
+                    } catch (Exception e) {
+                        ExceptionUtil.messageStackTrace(messager, e, view);
                     }
-                    boolean proxy = nonNull(types.asElement(presenterType.get()).getAnnotation(PresenterProxy.class));
-
-                    presenterType.ifPresent(presenter -> {
-                        String postfix = (proxy ? "_Presenter" : "") + "_Config";
-                        ClassName configClassName = ClassName.bestGuess(elements.getPackageOf(types.asElement(presenter)).getQualifiedName().toString() + "." + types.asElement(presenter).getSimpleName().toString() + postfix);
-                        String configName = processorUtil.lowerFirstLetter(types.asElement(presenter).getSimpleName().toString() +postfix);
-
-                        methodBuilder.addStatement("$T $L = new $T()", configClassName, configName, configClassName);
-                        methodBuilder.addStatement("$L.setViewSupplier(()-> new $T())", configName, TypeName.get(view.asType()));
-
-                    });
                 });
 
         return methodBuilder.build();
@@ -136,13 +142,12 @@ public class ModuleConfigurationSourceWriter extends AbstractSourceBuilder {
                 .addModifiers(Modifier.PUBLIC)
                 .addParameter(TypeName.get(InitialTaskRegistry.class), "registry");
         initialTasks.stream().map(elements::getTypeElement)
-                .forEach(initialTask ->{
+                .forEach(initialTask -> {
                     methodBuilder.addStatement("registry.registerInitialTask(new $T())", TypeName.get(initialTask.asType()));
                 });
 
         return methodBuilder.build();
     }
-
 
 
 }

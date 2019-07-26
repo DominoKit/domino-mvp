@@ -17,3 +17,8 @@ Domino-mvp comes with the required testing framework and tools that enables the 
 
 **[Documentation](https://github.com/DominoKit/domino-mvp/wiki)**
 
+----------------------------
+#### Supporters
+
+<a title="Install4j" href="https://www.ej-technologies.com/products/install4j/overview.html"><img src="https://www.ej-technologies.com/images/product_banners/install4j_large.png"></a>
+
