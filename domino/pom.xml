@@ -204,14 +204,14 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.dominokit.domino.api</groupId>
+                <groupId>org.dominokit</groupId>
                 <artifactId>jaxrs-super</artifactId>
-                <version>${project.version}</version>
+                <version>${domino.rest.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.dominokit.domino.api</groupId>
+                <groupId>org.dominokit</groupId>
                 <artifactId>jaxrs-super</artifactId>
-                <version>${project.version}</version>
+                <version>${domino.rest.version}</version>
                 <classifier>sources</classifier>
             </dependency>
             <dependency>

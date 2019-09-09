@@ -54,7 +54,7 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
             taskType.addMethod(routOnceMethod());
         }
 
-        if (!presenterElement.getAnnotation(AutoRoute.class).reRouteActivated()) {
+        if (presenterElement.getAnnotation(AutoRoute.class).reRouteActivated()) {
             taskType.addMethod(reRouteActivatedMethod());
         }
 
@@ -75,7 +75,7 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
                 .addAnnotation(Override.class)
                 .addModifiers(Modifier.PROTECTED)
                 .returns(TypeName.BOOLEAN)
-                .addStatement("return false");
+                .addStatement("return true");
         return method.build();
     }
 

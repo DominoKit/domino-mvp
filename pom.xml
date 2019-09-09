@@ -26,7 +26,6 @@
         <module>domino-gwt-view</module>
         <module>domino-log4j-server-logging</module>
         <module>domino</module>
-        <module>jaxrs-super</module>
     </modules>
 
     <url>https://github.com/DominoKit/domino</url>
@@ -205,14 +204,14 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>org.dominokit.domino.api</groupId>
+                <groupId>org.dominokit</groupId>
                 <artifactId>jaxrs-super</artifactId>
-                <version>${project.version}</version>
+                <version>${domino.rest.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.dominokit.domino.api</groupId>
+                <groupId>org.dominokit</groupId>
                 <artifactId>jaxrs-super</artifactId>
-                <version>${project.version}</version>
+                <version>${domino.rest.version}</version>
                 <classifier>sources</classifier>
             </dependency>
             <dependency>

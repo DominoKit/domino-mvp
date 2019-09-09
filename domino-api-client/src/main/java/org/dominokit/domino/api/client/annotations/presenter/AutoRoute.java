@@ -17,5 +17,5 @@ public @interface AutoRoute {
     boolean routeOnce() default false;
 
     @NotNull
-    boolean reRouteActivated() default true;
+    boolean reRouteActivated() default false;
 }
