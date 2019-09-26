@@ -100,7 +100,10 @@ public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter
         return () -> {
             SlotsEntries slotsEntries = getSlots();
             if (nonNull(slotsEntries)) {
-                slotsEntries.getSlots().forEach((key, slot) -> SlotRegistry.removeSlot(key));
+                slotsEntries.getSlots().forEach((key, slot) -> {
+                    LOGGER.info("Presenter ["+this.getClass().getCanonicalName()+"] is removing slot ["+key+"]");
+                    SlotRegistry.removeSlot(key);
+                });
             }
             RemovedHandler removeHandler = getRemoveHandler();
             if (nonNull(removeHandler)) {
