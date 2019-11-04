@@ -26,8 +26,6 @@ public class DominoLauncher extends Launcher {
     @Override
     public void afterStartingVertx(Vertx vertx) {
 
-        // read config
-
         RouterConfigurator routerConfigurator = new RouterConfigurator(vertx, configHolder.config, SecretKey.generate());
         routerHolder.router =
                 PROCESS_ARGS.contains("-cluster") ?

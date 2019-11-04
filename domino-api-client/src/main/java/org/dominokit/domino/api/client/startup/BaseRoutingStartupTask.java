@@ -18,9 +18,9 @@ public abstract class BaseRoutingStartupTask implements ClientStartupTask {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseRoutingStartupTask.class);
 
-    private List<BaseRoutingAggregator> aggregators = new ArrayList<>();
-    private boolean enabled = true;
-    private BaseClientPresenter presenter;
+    protected List<BaseRoutingAggregator> aggregators = new ArrayList<>();
+    protected boolean enabled = true;
+    protected BaseClientPresenter presenter;
 
     public BaseRoutingStartupTask(List<? extends BaseRoutingAggregator> aggregators) {
         this.aggregators.addAll(aggregators);
@@ -56,7 +56,7 @@ public abstract class BaseRoutingStartupTask implements ClientStartupTask {
                 .onDirectUrl(getStartupTokenFilter());
     }
 
-    private void doRoutingIfEnabled(DominoHistory.State state) {
+    protected void doRoutingIfEnabled(DominoHistory.State state) {
         if (enabled) {
             aggregators.forEach(aggregator -> aggregator.completeRoutingState(state));
         } else {

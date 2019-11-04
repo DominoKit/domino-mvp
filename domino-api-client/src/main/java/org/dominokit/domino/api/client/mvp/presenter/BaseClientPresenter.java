@@ -89,6 +89,7 @@ public abstract class BaseClientPresenter extends ClientPresenter implements Pre
         fireStateEvent(false);
         removeStores();
         onDeactivated();
+        routingTask.enable();
     }
 
     private void removeStores(){
