@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Objects.nonNull;
+
 public abstract class BaseClientPresenter extends ClientPresenter implements Presentable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseClientPresenter.class);
@@ -89,7 +91,9 @@ public abstract class BaseClientPresenter extends ClientPresenter implements Pre
         fireStateEvent(false);
         removeStores();
         onDeactivated();
-        routingTask.enable();
+        if(nonNull(routingTask)) {
+            routingTask.enable();
+        }
     }
 
     private void removeStores(){
