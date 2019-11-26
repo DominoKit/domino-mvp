@@ -40,12 +40,14 @@
             <groupId>org.dominokit</groupId>
             <artifactId>domino-ui</artifactId>
             <version>${domino.ui.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.dominokit</groupId>
             <artifactId>domino-ui</artifactId>
             <version>${domino.ui.version}</version>
             <classifier>sources</classifier>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
