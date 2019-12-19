@@ -14,7 +14,13 @@ public class JksServerConfigurator implements HttpServerConfigurator {
 
     @Override
     public void configureHttpServer(VertxContext context, HttpServerOptions options) {
-        applyConfigurations(context.config(), options);
+        if (jksEnabled(context.config())) {
+            applyConfigurations(context.config(), options);
+        }
+    }
+
+    private boolean jksEnabled(ServerConfiguration config) {
+        return config.getBoolean(ConfigKies.SSL_JKS_ENABLED, false);
     }
 
     private void applyConfigurations(ServerConfiguration configuration, HttpServerOptions options) {

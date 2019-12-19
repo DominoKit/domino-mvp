@@ -18,7 +18,13 @@ public class PemCertificateConfigurator implements HttpServerConfigurator {
 
     @Override
     public void configureHttpServer(VertxContext context, HttpServerOptions options) {
-        applyConfigurations(context.config(), options);
+        if(pemEnabled(context.config())) {
+            applyConfigurations(context.config(), options);
+        }
+    }
+
+    private boolean pemEnabled(ServerConfiguration config) {
+        return config.getBoolean(SSL_PEM_ENABLED, false);
     }
 
     private void applyConfigurations(ServerConfiguration configuration, HttpServerOptions options) {

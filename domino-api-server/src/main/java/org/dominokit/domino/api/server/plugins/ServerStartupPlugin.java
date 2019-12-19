@@ -23,16 +23,31 @@ public class ServerStartupPlugin extends BaseDominoLoaderPlugin {
         startHttpServer(context.getOptions(), context.getHttpServerConsumer());
     }
 
-    private Disposable startHttpServer(AsyncResult<HttpServerOptions> options, Consumer<HttpServer> httpServerConsumer) {
-        return context.getRxVertx().createHttpServer(options.result())
-                .requestHandler(context.getRxRouter())
-                .rxListen(options.result().getPort())
-                .doOnSuccess(httpServer -> {
-                    LOGGER.info("Server started on port : " + httpServer.actualPort());
-                    httpServerConsumer.accept(httpServer);
-                })
-                .doOnError(throwable -> LOGGER.error("Failed to start server", throwable))
-                .subscribe();
+    private void startHttpServer(AsyncResult<HttpServerOptions> options, Consumer<HttpServer> httpServerConsumer) {
+
+
+        context.getVertx()
+                .createHttpServer(options.result())
+                .requestHandler(context.getRouter())
+                .listen(options.result().getPort(), event -> {
+                    if(event.succeeded()){
+                        LOGGER.info("Server started on port : " + event.result().actualPort());
+                        httpServerConsumer.accept(HttpServer.newInstance(event.result()));
+                    }else{
+                        LOGGER.error("Failed to start server", event.cause());
+                    }
+                });
+
+
+//        return context.getRxVertx().createHttpServer(options.result())
+//                .requestHandler(context.getRxRouter())
+//                .rxListen(options.result().getPort())
+//                .doOnSuccess(httpServer -> {
+//                    LOGGER.info("Server started on port : " + httpServer.actualPort());
+//                    httpServerConsumer.accept(httpServer);
+//                })
+//                .doOnError(throwable -> LOGGER.error("Failed to start server", throwable))
+//                .subscribe();
     }
 
     @Override
