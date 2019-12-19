@@ -15,6 +15,7 @@ import org.junit.Test;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.dominokit.domino.http.server.config.ConfigKies.SSL_JKS_ENABLED;
 
 public class JksServerConfiguratorTest {
 
@@ -39,6 +40,7 @@ public class JksServerConfiguratorTest {
         JsonObject config = vertx.getOrCreateContext().config();
         Router router = Router.router(vertx);
         configuration = new VertxConfiguration(config);
+        configuration.put(SSL_JKS_ENABLED, true);
         configuration.put(SSL_CONFIGURATION_KEY, FALSE);
         configuration.put(SSL_JKS_PATH, TEST_JKS_PATH);
         configuration.put(SSL_JKS_SECRET, TEST_JKS_SECRET);

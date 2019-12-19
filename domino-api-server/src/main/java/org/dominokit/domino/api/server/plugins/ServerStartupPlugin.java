@@ -25,7 +25,6 @@ public class ServerStartupPlugin extends BaseDominoLoaderPlugin {
 
     private void startHttpServer(AsyncResult<HttpServerOptions> options, Consumer<HttpServer> httpServerConsumer) {
 
-
         context.getVertx()
                 .createHttpServer(options.result())
                 .requestHandler(context.getRouter())
@@ -37,17 +36,6 @@ public class ServerStartupPlugin extends BaseDominoLoaderPlugin {
                         LOGGER.error("Failed to start server", event.cause());
                     }
                 });
-
-
-//        return context.getRxVertx().createHttpServer(options.result())
-//                .requestHandler(context.getRxRouter())
-//                .rxListen(options.result().getPort())
-//                .doOnSuccess(httpServer -> {
-//                    LOGGER.info("Server started on port : " + httpServer.actualPort());
-//                    httpServerConsumer.accept(httpServer);
-//                })
-//                .doOnError(throwable -> LOGGER.error("Failed to start server", throwable))
-//                .subscribe();
     }
 
     @Override
