@@ -5,7 +5,7 @@
 
     <groupId>org.dominokit.domino</groupId>
     <artifactId>domino</artifactId>
-    <version>1.0-rc.5-SNAPSHOT</version>
+    <version>1.0-ps-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>domino</name>
 
@@ -15,11 +15,11 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <domino.logger.version>1.0-rc.4-SNAPSHOT</domino.logger.version>
-        <domino.aggregator.version>1.0-rc.4-SNAPSHOT</domino.aggregator.version>
-        <domino.history.version>1.0-rc.4-SNAPSHOT</domino.history.version>
-        <domino.apt.commons.version>1.0-rc.4-SNAPSHOT</domino.apt.commons.version>
-        <domino.rest.version>1.0-rc.4-SNAPSHOT</domino.rest.version>
+        <domino.logger.version>1.0-ps-SNAPSHOT</domino.logger.version>
+        <domino.aggregator.version>1.0-ps-SNAPSHOT</domino.aggregator.version>
+        <domino.history.version>1.0-ps-SNAPSHOT</domino.history.version>
+        <domino.apt.commons.version>1.0-ps-SNAPSHOT</domino.apt.commons.version>
+        <domino.rest.version>1.0-ps-SNAPSHOT</domino.rest.version>
     </properties>
 
     <url>https://github.com/DominoKit/domino</url>

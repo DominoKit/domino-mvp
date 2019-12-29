@@ -18,6 +18,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
+import javax.tools.Diagnostic;
 import java.lang.annotation.Annotation;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -227,10 +228,12 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
                                 .stream()
                                 .findFirst()
                                 .ifPresent(annotationValue -> {
-                                    List<AnnotationMirror> eventsGroupsAnnotations = (List<AnnotationMirror>) annotationValue.getValue();
+                                    List<AnnotationValue> eventsGroupsAnnotations = (List<AnnotationValue>) annotationValue.getValue();
                                     eventsGroupsAnnotations.stream()
                                             .forEach(eventGroupAnnotationMirror -> {
-                                                Collection<? extends AnnotationValue> values = eventGroupAnnotationMirror.getElementValues()
+                                                AnnotationMirror eventGroupAnnMirror = (AnnotationMirror)eventGroupAnnotationMirror.getValue();
+
+                                                Collection<? extends AnnotationValue> values = eventGroupAnnMirror.getElementValues()
                                                         .values();
                                                 AnnotationValue groupValue = values.stream().findFirst().get();
                                                 List<AnnotationValue> eventTypes = (List<AnnotationValue>) groupValue.getValue();

@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.dominokit.domino</groupId>
         <artifactId>domino-parent</artifactId>
-        <version>1.0-rc.5-SNAPSHOT</version>
+        <version>1.0-ps-SNAPSHOT</version>
     </parent>
 
     <groupId>org.dominokit.domino.api</groupId>
@@ -95,7 +95,7 @@
         <dependency>
             <groupId>org.dominokit</groupId>
             <artifactId>domino-rest-server</artifactId>
-            <version>1.0-rc.4-SNAPSHOT</version>
+            <version>1.0-ps-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

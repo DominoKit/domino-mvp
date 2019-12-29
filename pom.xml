@@ -5,7 +5,7 @@
 
     <groupId>org.dominokit.domino</groupId>
     <artifactId>domino-parent</artifactId>
-    <version>1.0-rc.5-SNAPSHOT</version>
+    <version>1.0-ps-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>domino-parent</name>
@@ -100,11 +100,11 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <vertx.version>3.8.1</vertx.version>
         <elemental.version>1.0.0-RC1</elemental.version>
-        <domino.rest.version>1.0-rc.4-SNAPSHOT</domino.rest.version>
-        <domino.logger.version>1.0-rc.4-SNAPSHOT</domino.logger.version>
-        <domino.aggregator.version>1.0-rc.4-SNAPSHOT</domino.aggregator.version>
-        <domino.history.version>1.0-rc.4-SNAPSHOT</domino.history.version>
-        <domino.apt.commons.version>1.0-rc.4-SNAPSHOT</domino.apt.commons.version>
+        <domino.rest.version>1.0-ps-SNAPSHOT</domino.rest.version>
+        <domino.logger.version>1.0-ps-SNAPSHOT</domino.logger.version>
+        <domino.aggregator.version>1.0-ps-SNAPSHOT</domino.aggregator.version>
+        <domino.history.version>1.0-ps-SNAPSHOT</domino.history.version>
+        <domino.apt.commons.version>1.0-ps-SNAPSHOT</domino.apt.commons.version>
     </properties>
 
     <dependencyManagement>
