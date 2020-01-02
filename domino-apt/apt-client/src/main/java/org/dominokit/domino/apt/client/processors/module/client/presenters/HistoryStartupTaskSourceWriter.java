@@ -227,10 +227,12 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
                                 .stream()
                                 .findFirst()
                                 .ifPresent(annotationValue -> {
-                                    List<AnnotationMirror> eventsGroupsAnnotations = (List<AnnotationMirror>) annotationValue.getValue();
+                                    List<AnnotationValue> eventsGroupsAnnotations = (List<AnnotationValue>) annotationValue.getValue();
                                     eventsGroupsAnnotations.stream()
                                             .forEach(eventGroupAnnotationMirror -> {
-                                                Collection<? extends AnnotationValue> values = eventGroupAnnotationMirror.getElementValues()
+                                                AnnotationMirror eventGroupAnnMirror = (AnnotationMirror)eventGroupAnnotationMirror.getValue();
+
+                                                Collection<? extends AnnotationValue> values = eventGroupAnnMirror.getElementValues()
                                                         .values();
                                                 AnnotationValue groupValue = values.stream().findFirst().get();
                                                 List<AnnotationValue> eventTypes = (List<AnnotationValue>) groupValue.getValue();
