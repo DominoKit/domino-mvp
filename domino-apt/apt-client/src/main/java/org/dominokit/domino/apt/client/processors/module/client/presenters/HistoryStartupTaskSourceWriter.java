@@ -50,11 +50,11 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
                 .addMethod(getStartupFilterTokenMethod())
                 .addMethod(onStateReadyMethod());
 
-        if (presenterElement.getAnnotation(AutoRoute.class).routeOnce()) {
+        if (processorUtil.findClassAnnotation(presenterElement, AutoRoute.class).routeOnce()) {
             taskType.addMethod(routOnceMethod());
         }
 
-        if (presenterElement.getAnnotation(AutoRoute.class).reRouteActivated()) {
+        if (processorUtil.findClassAnnotation(presenterElement, AutoRoute.class).reRouteActivated()) {
             taskType.addMethod(reRouteActivatedMethod());
         }
 
@@ -185,7 +185,7 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
 
         onRoutingMethods.forEach(element -> codeBlock.addStatement("presenter.$L()", element.getSimpleName().toString()));
 
-        if (nonNull(presenterElement.getAnnotation(AutoReveal.class))) {
+        if (nonNull(processorUtil.findClassAnnotation(presenterElement, AutoReveal.class))) {
             codeBlock.beginControlFlow("if(!presenter.isActivated())");
             codeBlock.addStatement("presenter.reveal()");
             codeBlock.endControlFlow();
@@ -207,8 +207,6 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
     }
 
     private DependsOnModel getDependsOnModel(TypeElement element) {
-
-
         DependsOnModel dependsOnModel = new DependsOnModel();
         try {
             TypeMirror superclass = element.getSuperclass();

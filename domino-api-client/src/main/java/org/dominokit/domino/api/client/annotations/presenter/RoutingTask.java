@@ -1,6 +1,4 @@
-package org.dominokit.domino.api.client.annotations;
-
-import org.dominokit.domino.api.client.mvp.presenter.Presentable;
+package org.dominokit.domino.api.client.annotations.presenter;
 
 import javax.validation.constraints.NotNull;
 import java.lang.annotation.ElementType;
@@ -10,8 +8,8 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface UiView {
+public @interface RoutingTask {
 
     @NotNull
-    Class<? extends Presentable>[] presentable();
+    Class<?> value();
 }

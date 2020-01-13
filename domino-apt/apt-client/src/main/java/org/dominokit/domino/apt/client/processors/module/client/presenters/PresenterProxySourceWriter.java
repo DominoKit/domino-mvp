@@ -39,29 +39,32 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
                 .addModifiers(Modifier.PUBLIC)
                 .superclass(TypeName.get(proxyElement.asType()));
 
-        if (nonNull(proxyElement.getAnnotation(AutoRoute.class))) {
-            AutoRoute autoRoute = proxyElement.getAnnotation(AutoRoute.class);
+        if (nonNull(processorUtil.findClassAnnotation(proxyElement, AutoRoute.class))) {
+            AutoRoute autoRoute = processorUtil.findClassAnnotation(proxyElement, AutoRoute.class);
             proxyType.addAnnotation(AnnotationSpec.builder(AutoRoute.class)
                     .addMember("token", "$S", autoRoute.token())
                     .addMember("routeOnce", "$L", autoRoute.routeOnce())
                     .addMember("reRouteActivated", "$L", autoRoute.reRouteActivated())
                     .build());
+            proxyType.addAnnotation(AnnotationSpec.builder(RoutingTask.class)
+                    .addMember("value", "$T.class", ClassName.bestGuess(elements.getPackageOf(proxyElement).getQualifiedName().toString().replace("presenters", "routing")+"."+proxyClassName+"HistoryListenerTask"))
+                    .build());
         }
 
-        if (nonNull(proxyElement.getAnnotation(AutoReveal.class))) {
+        if (nonNull(processorUtil.findClassAnnotation(proxyElement, AutoReveal.class))) {
             proxyType.addAnnotation(AnnotationSpec.builder(AutoReveal.class)
                     .build());
         }
 
-        if (nonNull(proxyElement.getAnnotation(Slot.class))) {
-            Slot slot = proxyElement.getAnnotation(Slot.class);
+        if (nonNull(processorUtil.findClassAnnotation(proxyElement, Slot.class))) {
+            Slot slot = processorUtil.findClassAnnotation(proxyElement, Slot.class);
             proxyType.addAnnotation(AnnotationSpec.builder(Slot.class)
                     .addMember("value", "$S", slot.value())
                     .build());
         }
 
-        if (nonNull(proxyElement.getAnnotation(Singleton.class))) {
-            Singleton singleton = proxyElement.getAnnotation(Singleton.class);
+        if (nonNull(processorUtil.findClassAnnotation(proxyElement, Singleton.class))) {
+            Singleton singleton = processorUtil.findClassAnnotation(proxyElement, Singleton.class);
             proxyType.addAnnotation(AnnotationSpec.builder(Singleton.class)
                     .addMember("value", "$L", singleton.value())
                     .build());
@@ -80,7 +83,7 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
 
         List<TypeSpec.Builder> types = new ArrayList<>();
         types.add(proxyType);
-        if (nonNull(proxyElement.getAnnotation(RegisterSlots.class))) {
+        if (nonNull(processorUtil.findClassAnnotation(proxyElement, RegisterSlots.class))) {
             types.add(generateSlotsInterface(proxyType));
         }
         return types;
@@ -125,7 +128,7 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
     }
 
     private void generateAutoReveal(TypeSpec.Builder proxyType) {
-        Slot slot = proxyElement.getAnnotation(Slot.class);
+        Slot slot = processorUtil.findClassAnnotation(proxyElement, Slot.class);
         if (nonNull(slot) && !slot.value().trim().isEmpty()) {
             proxyType.addMethod(MethodSpec.methodBuilder("revealSlot")
                     .addAnnotation(Override.class)
@@ -288,8 +291,8 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
 
 
     private void generateFireActivationEvent(TypeSpec.Builder proxyType) {
-        if (nonNull(proxyElement.getAnnotation(OnStateChanged.class))) {
-            Optional<TypeMirror> eventType = processorUtil.getClassValueFromAnnotation(proxyElement, OnStateChanged.class, "value");
+        if (nonNull(processorUtil.findClassAnnotation(proxyElement, OnStateChanged.class))) {
+            Optional<TypeMirror> eventType = processorUtil.findClassValueFromClassAnnotation(proxyElement, OnStateChanged.class, "value");
 
             proxyType.addMethod(MethodSpec.methodBuilder("fireActivationEvent")
                     .addModifiers(Modifier.PROTECTED)
@@ -303,8 +306,8 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
 
 
     private void generateGetSlotsMethod(TypeSpec.Builder proxyType) {
-        if (nonNull(proxyElement.getAnnotation(RegisterSlots.class))) {
-            List<String> slots = Arrays.asList(proxyElement.getAnnotation(RegisterSlots.class).value());
+        if (nonNull(processorUtil.findClassAnnotation(proxyElement, RegisterSlots.class))) {
+            List<String> slots = Arrays.asList(processorUtil.findClassAnnotation(proxyElement, RegisterSlots.class).value());
 
             MethodSpec.Builder slotsMethodBuilder = MethodSpec.methodBuilder("getSlots")
                     .addModifiers(Modifier.PROTECTED)
@@ -322,7 +325,7 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
 
     private TypeSpec.Builder generateSlotsInterface(TypeSpec.Builder proxyType) {
 
-        List<String> slots = Arrays.asList(proxyElement.getAnnotation(RegisterSlots.class).value());
+        List<String> slots = Arrays.asList(processorUtil.findClassAnnotation(proxyElement, RegisterSlots.class).value());
         TypeVariableName typeVariableName = TypeVariableName.get("?");
         TypeSpec.Builder slotsInterfaceBuilder = TypeSpec.interfaceBuilder(proxyElement.getSimpleName().toString() + "Slots")
                 .addModifiers(Modifier.PUBLIC);

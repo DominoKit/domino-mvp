@@ -12,7 +12,7 @@ public abstract class FakeView extends BaseDominoView<FakeElement> {
     }
 
     @Override
-    public FakeElement createRoot() {
+    protected FakeElement init() {
         return new FakeElement(attached -> {
             if(attached){
                 revealHandler.onRevealed();

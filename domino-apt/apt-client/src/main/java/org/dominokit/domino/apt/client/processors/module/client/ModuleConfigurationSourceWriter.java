@@ -111,22 +111,23 @@ public class ModuleConfigurationSourceWriter extends AbstractSourceBuilder {
                 })
                 .forEach(view -> {
                     try {
-                        Optional<TypeMirror> presenterType = processorUtil.getClassValueFromAnnotation(view, UiView.class, "presentable");
+                        List<TypeMirror> presentersTypes = processorUtil.getClassArrayValueFromAnnotation(view, UiView.class, "presentable");
 
-                        if (!presenterType.isPresent()) {
+                        if (presentersTypes.isEmpty()) {
                             throw new IllegalArgumentException();
                         }
-                        boolean proxy = nonNull(types.asElement(presenterType.get()).getAnnotation(PresenterProxy.class));
+                        presentersTypes.forEach(presenter -> {
+                            boolean proxy = nonNull(types.asElement(presenter).getAnnotation(PresenterProxy.class));
 
-                        presenterType.ifPresent(presenter -> {
-                            String postfix = (proxy ? "_Presenter" : "") + "_Config";
-                            ClassName configClassName = ClassName.bestGuess(elements.getPackageOf(types.asElement(presenter)).getQualifiedName().toString() + "." + types.asElement(presenter).getSimpleName().toString() + postfix);
-                            String configName = processorUtil.lowerFirstLetter(types.asElement(presenter).getSimpleName().toString() + postfix);
+                                String postfix = (proxy ? "_Presenter" : "") + "_Config";
+                                ClassName configClassName = ClassName.bestGuess(elements.getPackageOf(types.asElement(presenter)).getQualifiedName().toString() + "." + types.asElement(presenter).getSimpleName().toString() + postfix);
+                                String configName = processorUtil.lowerFirstLetter(types.asElement(presenter).getSimpleName().toString() + postfix);
 
-                            methodBuilder.addStatement("$T $L = new $T()", configClassName, configName, configClassName);
-                            methodBuilder.addStatement("$L.setViewSupplier(()-> new $T())", configName, TypeName.get(view.asType()));
+                                methodBuilder.addStatement("$T $L = new $T()", configClassName, configName, configClassName);
+                                methodBuilder.addStatement("$L.setViewSupplier(()-> new $T())", configName, TypeName.get(view.asType()));
 
                         });
+
                     } catch (Exception e) {
                         ExceptionUtil.messageStackTrace(messager, e, view);
                     }

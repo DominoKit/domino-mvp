@@ -10,7 +10,7 @@ public abstract class BaseDominoView<T> implements DominoView<T>, HasContent {
     protected RevealedHandler revealHandler;
     protected RemovedHandler removeHandler;
 
-    protected T root;
+    private T root;
 
     @Override
     public boolean isInitialized() {
@@ -35,9 +35,8 @@ public abstract class BaseDominoView<T> implements DominoView<T>, HasContent {
     @Override
     public Content getContent(CreateHandler createHandler) {
         if (!initialized || !isSingleton()) {
-            root = createRoot();
+            root = init();
             initRoot(root);
-            init(root);
             if (nonNull(createHandler)) {
                 createHandler.onCreated();
             }
@@ -48,7 +47,7 @@ public abstract class BaseDominoView<T> implements DominoView<T>, HasContent {
 
     protected abstract void initRoot(T root);
 
-    protected abstract void init(T root);
+    protected abstract T init();
 
     @Override
     public void clear() {

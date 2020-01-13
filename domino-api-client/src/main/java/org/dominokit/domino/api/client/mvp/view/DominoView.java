@@ -10,8 +10,6 @@ public interface DominoView<T> extends ContentView {
 
     boolean isSingleton();
 
-    T createRoot();
-
     void clear();
 
     default void setRevealHandler(RevealedHandler revealHandler) {
