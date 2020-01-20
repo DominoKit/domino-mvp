@@ -5,6 +5,7 @@ import org.dominokit.domino.api.client.extension.DominoEventsListenersRepository
 import org.dominokit.domino.api.client.extension.DominoEventsRegistry;
 import org.dominokit.domino.api.client.request.PresenterCommand;
 import org.dominokit.domino.api.client.startup.AsyncClientStartupTask;
+import org.dominokit.domino.api.client.startup.BaseRoutingStartupTask;
 import org.dominokit.domino.api.client.startup.ClientStartupTask;
 import org.dominokit.domino.api.client.startup.TasksAggregator;
 import org.dominokit.domino.api.shared.extension.ContextAggregator;
@@ -128,18 +129,27 @@ public class ClientApp implements InitialTaskRegistry, DominoEventsRegistry {
             ContextAggregator.waitFor(sorted)
                     .onReady(this::start);
             INITIAL_TASKS_HOLDER.attribute.forEach(clientStartupTask -> {
-                if (!(clientStartupTask instanceof AsyncClientStartupTask)) {
+                if (!(clientStartupTask instanceof AsyncClientStartupTask) && !(clientStartupTask instanceof BaseRoutingStartupTask)) {
                     clientStartupTask.execute();
                 }
             });
             sorted.first().execute();
         } else {
-            INITIAL_TASKS_HOLDER.attribute.forEach(ClientStartupTask::execute);
+            INITIAL_TASKS_HOLDER.attribute.forEach(clientStartupTask -> {
+                if (!(clientStartupTask instanceof BaseRoutingStartupTask)) {
+                    clientStartupTask.execute();
+                }
+            });
             start();
         }
     }
 
     private void start() {
+        INITIAL_TASKS_HOLDER.attribute.forEach(clientStartupTask -> {
+            if ((clientStartupTask instanceof BaseRoutingStartupTask)) {
+                clientStartupTask.execute();
+            }
+        });
         fireEvent(MainDominoEvent.class, new MainDominoEvent());
         onApplicationStarted();
     }
