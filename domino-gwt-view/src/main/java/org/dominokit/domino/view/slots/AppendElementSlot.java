@@ -6,7 +6,7 @@ import org.dominokit.domino.api.client.mvp.slots.IsSlot;
 import org.dominokit.domino.api.client.mvp.view.ContentView;
 import org.dominokit.domino.api.client.mvp.view.HasContent;
 import org.dominokit.domino.ui.utils.DominoElement;
-import org.jboss.gwt.elemento.core.IsElement;
+import org.jboss.elemento.IsElement;
 
 public class AppendElementSlot implements IsSlot<ContentView> {
 
