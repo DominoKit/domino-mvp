@@ -11,8 +11,8 @@ import org.dominokit.domino.api.client.annotations.UiView;
 import ${package}.${subpackage}.client.presenters.${module}Proxy;
 import ${package}.${subpackage}.client.views.${module}View;
 
-import static org.jboss.gwt.elemento.core.Elements.div;
-import static org.jboss.gwt.elemento.core.Elements.h;
+import static org.jboss.elemento.Elements.div;
+import static org.jboss.elemento.Elements.h;
 
 @UiView(presentable = ${module}Proxy.class)
 public class ${module}ViewImpl extends BaseElementView<HTMLDivElement> implements ${module}View{
