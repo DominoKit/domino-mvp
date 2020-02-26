@@ -2,11 +2,8 @@ package org.dominokit.domino.api.server;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpMethod;
-import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
-import io.vertx.ext.web.handler.BodyHandler;
-import io.vertx.ext.web.handler.CookieHandler;
 import io.vertx.ext.web.handler.CorsHandler;
 import io.vertx.ext.web.handler.SessionHandler;
 import io.vertx.ext.web.sstore.ClusteredSessionStore;
@@ -19,12 +16,9 @@ import org.dominokit.domino.api.server.logging.RemoteLoggingHandler;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.ServiceLoader;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
-import static java.util.Objects.isNull;
 
 public class RouterConfigurator {
 
@@ -60,55 +54,49 @@ public class RouterConfigurator {
 
     private void addPredefinedHandlers(Vertx vertx, Router router) {
         addCorsHandler(router);
-//        addBodyHandler(router);
         addSessionHandler(vertx, router);
         addCSRFHandler(router);
         addRemoteExceptionHandler(router);
     }
 
     private void addCorsHandler(Router router) {
-        router.route().handler(CorsHandler.create("*")
-                .allowedHeaders(new HashSet<>(Arrays.asList("Content-Type", "X-HTTP-Method-Override", "X-XSRF-TOKEN")))
-                .allowedMethods(Stream.of(HttpMethod.values()).collect(Collectors.toSet())));
+        if (config.getBoolean("cors.enabled", true)) {
+            router.route().handler(CorsHandler.create("*")
+                    .allowedHeaders(new HashSet<>(Arrays.asList("Content-Type", "X-HTTP-Method-Override", "X-XSRF-TOKEN")))
+                    .allowedMethods(Stream.of(HttpMethod.values()).collect(Collectors.toSet())));
+        }
     }
 
     private void addRemoteExceptionHandler(Router router) {
-        RemoteLogger remoteLogger = StreamSupport.stream(ServiceLoader.load(RemoteLogger.class).spliterator(), false)
-                .filter(logger -> logger.getClass().getName().equals(config.getString(REMOTE_LOGGER)))
-                .findFirst().orElseGet(DefaultRemoteLogger::new);
-        router.route("/logging/remoteLogging")
-                .handler(new RemoteLoggingHandler(remoteLogger));
-    }
-
-    private void addBodyHandler(Router router) {
-        Integer bodyLimit = config.getInteger("body.limit", DEFAULT_BODY_LIMIT);
-        router.route()
-                .handler(BodyHandler.create()
-                .setUploadsDirectory("uploads")
-                .setBodyLimit(bodyLimit * MB));
+        if (config.getBoolean("remove.exception.handler.enabled", true)) {
+            RemoteLogger remoteLogger = StreamSupport.stream(ServiceLoader.load(RemoteLogger.class).spliterator(), false)
+                    .filter(logger -> logger.getClass().getName().equals(config.getString(REMOTE_LOGGER)))
+                    .findFirst().orElseGet(DefaultRemoteLogger::new);
+            router.route("/logging/remoteLogging")
+                    .handler(new RemoteLoggingHandler(remoteLogger));
+        }
     }
 
     private void addCSRFHandler(Router router) {
-        JsonArray jsonArray = config.getJsonArray("csrf.whitelist", new JsonArray());
-        Set<String> whiteList = new HashSet<>();
-        jsonArray.forEach(o -> whiteList.add(o.toString()));
-
-        router.route().handler(new DominoCSRFHandler(secret, config));
+        if (config.getBoolean("csrf.enabled", true)) {
+            router.route().handler(new DominoCSRFHandler(secret, config));
+        }
     }
 
     private void addSessionHandler(Vertx vertx, Router router) {
-        SessionStore
-                sessionStore = clustered ? ClusteredSessionStore.create(vertx) : LocalSessionStore
-                .create(vertx);
-        router.route().handler(CookieHandler.create());
-        if(config.getBoolean("ssl.enabled", false)) {
-            router.route().handler(SessionHandler
-                    .create(sessionStore)
-                    .setCookieHttpOnlyFlag(true)
-                    .setCookieSecureFlag(true));
-        }else{
-            router.route().handler(SessionHandler
-                    .create(sessionStore));
+        if (config.getBoolean("session.enabled", true)) {
+            SessionStore
+                    sessionStore = clustered ? ClusteredSessionStore.create(vertx) : LocalSessionStore
+                    .create(vertx);
+            if (config.getBoolean("ssl.enabled", false)) {
+                router.route().handler(SessionHandler
+                        .create(sessionStore)
+                        .setCookieHttpOnlyFlag(true)
+                        .setCookieSecureFlag(true));
+            } else {
+                router.route().handler(SessionHandler
+                        .create(sessionStore));
+            }
         }
     }
 }
