@@ -32,9 +32,18 @@ public class StaticResourcesConfiguratorPlugin extends BaseDominoLoaderPlugin {
                 .failureHandler(this::serveResource);
 
         context.getRouter().route("/*").order(Integer.MAX_VALUE)
-                .handler(this::serveResource);
+                .handler(staticHandler)
+                .handler(this::resourceNotFound)
+                .failureHandler(this::serveIndexPage);
 
         completeHandler.onCompleted();
+    }
+
+    private HttpServerResponse resourceNotFound(RoutingContext routingContext) {
+        return routingContext.response()
+                .putHeader("Content-type", "text/html")
+                .setStatusCode(404)
+                .sendFile(context.getWebRoot() + "/index.html");
     }
 
     private String systemWebRoot() {
