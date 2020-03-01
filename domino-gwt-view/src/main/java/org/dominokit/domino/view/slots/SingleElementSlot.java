@@ -30,6 +30,7 @@ public class SingleElementSlot implements IsSlot<ContentView> {
 
     public SingleElementSlot(IsElement<HTMLElement> element) {
         this.element = DominoElement.of(element);
+
     }
 
     @Override

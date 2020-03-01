@@ -265,6 +265,7 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
         TypeName valueType = TypeName.get(DominoEventListener.class);
         MethodSpec.Builder listenersMethod = MethodSpec.methodBuilder("getListeners")
                 .addAnnotation(Override.class)
+                .addAnnotation(AnnotationSpec.builder(SuppressWarnings.class).addMember("value", "$S", "all").build())
                 .addModifiers(Modifier.PROTECTED)
                 .returns(ParameterizedTypeName.get(ClassName.get(Map.class), keyType, valueType))
                 .addStatement("$T<Class<? extends $T>, $T> listenersMap = new $T<>()", TypeName.get(Map.class), TypeName.get(DominoEvent.class), valueType, TypeName.get(HashMap.class));

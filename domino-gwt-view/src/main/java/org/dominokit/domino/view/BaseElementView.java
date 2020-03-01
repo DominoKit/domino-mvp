@@ -11,6 +11,7 @@ import static java.util.Objects.nonNull;
 public abstract class BaseElementView<T extends HTMLElement> extends BaseDominoView<T> {
     @Override
     protected final void initRoot(T root) {
+
         if (nonNull(root)) {
             ElementUtil.onAttach(root, mutationRecord -> {
                 revealHandler.onRevealed();

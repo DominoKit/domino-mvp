@@ -8,9 +8,6 @@
     <inherits name="org.dominokit.domino.rest.GwtRest"/>
     <inherits name="org.dominokit.jacksonapt.GwtJacksonApt"/>
 
-
-    <entry-point class='org.dominokit.domino.gwt.client.Core'/>
-
     <source path='client'/>
     <source path='shared'/>
 
