@@ -2,6 +2,7 @@ package org.dominokit.domino.api.server.plugins;
 
 import com.google.auto.service.AutoService;
 import io.vertx.core.http.HttpServerResponse;
+import io.vertx.ext.web.Route;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.StaticHandler;
 import org.dominokit.domino.api.server.DominoLoaderPlugin;
@@ -16,26 +17,22 @@ public class StaticResourcesConfiguratorPlugin extends BaseDominoLoaderPlugin {
 
     @Override
     public void applyPlugin(CompleteHandler completeHandler) {
-        StaticHandler staticHandler = StaticHandler.create();
-        if (nonNull(System.getProperty("domino.webroot.location"))) {
-            staticHandler.setAllowRootFileSystemAccess(true);
-            staticHandler.setWebRoot(systemWebRoot());
-        } else {
-            staticHandler.setWebRoot(context.getWebRoot());
-        }
-
-        context.getRouter().route("/").order(Integer.MAX_VALUE - 3)
+        context.getRouter().route("/").order(Integer.MAX_VALUE - 2)
                 .handler(this::serveIndexPage);
 
-        context.getRouter().route("/static/*").order(Integer.MAX_VALUE - 2)
-                .handler(staticHandler)
-                .failureHandler(this::serveResource);
-
-        context.getRouter().route("/*").order(Integer.MAX_VALUE)
-                .handler(staticHandler)
+        Route route = context.getRouter()
+                .route("/*")
+                .order(Integer.MAX_VALUE)
+                .handler(StaticHandler.create().setWebRoot(context.getWebRoot()));
+        if (nonNull(System.getProperty("domino.webroot.location"))) {
+            StaticHandler webRootStaticHandler = StaticHandler.create();
+            webRootStaticHandler.setAllowRootFileSystemAccess(true);
+            webRootStaticHandler.setWebRoot(systemWebRoot());
+            route.handler(webRootStaticHandler);
+        }
+        route
                 .handler(this::resourceNotFound)
-                .failureHandler(this::serveIndexPage);
-
+                .failureHandler(this::resourceNotFound);
         completeHandler.onCompleted();
     }
 
@@ -53,16 +50,6 @@ public class StaticResourcesConfiguratorPlugin extends BaseDominoLoaderPlugin {
     private HttpServerResponse serveIndexPage(RoutingContext event) {
         return event.response().putHeader("Content-type", "text/html")
                 .sendFile(context.getWebRoot() + "/index.html");
-    }
-
-    private void serveResource(RoutingContext routingContext) {
-        if (!routingContext.response().ended()) {
-            routingContext.response()
-                    .sendFile(context.getWebRoot() + routingContext.request().path().replace("/static", ""), event -> {
-                        if (event.failed())
-                            serveIndexPage(routingContext);
-                    });
-        }
     }
 
     @Override
