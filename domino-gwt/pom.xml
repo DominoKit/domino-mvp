@@ -46,16 +46,10 @@
             <artifactId>domino-api-shared</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.dominokit.domino.api</groupId>
-            <artifactId>domino-api-shared</artifactId>
-            <classifier>sources</classifier>
-        </dependency>
-
-        <dependency>
-            <groupId>org.dominokit.domino.api</groupId>
-            <artifactId>domino-api-server</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.dominokit.domino.api</groupId>-->
+<!--            <artifactId>domino-api-server</artifactId>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.dominokit</groupId>
             <artifactId>domino-slf4j-logger</artifactId>

@@ -14,11 +14,11 @@ import org.dominokit.domino.rest.gwt.DominoSimpleEventsBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CoreModule {
+public class DominoGWT {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CoreModule.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DominoGWT.class);
 
-    private CoreModule() {
+    private DominoGWT() {
     }
 
     public static void init() {

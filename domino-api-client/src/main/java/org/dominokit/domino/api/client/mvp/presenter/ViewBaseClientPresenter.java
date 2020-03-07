@@ -39,7 +39,6 @@ public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter
         IsSlot slot = SlotRegistry.get(key);
         if (nonNull(slot)) {
             revealInSlot(slot);
-            LOGGER.info(">> Presenter ["+this.getClass().getCanonicalName()+"] is added to slot ["+key+"] << ");
         } else {
             throw new InvalidSlotException(this.getClass(), key);
         }
