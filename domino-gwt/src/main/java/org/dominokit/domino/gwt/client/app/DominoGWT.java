@@ -1,6 +1,6 @@
 package org.dominokit.domino.gwt.client.app;
 
-import com.google.gwt.core.client.GWT;
+//import com.google.gwt.core.client.GWT;
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.extension.InMemoryDominoEventsListenerRepository;
 import org.dominokit.domino.client.commons.request.ClientRouter;
@@ -14,15 +14,16 @@ import org.dominokit.domino.rest.gwt.DominoSimpleEventsBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CoreModule {
+public class DominoGWT {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CoreModule.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DominoGWT.class);
 
-    private CoreModule() {
+    private DominoGWT() {
     }
 
     public static void init() {
-        GWT.setUncaughtExceptionHandler(throwable -> LOGGER.error("Uncaught Exception", throwable));
+
+//        GWT.setUncaughtExceptionHandler(throwable -> LOGGER.error("Uncaught Exception", throwable));
         ClientRouter clientRouter = new ClientRouter(new ClientEventFactory());
 
         ((DominoSimpleEventsBus)DominoSimpleEventsBus.INSTANCE).addEvent(ClientRequestGwtEvent.CLIENT_REQUEST_EVENT_TYPE);

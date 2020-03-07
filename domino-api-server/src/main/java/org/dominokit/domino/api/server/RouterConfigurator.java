@@ -19,7 +19,6 @@ import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
 public class RouterConfigurator {
 
     private static final int DEFAULT_BODY_LIMIT = 50;
@@ -56,7 +55,7 @@ public class RouterConfigurator {
         addCorsHandler(router);
         addSessionHandler(vertx, router);
         addCSRFHandler(router);
-        addRemoteExceptionHandler(router);
+//        addRemoteExceptionHandler(router);
     }
 
     private void addCorsHandler(Router router) {

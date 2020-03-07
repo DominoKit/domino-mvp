@@ -1,6 +1,6 @@
 package org.dominokit.domino.test.api.client.annotations;
 
-import javax.validation.constraints.NotNull;
+//import javax.validation.constraints.NotNull;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -8,6 +8,6 @@ import java.lang.annotation.RetentionPolicy;
 public @interface AutoStart {
     boolean value() default true;
 
-    @NotNull
+//    @NotNull
     String configFile() default "config.json";
 }

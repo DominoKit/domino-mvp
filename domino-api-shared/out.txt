@@ -1,0 +1,40 @@
+[[1;33mWARNING[m] 
+[[1;33mWARNING[m] Some problems were encountered while building the effective settings
+[[1;33mWARNING[m] 'profiles.profile[artifactory].pluginRepositories.pluginRepository.id' must be unique but found duplicate repository with id sonatype-snapshots-repo @ /home/vegegoku/.m2/settings.xml
+[[1;33mWARNING[m] 
+[[1;34mINFO[m] Scanning for projects...
+[[1;33mWARNING[m] 
+[[1;33mWARNING[m] Some problems were encountered while building the effective model for org.dominokit.domino.api:domino-api-shared:jar:1.0-rc.5-SNAPSHOT
+[[1;33mWARNING[m] 'dependencyManagement.dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: javax.validation:validation-api:jar -> duplicate declaration of version 2.0.1.Final @ org.dominokit.domino:domino-parent:1.0-rc.5-SNAPSHOT, /mnt/CODE/GIT/domino-kit/domino-mvp/pom.xml, line 357, column 25
+[[1;33mWARNING[m] 
+[[1;33mWARNING[m] It is highly recommended to fix these problems because they threaten the stability of your build.
+[[1;33mWARNING[m] 
+[[1;33mWARNING[m] For this reason, future Maven versions might no longer support building such malformed projects.
+[[1;33mWARNING[m] 
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m-------------< [0;36morg.dominokit.domino.api:domino-api-shared[0;1m >-------------[m
+[[1;34mINFO[m] [1mBuilding domino-api-shared 1.0-rc.5-SNAPSHOT[m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-dependency-plugin:2.8:tree[m [1m(default-cli)[m @ [36mdomino-api-shared[0;1m ---[m
+[[1;34mINFO[m] org.dominokit.domino.api:domino-api-shared:jar:1.0-rc.5-SNAPSHOT
+[[1;34mINFO[m] +- javax.validation:validation-api:jar:2.0.1.Final:compile
+[[1;34mINFO[m] +- org.dominokit:jaxrs-super:jar:1.0-rc.4-SNAPSHOT:compile
+[[1;34mINFO[m] +- org.dominokit:jaxrs-super:jar:sources:1.0-rc.4-SNAPSHOT:compile
+[[1;34mINFO[m] +- org.gwtproject.regexp:gwt-regexp:jar:1.0-SNAPSHOT:compile
+[[1;34mINFO[m] |  \- com.google.elemental2:elemental2-core:jar:1.0.0-RC1:compile
+[[1;34mINFO[m] |     +- com.google.jsinterop:jsinterop-annotations:jar:1.0.2:compile
+[[1;34mINFO[m] |     \- com.google.jsinterop:base:jar:1.0.0-RC1:compile
+[[1;34mINFO[m] +- org.dominokit:domino-aggregator-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[[1;34mINFO[m] |  \- org.dominokit:domino-slf4j-logger:jar:1.0-rc.4-SNAPSHOT:compile
+[[1;34mINFO[m] +- org.dominokit:domino-history-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[[1;34mINFO[m] +- junit:junit:jar:4.12:test
+[[1;34mINFO[m] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[[1;34mINFO[m] +- org.assertj:assertj-core:jar:3.7.0:test
+[[1;34mINFO[m] \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;32mBUILD SUCCESS[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  0.784 s
+[[1;34mINFO[m] Finished at: 2020-03-06T21:36:15+02:00
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m

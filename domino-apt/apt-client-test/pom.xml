@@ -22,11 +22,6 @@
             <artifactId>domino-api-client</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-user</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>org.dominokit.domino.test</groupId>
             <artifactId>domino-client-test</artifactId>
             <version>${project.version}</version>

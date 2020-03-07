@@ -26,29 +26,10 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-servlet</artifactId>
-            <scope>runtime</scope>
+            <groupId>org.gwtproject.core</groupId>
+            <artifactId>gwt-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
-
-        <dependency>
-            <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-user</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-dev</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-codeserver</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
         <dependency>
             <groupId>org.dominokit.domino.api</groupId>
             <artifactId>domino-api-client</artifactId>
@@ -65,16 +46,10 @@
             <artifactId>domino-api-shared</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.dominokit.domino.api</groupId>
-            <artifactId>domino-api-shared</artifactId>
-            <classifier>sources</classifier>
-        </dependency>
-
-        <dependency>
-            <groupId>org.dominokit.domino.api</groupId>
-            <artifactId>domino-api-server</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.dominokit.domino.api</groupId>-->
+<!--            <artifactId>domino-api-server</artifactId>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.dominokit</groupId>
             <artifactId>domino-slf4j-logger</artifactId>

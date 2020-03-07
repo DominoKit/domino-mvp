@@ -1,0 +1,71 @@
+[[1;33mWARNING[m] 
+[[1;33mWARNING[m] Some problems were encountered while building the effective settings
+[[1;33mWARNING[m] 'profiles.profile[artifactory].pluginRepositories.pluginRepository.id' must be unique but found duplicate repository with id sonatype-snapshots-repo @ /home/vegegoku/.m2/settings.xml
+[[1;33mWARNING[m] 
+[[1;34mINFO[m] Scanning for projects...
+[[1;33mWARNING[m] 
+[[1;33mWARNING[m] Some problems were encountered while building the effective model for org.dominokit.domino.apt:apt-client:jar:1.0-rc.5-SNAPSHOT
+[[1;33mWARNING[m] 'dependencyManagement.dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: javax.validation:validation-api:jar -> duplicate declaration of version 2.0.1.Final @ org.dominokit.domino:domino-parent:1.0-rc.5-SNAPSHOT, /mnt/CODE/GIT/domino-kit/domino-mvp/pom.xml, line 363, column 25
+[[1;33mWARNING[m] 
+[[1;33mWARNING[m] It is highly recommended to fix these problems because they threaten the stability of your build.
+[[1;33mWARNING[m] 
+[[1;33mWARNING[m] For this reason, future Maven versions might no longer support building such malformed projects.
+[[1;33mWARNING[m] 
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m----------------< [0;36morg.dominokit.domino.apt:apt-client[0;1m >-----------------[m
+[[1;34mINFO[m] [1mBuilding apt-client 1.0-rc.5-SNAPSHOT[m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-dependency-plugin:2.8:tree[m [1m(default-cli)[m @ [36mapt-client[0;1m ---[m
+[[1;34mINFO[m] org.dominokit.domino.apt:apt-client:jar:1.0-rc.5-SNAPSHOT
+[[1;34mINFO[m] +- org.dominokit:domino-apt-commons:jar:1.0-rc.4-SNAPSHOT:compile
+[[1;34mINFO[m] |  +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[[1;34mINFO[m] |  \- commons-lang:commons-lang:jar:2.6:compile
+[[1;34mINFO[m] +- com.google.auto.service:auto-service:jar:1.0-rc6:provided
+[[1;34mINFO[m] |  +- com.google.auto.service:auto-service-annotations:jar:1.0-rc6:provided
+[[1;34mINFO[m] |  +- com.google.auto:auto-common:jar:0.10:provided
+[[1;34mINFO[m] |  \- com.google.guava:guava:jar:27.0.1-jre:provided
+[[1;34mINFO[m] |     +- com.google.guava:failureaccess:jar:1.0.1:provided
+[[1;34mINFO[m] |     +- com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:provided
+[[1;34mINFO[m] |     +- com.google.code.findbugs:jsr305:jar:1.3.9:provided
+[[1;34mINFO[m] |     +- org.checkerframework:checker-qual:jar:2.5.2:provided
+[[1;34mINFO[m] |     +- com.google.errorprone:error_prone_annotations:jar:2.2.0:provided
+[[1;34mINFO[m] |     +- com.google.j2objc:j2objc-annotations:jar:1.1:provided
+[[1;34mINFO[m] |     \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.17:provided
+[[1;34mINFO[m] +- org.dominokit.domino.api:domino-api-client:jar:1.0-rc.5-SNAPSHOT:compile
+[[1;34mINFO[m] |  +- org.dominokit.domino.api:domino-api-shared:jar:1.0-rc.5-SNAPSHOT:compile
+[[1;34mINFO[m] |  |  \- org.dominokit:domino-history-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[[1;34mINFO[m] |  +- org.dominokit:jaxrs-super:jar:1.0-rc.4-SNAPSHOT:compile
+[[1;34mINFO[m] |  +- org.dominokit:domino-aggregator-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[[1;34mINFO[m] |  |  \- org.dominokit:domino-slf4j-logger:jar:1.0-rc.4-SNAPSHOT:compile
+[[1;34mINFO[m] |  +- org.dominokit.jackson:jackson-apt:jar:1.0-SNAPSHOT:compile
+[[1;34mINFO[m] |  |  +- com.google.elemental2:elemental2-core:jar:1.0.0-RC1:compile
+[[1;34mINFO[m] |  |  |  +- com.google.jsinterop:jsinterop-annotations:jar:1.0.2:compile
+[[1;34mINFO[m] |  |  |  \- com.google.jsinterop:base:jar:1.0.0-RC1:compile
+[[1;34mINFO[m] |  |  +- org.dominokit.jackson:jackson-super:jar:1.0-SNAPSHOT:compile
+[[1;34mINFO[m] |  |  +- org.gwtproject.i18n:gwt-cldr:jar:1.0-SNAPSHOT:compile
+[[1;34mINFO[m] |  |  \- org.gwtproject.i18n:gwt-datetimeformat:jar:1.0-SNAPSHOT:compile
+[[1;34mINFO[m] |  |     +- org.gwtproject.i18n:gwt-cldr:jar:sources:1.0-SNAPSHOT:compile
+[[1;34mINFO[m] |  |     \- org.gwtproject.i18n:gwt-i18n:jar:1.0-SNAPSHOT:compile
+[[1;34mINFO[m] |  |        \- com.google.elemental2:elemental2-dom:jar:1.0.0-RC1:compile
+[[1;34mINFO[m] |  |           \- com.google.elemental2:elemental2-promise:jar:1.0.0-RC1:compile
+[[1;34mINFO[m] |  +- org.dominokit:domino-rest-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[[1;34mINFO[m] |  |  \- javax.annotation:javax.annotation-api:jar:1.3.2:compile
+[[1;34mINFO[m] |  \- org.gwtproject.regexp:gwt-regexp:jar:1.0-SNAPSHOT:compile
+[[1;34mINFO[m] +- org.dominokit.domino.test:apt-test:jar:1.0-rc.5-SNAPSHOT:test
+[[1;34mINFO[m] |  +- com.google.testing.compile:compile-testing:jar:0.9:test
+[[1;34mINFO[m] |  |  +- com.google.truth:truth:jar:0.28:test
+[[1;34mINFO[m] |  |  \- com.sun:tools:jar:1.8.0_242:system
+[[1;34mINFO[m] |  +- org.apache.logging.log4j:log4j-api:jar:2.8.2:test
+[[1;34mINFO[m] |  \- org.apache.logging.log4j:log4j-core:jar:2.8.2:test
+[[1;34mINFO[m] +- commons-io:commons-io:jar:2.5:test
+[[1;34mINFO[m] +- com.squareup:javapoet:jar:1.9.0:compile
+[[1;34mINFO[m] +- junit:junit:jar:4.12:test
+[[1;34mINFO[m] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[[1;34mINFO[m] \- org.assertj:assertj-core:jar:3.7.0:test
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;32mBUILD SUCCESS[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  0.876 s
+[[1;34mINFO[m] Finished at: 2020-03-07T19:22:08+02:00
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m

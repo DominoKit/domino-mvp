@@ -26,7 +26,7 @@ public class ConfigurationProviderAnnotationProcessor extends BaseProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         Set<? extends Element> modules = roundEnv.getElementsAnnotatedWith(ClientModule.class);
-        modules.forEach(m -> generateModuleConfigurationProvider(newProcessorElement(m)));
+//        modules.forEach(m -> generateModuleConfigurationProvider(newProcessorElement(m)));
         return false;
     }
 

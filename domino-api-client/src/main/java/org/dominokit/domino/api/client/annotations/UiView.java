@@ -2,7 +2,7 @@ package org.dominokit.domino.api.client.annotations;
 
 import org.dominokit.domino.api.client.mvp.presenter.Presentable;
 
-import javax.validation.constraints.NotNull;
+//import javax.validation.constraints.NotNull;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -12,6 +12,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface UiView {
 
-    @NotNull
+//    @NotNull
     Class<? extends Presentable>[] presentable();
 }
