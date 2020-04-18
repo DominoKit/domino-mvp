@@ -1,17 +1,18 @@
 package org.dominokit.domino.api.client.async;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @FunctionalInterface
 public interface AsyncRunner {
 
-    Logger LOGGER= LoggerFactory.getLogger(AsyncRunner.class);
+    Logger LOGGER = Logger.getLogger(AsyncRunner.class.getName());
 
-    interface AsyncTask{
+    interface AsyncTask {
         void onSuccess();
-        default void onFailed(Throwable error){
-            LOGGER.error("Failed to run async task : ", error);
+
+        default void onFailed(Throwable error) {
+            LOGGER.log(Level.FINE, "Failed to run async task : ", error);
         }
     }
 

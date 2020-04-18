@@ -1,16 +1,14 @@
 package org.dominokit.domino.api.client.mvp.slots;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class SlotRegistry {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(SlotRegistry.class);
+    public static final Logger LOGGER = Logger.getLogger(SlotRegistry.class.getName());
 
     private static final Map<String, Deque<IsSlot>> SLOT_QUEUE = new HashMap<>();
 

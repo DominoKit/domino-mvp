@@ -5,12 +5,13 @@ import org.dominokit.domino.api.client.async.AsyncRunner;
 import org.dominokit.domino.api.client.events.ClientRequestEventFactory;
 import org.dominokit.domino.api.client.request.PresenterCommand;
 import org.dominokit.domino.rest.shared.request.RequestRouter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ClientRouter implements RequestRouter<PresenterCommand> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ClientRouter.class);
+    private static final Logger LOGGER = Logger.getLogger(ClientRouter.class.getName());
 
     private final ClientRequestEventFactory requestEventFactory;
 
@@ -29,7 +30,7 @@ public class ClientRouter implements RequestRouter<PresenterCommand> {
 
             @Override
             public void onFailed(Throwable error) {
-                LOGGER.error("Could not RunAsync request [" + presenterCommand + "]", error);
+                LOGGER.log(Level.SEVERE, "Could not RunAsync request [" + presenterCommand + "]", error);
             }
         });
     }

@@ -2,6 +2,8 @@ package org.dominokit.domino.test.api.client;
 
 
 import org.dominokit.domino.rest.shared.request.FailedResponseBean;
+import org.dominokit.domino.rest.shared.Response;
+import org.dominokit.domino.rest.shared.request.ServerRequest;
 
 import java.util.Map;
 
@@ -14,8 +16,8 @@ public class TestFailedResponseBean extends FailedResponseBean {
         super(throwable);
     }
 
-    public TestFailedResponseBean(int statusCode, String statusText, String body, Map<String, String> headers) {
-        super(statusCode, statusText, body, headers);
+    public <R, S> TestFailedResponseBean(ServerRequest<R, S> request, Response response) {
+        super(request, response);
     }
 
     public void setStatusCode(int statusCode) {

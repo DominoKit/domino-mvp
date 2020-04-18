@@ -2,16 +2,15 @@ package org.dominokit.domino.api.client.mvp.presenter;
 
 import org.dominokit.domino.api.client.mvp.slots.*;
 import org.dominokit.domino.api.client.mvp.view.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.function.Supplier;
+import java.util.logging.Logger;
 
 import static java.util.Objects.nonNull;
 
 public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(ViewBaseClientPresenter.class);
+    public static final Logger LOGGER = Logger.getLogger(ViewBaseClientPresenter.class.getName());
 
     public static final String DOCUMENT_BODY = "document-body";
 

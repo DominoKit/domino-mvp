@@ -5,11 +5,8 @@ import org.dominokit.domino.api.shared.extension.ContextAggregator;
 import org.dominokit.domino.api.shared.extension.ActivationEvent;
 import org.dominokit.domino.api.shared.extension.ActivationEventContext;
 import org.dominokit.domino.api.shared.extension.DominoEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ActivationEventWait {
-    private final static Logger LOGGER = LoggerFactory.getLogger(ActivationEventWait.class);
 
     private ContextAggregator.ContextWait<Boolean> contextWait = ContextAggregator.ContextWait.create();
     private ContextAggregator aggregator;

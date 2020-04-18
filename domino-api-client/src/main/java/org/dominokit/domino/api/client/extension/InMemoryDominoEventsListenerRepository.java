@@ -2,8 +2,6 @@ package org.dominokit.domino.api.client.extension;
 
 import org.dominokit.domino.api.shared.extension.DominoEvent;
 import org.dominokit.domino.api.shared.extension.DominoEventListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -11,8 +9,6 @@ import java.util.stream.Collectors;
 import static java.util.Objects.isNull;
 
 public class InMemoryDominoEventsListenerRepository implements DominoEventsListenersRepository {
-
-    public static final Logger LOGGER = LoggerFactory.getLogger(InMemoryDominoEventsListenerRepository.class);
 
     private final Map<String, List<ListenerWrapper>> listeners = new HashMap<>();
 

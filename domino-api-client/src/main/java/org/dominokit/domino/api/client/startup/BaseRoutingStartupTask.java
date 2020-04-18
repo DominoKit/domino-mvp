@@ -5,18 +5,17 @@ import org.dominokit.domino.api.client.events.BaseRoutingAggregator;
 import org.dominokit.domino.api.client.mvp.presenter.BaseClientPresenter;
 import org.dominokit.domino.history.DominoHistory;
 import org.dominokit.domino.history.TokenFilter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 public abstract class BaseRoutingStartupTask implements ClientStartupTask {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BaseRoutingStartupTask.class);
+    private static final Logger LOGGER = Logger.getLogger(BaseRoutingStartupTask.class.getName());
 
     protected List<BaseRoutingAggregator> aggregators = new ArrayList<>();
     protected boolean enabled = true;

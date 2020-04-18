@@ -12,19 +12,18 @@ import org.dominokit.domino.api.shared.extension.DominoEventListener;
 import org.dominokit.domino.history.AppHistory;
 import org.dominokit.domino.history.DominoHistory;
 import org.dominokit.domino.history.TokenParameter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import static java.util.Objects.nonNull;
 
 public abstract class BaseClientPresenter extends ClientPresenter implements Presentable {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BaseClientPresenter.class);
+    private static final Logger LOGGER = Logger.getLogger(BaseClientPresenter.class.getName());
     private PresenterState state;
     protected boolean activated;
     private BaseRoutingStartupTask routingTask;

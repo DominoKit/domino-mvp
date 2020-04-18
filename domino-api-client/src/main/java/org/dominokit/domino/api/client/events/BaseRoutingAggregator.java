@@ -3,15 +3,14 @@ package org.dominokit.domino.api.client.events;
 import org.dominokit.domino.api.shared.extension.ActivationEvent;
 import org.dominokit.domino.api.shared.extension.ContextAggregator;
 import org.dominokit.domino.history.DominoHistory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.logging.Logger;
 
 public class BaseRoutingAggregator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BaseRoutingAggregator.class);
+    private static final Logger LOGGER = Logger.getLogger(BaseRoutingAggregator.class.getName());
 
     private final List<Class<? extends ActivationEvent>> events;
     private ContextAggregator.ContextWait<DominoHistory.State> routingEvent = ContextAggregator.ContextWait.create();
