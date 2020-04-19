@@ -69,8 +69,6 @@ public class ClientModuleProcessingStep extends AbstractProcessingStep {
 
     public void process(Set<? extends Element> elementsByAnnotation) {
         elementsByAnnotation
-                .stream()
-                .filter(element -> ElementKind.CLASS.equals(element.getKind()))
                 .forEach(element -> {
                     try {
                         writeSource(new ModuleConfigurationSourceWriter(element, presenters, views, initialTasks, processingEnv)

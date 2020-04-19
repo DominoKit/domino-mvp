@@ -16,6 +16,7 @@ public class PluginContext {
     public final static int SECURITY_HEADERS_ORDER = 20;
     public final static int AUTH_ORDER = 30;
     public final static int RESTEASY_ORDER = 40;
+    public final static int WEBJARS_RESOURCES_HOLDER = 90;
     public final static int STATIC_RESOURCES_ORDER = 100;
 
 
