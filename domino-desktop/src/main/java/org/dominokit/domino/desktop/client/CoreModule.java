@@ -21,6 +21,7 @@ public class CoreModule {
                 .history(new DesktopStateHistory())
                 .asyncRunner(AsyncRunner.AsyncTask::onSuccess)
                 .dominoOptions(new DesktopDominoOptions())
+                .slotsManager(new DesktopSlotsManager())
                 .build();
     }
 

@@ -1,7 +1,5 @@
 package org.dominokit.domino.api.client.mvp.view;
 
-import org.dominokit.domino.api.client.mvp.slots.SlotsEntries;
-
 public interface DominoView<T> extends ContentView {
 
     boolean isInitialized();

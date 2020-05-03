@@ -1,4 +1,4 @@
-package org.dominokit.domino.view.slots;
+package org.dominokit.domino.gwt.client.slots;
 
 import elemental2.dom.CustomEvent;
 import elemental2.dom.Event;

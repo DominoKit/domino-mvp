@@ -1,8 +1,6 @@
 package org.dominokit.domino.view;
 
 import elemental2.dom.HTMLElement;
-import org.dominokit.domino.api.client.mvp.slots.SlotRegistry;
-import org.dominokit.domino.api.client.mvp.slots.SlotsEntries;
 import org.dominokit.domino.api.client.mvp.view.BaseDominoView;
 import org.dominokit.domino.ui.utils.ElementUtil;
 

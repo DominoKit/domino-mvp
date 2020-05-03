@@ -1,7 +1,9 @@
 package org.dominokit.domino.api.client.extension;
 
+import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.shared.extension.DominoEvent;
 import org.dominokit.domino.api.shared.extension.DominoEventListener;
+import org.dominokit.domino.api.shared.extension.GlobalDominoEventListener;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -19,10 +21,22 @@ public class InMemoryDominoEventsListenerRepository implements DominoEventsListe
     }
 
     @Override
+    public void addGlobalListener(Class<? extends DominoEvent> dominoEvent, GlobalDominoEventListener dominoEventListener) {
+        addListener(dominoEvent, dominoEventListener);
+    }
+
+    @Override
     public Set<DominoEventListener> getEventListeners(Class<? extends DominoEvent> dominoEvent) {
         initializeEventListeners(dominoEvent);
         return listeners.get(dominoEvent.getCanonicalName()).stream().map(cw -> cw.dominoEventListener).collect(
                 Collectors.toSet());
+    }
+
+    @Override
+    public void fireEvent(Class<? extends DominoEvent> eventType, DominoEvent dominoEvent) {
+        getEventListeners(eventType)
+                .forEach(listener ->
+                        ClientApp.make().getAsyncRunner().runAsync(() -> listener.onEventReceived(dominoEvent)));
     }
 
     private List<ListenerWrapper> getEventListenersWrapper(Class<? extends DominoEvent> dominoEvent) {
@@ -38,6 +52,11 @@ public class InMemoryDominoEventsListenerRepository implements DominoEventsListe
         if(eventListeners.isEmpty()){
             listeners.remove(event.getCanonicalName());
         }
+    }
+
+    @Override
+    public void removeGlobalListener(Class<? extends DominoEvent> event, GlobalDominoEventListener listener) {
+        removeListener(event, listener);
     }
 
     private void initializeEventListeners(Class<? extends DominoEvent> extensionPoint) {

@@ -1,10 +1,7 @@
 package org.dominokit.domino.api.client.events;
 
 import org.dominokit.domino.api.client.ClientApp;
-import org.dominokit.domino.api.shared.extension.ContextAggregator;
-import org.dominokit.domino.api.shared.extension.ActivationEvent;
-import org.dominokit.domino.api.shared.extension.ActivationEventContext;
-import org.dominokit.domino.api.shared.extension.DominoEvent;
+import org.dominokit.domino.api.shared.extension.*;
 
 public class ActivationEventWait {
 
@@ -14,7 +11,12 @@ public class ActivationEventWait {
 
     public ActivationEventWait(Class<? extends ActivationEvent> eventType) {
         this.eventType = eventType;
-        ClientApp.make().registerEventListener(eventType, this::updateContext);
+        ClientApp.make().registerGlobalEventListener(eventType, new ActivateEventListener() {
+            @Override
+            public void onEventReceived(ActivationEvent dominoEvent) {
+                updateContext(dominoEvent);
+            }
+        });
     }
 
     public void setAggregator(ContextAggregator aggregator) {
@@ -28,6 +30,25 @@ public class ActivationEventWait {
             contextWait.complete(true);
         } else {
             aggregator.resetContext(contextWait);
+        }
+    }
+
+    private static abstract class ActivateEventListener implements GlobalDominoEventListener<ActivationEvent>{
+
+        @Override
+        public ActivationEvent deserializeEvent(String serializedEvent) {
+            return new ActivationEventImpl(serializedEvent);
+        }
+    }
+
+    private static class ActivationEventImpl extends ActivationEvent {
+
+        public ActivationEventImpl(boolean active) {
+            super(active);
+        }
+
+        public ActivationEventImpl(String serializedEvent) {
+            super(serializedEvent);
         }
     }
 }

@@ -1,4 +1,4 @@
-package org.dominokit.domino.view.slots;
+package org.dominokit.domino.api.shared.extension;
 
 public class PredefinedSlots {
 

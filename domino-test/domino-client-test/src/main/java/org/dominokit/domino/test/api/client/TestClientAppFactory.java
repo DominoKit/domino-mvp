@@ -39,6 +39,7 @@ public class TestClientAppFactory {
                 .history(history)
                 .asyncRunner(new TestAsyncRunner())
                 .dominoOptions(dominoOptions)
+                .slotsManager(new TestSlotsManager())
                 .build();
 
         return clientApp;

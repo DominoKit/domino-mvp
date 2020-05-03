@@ -1,4 +1,4 @@
-package org.dominokit.domino.test.api.client;
+package org.dominokit.domino.desktop.client;
 
 import org.dominokit.domino.api.client.mvp.slots.IsSlot;
 import org.dominokit.domino.api.client.mvp.slots.SlotsManager;
@@ -10,8 +10,8 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.logging.Logger;
 
-public class TestSlotsManager implements SlotsManager {
-    public static final Logger LOGGER = Logger.getLogger(TestSlotsManager.class.getName());
+public class DesktopSlotsManager implements SlotsManager {
+    public static final Logger LOGGER = Logger.getLogger(DesktopSlotsManager.class.getName());
 
     private static final Map<String, Deque<IsSlot>> SLOT_QUEUE = new HashMap<>();
 

@@ -1,6 +1,5 @@
-package org.dominokit.domino.gwt.client.slots;
+package org.dominokit.domino.api.client.mvp.slots;
 
-import org.dominokit.domino.api.client.mvp.slots.IsSlot;
 import org.dominokit.domino.api.client.mvp.view.HasContent;
 import org.dominokit.domino.api.shared.extension.Content;
 

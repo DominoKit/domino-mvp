@@ -5,12 +5,15 @@ import com.squareup.javapoet.*;
 import org.dominokit.domino.api.client.annotations.presenter.ListenTo;
 import org.dominokit.domino.api.client.annotations.presenter.Listener;
 import org.dominokit.domino.api.shared.extension.DominoEventListener;
+import org.dominokit.domino.api.shared.extension.GlobalDominoEventListener;
+import org.dominokit.domino.api.shared.extension.GlobalEvent;
 import org.dominokit.domino.apt.commons.AbstractSourceBuilder;
 import org.dominokit.domino.apt.commons.DominoTypeBuilder;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.*;
 import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeMirror;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -41,9 +44,12 @@ public class DominoEventListenerSourceWriter extends AbstractSourceBuilder {
     public List<TypeSpec.Builder> asTypeBuilder() {
 
         String eventClassName = presenterElement.getSimpleName() + "ListenFor" + eventType.getSimpleName();
+        boolean isGlobalEvent = processorUtil.isAssignableFrom(eventType, GlobalEvent.class);
+        ClassName listenerSuperType = isGlobalEvent ? ClassName.get(GlobalDominoEventListener.class) : ClassName.get(DominoEventListener.class);
+
         TypeSpec.Builder listenerType = DominoTypeBuilder.classBuilder(eventClassName, PresenterProcessor.class)
                 .addAnnotation(Listener.class)
-                .addSuperinterface(ParameterizedTypeName.get(ClassName.get(DominoEventListener.class), TypeName.get(eventType.asType())))
+                .addSuperinterface(ParameterizedTypeName.get(listenerSuperType, TypeName.get(eventType.asType())))
                 .addField(FieldSpec.builder(TypeName.get(presenterElement.asType()), "presenter", Modifier.PRIVATE, Modifier.FINAL).build())
                 .addMethod(MethodSpec.constructorBuilder()
                         .addModifiers(Modifier.PUBLIC)
@@ -51,6 +57,10 @@ public class DominoEventListenerSourceWriter extends AbstractSourceBuilder {
                         .addStatement("this.presenter = presenter")
                         .build())
                 .addMethod(makeListenMethod());
+
+        if (isGlobalEvent) {
+            listenerType.addMethod(makeCreateEventMethod(eventType));
+        }
         return Collections.singletonList(listenerType);
     }
 
@@ -79,6 +89,16 @@ public class DominoEventListenerSourceWriter extends AbstractSourceBuilder {
                 .addModifiers(Modifier.PUBLIC)
                 .addParameter(TypeName.get(eventType.asType()), "event")
                 .addStatement("this.presenter.$L(event.context())", root.getSimpleName().toString())
+                .build();
+    }
+
+    private MethodSpec makeCreateEventMethod(TypeElement eventType) {
+        return MethodSpec.methodBuilder("deserializeEvent")
+                .addAnnotation(Override.class)
+                .addModifiers(Modifier.PUBLIC)
+                .returns(TypeName.get(eventType.asType()))
+                .addParameter(TypeName.get(String.class), "serializedEvent")
+                .addStatement("return new $T(serializedEvent)", TypeName.get(eventType.asType()))
                 .build();
     }
 }

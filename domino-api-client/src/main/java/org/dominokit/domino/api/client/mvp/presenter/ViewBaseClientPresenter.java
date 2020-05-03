@@ -1,9 +1,11 @@
 package org.dominokit.domino.api.client.mvp.presenter;
 
+import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.mvp.slots.*;
 import org.dominokit.domino.api.client.mvp.view.*;
 
 import java.util.function.Supplier;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static java.util.Objects.nonNull;
@@ -11,8 +13,6 @@ import static java.util.Objects.nonNull;
 public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter {
 
     public static final Logger LOGGER = Logger.getLogger(ViewBaseClientPresenter.class.getName());
-
-    public static final String DOCUMENT_BODY = "document-body";
 
     protected V view;
     private Supplier<V> viewSupplier;
@@ -35,26 +35,21 @@ public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter
     }
 
     public void revealInSlot(String key) {
-        IsSlot slot = SlotRegistry.get(key);
-        if (nonNull(slot)) {
-            revealInSlot(slot);
-        } else {
-            throw new InvalidSlotException(this.getClass(), key);
+        try{
+            if (view instanceof HasContent) {
+                onBeforeReveal();
+               ClientApp.make().slotsManager().revealView(key, (HasContent) view, this::registerSlots);
+            } else {
+                throw new RevealViewWithNoContentException(view.getClass().getCanonicalName());
+            }
+        }catch (InvalidSlotException e){
+            LOGGER.log(Level.SEVERE, "Slot ["+key+"] not found, required by presenter : ["+this.getClass().getCanonicalName() +"]");
         }
     }
 
     public void reveal() {
         if (nonNull(revealSlot()) && !revealSlot().trim().isEmpty()) {
             revealInSlot(revealSlot());
-        }
-    }
-
-    public void revealInSlot(IsSlot slot) {
-        if (view instanceof HasContent) {
-            onBeforeReveal();
-            slot.updateContent(view, this::registerSlots);
-        } else {
-            throw new RevealViewWithNoContentException(view.getClass().getCanonicalName());
         }
     }
 
@@ -77,7 +72,7 @@ public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter
         if (nonNull(slotsEntries)) {
             slotsEntries.getSlots().forEach((key, slot) -> {
                 LOGGER.info("Presenter ["+this.getClass().getCanonicalName()+"] is registering slot ["+key+"]");
-                SlotRegistry.registerSlot(key, slot);
+                ClientApp.make().slotsManager().registerSlot(key, slot);
             });
         }
     }
@@ -101,7 +96,7 @@ public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter
             if (nonNull(slotsEntries)) {
                 slotsEntries.getSlots().forEach((key, slot) -> {
                     LOGGER.info("Presenter ["+this.getClass().getCanonicalName()+"] is removing slot ["+key+"]");
-                    SlotRegistry.removeSlot(key);
+                    ClientApp.make().slotsManager().removeSlot(key);
                 });
             }
             RemovedHandler removeHandler = getRemoveHandler();

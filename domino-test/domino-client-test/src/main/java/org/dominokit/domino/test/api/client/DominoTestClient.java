@@ -11,12 +11,12 @@ import io.vertx.ext.unit.TestContext;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import org.dominokit.domino.api.client.ApplicationStartHandler;
+import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.ModuleConfiguration;
 import org.dominokit.domino.api.client.ModuleConfigurator;
 import org.dominokit.domino.api.client.mvp.Store;
 import org.dominokit.domino.api.client.mvp.StoreRegistry;
 import org.dominokit.domino.api.client.mvp.presenter.ViewBaseClientPresenter;
-import org.dominokit.domino.api.client.mvp.slots.SlotRegistry;
 import org.dominokit.domino.api.server.ServerApp;
 import org.dominokit.domino.api.server.config.ServerConfiguration;
 import org.dominokit.domino.api.server.config.ServerConfigurationLoader;
@@ -24,10 +24,10 @@ import org.dominokit.domino.api.server.config.VertxConfiguration;
 import org.dominokit.domino.api.server.entrypoint.VertxContext;
 import org.dominokit.domino.api.server.entrypoint.VertxEntryPointContext;
 import org.dominokit.domino.api.shared.extension.DominoEventListener;
+import org.dominokit.domino.api.shared.extension.PredefinedSlots;
 import org.dominokit.domino.rest.DominoRestConfig;
 import org.dominokit.domino.rest.VertxInstanceProvider;
 import org.dominokit.domino.rest.server.DefaultProvider;
-import org.dominokit.domino.rest.shared.request.ResponseBean;
 import org.dominokit.domino.rest.shared.request.ServerRequest;
 import org.dominokit.domino.service.discovery.VertxServiceDiscovery;
 import org.dominokit.domino.test.api.DominoTestServer;
@@ -153,7 +153,7 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient,
         modules.forEach(this::configureModule);
 
         this.configOverrideHandler.overrideConfig();
-        SlotRegistry.registerSlot(ViewBaseClientPresenter.DOCUMENT_BODY, new FakeSlot());
+        ClientApp.make().slotsManager().registerSlot(PredefinedSlots.BODY_SLOT, new FakeSlot());
 
         listenersOf.forEach(c -> c.handler.handle(getListener(c.listenerName)));
 

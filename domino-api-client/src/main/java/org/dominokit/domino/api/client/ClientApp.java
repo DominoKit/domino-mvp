@@ -3,15 +3,13 @@ package org.dominokit.domino.api.client;
 import org.dominokit.domino.api.client.async.AsyncRunner;
 import org.dominokit.domino.api.client.extension.DominoEventsListenersRepository;
 import org.dominokit.domino.api.client.extension.DominoEventsRegistry;
+import org.dominokit.domino.api.client.mvp.slots.SlotsManager;
 import org.dominokit.domino.api.client.request.PresenterCommand;
 import org.dominokit.domino.api.client.startup.AsyncClientStartupTask;
 import org.dominokit.domino.api.client.startup.BaseRoutingStartupTask;
 import org.dominokit.domino.api.client.startup.ClientStartupTask;
 import org.dominokit.domino.api.client.startup.TasksAggregator;
-import org.dominokit.domino.api.shared.extension.ContextAggregator;
-import org.dominokit.domino.api.shared.extension.DominoEvent;
-import org.dominokit.domino.api.shared.extension.DominoEventListener;
-import org.dominokit.domino.api.shared.extension.MainDominoEvent;
+import org.dominokit.domino.api.shared.extension.*;
 import org.dominokit.domino.history.AppHistory;
 import org.dominokit.domino.rest.shared.EventsBus;
 import org.dominokit.domino.rest.shared.request.RequestRouter;
@@ -32,6 +30,7 @@ public class ClientApp implements InitialTaskRegistry, DominoEventsRegistry {
     private static final AttributeHolder<List<ClientStartupTask>> INITIAL_TASKS_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<AsyncRunner> ASYNC_RUNNER_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<DominoOptions> DOMINO_OPTIONS_HOLDER = new AttributeHolder<>();
+    private static final AttributeHolder<SlotsManager> SLOT_MANAGER_HOLDER = new AttributeHolder<>();
 
     private List<ModuleConfiguration> modules = new ArrayList<>();
 
@@ -75,18 +74,29 @@ public class ClientApp implements InitialTaskRegistry, DominoEventsRegistry {
         return DOMINO_OPTIONS_HOLDER.attribute;
     }
 
+    public SlotsManager slotsManager() {
+        return SLOT_MANAGER_HOLDER.attribute;
+    }
+
     public void registerEventListener(Class<? extends DominoEvent> event, DominoEventListener listener) {
         LISTENERS_REPOSITORY_HOLDER.attribute.addListener(event, listener);
+    }
+
+    public void registerGlobalEventListener(Class<? extends DominoEvent> event, GlobalDominoEventListener listener) {
+        LISTENERS_REPOSITORY_HOLDER.attribute.addGlobalListener(event, listener);
     }
 
     public void removeEventListener(Class<? extends DominoEvent> event, DominoEventListener listener) {
         LISTENERS_REPOSITORY_HOLDER.attribute.removeListener(event, listener);
     }
 
+    public void removeGlobalEventListener(Class<? extends DominoEvent> event, GlobalDominoEventListener listener) {
+        LISTENERS_REPOSITORY_HOLDER.attribute.removeGlobalListener(event, listener);
+    }
+
     public void configureModule(ModuleConfiguration configuration) {
         modules.add(configuration);
     }
-
 
     public void run() {
         run(canSetDominoOptions -> {
@@ -161,11 +171,9 @@ public class ClientApp implements InitialTaskRegistry, DominoEventsRegistry {
         }
     }
 
-    public void fireEvent(Class<? extends DominoEvent> extensionPointInterface,
+    public void fireEvent(Class<? extends DominoEvent> eventType,
                           DominoEvent dominoEvent) {
-        LISTENERS_REPOSITORY_HOLDER.attribute.getEventListeners(extensionPointInterface)
-                .forEach(c ->
-                        getAsyncRunner().runAsync(() -> c.onEventReceived(dominoEvent)));
+        LISTENERS_REPOSITORY_HOLDER.attribute.fireEvent(eventType, dominoEvent);
     }
 
     @FunctionalInterface
@@ -191,7 +199,12 @@ public class ClientApp implements InitialTaskRegistry, DominoEventsRegistry {
 
     @FunctionalInterface
     public interface HasOptions {
-        CanBuildClientApp dominoOptions(DominoOptions dominoOptions);
+        HasSlotManager dominoOptions(DominoOptions dominoOptions);
+    }
+
+    @FunctionalInterface
+    public interface HasSlotManager {
+        CanBuildClientApp slotsManager(SlotsManager slotsManager);
     }
 
     @FunctionalInterface
@@ -201,7 +214,7 @@ public class ClientApp implements InitialTaskRegistry, DominoEventsRegistry {
 
     public static class ClientAppBuilder
             implements HasClientRouter, HasEventBus, HasDominoEventListenersRepository,
-            HasHistory, HasOptions, CanBuildClientApp {
+            HasHistory, HasOptions, HasSlotManager, CanBuildClientApp {
 
         private RequestRouter<PresenterCommand> clientRouter;
         private EventsBus eventsBus;
@@ -209,6 +222,7 @@ public class ClientApp implements InitialTaskRegistry, DominoEventsRegistry {
         private AppHistory history;
         private AsyncRunner asyncRunner;
         private DominoOptions dominoOptions;
+        private SlotsManager slotsManager;
 
         private ClientAppBuilder(RequestRouter<PresenterCommand> clientRouter) {
             this.clientRouter = clientRouter;
@@ -243,8 +257,14 @@ public class ClientApp implements InitialTaskRegistry, DominoEventsRegistry {
         }
 
         @Override
-        public CanBuildClientApp dominoOptions(DominoOptions dominoOptions) {
+        public HasSlotManager dominoOptions(DominoOptions dominoOptions) {
             this.dominoOptions = dominoOptions;
+            return this;
+        }
+
+        @Override
+        public CanBuildClientApp slotsManager(SlotsManager slotsManager) {
+            this.slotsManager = slotsManager;
             return this;
         }
 
@@ -262,6 +282,7 @@ public class ClientApp implements InitialTaskRegistry, DominoEventsRegistry {
             ClientApp.INITIAL_TASKS_HOLDER.hold(new LinkedList<>());
             ClientApp.ASYNC_RUNNER_HOLDER.hold(asyncRunner);
             ClientApp.DOMINO_OPTIONS_HOLDER.hold(dominoOptions);
+            ClientApp.SLOT_MANAGER_HOLDER.hold(slotsManager);
         }
     }
 

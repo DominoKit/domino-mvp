@@ -1,14 +1,11 @@
 package org.dominokit.domino.view.slots;
 
 import elemental2.dom.HTMLElement;
-import jsinterop.base.Js;
-import org.dominokit.domino.api.client.mvp.slots.IsSlot;
-import org.dominokit.domino.api.client.mvp.view.ContentView;
-import org.dominokit.domino.api.client.mvp.view.HasContent;
+import org.dominokit.domino.gwt.client.slots.ElementSlot;
 import org.dominokit.domino.ui.utils.DominoElement;
 import org.jboss.elemento.IsElement;
 
-public class SingleElementSlot implements IsSlot<ContentView> {
+public class SingleElementSlot extends ElementSlot {
 
     private DominoElement<HTMLElement> element;
 
@@ -33,8 +30,9 @@ public class SingleElementSlot implements IsSlot<ContentView> {
     }
 
     @Override
-    public void updateContent(ContentView view, HasContent.CreateHandler createHandler) {
-        element.clearElement()
-                .appendChild(Js.<HTMLElement>uncheckedCast(view.getContent(createHandler).get()));
+    public void updateContent(HTMLElement view) {
+        element
+                .clearElement()
+                .appendChild(view);
     }
 }

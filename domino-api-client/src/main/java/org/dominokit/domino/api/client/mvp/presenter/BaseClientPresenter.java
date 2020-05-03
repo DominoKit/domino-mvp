@@ -9,6 +9,7 @@ import org.dominokit.domino.api.client.mvp.StoreRegistry;
 import org.dominokit.domino.api.client.startup.BaseRoutingStartupTask;
 import org.dominokit.domino.api.shared.extension.DominoEvent;
 import org.dominokit.domino.api.shared.extension.DominoEventListener;
+import org.dominokit.domino.api.shared.extension.GlobalDominoEventListener;
 import org.dominokit.domino.history.AppHistory;
 import org.dominokit.domino.history.DominoHistory;
 import org.dominokit.domino.history.TokenParameter;
@@ -34,12 +35,15 @@ public abstract class BaseClientPresenter extends ClientPresenter implements Pre
     private final PresenterState uninitialized = this::initialize;
 
     private Map<Class<? extends DominoEvent>, DominoEventListener> listeners;
+    private Map<Class<? extends DominoEvent>, GlobalDominoEventListener> globalListeners;
     private final List<RegistrationHandler> storeRegisterations= new ArrayList<>();
 
     protected void initialize() {
         postConstruct();
         this.listeners = getListeners();
+        this.globalListeners = getGlobalListeners();
         registerListeners();
+        registerGlobalListeners();
         state = initialized;
         if (isAutoActivate()) {
             activate();
@@ -67,8 +71,16 @@ public abstract class BaseClientPresenter extends ClientPresenter implements Pre
         listeners.forEach((key, value) -> ClientApp.make().registerEventListener(key, value));
     }
 
+    private void registerGlobalListeners() {
+        globalListeners.forEach((key, value) -> ClientApp.make().registerGlobalEventListener(key, value));
+    }
+
     private void removeListeners() {
         listeners.forEach((key, value) -> ClientApp.make().removeEventListener(key, value));
+    }
+
+    private void removeGlobalListeners() {
+        globalListeners.forEach((key, value) -> ClientApp.make().removeGlobalEventListener(key, value));
     }
 
     @Override
@@ -86,6 +98,7 @@ public abstract class BaseClientPresenter extends ClientPresenter implements Pre
 
     protected final void deActivate() {
         removeListeners();
+        removeGlobalListeners();
         activated = false;
         fireStateEvent(false);
         removeStores();
@@ -159,6 +172,10 @@ public abstract class BaseClientPresenter extends ClientPresenter implements Pre
     }
 
     protected Map<Class<? extends DominoEvent>, DominoEventListener> getListeners() {
+        return new HashMap<>();
+    }
+
+    protected Map<Class<? extends DominoEvent>, GlobalDominoEventListener> getGlobalListeners() {
         return new HashMap<>();
     }
 

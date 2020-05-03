@@ -5,9 +5,7 @@ import org.dominokit.domino.api.client.annotations.presenter.*;
 import org.dominokit.domino.api.client.mvp.presenter.ViewBaseClientPresenter;
 import org.dominokit.domino.api.client.mvp.slots.IsSlot;
 import org.dominokit.domino.api.client.mvp.slots.SlotsEntries;
-import org.dominokit.domino.api.shared.extension.Aggregate;
-import org.dominokit.domino.api.shared.extension.DominoEvent;
-import org.dominokit.domino.api.shared.extension.DominoEventListener;
+import org.dominokit.domino.api.shared.extension.*;
 import org.dominokit.domino.apt.commons.AbstractSourceBuilder;
 import org.dominokit.domino.apt.commons.DominoTypeBuilder;
 import org.dominokit.domino.history.DominoHistory;
@@ -77,6 +75,7 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
         generateOnBeforeReveal(proxyType);
         generateOnPostConstruct(proxyType);
         generateListenersMethod(proxyType);
+        generateGlobalListenersMethod(proxyType);
         generateSetState(proxyType);
         generateFireActivationEvent(proxyType);
         generateGetSlotsMethod(proxyType);
@@ -276,11 +275,47 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
                 .forEach(element -> {
                     Optional<TypeMirror> event = processorUtil.getClassValueFromAnnotation(element, ListenTo.class, "event");
                     event.ifPresent(eventType -> {
-                        String listenerName = elements.getPackageOf(proxyElement).getQualifiedName().toString()
-                                .replace(".presenters", ".listeners")
-                                + "." + proxyElement.getSimpleName().toString()
-                                + "_PresenterListenFor" + types.asElement(eventType).getSimpleName().toString();
-                        listenersMethod.addStatement("listenersMap.put($T.class, new $L(this))", TypeName.get(eventType), ClassName.bestGuess(listenerName));
+                        if(!processorUtil.isAssignableFrom(eventType, GlobalEvent.class)) {
+                            String listenerName = elements.getPackageOf(proxyElement).getQualifiedName().toString()
+                                    .replace(".presenters", ".listeners")
+                                    + "." + proxyElement.getSimpleName().toString()
+                                    + "_PresenterListenFor" + types.asElement(eventType).getSimpleName().toString();
+                            listenersMethod.addStatement("listenersMap.put($T.class, new $L(this))", TypeName.get(eventType), ClassName.bestGuess(listenerName));
+                        }
+                    });
+                });
+
+        listenersMethod.addStatement("return listenersMap");
+
+        proxyType.addMethod(listenersMethod.build());
+
+    }
+
+    private void generateGlobalListenersMethod(TypeSpec.Builder proxyType) {
+
+        TypeVariableName dominoEventTypeName = TypeVariableName.get("? extends DominoEvent", TypeName.get(DominoEvent.class));
+        ParameterizedTypeName keyType = ParameterizedTypeName.get(ClassName.get(Class.class), dominoEventTypeName);
+        TypeName valueType = TypeName.get(GlobalDominoEventListener.class);
+        MethodSpec.Builder listenersMethod = MethodSpec.methodBuilder("getGlobalListeners")
+                .addAnnotation(Override.class)
+                .addAnnotation(AnnotationSpec.builder(SuppressWarnings.class).addMember("value", "$S", "all").build())
+                .addModifiers(Modifier.PROTECTED)
+                .returns(ParameterizedTypeName.get(ClassName.get(Map.class), keyType, valueType))
+                .addStatement("$T<Class<? extends $T>, $T> listenersMap = new $T<>()", TypeName.get(Map.class), TypeName.get(DominoEvent.class), valueType, TypeName.get(HashMap.class));
+
+        List<Element> listenToMethods = processorUtil.getAnnotatedMethods(proxyElement.asType(), ListenTo.class);
+
+        listenToMethods.stream()
+                .forEach(element -> {
+                    Optional<TypeMirror> event = processorUtil.getClassValueFromAnnotation(element, ListenTo.class, "event");
+                    event.ifPresent(eventType -> {
+                        if(processorUtil.isAssignableFrom(eventType, GlobalEvent.class)) {
+                            String listenerName = elements.getPackageOf(proxyElement).getQualifiedName().toString()
+                                    .replace(".presenters", ".listeners")
+                                    + "." + proxyElement.getSimpleName().toString()
+                                    + "_PresenterListenFor" + types.asElement(eventType).getSimpleName().toString();
+                            listenersMethod.addStatement("listenersMap.put($T.class, new $L(this))", TypeName.get(eventType), ClassName.bestGuess(listenerName));
+                        }
                     });
                 });
 
