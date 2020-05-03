@@ -9,6 +9,8 @@ import org.dominokit.domino.api.server.DominoLoaderPlugin;
 import org.dominokit.domino.api.server.PluginContext;
 
 import java.nio.file.Paths;
+import java.util.Iterator;
+import java.util.ServiceLoader;
 
 import static java.util.Objects.nonNull;
 
@@ -37,19 +39,19 @@ public class StaticResourcesConfiguratorPlugin extends BaseDominoLoaderPlugin {
     }
 
     private HttpServerResponse resourceNotFound(RoutingContext routingContext) {
-        return routingContext.response()
-                .putHeader("Content-type", "text/html")
-                .setStatusCode(404)
-                .sendFile(context.getWebRoot() + "/index.html");
+        return serveIndexPage(routingContext, 404);
     }
 
     private String systemWebRoot() {
         return Paths.get(System.getProperty("domino.webroot.location")).toAbsolutePath().toString();
     }
 
-    private HttpServerResponse serveIndexPage(RoutingContext event) {
-        return event.response().putHeader("Content-type", "text/html")
-                .sendFile(context.getWebRoot() + "/index.html");
+    private HttpServerResponse serveIndexPage(RoutingContext routingContext) {
+        return serveIndexPage(routingContext, 200);
+    }
+
+    private HttpServerResponse serveIndexPage(RoutingContext routingContext, int statusCode) {
+        return IndexPageContext.INSTANCE.getIndexPageProvider().serveIndexPage(context, routingContext, statusCode);
     }
 
     @Override
@@ -61,4 +63,6 @@ public class StaticResourcesConfiguratorPlugin extends BaseDominoLoaderPlugin {
     public boolean isEnabled() {
         return true;
     }
+
+
 }

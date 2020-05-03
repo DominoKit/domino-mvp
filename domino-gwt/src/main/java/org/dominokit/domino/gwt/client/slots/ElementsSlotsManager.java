@@ -6,9 +6,9 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.logging.Logger;
 
-public class SlotRegistry {
+public class SlotsManagerImpl {
 
-    public static final Logger LOGGER = Logger.getLogger(SlotRegistry.class.getName());
+    public static final Logger LOGGER = Logger.getLogger(SlotsManagerImpl.class.getName());
 
     private static final Map<String, Deque<IsSlot>> SLOT_QUEUE = new HashMap<>();
 
