@@ -8,6 +8,9 @@ import io.vertx.ext.web.RoutingContext;
 import org.dominokit.domino.api.server.config.ServerConfiguration;
 import org.dominokit.domino.service.discovery.VertxServiceDiscovery;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class VertxContext implements ServerContext {
@@ -19,6 +22,7 @@ public class VertxContext implements ServerContext {
     private final DominoHttpServerOptions httpServerOptions;
     private final ConfigRetriever configRetriever;
     private final io.vertx.reactivex.core.Vertx rxVertx;
+    private final List<CleanupTask> cleanupTasks = new ArrayList<>();
 
     private VertxContext(Vertx vertx, Router router, ServerConfiguration config, VertxServiceDiscovery serviceDiscovery,
                          DominoHttpServerOptions httpServerOptions, ConfigRetriever configRetriever) {
@@ -70,6 +74,15 @@ public class VertxContext implements ServerContext {
 
     public ConfigRetriever configRetriever() {
         return this.configRetriever;
+    }
+
+    @Override
+    public void registerCleanupTask(Consumer<CleanupTask> operation) {
+        cleanupTasks.add(new CleanupTask(operation, this));
+    }
+
+    public List<CleanupTask> getCleanupTasks(){
+        return new ArrayList<>(cleanupTasks);
     }
 
     public static class VertxContextBuilder {

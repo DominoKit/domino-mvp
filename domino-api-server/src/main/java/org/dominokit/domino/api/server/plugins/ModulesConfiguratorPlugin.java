@@ -8,7 +8,7 @@ import org.dominokit.domino.api.server.config.ServerConfigurationLoader;
 import static org.dominokit.domino.api.server.PluginContext.MODULES_LOADER_ORDER;
 
 @AutoService(DominoLoaderPlugin.class)
-public class ModulesConfigratorPlugin extends BaseDominoLoaderPlugin {
+public class ModulesConfiguratorPlugin extends BaseDominoLoaderPlugin {
 
     @Override
     public void applyPlugin(CompleteHandler completeHandler) {

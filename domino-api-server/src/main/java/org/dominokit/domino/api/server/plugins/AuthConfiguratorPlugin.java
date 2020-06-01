@@ -7,7 +7,7 @@ import org.dominokit.domino.api.server.plugins.jwt.JWTHandlersConfigurator;
 import org.dominokit.domino.api.server.plugins.jwt.KeycloakJWTOptionsProvider;
 
 @AutoService(DominoLoaderPlugin.class)
-public class AuthConfigratorPlugin extends BaseDominoLoaderPlugin {
+public class AuthConfiguratorPlugin extends BaseDominoLoaderPlugin {
 
     @Override
     public void applyPlugin(CompleteHandler completeHandler) {

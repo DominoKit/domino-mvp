@@ -1,0 +1,1521 @@
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for org.dominokit.domino.api:domino-api-client:gwt-lib:1.0-rc.5-SNAPSHOT
+[WARNING] 'dependencyManagement.dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: javax.validation:validation-api:jar -> duplicate declaration of version 2.0.1.Final @ org.dominokit.domino:domino-parent:1.0-rc.5-SNAPSHOT, /mnt/CODE/GIT/domino-kit/domino-mvp/pom.xml, line 362, column 25
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for org.dominokit.domino.test:domino-client-test:jar:1.0-rc.5-SNAPSHOT
+[WARNING] 'dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: io.vertx:vertx-unit:jar -> duplicate declaration of version (?) @ line 53, column 21
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for org.dominokit.domino:domino-parent:pom:1.0-rc.5-SNAPSHOT
+[WARNING] 'dependencyManagement.dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: javax.validation:validation-api:jar -> duplicate declaration of version 2.0.1.Final @ line 362, column 25
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO] Inspecting build with total of 25 modules...
+[INFO] Installing Nexus Staging features:
+[INFO]   ... total of 1 executions of maven-deploy-plugin replaced with nexus-staging-maven-plugin
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] domino-parent                                                      [pom]
+[INFO] domino-api-shared                                                  [jar]
+[INFO] domino-api-client                                              [gwt-lib]
+[INFO] domino-client-commons                                          [gwt-lib]
+[INFO] domino-gwt                                                     [gwt-lib]
+[INFO] domino-service-discovery                                           [jar]
+[INFO] domino-api-server                                                  [jar]
+[INFO] domino-test                                                        [pom]
+[INFO] domino-server-test                                                 [jar]
+[INFO] domino-client-test                                                 [jar]
+[INFO] apt-test                                                           [jar]
+[INFO] domino-apt                                                         [pom]
+[INFO] apt-client                                                         [jar]
+[INFO] apt-client-test                                                    [jar]
+[INFO] apt-server                                                         [jar]
+[INFO] archetypes                                                         [pom]
+[INFO] domino-gwt-app-archetype                               [maven-archetype]
+[INFO] domino-gwt-module-archetype                            [maven-archetype]
+[INFO] domino-gwt-single-module-archetype                     [maven-archetype]
+[INFO] ssl-server-configurator                                            [jar]
+[INFO] domino-remote-logging                                              [jar]
+[INFO] domino-desktop                                                     [jar]
+[INFO] domino-gwt-view                                                [gwt-lib]
+[INFO] domino-log4j-server-logging                                        [jar]
+[INFO] domino                                                             [pom]
+[INFO] 
+[INFO] -----------------< org.dominokit.domino:domino-parent >-----------------
+[INFO] Building domino-parent 1.0-rc.5-SNAPSHOT                          [1/25]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-parent ---
+[INFO] org.dominokit.domino:domino-parent:pom:1.0-rc.5-SNAPSHOT
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] \- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] 
+[INFO] -------------< org.dominokit.domino.api:domino-api-shared >-------------
+[INFO] Building domino-api-shared 1.0-rc.5-SNAPSHOT                      [2/25]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-api-shared ---
+[INFO] org.dominokit.domino.api:domino-api-shared:jar:1.0-rc.5-SNAPSHOT
+[INFO] +- org.dominokit:jaxrs-super:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] +- org.gwtproject.regexp:gwt-regexp:jar:1.0-SNAPSHOT:compile
+[INFO] |  \- com.google.elemental2:elemental2-core:jar:1.0.0-RC1:compile
+[INFO] |     +- com.google.jsinterop:jsinterop-annotations:jar:1.0.2:compile
+[INFO] |     \- com.google.jsinterop:base:jar:1.0.0-RC1:compile
+[INFO] +- org.dominokit:domino-aggregator-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] +- org.dominokit:domino-history-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] \- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] 
+[INFO] -------------< org.dominokit.domino.api:domino-api-client >-------------
+[INFO] Building domino-api-client 1.0-rc.5-SNAPSHOT                      [3/25]
+[INFO] ------------------------------[ gwt-lib ]-------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-api-client ---
+[INFO] org.dominokit.domino.api:domino-api-client:gwt-lib:1.0-rc.5-SNAPSHOT
+[INFO] +- org.dominokit.domino.api:domino-api-shared:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  \- org.dominokit:domino-history-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] +- org.dominokit:jaxrs-super:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] +- org.dominokit:domino-aggregator-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] +- org.dominokit:domino-aggregator-apt:jar:1.0-rc.4-SNAPSHOT:provided
+[INFO] +- org.dominokit.jackson:jackson-apt:jar:1.0-SNAPSHOT:compile
+[INFO] |  +- com.google.elemental2:elemental2-core:jar:1.0.0-RC1:compile
+[INFO] |  |  +- com.google.jsinterop:jsinterop-annotations:jar:1.0.2:compile
+[INFO] |  |  \- com.google.jsinterop:base:jar:1.0.0-RC1:compile
+[INFO] |  +- org.dominokit.jackson:jackson-super:jar:1.0-SNAPSHOT:compile
+[INFO] |  +- org.gwtproject.i18n:gwt-cldr:jar:1.0-SNAPSHOT:compile
+[INFO] |  \- org.gwtproject.i18n:gwt-datetimeformat:jar:1.0-SNAPSHOT:compile
+[INFO] |     +- org.gwtproject.i18n:gwt-cldr:jar:sources:1.0-SNAPSHOT:compile
+[INFO] |     \- org.gwtproject.i18n:gwt-i18n:jar:1.0-SNAPSHOT:compile
+[INFO] |        \- com.google.elemental2:elemental2-dom:jar:1.0.0-RC1:compile
+[INFO] |           \- com.google.elemental2:elemental2-promise:jar:1.0.0-RC1:compile
+[INFO] +- org.dominokit.jackson:jackson-apt-processor:jar:1.0-SNAPSHOT:provided
+[INFO] +- org.dominokit:domino-rest-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  \- javax.annotation:javax.annotation-api:jar:1.3.2:compile
+[INFO] +- org.gwtproject.regexp:gwt-regexp:jar:1.0-SNAPSHOT:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] \- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] 
+[INFO] -------------< org.dominokit.domino:domino-client-commons >-------------
+[INFO] Building domino-client-commons 1.0-rc.5-SNAPSHOT                  [4/25]
+[INFO] ------------------------------[ gwt-lib ]-------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-client-commons ---
+[INFO] org.dominokit.domino:domino-client-commons:gwt-lib:1.0-rc.5-SNAPSHOT
+[INFO] +- org.dominokit.domino.api:domino-api-shared:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  +- org.dominokit:jaxrs-super:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  +- org.gwtproject.regexp:gwt-regexp:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  \- com.google.elemental2:elemental2-core:jar:1.0.0-RC1:compile
+[INFO] |  |     +- com.google.jsinterop:jsinterop-annotations:jar:1.0.2:compile
+[INFO] |  |     \- com.google.jsinterop:base:jar:1.0.0-RC1:compile
+[INFO] |  +- org.dominokit:domino-aggregator-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  \- org.dominokit:domino-history-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] +- org.dominokit.domino.api:domino-api-client:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  +- org.dominokit.jackson:jackson-apt:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  +- org.dominokit.jackson:jackson-super:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  +- org.gwtproject.i18n:gwt-cldr:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  \- org.gwtproject.i18n:gwt-datetimeformat:jar:1.0-SNAPSHOT:compile
+[INFO] |  |     +- org.gwtproject.i18n:gwt-cldr:jar:sources:1.0-SNAPSHOT:compile
+[INFO] |  |     \- org.gwtproject.i18n:gwt-i18n:jar:1.0-SNAPSHOT:compile
+[INFO] |  |        \- com.google.elemental2:elemental2-dom:jar:1.0.0-RC1:compile
+[INFO] |  |           \- com.google.elemental2:elemental2-promise:jar:1.0.0-RC1:compile
+[INFO] |  \- org.dominokit:domino-rest-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |     \- javax.annotation:javax.annotation-api:jar:1.3.2:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] \- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] 
+[INFO] ----------------< org.dominokit.domino.impl:domino-gwt >----------------
+[INFO] Building domino-gwt 1.0-rc.5-SNAPSHOT                             [5/25]
+[INFO] ------------------------------[ gwt-lib ]-------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-gwt ---
+[INFO] org.dominokit.domino.impl:domino-gwt:gwt-lib:1.0-rc.5-SNAPSHOT
+[INFO] +- org.gwtproject.core:gwt-core:jar:1.0-SNAPSHOT:compile
+[INFO] +- org.dominokit.domino.api:domino-api-client:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  +- org.dominokit:jaxrs-super:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  +- org.dominokit:domino-aggregator-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  +- org.dominokit.jackson:jackson-apt:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  +- org.dominokit.jackson:jackson-super:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  +- org.gwtproject.i18n:gwt-cldr:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  \- org.gwtproject.i18n:gwt-datetimeformat:jar:1.0-SNAPSHOT:compile
+[INFO] |  |     +- org.gwtproject.i18n:gwt-cldr:jar:sources:1.0-SNAPSHOT:compile
+[INFO] |  |     \- org.gwtproject.i18n:gwt-i18n:jar:1.0-SNAPSHOT:compile
+[INFO] |  +- org.dominokit:domino-rest-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  |  \- javax.annotation:javax.annotation-api:jar:1.3.2:compile
+[INFO] |  \- org.gwtproject.regexp:gwt-regexp:jar:1.0-SNAPSHOT:compile
+[INFO] +- org.dominokit.domino.api:domino-api-client:jar:sources:1.0-rc.5-SNAPSHOT:compile
+[INFO] +- org.dominokit.domino.api:domino-api-shared:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  \- org.dominokit:domino-history-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] +- org.dominokit:domino-slf4j-logger:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] +- org.dominokit.domino:domino-client-commons:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] +- com.google.elemental2:elemental2-core:jar:1.0.0-RC1:compile
+[INFO] |  +- com.google.jsinterop:jsinterop-annotations:jar:1.0.2:compile
+[INFO] |  \- com.google.jsinterop:base:jar:1.0.0-RC1:compile
+[INFO] +- com.google.elemental2:elemental2-dom:jar:1.0.0-RC1:compile
+[INFO] |  \- com.google.elemental2:elemental2-promise:jar:1.0.0-RC1:compile
+[INFO] +- org.dominokit:domino-rest-gwt:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  +- org.gwtproject.timer:gwt-timer:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  \- com.google.elemental2:elemental2-dom:jar:sources:1.0.0-RC1:compile
+[INFO] |  +- org.gwtproject.event:gwt-event:jar:HEAD-SNAPSHOT:compile
+[INFO] |  +- org.gwtproject.event:gwt-event:jar:sources:HEAD-SNAPSHOT:compile
+[INFO] |  \- org.gwtproject.xhr:gwt-xhr:jar:1.0-SNAPSHOT:compile
+[INFO] |     \- org.gwtproject:typedarrays:jar:1.0-SNAPSHOT:compile
+[INFO] +- org.dominokit:domino-history-gwt:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] \- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] 
+[INFO] -----------< org.dominokit.domino:domino-service-discovery >------------
+[INFO] Building domino-service-discovery 1.0-rc.5-SNAPSHOT               [6/25]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-service-discovery ---
+[INFO] org.dominokit.domino:domino-service-discovery:jar:1.0-rc.5-SNAPSHOT
+[INFO] +- io.vertx:vertx-service-discovery:jar:3.8.1:compile
+[INFO] |  \- io.vertx:vertx-core:jar:3.8.1:compile
+[INFO] |     +- io.netty:netty-common:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-buffer:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-transport:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-handler:jar:4.1.39.Final:compile
+[INFO] |     |  \- io.netty:netty-codec:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-handler-proxy:jar:4.1.39.Final:compile
+[INFO] |     |  \- io.netty:netty-codec-socks:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-codec-http:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-codec-http2:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-resolver:jar:4.1.39.Final:compile
+[INFO] |     \- io.netty:netty-resolver-dns:jar:4.1.39.Final:compile
+[INFO] |        \- io.netty:netty-codec-dns:jar:4.1.39.Final:compile
+[INFO] +- io.vertx:vertx-unit:jar:3.8.1:test
+[INFO] +- io.vertx:vertx-web-client:jar:3.8.1:compile
+[INFO] |  \- io.vertx:vertx-web-common:jar:3.8.1:compile
+[INFO] +- io.vertx:vertx-service-proxy:jar:3.8.1:compile
+[INFO] +- io.vertx:vertx-codegen:jar:3.8.1:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-core:jar:2.9.9:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.9.9.1:compile
+[INFO] |  |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.9.0:compile
+[INFO] |  \- org.mvel:mvel2:jar:2.3.1.Final:compile
+[INFO] +- io.vertx:vertx-service-proxy:jar:processor:3.8.1:compile
+[INFO] +- io.vertx:vertx-jdbc-client:jar:3.8.1:compile
+[INFO] |  +- io.vertx:vertx-sql-common:jar:3.8.1:compile
+[INFO] |  \- com.mchange:c3p0:jar:0.9.5.4:compile
+[INFO] |     \- com.mchange:mchange-commons-java:jar:0.2.15:compile
+[INFO] +- io.vertx:vertx-redis-client:jar:3.8.1:compile
+[INFO] +- io.vertx:vertx-mongo-client:jar:3.8.1:compile
+[INFO] |  \- org.mongodb:mongodb-driver-async:jar:3.10.1:compile
+[INFO] |     +- org.mongodb:bson:jar:3.10.1:compile
+[INFO] |     \- org.mongodb:mongodb-driver-core:jar:3.10.1:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] \- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] 
+[INFO] -------------< org.dominokit.domino.api:domino-api-server >-------------
+[INFO] Building domino-api-server 1.0-rc.5-SNAPSHOT                      [7/25]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-api-server ---
+[INFO] org.dominokit.domino.api:domino-api-server:jar:1.0-rc.5-SNAPSHOT
+[INFO] +- com.google.auto.service:auto-service:jar:1.0-rc6:provided
+[INFO] |  +- com.google.auto.service:auto-service-annotations:jar:1.0-rc6:provided
+[INFO] |  \- com.google.auto:auto-common:jar:0.10:provided
+[INFO] +- org.dominokit.domino.api:domino-api-shared:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  +- org.dominokit:jaxrs-super:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  +- org.gwtproject.regexp:gwt-regexp:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  \- com.google.elemental2:elemental2-core:jar:1.0.0-RC1:compile
+[INFO] |  |     +- com.google.jsinterop:jsinterop-annotations:jar:1.0.2:compile
+[INFO] |  |     \- com.google.jsinterop:base:jar:1.0.0-RC1:compile
+[INFO] |  +- org.dominokit:domino-aggregator-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  \- org.dominokit:domino-history-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] +- org.dominokit.domino:domino-service-discovery:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  +- io.vertx:vertx-service-discovery:jar:3.8.1:compile
+[INFO] |  +- io.vertx:vertx-web-client:jar:3.8.1:compile
+[INFO] |  +- io.vertx:vertx-service-proxy:jar:3.8.1:compile
+[INFO] |  +- io.vertx:vertx-codegen:jar:3.8.1:compile
+[INFO] |  |  +- com.fasterxml.jackson.core:jackson-core:jar:2.9.9:compile
+[INFO] |  |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.9.9.1:compile
+[INFO] |  |  |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.9.0:compile
+[INFO] |  |  \- org.mvel:mvel2:jar:2.3.1.Final:compile
+[INFO] |  +- io.vertx:vertx-service-proxy:jar:processor:3.8.1:compile
+[INFO] |  +- io.vertx:vertx-jdbc-client:jar:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-sql-common:jar:3.8.1:compile
+[INFO] |  |  \- com.mchange:c3p0:jar:0.9.5.4:compile
+[INFO] |  |     \- com.mchange:mchange-commons-java:jar:0.2.15:compile
+[INFO] |  +- io.vertx:vertx-redis-client:jar:3.8.1:compile
+[INFO] |  \- io.vertx:vertx-mongo-client:jar:3.8.1:compile
+[INFO] |     \- org.mongodb:mongodb-driver-async:jar:3.10.1:compile
+[INFO] |        +- org.mongodb:bson:jar:3.10.1:compile
+[INFO] |        \- org.mongodb:mongodb-driver-core:jar:3.10.1:compile
+[INFO] +- io.vertx:vertx-web:jar:3.8.1:compile
+[INFO] |  +- io.vertx:vertx-web-common:jar:3.8.1:compile
+[INFO] |  +- io.vertx:vertx-auth-common:jar:3.8.1:compile
+[INFO] |  +- io.vertx:vertx-bridge-common:jar:3.8.1:compile
+[INFO] |  \- io.vertx:vertx-core:jar:3.8.1:compile
+[INFO] |     +- io.netty:netty-common:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-buffer:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-transport:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-handler:jar:4.1.39.Final:compile
+[INFO] |     |  \- io.netty:netty-codec:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-handler-proxy:jar:4.1.39.Final:compile
+[INFO] |     |  \- io.netty:netty-codec-socks:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-codec-http:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-codec-http2:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-resolver:jar:4.1.39.Final:compile
+[INFO] |     \- io.netty:netty-resolver-dns:jar:4.1.39.Final:compile
+[INFO] |        \- io.netty:netty-codec-dns:jar:4.1.39.Final:compile
+[INFO] +- io.vertx:vertx-config:jar:3.8.1:compile
+[INFO] +- io.vertx:vertx-unit:jar:3.8.1:test
+[INFO] +- io.vertx:vertx-rx-java:jar:3.8.1:compile
+[INFO] |  +- io.reactivex:rxjava:jar:1.3.8:compile
+[INFO] |  \- io.vertx:vertx-rx-gen:jar:3.8.1:compile
+[INFO] +- io.vertx:vertx-rx-java2:jar:3.8.1:compile
+[INFO] |  +- io.reactivex.rxjava2:rxjava:jar:2.2.4:compile
+[INFO] |  \- org.reactivestreams:reactive-streams:jar:1.0.2:compile
+[INFO] +- io.vertx:vertx-auth-jwt:jar:3.8.1:compile
+[INFO] |  \- io.vertx:vertx-jwt:jar:3.8.1:compile
+[INFO] +- io.vertx:vertx-auth-oauth2:jar:3.8.1:compile
+[INFO] +- javax.validation:validation-api:jar:2.0.1.Final:compile
+[INFO] +- com.google.guava:guava:jar:27.0.1-jre:compile
+[INFO] |  +- com.google.guava:failureaccess:jar:1.0.1:compile
+[INFO] |  +- com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:compile
+[INFO] |  +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO] |  +- org.checkerframework:checker-qual:jar:2.5.2:compile
+[INFO] |  +- com.google.errorprone:error_prone_annotations:jar:2.2.0:compile
+[INFO] |  +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |  \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.17:compile
+[INFO] +- org.jboss.resteasy:resteasy-vertx:jar:4.0.0.Beta5:compile
+[INFO] |  +- org.jboss.resteasy:resteasy-jaxrs:jar:4.0.0.Beta5:compile
+[INFO] |  |  +- org.jboss.spec.javax.ws.rs:jboss-jaxrs-api_2.1_spec:jar:1.0.1.Final:compile
+[INFO] |  |  +- org.jboss.spec.javax.xml.bind:jboss-jaxb-api_2.3_spec:jar:1.0.0.Final:compile
+[INFO] |  |  +- org.jboss.resteasy:resteasy-jaxrs-services:jar:4.0.0.Beta5:compile
+[INFO] |  |  +- org.jboss.spec.javax.annotation:jboss-annotations-api_1.2_spec:jar:1.0.0.Final:compile
+[INFO] |  |  +- javax.activation:activation:jar:1.1.1:compile
+[INFO] |  |  +- org.apache.httpcomponents:httpclient:jar:4.5.4:compile
+[INFO] |  |  |  +- org.apache.httpcomponents:httpcore:jar:4.4.7:compile
+[INFO] |  |  |  \- commons-codec:commons-codec:jar:1.10:compile
+[INFO] |  |  +- commons-io:commons-io:jar:2.4:compile
+[INFO] |  |  +- net.jcip:jcip-annotations:jar:1.0:compile
+[INFO] |  |  \- javax.json.bind:javax.json.bind-api:jar:1.0:compile
+[INFO] |  +- org.jboss.resteasy:resteasy-client:jar:4.0.0.Beta5:compile
+[INFO] |  \- org.jboss.logging:jboss-logging:jar:3.3.1.Final:compile
+[INFO] +- org.jboss.resteasy:resteasy-jackson-provider:jar:4.0.0.Beta5:compile
+[INFO] |  +- org.codehaus.jackson:jackson-core-asl:jar:1.9.13:compile
+[INFO] |  +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.13:compile
+[INFO] |  +- org.codehaus.jackson:jackson-jaxrs:jar:1.9.13:compile
+[INFO] |  \- org.codehaus.jackson:jackson-xc:jar:1.9.13:compile
+[INFO] +- org.jboss.resteasy:resteasy-multipart-provider:jar:4.0.0.Beta5:compile
+[INFO] |  +- org.jboss.resteasy:resteasy-jaxb-provider:jar:4.0.0.Beta5:compile
+[INFO] |  |  +- com.sun.xml.bind:jaxb-core:jar:2.3.0:compile
+[INFO] |  |  \- com.sun.xml.bind:jaxb-impl:jar:2.3.0:compile
+[INFO] |  +- com.sun.mail:javax.mail:jar:1.5.6:compile
+[INFO] |  \- org.apache.james:apache-mime4j:jar:0.6:compile
+[INFO] |     \- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO] +- com.h2database:h2:jar:1.4.198:compile
+[INFO] +- org.dominokit:domino-rest-server:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  \- org.dominokit:domino-rest-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |     +- org.dominokit.jackson:jackson-apt:jar:1.0-SNAPSHOT:compile
+[INFO] |     |  +- org.dominokit.jackson:jackson-super:jar:1.0-SNAPSHOT:compile
+[INFO] |     |  +- org.gwtproject.i18n:gwt-cldr:jar:1.0-SNAPSHOT:compile
+[INFO] |     |  \- org.gwtproject.i18n:gwt-datetimeformat:jar:1.0-SNAPSHOT:compile
+[INFO] |     |     +- org.gwtproject.i18n:gwt-cldr:jar:sources:1.0-SNAPSHOT:compile
+[INFO] |     |     \- org.gwtproject.i18n:gwt-i18n:jar:1.0-SNAPSHOT:compile
+[INFO] |     |        \- com.google.elemental2:elemental2-dom:jar:1.0.0-RC1:compile
+[INFO] |     |           \- com.google.elemental2:elemental2-promise:jar:1.0.0-RC1:compile
+[INFO] |     \- javax.annotation:javax.annotation-api:jar:1.3.2:compile
+[INFO] +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] \- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] 
+[INFO] ---------------< org.dominokit.domino.test:domino-test >----------------
+[INFO] Building domino-test 1.0-rc.5-SNAPSHOT                            [8/25]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-test ---
+[INFO] org.dominokit.domino.test:domino-test:pom:1.0-rc.5-SNAPSHOT
+[INFO] +- org.apache.logging.log4j:log4j-api:jar:2.8.2:compile
+[INFO] +- org.apache.logging.log4j:log4j-core:jar:2.8.2:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] \- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] 
+[INFO] ------------< org.dominokit.domino.test:domino-server-test >------------
+[INFO] Building domino-server-test 1.0-rc.5-SNAPSHOT                     [9/25]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-server-test ---
+[INFO] org.dominokit.domino.test:domino-server-test:jar:1.0-rc.5-SNAPSHOT
+[INFO] +- org.dominokit.domino.api:domino-api-shared:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  +- org.dominokit:jaxrs-super:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  +- org.gwtproject.regexp:gwt-regexp:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  \- com.google.elemental2:elemental2-core:jar:1.0.0-RC1:compile
+[INFO] |  |     +- com.google.jsinterop:jsinterop-annotations:jar:1.0.2:compile
+[INFO] |  |     \- com.google.jsinterop:base:jar:1.0.0-RC1:compile
+[INFO] |  +- org.dominokit:domino-aggregator-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  \- org.dominokit:domino-history-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] +- org.dominokit.domino.api:domino-api-server:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  +- org.dominokit.domino:domino-service-discovery:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  |  +- io.vertx:vertx-service-discovery:jar:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-service-proxy:jar:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-codegen:jar:3.8.1:compile
+[INFO] |  |  |  \- org.mvel:mvel2:jar:2.3.1.Final:compile
+[INFO] |  |  +- io.vertx:vertx-service-proxy:jar:processor:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-redis-client:jar:3.8.1:compile
+[INFO] |  |  \- io.vertx:vertx-mongo-client:jar:3.8.1:compile
+[INFO] |  |     \- org.mongodb:mongodb-driver-async:jar:3.10.1:compile
+[INFO] |  |        +- org.mongodb:bson:jar:3.10.1:compile
+[INFO] |  |        \- org.mongodb:mongodb-driver-core:jar:3.10.1:compile
+[INFO] |  +- io.vertx:vertx-config:jar:3.8.1:compile
+[INFO] |  +- io.vertx:vertx-rx-java:jar:3.8.1:compile
+[INFO] |  |  +- io.reactivex:rxjava:jar:1.3.8:compile
+[INFO] |  |  \- io.vertx:vertx-rx-gen:jar:3.8.1:compile
+[INFO] |  +- io.vertx:vertx-rx-java2:jar:3.8.1:compile
+[INFO] |  |  +- io.reactivex.rxjava2:rxjava:jar:2.2.4:compile
+[INFO] |  |  \- org.reactivestreams:reactive-streams:jar:1.0.2:compile
+[INFO] |  +- io.vertx:vertx-auth-jwt:jar:3.8.1:compile
+[INFO] |  |  \- io.vertx:vertx-jwt:jar:3.8.1:compile
+[INFO] |  +- io.vertx:vertx-auth-oauth2:jar:3.8.1:compile
+[INFO] |  +- javax.validation:validation-api:jar:2.0.1.Final:compile
+[INFO] |  +- com.google.guava:guava:jar:27.0.1-jre:compile
+[INFO] |  |  +- com.google.guava:failureaccess:jar:1.0.1:compile
+[INFO] |  |  +- com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:compile
+[INFO] |  |  +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO] |  |  +- org.checkerframework:checker-qual:jar:2.5.2:compile
+[INFO] |  |  +- com.google.errorprone:error_prone_annotations:jar:2.2.0:compile
+[INFO] |  |  +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |  |  \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.17:compile
+[INFO] |  +- org.jboss.resteasy:resteasy-vertx:jar:4.0.0.Beta5:compile
+[INFO] |  |  +- org.jboss.resteasy:resteasy-jaxrs:jar:4.0.0.Beta5:compile
+[INFO] |  |  |  +- org.jboss.spec.javax.ws.rs:jboss-jaxrs-api_2.1_spec:jar:1.0.1.Final:compile
+[INFO] |  |  |  +- org.jboss.spec.javax.xml.bind:jboss-jaxb-api_2.3_spec:jar:1.0.0.Final:compile
+[INFO] |  |  |  +- org.jboss.resteasy:resteasy-jaxrs-services:jar:4.0.0.Beta5:compile
+[INFO] |  |  |  +- org.jboss.spec.javax.annotation:jboss-annotations-api_1.2_spec:jar:1.0.0.Final:compile
+[INFO] |  |  |  +- javax.activation:activation:jar:1.1.1:compile
+[INFO] |  |  |  +- org.apache.httpcomponents:httpclient:jar:4.5.4:compile
+[INFO] |  |  |  |  +- org.apache.httpcomponents:httpcore:jar:4.4.7:compile
+[INFO] |  |  |  |  \- commons-codec:commons-codec:jar:1.10:compile
+[INFO] |  |  |  +- commons-io:commons-io:jar:2.4:compile
+[INFO] |  |  |  +- net.jcip:jcip-annotations:jar:1.0:compile
+[INFO] |  |  |  \- javax.json.bind:javax.json.bind-api:jar:1.0:compile
+[INFO] |  |  +- org.jboss.resteasy:resteasy-client:jar:4.0.0.Beta5:compile
+[INFO] |  |  \- org.jboss.logging:jboss-logging:jar:3.3.1.Final:compile
+[INFO] |  +- org.jboss.resteasy:resteasy-jackson-provider:jar:4.0.0.Beta5:compile
+[INFO] |  |  +- org.codehaus.jackson:jackson-core-asl:jar:1.9.13:compile
+[INFO] |  |  +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.13:compile
+[INFO] |  |  +- org.codehaus.jackson:jackson-jaxrs:jar:1.9.13:compile
+[INFO] |  |  \- org.codehaus.jackson:jackson-xc:jar:1.9.13:compile
+[INFO] |  +- org.jboss.resteasy:resteasy-multipart-provider:jar:4.0.0.Beta5:compile
+[INFO] |  |  +- org.jboss.resteasy:resteasy-jaxb-provider:jar:4.0.0.Beta5:compile
+[INFO] |  |  |  +- com.sun.xml.bind:jaxb-core:jar:2.3.0:compile
+[INFO] |  |  |  \- com.sun.xml.bind:jaxb-impl:jar:2.3.0:compile
+[INFO] |  |  +- com.sun.mail:javax.mail:jar:1.5.6:compile
+[INFO] |  |  \- org.apache.james:apache-mime4j:jar:0.6:compile
+[INFO] |  |     \- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO] |  +- com.h2database:h2:jar:1.4.198:compile
+[INFO] |  +- org.dominokit:domino-rest-server:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  |  \- org.dominokit:domino-rest-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  |     +- org.dominokit.jackson:jackson-apt:jar:1.0-SNAPSHOT:compile
+[INFO] |  |     |  +- org.dominokit.jackson:jackson-super:jar:1.0-SNAPSHOT:compile
+[INFO] |  |     |  +- org.gwtproject.i18n:gwt-cldr:jar:1.0-SNAPSHOT:compile
+[INFO] |  |     |  \- org.gwtproject.i18n:gwt-datetimeformat:jar:1.0-SNAPSHOT:compile
+[INFO] |  |     |     +- org.gwtproject.i18n:gwt-cldr:jar:sources:1.0-SNAPSHOT:compile
+[INFO] |  |     |     \- org.gwtproject.i18n:gwt-i18n:jar:1.0-SNAPSHOT:compile
+[INFO] |  |     |        \- com.google.elemental2:elemental2-dom:jar:1.0.0-RC1:compile
+[INFO] |  |     |           \- com.google.elemental2:elemental2-promise:jar:1.0.0-RC1:compile
+[INFO] |  |     \- javax.annotation:javax.annotation-api:jar:1.3.2:compile
+[INFO] |  \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] +- io.vertx:vertx-unit:jar:3.8.1:compile
+[INFO] |  \- io.vertx:vertx-core:jar:3.8.1:compile
+[INFO] |     +- io.netty:netty-common:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-buffer:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-transport:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-handler:jar:4.1.39.Final:compile
+[INFO] |     |  \- io.netty:netty-codec:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-handler-proxy:jar:4.1.39.Final:compile
+[INFO] |     |  \- io.netty:netty-codec-socks:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-codec-http:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-codec-http2:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-resolver:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-resolver-dns:jar:4.1.39.Final:compile
+[INFO] |     |  \- io.netty:netty-codec-dns:jar:4.1.39.Final:compile
+[INFO] |     +- com.fasterxml.jackson.core:jackson-core:jar:2.9.9:compile
+[INFO] |     \- com.fasterxml.jackson.core:jackson-databind:jar:2.9.9.1:compile
+[INFO] |        \- com.fasterxml.jackson.core:jackson-annotations:jar:2.9.0:compile
+[INFO] +- io.vertx:vertx-web-client:jar:3.8.1:compile
+[INFO] |  \- io.vertx:vertx-web-common:jar:3.8.1:compile
+[INFO] +- io.vertx:vertx-web:jar:3.8.1:compile
+[INFO] |  +- io.vertx:vertx-auth-common:jar:3.8.1:compile
+[INFO] |  \- io.vertx:vertx-bridge-common:jar:3.8.1:compile
+[INFO] +- io.vertx:vertx-jdbc-client:jar:3.8.1:compile
+[INFO] |  +- io.vertx:vertx-sql-common:jar:3.8.1:compile
+[INFO] |  \- com.mchange:c3p0:jar:0.9.5.4:compile
+[INFO] |     \- com.mchange:mchange-commons-java:jar:0.2.15:compile
+[INFO] +- org.hsqldb:hsqldb:jar:2.4.0:compile
+[INFO] +- com.google.auto.service:auto-service:jar:1.0-rc6:provided
+[INFO] |  +- com.google.auto.service:auto-service-annotations:jar:1.0-rc6:provided
+[INFO] |  \- com.google.auto:auto-common:jar:0.10:provided
+[INFO] +- org.apache.logging.log4j:log4j-api:jar:2.8.2:compile
+[INFO] +- org.apache.logging.log4j:log4j-core:jar:2.8.2:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] \- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] 
+[INFO] ------------< org.dominokit.domino.test:domino-client-test >------------
+[INFO] Building domino-client-test 1.0-rc.5-SNAPSHOT                    [10/25]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-client-test ---
+[INFO] org.dominokit.domino.test:domino-client-test:jar:1.0-rc.5-SNAPSHOT
+[INFO] +- com.google.gwt.gwtmockito:gwtmockito:jar:1.1.6:compile
+[INFO] |  +- com.google.gwt:gwt-dev:jar:2.8.2:compile
+[INFO] |  |  +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO] |  |  +- com.google.code.gson:gson:jar:2.6.2:compile
+[INFO] |  |  +- org.ow2.asm:asm:jar:5.0.3:compile
+[INFO] |  |  +- org.ow2.asm:asm-util:jar:5.0.3:compile
+[INFO] |  |  |  \- org.ow2.asm:asm-tree:jar:5.0.3:compile
+[INFO] |  |  +- org.ow2.asm:asm-commons:jar:5.0.3:compile
+[INFO] |  |  +- colt:colt:jar:1.2.0:compile
+[INFO] |  |  +- ant:ant:jar:1.6.5:compile
+[INFO] |  |  +- commons-io:commons-io:jar:2.4:compile
+[INFO] |  |  +- com.ibm.icu:icu4j:jar:50.1.1:compile
+[INFO] |  |  +- tapestry:tapestry:jar:4.0.2:compile
+[INFO] |  |  +- net.sourceforge.htmlunit:htmlunit:jar:2.19:compile
+[INFO] |  |  |  +- xalan:xalan:jar:2.7.2:compile
+[INFO] |  |  |  |  \- xalan:serializer:jar:2.7.2:compile
+[INFO] |  |  |  +- org.apache.commons:commons-lang3:jar:3.4:compile
+[INFO] |  |  |  +- org.apache.httpcomponents:httpclient:jar:4.5.1:compile
+[INFO] |  |  |  |  \- org.apache.httpcomponents:httpcore:jar:4.4.3:compile
+[INFO] |  |  |  +- org.apache.httpcomponents:httpmime:jar:4.5.1:compile
+[INFO] |  |  |  +- commons-codec:commons-codec:jar:1.10:compile
+[INFO] |  |  |  +- net.sourceforge.htmlunit:htmlunit-core-js:jar:2.17:compile
+[INFO] |  |  |  +- xerces:xercesImpl:jar:2.11.0:compile
+[INFO] |  |  |  |  \- xml-apis:xml-apis:jar:1.4.01:compile
+[INFO] |  |  |  +- net.sourceforge.nekohtml:nekohtml:jar:1.9.22:compile
+[INFO] |  |  |  +- net.sourceforge.cssparser:cssparser:jar:0.9.18:compile
+[INFO] |  |  |  +- commons-logging:commons-logging:jar:1.2:compile
+[INFO] |  |  |  \- org.eclipse.jetty.websocket:websocket-client:jar:9.2.13.v20150730:compile
+[INFO] |  |  |     \- org.eclipse.jetty.websocket:websocket-common:jar:9.2.14.v20151106:compile
+[INFO] |  |  |        \- org.eclipse.jetty.websocket:websocket-api:jar:9.2.14.v20151106:compile
+[INFO] |  |  +- org.eclipse.jetty:jetty-webapp:jar:9.2.14.v20151106:compile
+[INFO] |  |  |  +- org.eclipse.jetty:jetty-xml:jar:9.2.14.v20151106:compile
+[INFO] |  |  |  \- org.eclipse.jetty:jetty-servlet:jar:9.2.14.v20151106:compile
+[INFO] |  |  |     \- org.eclipse.jetty:jetty-security:jar:9.2.14.v20151106:compile
+[INFO] |  |  +- org.eclipse.jetty:jetty-servlets:jar:9.2.14.v20151106:compile
+[INFO] |  |  |  +- org.eclipse.jetty:jetty-continuation:jar:9.2.14.v20151106:compile
+[INFO] |  |  |  +- org.eclipse.jetty:jetty-http:jar:9.2.14.v20151106:compile
+[INFO] |  |  |  +- org.eclipse.jetty:jetty-util:jar:9.2.14.v20151106:compile
+[INFO] |  |  |  \- org.eclipse.jetty:jetty-io:jar:9.2.14.v20151106:compile
+[INFO] |  |  +- org.eclipse.jetty:jetty-annotations:jar:9.2.14.v20151106:compile
+[INFO] |  |  |  \- org.eclipse.jetty:jetty-plus:jar:9.2.14.v20151106:compile
+[INFO] |  |  |     \- org.eclipse.jetty:jetty-jndi:jar:9.2.14.v20151106:compile
+[INFO] |  |  \- org.eclipse.jetty:apache-jsp:jar:9.2.14.v20151106:compile
+[INFO] |  |     +- org.eclipse.jetty:jetty-server:jar:9.2.14.v20151106:compile
+[INFO] |  |     +- org.eclipse.jetty.toolchain:jetty-schemas:jar:3.1.M0:compile
+[INFO] |  |     \- org.mortbay.jasper:apache-jsp:jar:8.0.9.M3:compile
+[INFO] |  |        \- org.mortbay.jasper:apache-el:jar:8.0.9.M3:compile
+[INFO] |  +- com.google.gwt:gwt-user:jar:2.8.2:compile
+[INFO] |  |  +- com.google.jsinterop:jsinterop-annotations:jar:1.0.2:compile
+[INFO] |  |  +- com.google.jsinterop:jsinterop-annotations:jar:sources:1.0.2:compile
+[INFO] |  |  +- javax.validation:validation-api:jar:sources:2.0.1.Final:compile
+[INFO] |  |  +- javax.servlet:javax.servlet-api:jar:3.1.0:compile
+[INFO] |  |  \- org.w3c.css:sac:jar:1.3:compile
+[INFO] |  +- org.mockito:mockito-core:jar:1.9.5:compile
+[INFO] |  \- org.javassist:javassist:jar:3.17.1-GA:compile
+[INFO] +- org.dominokit.domino.api:domino-api-client:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  +- org.dominokit:jaxrs-super:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  +- org.dominokit:domino-aggregator-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  +- org.dominokit.jackson:jackson-apt:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  +- com.google.elemental2:elemental2-core:jar:1.0.0-RC1:compile
+[INFO] |  |  |  \- com.google.jsinterop:base:jar:1.0.0-RC1:compile
+[INFO] |  |  +- org.dominokit.jackson:jackson-super:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  +- org.gwtproject.i18n:gwt-cldr:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  \- org.gwtproject.i18n:gwt-datetimeformat:jar:1.0-SNAPSHOT:compile
+[INFO] |  |     +- org.gwtproject.i18n:gwt-cldr:jar:sources:1.0-SNAPSHOT:compile
+[INFO] |  |     \- org.gwtproject.i18n:gwt-i18n:jar:1.0-SNAPSHOT:compile
+[INFO] |  |        \- com.google.elemental2:elemental2-dom:jar:1.0.0-RC1:compile
+[INFO] |  |           \- com.google.elemental2:elemental2-promise:jar:1.0.0-RC1:compile
+[INFO] |  +- org.dominokit:domino-rest-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  |  \- javax.annotation:javax.annotation-api:jar:1.3.2:compile
+[INFO] |  \- org.gwtproject.regexp:gwt-regexp:jar:1.0-SNAPSHOT:compile
+[INFO] +- org.dominokit.domino.api:domino-api-shared:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  \- org.dominokit:domino-history-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] +- org.dominokit.domino.api:domino-api-server:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  +- org.dominokit.domino:domino-service-discovery:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  |  +- io.vertx:vertx-service-discovery:jar:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-service-proxy:jar:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-codegen:jar:3.8.1:compile
+[INFO] |  |  |  \- org.mvel:mvel2:jar:2.3.1.Final:compile
+[INFO] |  |  +- io.vertx:vertx-service-proxy:jar:processor:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-redis-client:jar:3.8.1:compile
+[INFO] |  |  \- io.vertx:vertx-mongo-client:jar:3.8.1:compile
+[INFO] |  |     \- org.mongodb:mongodb-driver-async:jar:3.10.1:compile
+[INFO] |  |        +- org.mongodb:bson:jar:3.10.1:compile
+[INFO] |  |        \- org.mongodb:mongodb-driver-core:jar:3.10.1:compile
+[INFO] |  +- io.vertx:vertx-web:jar:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-web-common:jar:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-auth-common:jar:3.8.1:compile
+[INFO] |  |  \- io.vertx:vertx-bridge-common:jar:3.8.1:compile
+[INFO] |  +- io.vertx:vertx-config:jar:3.8.1:compile
+[INFO] |  +- io.vertx:vertx-rx-java:jar:3.8.1:compile
+[INFO] |  |  +- io.reactivex:rxjava:jar:1.3.8:compile
+[INFO] |  |  \- io.vertx:vertx-rx-gen:jar:3.8.1:compile
+[INFO] |  +- io.vertx:vertx-rx-java2:jar:3.8.1:compile
+[INFO] |  |  +- io.reactivex.rxjava2:rxjava:jar:2.2.4:compile
+[INFO] |  |  \- org.reactivestreams:reactive-streams:jar:1.0.2:compile
+[INFO] |  +- io.vertx:vertx-auth-jwt:jar:3.8.1:compile
+[INFO] |  |  \- io.vertx:vertx-jwt:jar:3.8.1:compile
+[INFO] |  +- io.vertx:vertx-auth-oauth2:jar:3.8.1:compile
+[INFO] |  +- javax.validation:validation-api:jar:2.0.1.Final:compile
+[INFO] |  +- com.google.guava:guava:jar:27.0.1-jre:compile
+[INFO] |  |  +- com.google.guava:failureaccess:jar:1.0.1:compile
+[INFO] |  |  +- com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:compile
+[INFO] |  |  +- org.checkerframework:checker-qual:jar:2.5.2:compile
+[INFO] |  |  +- com.google.errorprone:error_prone_annotations:jar:2.2.0:compile
+[INFO] |  |  +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |  |  \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.17:compile
+[INFO] |  +- org.jboss.resteasy:resteasy-vertx:jar:4.0.0.Beta5:compile
+[INFO] |  |  +- org.jboss.resteasy:resteasy-jaxrs:jar:4.0.0.Beta5:compile
+[INFO] |  |  |  +- org.jboss.spec.javax.ws.rs:jboss-jaxrs-api_2.1_spec:jar:1.0.1.Final:compile
+[INFO] |  |  |  +- org.jboss.spec.javax.xml.bind:jboss-jaxb-api_2.3_spec:jar:1.0.0.Final:compile
+[INFO] |  |  |  +- org.jboss.resteasy:resteasy-jaxrs-services:jar:4.0.0.Beta5:compile
+[INFO] |  |  |  +- org.jboss.spec.javax.annotation:jboss-annotations-api_1.2_spec:jar:1.0.0.Final:compile
+[INFO] |  |  |  +- javax.activation:activation:jar:1.1.1:compile
+[INFO] |  |  |  +- net.jcip:jcip-annotations:jar:1.0:compile
+[INFO] |  |  |  \- javax.json.bind:javax.json.bind-api:jar:1.0:compile
+[INFO] |  |  +- org.jboss.resteasy:resteasy-client:jar:4.0.0.Beta5:compile
+[INFO] |  |  \- org.jboss.logging:jboss-logging:jar:3.3.1.Final:compile
+[INFO] |  +- org.jboss.resteasy:resteasy-jackson-provider:jar:4.0.0.Beta5:compile
+[INFO] |  |  +- org.codehaus.jackson:jackson-core-asl:jar:1.9.13:compile
+[INFO] |  |  +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.13:compile
+[INFO] |  |  +- org.codehaus.jackson:jackson-jaxrs:jar:1.9.13:compile
+[INFO] |  |  \- org.codehaus.jackson:jackson-xc:jar:1.9.13:compile
+[INFO] |  +- org.jboss.resteasy:resteasy-multipart-provider:jar:4.0.0.Beta5:compile
+[INFO] |  |  +- org.jboss.resteasy:resteasy-jaxb-provider:jar:4.0.0.Beta5:compile
+[INFO] |  |  |  +- com.sun.xml.bind:jaxb-core:jar:2.3.0:compile
+[INFO] |  |  |  \- com.sun.xml.bind:jaxb-impl:jar:2.3.0:compile
+[INFO] |  |  +- com.sun.mail:javax.mail:jar:1.5.6:compile
+[INFO] |  |  \- org.apache.james:apache-mime4j:jar:0.6:compile
+[INFO] |  +- com.h2database:h2:jar:1.4.198:compile
+[INFO] |  \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] +- org.easymock:easymock:jar:3.4:compile
+[INFO] |  \- org.objenesis:objenesis:jar:2.2:compile
+[INFO] +- commons-collections:commons-collections:jar:3.2.2:compile
+[INFO] +- io.vertx:vertx-unit:jar:3.8.1:compile
+[INFO] |  \- io.vertx:vertx-core:jar:3.8.1:compile
+[INFO] |     +- io.netty:netty-common:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-buffer:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-transport:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-handler:jar:4.1.39.Final:compile
+[INFO] |     |  \- io.netty:netty-codec:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-handler-proxy:jar:4.1.39.Final:compile
+[INFO] |     |  \- io.netty:netty-codec-socks:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-codec-http:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-codec-http2:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-resolver:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-resolver-dns:jar:4.1.39.Final:compile
+[INFO] |     |  \- io.netty:netty-codec-dns:jar:4.1.39.Final:compile
+[INFO] |     +- com.fasterxml.jackson.core:jackson-core:jar:2.9.9:compile
+[INFO] |     \- com.fasterxml.jackson.core:jackson-databind:jar:2.9.9.1:compile
+[INFO] |        \- com.fasterxml.jackson.core:jackson-annotations:jar:2.9.0:compile
+[INFO] +- org.dominokit.domino.test:domino-server-test:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  +- io.vertx:vertx-web-client:jar:3.8.1:compile
+[INFO] |  +- io.vertx:vertx-jdbc-client:jar:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-sql-common:jar:3.8.1:compile
+[INFO] |  |  \- com.mchange:c3p0:jar:0.9.5.4:compile
+[INFO] |  |     \- com.mchange:mchange-commons-java:jar:0.2.15:compile
+[INFO] |  \- org.hsqldb:hsqldb:jar:2.4.0:compile
+[INFO] +- com.google.auto.service:auto-service:jar:1.0-rc6:provided
+[INFO] |  +- com.google.auto.service:auto-service-annotations:jar:1.0-rc6:provided
+[INFO] |  \- com.google.auto:auto-common:jar:0.10:provided
+[INFO] +- junit:junit:jar:4.12:compile
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:compile
+[INFO] +- org.dominokit:domino-history-test:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] +- org.dominokit:domino-rest-server:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] +- org.apache.logging.log4j:log4j-api:jar:2.8.2:compile
+[INFO] +- org.apache.logging.log4j:log4j-core:jar:2.8.2:compile
+[INFO] \- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] 
+[INFO] -----------------< org.dominokit.domino.test:apt-test >-----------------
+[INFO] Building apt-test 1.0-rc.5-SNAPSHOT                              [11/25]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ apt-test ---
+[INFO] org.dominokit.domino.test:apt-test:jar:1.0-rc.5-SNAPSHOT
+[INFO] +- com.google.testing.compile:compile-testing:jar:0.9:compile
+[INFO] |  +- com.google.truth:truth:jar:0.28:compile
+[INFO] |  +- com.google.guava:guava:jar:19.0:compile
+[INFO] |  \- com.sun:tools:jar:1.8.0_242:system
+[INFO] +- org.apache.logging.log4j:log4j-api:jar:2.8.2:compile
+[INFO] +- org.apache.logging.log4j:log4j-core:jar:2.8.2:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] \- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] 
+[INFO] ----------------< org.dominokit.domino.apt:domino-apt >-----------------
+[INFO] Building domino-apt 1.0-rc.5-SNAPSHOT                            [12/25]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-apt ---
+[INFO] org.dominokit.domino.apt:domino-apt:pom:1.0-rc.5-SNAPSHOT
+[INFO] +- org.dominokit.domino.test:apt-test:jar:1.0-rc.5-SNAPSHOT:test
+[INFO] |  +- com.google.testing.compile:compile-testing:jar:0.9:test
+[INFO] |  |  +- com.google.truth:truth:jar:0.28:test
+[INFO] |  |  +- com.google.guava:guava:jar:19.0:test
+[INFO] |  |  \- com.sun:tools:jar:1.8.0_242:system
+[INFO] |  +- org.apache.logging.log4j:log4j-api:jar:2.8.2:test
+[INFO] |  \- org.apache.logging.log4j:log4j-core:jar:2.8.2:test
+[INFO] +- commons-io:commons-io:jar:2.5:test
+[INFO] +- com.squareup:javapoet:jar:1.9.0:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] \- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] 
+[INFO] ----------------< org.dominokit.domino.apt:apt-client >-----------------
+[INFO] Building apt-client 1.0-rc.5-SNAPSHOT                            [13/25]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ apt-client ---
+[INFO] org.dominokit.domino.apt:apt-client:jar:1.0-rc.5-SNAPSHOT
+[INFO] +- org.dominokit:domino-apt-commons:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] |  \- commons-lang:commons-lang:jar:2.6:compile
+[INFO] +- com.google.auto.service:auto-service:jar:1.0-rc6:compile
+[INFO] |  +- com.google.auto.service:auto-service-annotations:jar:1.0-rc6:compile
+[INFO] |  +- com.google.auto:auto-common:jar:0.10:compile
+[INFO] |  \- com.google.guava:guava:jar:27.0.1-jre:compile
+[INFO] |     +- com.google.guava:failureaccess:jar:1.0.1:compile
+[INFO] |     +- com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:compile
+[INFO] |     +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO] |     +- org.checkerframework:checker-qual:jar:2.5.2:compile
+[INFO] |     +- com.google.errorprone:error_prone_annotations:jar:2.2.0:compile
+[INFO] |     +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |     \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.17:compile
+[INFO] +- org.dominokit.domino.api:domino-api-client:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  +- org.dominokit.domino.api:domino-api-shared:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  |  \- org.dominokit:domino-history-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  +- org.dominokit:jaxrs-super:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  +- org.dominokit:domino-aggregator-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  +- org.dominokit.jackson:jackson-apt:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  +- com.google.elemental2:elemental2-core:jar:1.0.0-RC1:compile
+[INFO] |  |  |  +- com.google.jsinterop:jsinterop-annotations:jar:1.0.2:compile
+[INFO] |  |  |  \- com.google.jsinterop:base:jar:1.0.0-RC1:compile
+[INFO] |  |  +- org.dominokit.jackson:jackson-super:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  +- org.gwtproject.i18n:gwt-cldr:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  \- org.gwtproject.i18n:gwt-datetimeformat:jar:1.0-SNAPSHOT:compile
+[INFO] |  |     +- org.gwtproject.i18n:gwt-cldr:jar:sources:1.0-SNAPSHOT:compile
+[INFO] |  |     \- org.gwtproject.i18n:gwt-i18n:jar:1.0-SNAPSHOT:compile
+[INFO] |  |        \- com.google.elemental2:elemental2-dom:jar:1.0.0-RC1:compile
+[INFO] |  |           \- com.google.elemental2:elemental2-promise:jar:1.0.0-RC1:compile
+[INFO] |  +- org.dominokit:domino-rest-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  |  \- javax.annotation:javax.annotation-api:jar:1.3.2:compile
+[INFO] |  \- org.gwtproject.regexp:gwt-regexp:jar:1.0-SNAPSHOT:compile
+[INFO] +- org.dominokit.domino.test:apt-test:jar:1.0-rc.5-SNAPSHOT:test
+[INFO] |  +- com.google.testing.compile:compile-testing:jar:0.9:test
+[INFO] |  |  +- com.google.truth:truth:jar:0.28:test
+[INFO] |  |  \- com.sun:tools:jar:1.8.0_242:system
+[INFO] |  +- org.apache.logging.log4j:log4j-api:jar:2.8.2:test
+[INFO] |  \- org.apache.logging.log4j:log4j-core:jar:2.8.2:test
+[INFO] +- commons-io:commons-io:jar:2.5:test
+[INFO] +- com.squareup:javapoet:jar:1.9.0:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] \- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] 
+[INFO] --------------< org.dominokit.domino.apt:apt-client-test >--------------
+[INFO] Building apt-client-test 1.0-rc.5-SNAPSHOT                       [14/25]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ apt-client-test ---
+[INFO] org.dominokit.domino.apt:apt-client-test:jar:1.0-rc.5-SNAPSHOT
+[INFO] +- org.dominokit:domino-apt-commons:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  +- com.google.auto.service:auto-service:jar:1.0-rc6:compile
+[INFO] |  |  +- com.google.auto.service:auto-service-annotations:jar:1.0-rc6:compile
+[INFO] |  |  +- com.google.auto:auto-common:jar:0.10:compile
+[INFO] |  |  \- com.google.guava:guava:jar:27.0.1-jre:compile
+[INFO] |  |     +- com.google.guava:failureaccess:jar:1.0.1:compile
+[INFO] |  |     +- com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:compile
+[INFO] |  |     +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO] |  |     +- org.checkerframework:checker-qual:jar:2.5.2:compile
+[INFO] |  |     +- com.google.errorprone:error_prone_annotations:jar:2.2.0:compile
+[INFO] |  |     +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |  |     \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.17:compile
+[INFO] |  +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] |  \- commons-lang:commons-lang:jar:2.6:compile
+[INFO] +- org.dominokit.domino.api:domino-api-client:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  +- org.dominokit.domino.api:domino-api-shared:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  |  \- org.dominokit:domino-history-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  +- org.dominokit:jaxrs-super:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  +- org.dominokit:domino-aggregator-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  +- org.dominokit.jackson:jackson-apt:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  +- com.google.elemental2:elemental2-core:jar:1.0.0-RC1:compile
+[INFO] |  |  |  +- com.google.jsinterop:jsinterop-annotations:jar:1.0.2:compile
+[INFO] |  |  |  \- com.google.jsinterop:base:jar:1.0.0-RC1:compile
+[INFO] |  |  +- org.dominokit.jackson:jackson-super:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  +- org.gwtproject.i18n:gwt-cldr:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  \- org.gwtproject.i18n:gwt-datetimeformat:jar:1.0-SNAPSHOT:compile
+[INFO] |  |     +- org.gwtproject.i18n:gwt-cldr:jar:sources:1.0-SNAPSHOT:compile
+[INFO] |  |     \- org.gwtproject.i18n:gwt-i18n:jar:1.0-SNAPSHOT:compile
+[INFO] |  |        \- com.google.elemental2:elemental2-dom:jar:1.0.0-RC1:compile
+[INFO] |  |           \- com.google.elemental2:elemental2-promise:jar:1.0.0-RC1:compile
+[INFO] |  +- org.dominokit:domino-rest-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  |  \- javax.annotation:javax.annotation-api:jar:1.3.2:compile
+[INFO] |  \- org.gwtproject.regexp:gwt-regexp:jar:1.0-SNAPSHOT:compile
+[INFO] +- org.dominokit.domino.test:domino-client-test:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  +- com.google.gwt.gwtmockito:gwtmockito:jar:1.1.6:compile
+[INFO] |  |  +- com.google.gwt:gwt-dev:jar:2.8.2:compile
+[INFO] |  |  |  +- com.google.code.gson:gson:jar:2.6.2:compile
+[INFO] |  |  |  +- org.ow2.asm:asm:jar:5.0.3:compile
+[INFO] |  |  |  +- org.ow2.asm:asm-util:jar:5.0.3:compile
+[INFO] |  |  |  |  \- org.ow2.asm:asm-tree:jar:5.0.3:compile
+[INFO] |  |  |  +- org.ow2.asm:asm-commons:jar:5.0.3:compile
+[INFO] |  |  |  +- colt:colt:jar:1.2.0:compile
+[INFO] |  |  |  +- ant:ant:jar:1.6.5:compile
+[INFO] |  |  |  +- com.ibm.icu:icu4j:jar:50.1.1:compile
+[INFO] |  |  |  +- tapestry:tapestry:jar:4.0.2:compile
+[INFO] |  |  |  +- net.sourceforge.htmlunit:htmlunit:jar:2.19:compile
+[INFO] |  |  |  |  +- xalan:xalan:jar:2.7.2:compile
+[INFO] |  |  |  |  |  \- xalan:serializer:jar:2.7.2:compile
+[INFO] |  |  |  |  +- org.apache.commons:commons-lang3:jar:3.4:compile
+[INFO] |  |  |  |  +- org.apache.httpcomponents:httpclient:jar:4.5.1:compile
+[INFO] |  |  |  |  |  \- org.apache.httpcomponents:httpcore:jar:4.4.3:compile
+[INFO] |  |  |  |  +- org.apache.httpcomponents:httpmime:jar:4.5.1:compile
+[INFO] |  |  |  |  +- commons-codec:commons-codec:jar:1.10:compile
+[INFO] |  |  |  |  +- net.sourceforge.htmlunit:htmlunit-core-js:jar:2.17:compile
+[INFO] |  |  |  |  +- xerces:xercesImpl:jar:2.11.0:compile
+[INFO] |  |  |  |  |  \- xml-apis:xml-apis:jar:1.4.01:compile
+[INFO] |  |  |  |  +- net.sourceforge.nekohtml:nekohtml:jar:1.9.22:compile
+[INFO] |  |  |  |  +- net.sourceforge.cssparser:cssparser:jar:0.9.18:compile
+[INFO] |  |  |  |  +- commons-logging:commons-logging:jar:1.2:compile
+[INFO] |  |  |  |  \- org.eclipse.jetty.websocket:websocket-client:jar:9.2.13.v20150730:compile
+[INFO] |  |  |  |     \- org.eclipse.jetty.websocket:websocket-common:jar:9.2.14.v20151106:compile
+[INFO] |  |  |  |        \- org.eclipse.jetty.websocket:websocket-api:jar:9.2.14.v20151106:compile
+[INFO] |  |  |  +- org.eclipse.jetty:jetty-webapp:jar:9.2.14.v20151106:compile
+[INFO] |  |  |  |  +- org.eclipse.jetty:jetty-xml:jar:9.2.14.v20151106:compile
+[INFO] |  |  |  |  \- org.eclipse.jetty:jetty-servlet:jar:9.2.14.v20151106:compile
+[INFO] |  |  |  |     \- org.eclipse.jetty:jetty-security:jar:9.2.14.v20151106:compile
+[INFO] |  |  |  +- org.eclipse.jetty:jetty-servlets:jar:9.2.14.v20151106:compile
+[INFO] |  |  |  |  +- org.eclipse.jetty:jetty-continuation:jar:9.2.14.v20151106:compile
+[INFO] |  |  |  |  +- org.eclipse.jetty:jetty-http:jar:9.2.14.v20151106:compile
+[INFO] |  |  |  |  +- org.eclipse.jetty:jetty-util:jar:9.2.14.v20151106:compile
+[INFO] |  |  |  |  \- org.eclipse.jetty:jetty-io:jar:9.2.14.v20151106:compile
+[INFO] |  |  |  +- org.eclipse.jetty:jetty-annotations:jar:9.2.14.v20151106:compile
+[INFO] |  |  |  |  \- org.eclipse.jetty:jetty-plus:jar:9.2.14.v20151106:compile
+[INFO] |  |  |  |     \- org.eclipse.jetty:jetty-jndi:jar:9.2.14.v20151106:compile
+[INFO] |  |  |  \- org.eclipse.jetty:apache-jsp:jar:9.2.14.v20151106:compile
+[INFO] |  |  |     +- org.eclipse.jetty:jetty-server:jar:9.2.14.v20151106:compile
+[INFO] |  |  |     +- org.eclipse.jetty.toolchain:jetty-schemas:jar:3.1.M0:compile
+[INFO] |  |  |     \- org.mortbay.jasper:apache-jsp:jar:8.0.9.M3:compile
+[INFO] |  |  |        \- org.mortbay.jasper:apache-el:jar:8.0.9.M3:compile
+[INFO] |  |  +- com.google.gwt:gwt-user:jar:2.8.2:compile
+[INFO] |  |  |  +- com.google.jsinterop:jsinterop-annotations:jar:sources:1.0.2:compile
+[INFO] |  |  |  +- javax.validation:validation-api:jar:sources:2.0.1.Final:compile
+[INFO] |  |  |  +- javax.servlet:javax.servlet-api:jar:3.1.0:compile
+[INFO] |  |  |  \- org.w3c.css:sac:jar:1.3:compile
+[INFO] |  |  +- org.mockito:mockito-core:jar:1.9.5:compile
+[INFO] |  |  \- org.javassist:javassist:jar:3.17.1-GA:compile
+[INFO] |  +- org.dominokit.domino.api:domino-api-server:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  |  +- org.dominokit.domino:domino-service-discovery:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  |  |  +- io.vertx:vertx-service-discovery:jar:3.8.1:compile
+[INFO] |  |  |  +- io.vertx:vertx-service-proxy:jar:3.8.1:compile
+[INFO] |  |  |  +- io.vertx:vertx-codegen:jar:3.8.1:compile
+[INFO] |  |  |  |  \- org.mvel:mvel2:jar:2.3.1.Final:compile
+[INFO] |  |  |  +- io.vertx:vertx-service-proxy:jar:processor:3.8.1:compile
+[INFO] |  |  |  +- io.vertx:vertx-redis-client:jar:3.8.1:compile
+[INFO] |  |  |  \- io.vertx:vertx-mongo-client:jar:3.8.1:compile
+[INFO] |  |  |     \- org.mongodb:mongodb-driver-async:jar:3.10.1:compile
+[INFO] |  |  |        +- org.mongodb:bson:jar:3.10.1:compile
+[INFO] |  |  |        \- org.mongodb:mongodb-driver-core:jar:3.10.1:compile
+[INFO] |  |  +- io.vertx:vertx-web:jar:3.8.1:compile
+[INFO] |  |  |  +- io.vertx:vertx-web-common:jar:3.8.1:compile
+[INFO] |  |  |  +- io.vertx:vertx-auth-common:jar:3.8.1:compile
+[INFO] |  |  |  \- io.vertx:vertx-bridge-common:jar:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-config:jar:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-rx-java:jar:3.8.1:compile
+[INFO] |  |  |  +- io.reactivex:rxjava:jar:1.3.8:compile
+[INFO] |  |  |  \- io.vertx:vertx-rx-gen:jar:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-rx-java2:jar:3.8.1:compile
+[INFO] |  |  |  +- io.reactivex.rxjava2:rxjava:jar:2.2.4:compile
+[INFO] |  |  |  \- org.reactivestreams:reactive-streams:jar:1.0.2:compile
+[INFO] |  |  +- io.vertx:vertx-auth-jwt:jar:3.8.1:compile
+[INFO] |  |  |  \- io.vertx:vertx-jwt:jar:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-auth-oauth2:jar:3.8.1:compile
+[INFO] |  |  +- javax.validation:validation-api:jar:2.0.1.Final:compile
+[INFO] |  |  +- org.jboss.resteasy:resteasy-vertx:jar:4.0.0.Beta5:compile
+[INFO] |  |  |  +- org.jboss.resteasy:resteasy-jaxrs:jar:4.0.0.Beta5:compile
+[INFO] |  |  |  |  +- org.jboss.spec.javax.ws.rs:jboss-jaxrs-api_2.1_spec:jar:1.0.1.Final:compile
+[INFO] |  |  |  |  +- org.jboss.spec.javax.xml.bind:jboss-jaxb-api_2.3_spec:jar:1.0.0.Final:compile
+[INFO] |  |  |  |  +- org.jboss.resteasy:resteasy-jaxrs-services:jar:4.0.0.Beta5:compile
+[INFO] |  |  |  |  +- org.jboss.spec.javax.annotation:jboss-annotations-api_1.2_spec:jar:1.0.0.Final:compile
+[INFO] |  |  |  |  +- javax.activation:activation:jar:1.1.1:compile
+[INFO] |  |  |  |  +- net.jcip:jcip-annotations:jar:1.0:compile
+[INFO] |  |  |  |  \- javax.json.bind:javax.json.bind-api:jar:1.0:compile
+[INFO] |  |  |  +- org.jboss.resteasy:resteasy-client:jar:4.0.0.Beta5:compile
+[INFO] |  |  |  \- org.jboss.logging:jboss-logging:jar:3.3.1.Final:compile
+[INFO] |  |  +- org.jboss.resteasy:resteasy-jackson-provider:jar:4.0.0.Beta5:compile
+[INFO] |  |  |  +- org.codehaus.jackson:jackson-core-asl:jar:1.9.13:compile
+[INFO] |  |  |  +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.13:compile
+[INFO] |  |  |  +- org.codehaus.jackson:jackson-jaxrs:jar:1.9.13:compile
+[INFO] |  |  |  \- org.codehaus.jackson:jackson-xc:jar:1.9.13:compile
+[INFO] |  |  +- org.jboss.resteasy:resteasy-multipart-provider:jar:4.0.0.Beta5:compile
+[INFO] |  |  |  +- org.jboss.resteasy:resteasy-jaxb-provider:jar:4.0.0.Beta5:compile
+[INFO] |  |  |  |  +- com.sun.xml.bind:jaxb-core:jar:2.3.0:compile
+[INFO] |  |  |  |  \- com.sun.xml.bind:jaxb-impl:jar:2.3.0:compile
+[INFO] |  |  |  +- com.sun.mail:javax.mail:jar:1.5.6:compile
+[INFO] |  |  |  \- org.apache.james:apache-mime4j:jar:0.6:compile
+[INFO] |  |  \- com.h2database:h2:jar:1.4.198:compile
+[INFO] |  +- org.easymock:easymock:jar:3.4:compile
+[INFO] |  |  \- org.objenesis:objenesis:jar:2.2:compile
+[INFO] |  +- commons-collections:commons-collections:jar:3.2.2:compile
+[INFO] |  +- io.vertx:vertx-unit:jar:3.8.1:compile
+[INFO] |  |  \- io.vertx:vertx-core:jar:3.8.1:compile
+[INFO] |  |     +- io.netty:netty-common:jar:4.1.39.Final:compile
+[INFO] |  |     +- io.netty:netty-buffer:jar:4.1.39.Final:compile
+[INFO] |  |     +- io.netty:netty-transport:jar:4.1.39.Final:compile
+[INFO] |  |     +- io.netty:netty-handler:jar:4.1.39.Final:compile
+[INFO] |  |     |  \- io.netty:netty-codec:jar:4.1.39.Final:compile
+[INFO] |  |     +- io.netty:netty-handler-proxy:jar:4.1.39.Final:compile
+[INFO] |  |     |  \- io.netty:netty-codec-socks:jar:4.1.39.Final:compile
+[INFO] |  |     +- io.netty:netty-codec-http:jar:4.1.39.Final:compile
+[INFO] |  |     +- io.netty:netty-codec-http2:jar:4.1.39.Final:compile
+[INFO] |  |     +- io.netty:netty-resolver:jar:4.1.39.Final:compile
+[INFO] |  |     +- io.netty:netty-resolver-dns:jar:4.1.39.Final:compile
+[INFO] |  |     |  \- io.netty:netty-codec-dns:jar:4.1.39.Final:compile
+[INFO] |  |     +- com.fasterxml.jackson.core:jackson-core:jar:2.9.9:compile
+[INFO] |  |     \- com.fasterxml.jackson.core:jackson-databind:jar:2.9.9.1:compile
+[INFO] |  |        \- com.fasterxml.jackson.core:jackson-annotations:jar:2.9.0:compile
+[INFO] |  +- org.dominokit.domino.test:domino-server-test:jar:1.0-rc.5-SNAPSHOT:test
+[INFO] |  |  +- io.vertx:vertx-web-client:jar:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-jdbc-client:jar:3.8.1:compile
+[INFO] |  |  |  +- io.vertx:vertx-sql-common:jar:3.8.1:compile
+[INFO] |  |  |  \- com.mchange:c3p0:jar:0.9.5.4:compile
+[INFO] |  |  |     \- com.mchange:mchange-commons-java:jar:0.2.15:compile
+[INFO] |  |  \- org.hsqldb:hsqldb:jar:2.4.0:test
+[INFO] |  +- org.dominokit:domino-history-test:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  +- org.dominokit:domino-rest-server:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  +- org.apache.logging.log4j:log4j-api:jar:2.8.2:compile
+[INFO] |  \- org.apache.logging.log4j:log4j-core:jar:2.8.2:compile
+[INFO] +- org.dominokit.domino.test:apt-test:jar:1.0-rc.5-SNAPSHOT:test
+[INFO] |  \- com.google.testing.compile:compile-testing:jar:0.9:test
+[INFO] |     +- com.google.truth:truth:jar:0.28:test
+[INFO] |     \- com.sun:tools:jar:1.8.0_242:system
+[INFO] +- commons-io:commons-io:jar:2.5:test
+[INFO] +- com.squareup:javapoet:jar:1.9.0:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:compile
+[INFO] \- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] 
+[INFO] ----------------< org.dominokit.domino.apt:apt-server >-----------------
+[INFO] Building apt-server 1.0-rc.5-SNAPSHOT                            [15/25]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ apt-server ---
+[INFO] org.dominokit.domino.apt:apt-server:jar:1.0-rc.5-SNAPSHOT
+[INFO] +- org.dominokit.domino.api:domino-api-shared:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  +- org.dominokit:jaxrs-super:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  +- org.gwtproject.regexp:gwt-regexp:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  \- com.google.elemental2:elemental2-core:jar:1.0.0-RC1:compile
+[INFO] |  |     +- com.google.jsinterop:jsinterop-annotations:jar:1.0.2:compile
+[INFO] |  |     \- com.google.jsinterop:base:jar:1.0.0-RC1:compile
+[INFO] |  +- org.dominokit:domino-aggregator-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  \- org.dominokit:domino-history-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] +- org.dominokit.domino.api:domino-api-server:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  +- org.dominokit.domino:domino-service-discovery:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  |  +- io.vertx:vertx-service-discovery:jar:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-web-client:jar:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-service-proxy:jar:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-codegen:jar:3.8.1:compile
+[INFO] |  |  |  \- org.mvel:mvel2:jar:2.3.1.Final:compile
+[INFO] |  |  +- io.vertx:vertx-service-proxy:jar:processor:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-jdbc-client:jar:3.8.1:compile
+[INFO] |  |  |  +- io.vertx:vertx-sql-common:jar:3.8.1:compile
+[INFO] |  |  |  \- com.mchange:c3p0:jar:0.9.5.4:compile
+[INFO] |  |  |     \- com.mchange:mchange-commons-java:jar:0.2.15:compile
+[INFO] |  |  +- io.vertx:vertx-redis-client:jar:3.8.1:compile
+[INFO] |  |  \- io.vertx:vertx-mongo-client:jar:3.8.1:compile
+[INFO] |  |     \- org.mongodb:mongodb-driver-async:jar:3.10.1:compile
+[INFO] |  |        +- org.mongodb:bson:jar:3.10.1:compile
+[INFO] |  |        \- org.mongodb:mongodb-driver-core:jar:3.10.1:compile
+[INFO] |  +- io.vertx:vertx-config:jar:3.8.1:compile
+[INFO] |  +- io.vertx:vertx-rx-java:jar:3.8.1:compile
+[INFO] |  |  +- io.reactivex:rxjava:jar:1.3.8:compile
+[INFO] |  |  \- io.vertx:vertx-rx-gen:jar:3.8.1:compile
+[INFO] |  +- io.vertx:vertx-rx-java2:jar:3.8.1:compile
+[INFO] |  |  +- io.reactivex.rxjava2:rxjava:jar:2.2.4:compile
+[INFO] |  |  \- org.reactivestreams:reactive-streams:jar:1.0.2:compile
+[INFO] |  +- io.vertx:vertx-auth-jwt:jar:3.8.1:compile
+[INFO] |  |  \- io.vertx:vertx-jwt:jar:3.8.1:compile
+[INFO] |  +- io.vertx:vertx-auth-oauth2:jar:3.8.1:compile
+[INFO] |  +- javax.validation:validation-api:jar:2.0.1.Final:compile
+[INFO] |  +- com.google.guava:guava:jar:27.0.1-jre:compile
+[INFO] |  |  +- com.google.guava:failureaccess:jar:1.0.1:compile
+[INFO] |  |  +- com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:compile
+[INFO] |  |  +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO] |  |  +- org.checkerframework:checker-qual:jar:2.5.2:compile
+[INFO] |  |  +- com.google.errorprone:error_prone_annotations:jar:2.2.0:compile
+[INFO] |  |  +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |  |  \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.17:compile
+[INFO] |  +- org.jboss.resteasy:resteasy-vertx:jar:4.0.0.Beta5:compile
+[INFO] |  |  +- org.jboss.resteasy:resteasy-jaxrs:jar:4.0.0.Beta5:compile
+[INFO] |  |  |  +- org.jboss.spec.javax.ws.rs:jboss-jaxrs-api_2.1_spec:jar:1.0.1.Final:compile
+[INFO] |  |  |  +- org.jboss.spec.javax.xml.bind:jboss-jaxb-api_2.3_spec:jar:1.0.0.Final:compile
+[INFO] |  |  |  +- org.jboss.resteasy:resteasy-jaxrs-services:jar:4.0.0.Beta5:compile
+[INFO] |  |  |  +- org.jboss.spec.javax.annotation:jboss-annotations-api_1.2_spec:jar:1.0.0.Final:compile
+[INFO] |  |  |  +- javax.activation:activation:jar:1.1.1:compile
+[INFO] |  |  |  +- org.apache.httpcomponents:httpclient:jar:4.5.4:compile
+[INFO] |  |  |  |  +- org.apache.httpcomponents:httpcore:jar:4.4.7:compile
+[INFO] |  |  |  |  \- commons-codec:commons-codec:jar:1.10:compile
+[INFO] |  |  |  +- net.jcip:jcip-annotations:jar:1.0:compile
+[INFO] |  |  |  \- javax.json.bind:javax.json.bind-api:jar:1.0:compile
+[INFO] |  |  +- org.jboss.resteasy:resteasy-client:jar:4.0.0.Beta5:compile
+[INFO] |  |  \- org.jboss.logging:jboss-logging:jar:3.3.1.Final:compile
+[INFO] |  +- org.jboss.resteasy:resteasy-jackson-provider:jar:4.0.0.Beta5:compile
+[INFO] |  |  +- org.codehaus.jackson:jackson-core-asl:jar:1.9.13:compile
+[INFO] |  |  +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.13:compile
+[INFO] |  |  +- org.codehaus.jackson:jackson-jaxrs:jar:1.9.13:compile
+[INFO] |  |  \- org.codehaus.jackson:jackson-xc:jar:1.9.13:compile
+[INFO] |  +- org.jboss.resteasy:resteasy-multipart-provider:jar:4.0.0.Beta5:compile
+[INFO] |  |  +- org.jboss.resteasy:resteasy-jaxb-provider:jar:4.0.0.Beta5:compile
+[INFO] |  |  |  +- com.sun.xml.bind:jaxb-core:jar:2.3.0:compile
+[INFO] |  |  |  \- com.sun.xml.bind:jaxb-impl:jar:2.3.0:compile
+[INFO] |  |  +- com.sun.mail:javax.mail:jar:1.5.6:compile
+[INFO] |  |  \- org.apache.james:apache-mime4j:jar:0.6:compile
+[INFO] |  |     \- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO] |  +- com.h2database:h2:jar:1.4.198:compile
+[INFO] |  +- org.dominokit:domino-rest-server:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  |  \- org.dominokit:domino-rest-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  |     +- org.dominokit.jackson:jackson-apt:jar:1.0-SNAPSHOT:compile
+[INFO] |  |     |  +- org.dominokit.jackson:jackson-super:jar:1.0-SNAPSHOT:compile
+[INFO] |  |     |  +- org.gwtproject.i18n:gwt-cldr:jar:1.0-SNAPSHOT:compile
+[INFO] |  |     |  \- org.gwtproject.i18n:gwt-datetimeformat:jar:1.0-SNAPSHOT:compile
+[INFO] |  |     |     +- org.gwtproject.i18n:gwt-cldr:jar:sources:1.0-SNAPSHOT:compile
+[INFO] |  |     |     \- org.gwtproject.i18n:gwt-i18n:jar:1.0-SNAPSHOT:compile
+[INFO] |  |     |        \- com.google.elemental2:elemental2-dom:jar:1.0.0-RC1:compile
+[INFO] |  |     |           \- com.google.elemental2:elemental2-promise:jar:1.0.0-RC1:compile
+[INFO] |  |     \- javax.annotation:javax.annotation-api:jar:1.3.2:compile
+[INFO] |  \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] +- org.dominokit:domino-apt-commons:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  +- com.google.auto.service:auto-service:jar:1.0-rc6:compile
+[INFO] |  |  +- com.google.auto.service:auto-service-annotations:jar:1.0-rc6:compile
+[INFO] |  |  \- com.google.auto:auto-common:jar:0.10:compile
+[INFO] |  \- commons-lang:commons-lang:jar:2.6:compile
+[INFO] +- io.vertx:vertx-web:jar:3.8.1:compile
+[INFO] |  +- io.vertx:vertx-web-common:jar:3.8.1:compile
+[INFO] |  +- io.vertx:vertx-auth-common:jar:3.8.1:compile
+[INFO] |  +- io.vertx:vertx-bridge-common:jar:3.8.1:compile
+[INFO] |  \- io.vertx:vertx-core:jar:3.8.1:compile
+[INFO] |     +- io.netty:netty-common:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-buffer:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-transport:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-handler:jar:4.1.39.Final:compile
+[INFO] |     |  \- io.netty:netty-codec:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-handler-proxy:jar:4.1.39.Final:compile
+[INFO] |     |  \- io.netty:netty-codec-socks:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-codec-http:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-codec-http2:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-resolver:jar:4.1.39.Final:compile
+[INFO] |     +- io.netty:netty-resolver-dns:jar:4.1.39.Final:compile
+[INFO] |     |  \- io.netty:netty-codec-dns:jar:4.1.39.Final:compile
+[INFO] |     +- com.fasterxml.jackson.core:jackson-core:jar:2.9.9:compile
+[INFO] |     \- com.fasterxml.jackson.core:jackson-databind:jar:2.9.9.1:compile
+[INFO] |        \- com.fasterxml.jackson.core:jackson-annotations:jar:2.9.0:compile
+[INFO] +- org.dominokit.domino.test:apt-test:jar:1.0-rc.5-SNAPSHOT:test
+[INFO] |  +- com.google.testing.compile:compile-testing:jar:0.9:test
+[INFO] |  |  +- com.google.truth:truth:jar:0.28:test
+[INFO] |  |  \- com.sun:tools:jar:1.8.0_242:system
+[INFO] |  +- org.apache.logging.log4j:log4j-api:jar:2.8.2:test
+[INFO] |  \- org.apache.logging.log4j:log4j-core:jar:2.8.2:test
+[INFO] +- commons-io:commons-io:jar:2.5:test
+[INFO] +- com.squareup:javapoet:jar:1.9.0:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] \- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] 
+[INFO] -------------< org.dominokit.domino.archetypes:archetypes >-------------
+[INFO] Building archetypes 1.0-rc.5-SNAPSHOT                            [16/25]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ archetypes ---
+[INFO] org.dominokit.domino.archetypes:archetypes:pom:1.0-rc.5-SNAPSHOT
+[INFO] 
+[INFO] ------< org.dominokit.domino.archetypes:domino-gwt-app-archetype >------
+[INFO] Building domino-gwt-app-archetype 1.0-rc.5-SNAPSHOT              [17/25]
+[INFO] --------------------------[ maven-archetype ]---------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-gwt-app-archetype ---
+[INFO] org.dominokit.domino.archetypes:domino-gwt-app-archetype:maven-archetype:1.0-rc.5-SNAPSHOT
+[INFO] 
+[INFO] ----< org.dominokit.domino.archetypes:domino-gwt-module-archetype >-----
+[INFO] Building domino-gwt-module-archetype 1.0-rc.5-SNAPSHOT           [18/25]
+[INFO] --------------------------[ maven-archetype ]---------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-gwt-module-archetype ---
+[INFO] org.dominokit.domino.archetypes:domino-gwt-module-archetype:maven-archetype:1.0-rc.5-SNAPSHOT
+[INFO] 
+[INFO] --< org.dominokit.domino.archetypes:domino-gwt-single-module-archetype >--
+[INFO] Building domino-gwt-single-module-archetype 1.0-rc.5-SNAPSHOT    [19/25]
+[INFO] --------------------------[ maven-archetype ]---------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-gwt-single-module-archetype ---
+[INFO] org.dominokit.domino.archetypes:domino-gwt-single-module-archetype:maven-archetype:1.0-rc.5-SNAPSHOT
+[INFO] 
+[INFO] ------------< org.dominokit.domino:ssl-server-configurator >------------
+[INFO] Building ssl-server-configurator 1.0-rc.5-SNAPSHOT               [20/25]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ ssl-server-configurator ---
+[INFO] org.dominokit.domino:ssl-server-configurator:jar:1.0-rc.5-SNAPSHOT
+[INFO] +- org.dominokit.domino.api:domino-api-server:jar:1.0-rc.5-SNAPSHOT:provided
+[INFO] |  +- org.dominokit.domino.api:domino-api-shared:jar:1.0-rc.5-SNAPSHOT:provided
+[INFO] |  |  +- org.dominokit:jaxrs-super:jar:1.0-rc.4-SNAPSHOT:provided
+[INFO] |  |  +- org.gwtproject.regexp:gwt-regexp:jar:1.0-SNAPSHOT:provided
+[INFO] |  |  |  \- com.google.elemental2:elemental2-core:jar:1.0.0-RC1:provided
+[INFO] |  |  |     +- com.google.jsinterop:jsinterop-annotations:jar:1.0.2:provided
+[INFO] |  |  |     \- com.google.jsinterop:base:jar:1.0.0-RC1:provided
+[INFO] |  |  +- org.dominokit:domino-aggregator-shared:jar:1.0-rc.4-SNAPSHOT:provided
+[INFO] |  |  \- org.dominokit:domino-history-shared:jar:1.0-rc.4-SNAPSHOT:provided
+[INFO] |  +- org.dominokit.domino:domino-service-discovery:jar:1.0-rc.5-SNAPSHOT:provided
+[INFO] |  |  +- io.vertx:vertx-service-discovery:jar:3.8.1:provided
+[INFO] |  |  +- io.vertx:vertx-web-client:jar:3.8.1:provided
+[INFO] |  |  +- io.vertx:vertx-service-proxy:jar:3.8.1:provided
+[INFO] |  |  +- io.vertx:vertx-codegen:jar:3.8.1:provided
+[INFO] |  |  |  +- com.fasterxml.jackson.core:jackson-core:jar:2.9.9:provided
+[INFO] |  |  |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.9.9.1:provided
+[INFO] |  |  |  |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.9.0:provided
+[INFO] |  |  |  \- org.mvel:mvel2:jar:2.3.1.Final:provided
+[INFO] |  |  +- io.vertx:vertx-service-proxy:jar:processor:3.8.1:provided
+[INFO] |  |  +- io.vertx:vertx-jdbc-client:jar:3.8.1:provided
+[INFO] |  |  |  +- io.vertx:vertx-sql-common:jar:3.8.1:provided
+[INFO] |  |  |  \- com.mchange:c3p0:jar:0.9.5.4:provided
+[INFO] |  |  |     \- com.mchange:mchange-commons-java:jar:0.2.15:provided
+[INFO] |  |  +- io.vertx:vertx-redis-client:jar:3.8.1:provided
+[INFO] |  |  \- io.vertx:vertx-mongo-client:jar:3.8.1:provided
+[INFO] |  |     \- org.mongodb:mongodb-driver-async:jar:3.10.1:provided
+[INFO] |  |        +- org.mongodb:bson:jar:3.10.1:provided
+[INFO] |  |        \- org.mongodb:mongodb-driver-core:jar:3.10.1:provided
+[INFO] |  +- io.vertx:vertx-web:jar:3.8.1:provided
+[INFO] |  |  +- io.vertx:vertx-web-common:jar:3.8.1:provided
+[INFO] |  |  +- io.vertx:vertx-auth-common:jar:3.8.1:provided
+[INFO] |  |  +- io.vertx:vertx-bridge-common:jar:3.8.1:provided
+[INFO] |  |  \- io.vertx:vertx-core:jar:3.8.1:provided
+[INFO] |  |     +- io.netty:netty-common:jar:4.1.39.Final:provided
+[INFO] |  |     +- io.netty:netty-buffer:jar:4.1.39.Final:provided
+[INFO] |  |     +- io.netty:netty-transport:jar:4.1.39.Final:provided
+[INFO] |  |     +- io.netty:netty-handler:jar:4.1.39.Final:provided
+[INFO] |  |     |  \- io.netty:netty-codec:jar:4.1.39.Final:provided
+[INFO] |  |     +- io.netty:netty-handler-proxy:jar:4.1.39.Final:provided
+[INFO] |  |     |  \- io.netty:netty-codec-socks:jar:4.1.39.Final:provided
+[INFO] |  |     +- io.netty:netty-codec-http:jar:4.1.39.Final:provided
+[INFO] |  |     +- io.netty:netty-codec-http2:jar:4.1.39.Final:provided
+[INFO] |  |     +- io.netty:netty-resolver:jar:4.1.39.Final:provided
+[INFO] |  |     \- io.netty:netty-resolver-dns:jar:4.1.39.Final:provided
+[INFO] |  |        \- io.netty:netty-codec-dns:jar:4.1.39.Final:provided
+[INFO] |  +- io.vertx:vertx-config:jar:3.8.1:provided
+[INFO] |  +- io.vertx:vertx-rx-java:jar:3.8.1:provided
+[INFO] |  |  +- io.reactivex:rxjava:jar:1.3.8:provided
+[INFO] |  |  \- io.vertx:vertx-rx-gen:jar:3.8.1:provided
+[INFO] |  +- io.vertx:vertx-rx-java2:jar:3.8.1:provided
+[INFO] |  |  +- io.reactivex.rxjava2:rxjava:jar:2.2.4:provided
+[INFO] |  |  \- org.reactivestreams:reactive-streams:jar:1.0.2:provided
+[INFO] |  +- io.vertx:vertx-auth-jwt:jar:3.8.1:provided
+[INFO] |  |  \- io.vertx:vertx-jwt:jar:3.8.1:provided
+[INFO] |  +- io.vertx:vertx-auth-oauth2:jar:3.8.1:provided
+[INFO] |  +- javax.validation:validation-api:jar:2.0.1.Final:provided
+[INFO] |  +- com.google.guava:guava:jar:27.0.1-jre:provided
+[INFO] |  |  +- com.google.guava:failureaccess:jar:1.0.1:provided
+[INFO] |  |  +- com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:provided
+[INFO] |  |  +- com.google.code.findbugs:jsr305:jar:1.3.9:provided
+[INFO] |  |  +- org.checkerframework:checker-qual:jar:2.5.2:provided
+[INFO] |  |  +- com.google.errorprone:error_prone_annotations:jar:2.2.0:provided
+[INFO] |  |  +- com.google.j2objc:j2objc-annotations:jar:1.1:provided
+[INFO] |  |  \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.17:provided
+[INFO] |  +- org.jboss.resteasy:resteasy-vertx:jar:4.0.0.Beta5:provided
+[INFO] |  |  +- org.jboss.resteasy:resteasy-jaxrs:jar:4.0.0.Beta5:provided
+[INFO] |  |  |  +- org.jboss.spec.javax.ws.rs:jboss-jaxrs-api_2.1_spec:jar:1.0.1.Final:provided
+[INFO] |  |  |  +- org.jboss.spec.javax.xml.bind:jboss-jaxb-api_2.3_spec:jar:1.0.0.Final:provided
+[INFO] |  |  |  +- org.jboss.resteasy:resteasy-jaxrs-services:jar:4.0.0.Beta5:provided
+[INFO] |  |  |  +- org.jboss.spec.javax.annotation:jboss-annotations-api_1.2_spec:jar:1.0.0.Final:provided
+[INFO] |  |  |  +- javax.activation:activation:jar:1.1.1:provided
+[INFO] |  |  |  +- org.apache.httpcomponents:httpclient:jar:4.5.4:provided
+[INFO] |  |  |  |  +- org.apache.httpcomponents:httpcore:jar:4.4.7:provided
+[INFO] |  |  |  |  \- commons-codec:commons-codec:jar:1.10:provided
+[INFO] |  |  |  +- commons-io:commons-io:jar:2.4:provided
+[INFO] |  |  |  +- net.jcip:jcip-annotations:jar:1.0:provided
+[INFO] |  |  |  \- javax.json.bind:javax.json.bind-api:jar:1.0:provided
+[INFO] |  |  +- org.jboss.resteasy:resteasy-client:jar:4.0.0.Beta5:provided
+[INFO] |  |  \- org.jboss.logging:jboss-logging:jar:3.3.1.Final:provided
+[INFO] |  +- org.jboss.resteasy:resteasy-jackson-provider:jar:4.0.0.Beta5:provided
+[INFO] |  |  +- org.codehaus.jackson:jackson-core-asl:jar:1.9.13:provided
+[INFO] |  |  +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.13:provided
+[INFO] |  |  +- org.codehaus.jackson:jackson-jaxrs:jar:1.9.13:provided
+[INFO] |  |  \- org.codehaus.jackson:jackson-xc:jar:1.9.13:provided
+[INFO] |  +- org.jboss.resteasy:resteasy-multipart-provider:jar:4.0.0.Beta5:provided
+[INFO] |  |  +- org.jboss.resteasy:resteasy-jaxb-provider:jar:4.0.0.Beta5:provided
+[INFO] |  |  |  +- com.sun.xml.bind:jaxb-core:jar:2.3.0:provided
+[INFO] |  |  |  \- com.sun.xml.bind:jaxb-impl:jar:2.3.0:provided
+[INFO] |  |  +- com.sun.mail:javax.mail:jar:1.5.6:provided
+[INFO] |  |  \- org.apache.james:apache-mime4j:jar:0.6:provided
+[INFO] |  |     \- commons-logging:commons-logging:jar:1.1.1:provided
+[INFO] |  +- com.h2database:h2:jar:1.4.198:provided
+[INFO] |  +- org.dominokit:domino-rest-server:jar:1.0-rc.4-SNAPSHOT:provided
+[INFO] |  |  \- org.dominokit:domino-rest-shared:jar:1.0-rc.4-SNAPSHOT:provided
+[INFO] |  |     +- org.dominokit.jackson:jackson-apt:jar:1.0-SNAPSHOT:provided
+[INFO] |  |     |  +- org.dominokit.jackson:jackson-super:jar:1.0-SNAPSHOT:provided
+[INFO] |  |     |  +- org.gwtproject.i18n:gwt-cldr:jar:1.0-SNAPSHOT:provided
+[INFO] |  |     |  \- org.gwtproject.i18n:gwt-datetimeformat:jar:1.0-SNAPSHOT:provided
+[INFO] |  |     |     +- org.gwtproject.i18n:gwt-cldr:jar:sources:1.0-SNAPSHOT:provided
+[INFO] |  |     |     \- org.gwtproject.i18n:gwt-i18n:jar:1.0-SNAPSHOT:provided
+[INFO] |  |     |        \- com.google.elemental2:elemental2-dom:jar:1.0.0-RC1:provided
+[INFO] |  |     |           \- com.google.elemental2:elemental2-promise:jar:1.0.0-RC1:provided
+[INFO] |  |     \- javax.annotation:javax.annotation-api:jar:1.3.2:provided
+[INFO] |  \- org.slf4j:slf4j-api:jar:1.7.25:provided
+[INFO] +- com.google.auto.service:auto-service:jar:1.0-rc6:provided
+[INFO] |  +- com.google.auto.service:auto-service-annotations:jar:1.0-rc6:provided
+[INFO] |  \- com.google.auto:auto-common:jar:0.10:provided
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] \- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] 
+[INFO] ---------< org.dominokit.domino.logging:domino-remote-logging >---------
+[INFO] Building domino-remote-logging 1.0-rc.5-SNAPSHOT                 [21/25]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-remote-logging ---
+[INFO] org.dominokit.domino.logging:domino-remote-logging:jar:1.0-rc.5-SNAPSHOT
+[INFO] +- org.dominokit.domino.api:domino-api-server:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  +- org.dominokit.domino.api:domino-api-shared:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  |  +- org.dominokit:jaxrs-super:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  |  +- org.gwtproject.regexp:gwt-regexp:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  |  \- com.google.elemental2:elemental2-core:jar:1.0.0-RC1:compile
+[INFO] |  |  |     +- com.google.jsinterop:jsinterop-annotations:jar:1.0.2:compile
+[INFO] |  |  |     \- com.google.jsinterop:base:jar:1.0.0-RC1:compile
+[INFO] |  |  +- org.dominokit:domino-aggregator-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  |  \- org.dominokit:domino-history-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  +- org.dominokit.domino:domino-service-discovery:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  |  +- io.vertx:vertx-service-discovery:jar:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-web-client:jar:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-service-proxy:jar:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-codegen:jar:3.8.1:compile
+[INFO] |  |  |  +- com.fasterxml.jackson.core:jackson-core:jar:2.9.9:compile
+[INFO] |  |  |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.9.9.1:compile
+[INFO] |  |  |  |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.9.0:compile
+[INFO] |  |  |  \- org.mvel:mvel2:jar:2.3.1.Final:compile
+[INFO] |  |  +- io.vertx:vertx-service-proxy:jar:processor:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-jdbc-client:jar:3.8.1:compile
+[INFO] |  |  |  +- io.vertx:vertx-sql-common:jar:3.8.1:compile
+[INFO] |  |  |  \- com.mchange:c3p0:jar:0.9.5.4:compile
+[INFO] |  |  |     \- com.mchange:mchange-commons-java:jar:0.2.15:compile
+[INFO] |  |  +- io.vertx:vertx-redis-client:jar:3.8.1:compile
+[INFO] |  |  \- io.vertx:vertx-mongo-client:jar:3.8.1:compile
+[INFO] |  |     \- org.mongodb:mongodb-driver-async:jar:3.10.1:compile
+[INFO] |  |        +- org.mongodb:bson:jar:3.10.1:compile
+[INFO] |  |        \- org.mongodb:mongodb-driver-core:jar:3.10.1:compile
+[INFO] |  +- io.vertx:vertx-web:jar:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-web-common:jar:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-auth-common:jar:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-bridge-common:jar:3.8.1:compile
+[INFO] |  |  \- io.vertx:vertx-core:jar:3.8.1:compile
+[INFO] |  |     +- io.netty:netty-common:jar:4.1.39.Final:compile
+[INFO] |  |     +- io.netty:netty-buffer:jar:4.1.39.Final:compile
+[INFO] |  |     +- io.netty:netty-transport:jar:4.1.39.Final:compile
+[INFO] |  |     +- io.netty:netty-handler:jar:4.1.39.Final:compile
+[INFO] |  |     |  \- io.netty:netty-codec:jar:4.1.39.Final:compile
+[INFO] |  |     +- io.netty:netty-handler-proxy:jar:4.1.39.Final:compile
+[INFO] |  |     |  \- io.netty:netty-codec-socks:jar:4.1.39.Final:compile
+[INFO] |  |     +- io.netty:netty-codec-http:jar:4.1.39.Final:compile
+[INFO] |  |     +- io.netty:netty-codec-http2:jar:4.1.39.Final:compile
+[INFO] |  |     +- io.netty:netty-resolver:jar:4.1.39.Final:compile
+[INFO] |  |     \- io.netty:netty-resolver-dns:jar:4.1.39.Final:compile
+[INFO] |  |        \- io.netty:netty-codec-dns:jar:4.1.39.Final:compile
+[INFO] |  +- io.vertx:vertx-config:jar:3.8.1:compile
+[INFO] |  +- io.vertx:vertx-rx-java:jar:3.8.1:compile
+[INFO] |  |  +- io.reactivex:rxjava:jar:1.3.8:compile
+[INFO] |  |  \- io.vertx:vertx-rx-gen:jar:3.8.1:compile
+[INFO] |  +- io.vertx:vertx-rx-java2:jar:3.8.1:compile
+[INFO] |  |  +- io.reactivex.rxjava2:rxjava:jar:2.2.4:compile
+[INFO] |  |  \- org.reactivestreams:reactive-streams:jar:1.0.2:compile
+[INFO] |  +- io.vertx:vertx-auth-jwt:jar:3.8.1:compile
+[INFO] |  |  \- io.vertx:vertx-jwt:jar:3.8.1:compile
+[INFO] |  +- io.vertx:vertx-auth-oauth2:jar:3.8.1:compile
+[INFO] |  +- javax.validation:validation-api:jar:2.0.1.Final:compile
+[INFO] |  +- com.google.guava:guava:jar:27.0.1-jre:compile
+[INFO] |  |  +- com.google.guava:failureaccess:jar:1.0.1:compile
+[INFO] |  |  +- com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:compile
+[INFO] |  |  +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO] |  |  +- org.checkerframework:checker-qual:jar:2.5.2:compile
+[INFO] |  |  +- com.google.errorprone:error_prone_annotations:jar:2.2.0:compile
+[INFO] |  |  +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |  |  \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.17:compile
+[INFO] |  +- org.jboss.resteasy:resteasy-vertx:jar:4.0.0.Beta5:compile
+[INFO] |  |  +- org.jboss.resteasy:resteasy-jaxrs:jar:4.0.0.Beta5:compile
+[INFO] |  |  |  +- org.jboss.spec.javax.ws.rs:jboss-jaxrs-api_2.1_spec:jar:1.0.1.Final:compile
+[INFO] |  |  |  +- org.jboss.spec.javax.xml.bind:jboss-jaxb-api_2.3_spec:jar:1.0.0.Final:compile
+[INFO] |  |  |  +- org.jboss.resteasy:resteasy-jaxrs-services:jar:4.0.0.Beta5:compile
+[INFO] |  |  |  +- org.jboss.spec.javax.annotation:jboss-annotations-api_1.2_spec:jar:1.0.0.Final:compile
+[INFO] |  |  |  +- javax.activation:activation:jar:1.1.1:compile
+[INFO] |  |  |  +- org.apache.httpcomponents:httpclient:jar:4.5.4:compile
+[INFO] |  |  |  |  +- org.apache.httpcomponents:httpcore:jar:4.4.7:compile
+[INFO] |  |  |  |  \- commons-codec:commons-codec:jar:1.10:compile
+[INFO] |  |  |  +- commons-io:commons-io:jar:2.4:compile
+[INFO] |  |  |  +- net.jcip:jcip-annotations:jar:1.0:compile
+[INFO] |  |  |  \- javax.json.bind:javax.json.bind-api:jar:1.0:compile
+[INFO] |  |  +- org.jboss.resteasy:resteasy-client:jar:4.0.0.Beta5:compile
+[INFO] |  |  \- org.jboss.logging:jboss-logging:jar:3.3.1.Final:compile
+[INFO] |  +- org.jboss.resteasy:resteasy-jackson-provider:jar:4.0.0.Beta5:compile
+[INFO] |  |  +- org.codehaus.jackson:jackson-core-asl:jar:1.9.13:compile
+[INFO] |  |  +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.13:compile
+[INFO] |  |  +- org.codehaus.jackson:jackson-jaxrs:jar:1.9.13:compile
+[INFO] |  |  \- org.codehaus.jackson:jackson-xc:jar:1.9.13:compile
+[INFO] |  +- org.jboss.resteasy:resteasy-multipart-provider:jar:4.0.0.Beta5:compile
+[INFO] |  |  +- org.jboss.resteasy:resteasy-jaxb-provider:jar:4.0.0.Beta5:compile
+[INFO] |  |  |  +- com.sun.xml.bind:jaxb-core:jar:2.3.0:compile
+[INFO] |  |  |  \- com.sun.xml.bind:jaxb-impl:jar:2.3.0:compile
+[INFO] |  |  +- com.sun.mail:javax.mail:jar:1.5.6:compile
+[INFO] |  |  \- org.apache.james:apache-mime4j:jar:0.6:compile
+[INFO] |  |     \- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO] |  +- com.h2database:h2:jar:1.4.198:compile
+[INFO] |  +- org.dominokit:domino-rest-server:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  |  \- org.dominokit:domino-rest-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  |     +- org.dominokit.jackson:jackson-apt:jar:1.0-SNAPSHOT:compile
+[INFO] |  |     |  +- org.dominokit.jackson:jackson-super:jar:1.0-SNAPSHOT:compile
+[INFO] |  |     |  +- org.gwtproject.i18n:gwt-cldr:jar:1.0-SNAPSHOT:compile
+[INFO] |  |     |  \- org.gwtproject.i18n:gwt-datetimeformat:jar:1.0-SNAPSHOT:compile
+[INFO] |  |     |     +- org.gwtproject.i18n:gwt-cldr:jar:sources:1.0-SNAPSHOT:compile
+[INFO] |  |     |     \- org.gwtproject.i18n:gwt-i18n:jar:1.0-SNAPSHOT:compile
+[INFO] |  |     |        \- com.google.elemental2:elemental2-dom:jar:1.0.0-RC1:compile
+[INFO] |  |     |           \- com.google.elemental2:elemental2-promise:jar:1.0.0-RC1:compile
+[INFO] |  |     \- javax.annotation:javax.annotation-api:jar:1.3.2:compile
+[INFO] |  \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] +- com.google.gwt:gwt-servlet:jar:2.8.2:provided
+[INFO] +- com.google.code.gson:gson:jar:2.6.2:compile
+[INFO] +- com.google.auto.service:auto-service:jar:1.0-rc6:provided
+[INFO] |  +- com.google.auto.service:auto-service-annotations:jar:1.0-rc6:provided
+[INFO] |  \- com.google.auto:auto-common:jar:0.10:provided
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] \- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] 
+[INFO] ----------------< org.dominokit.domino:domino-desktop >-----------------
+[INFO] Building domino-desktop 1.0-rc.5-SNAPSHOT                        [22/25]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-desktop ---
+[INFO] org.dominokit.domino:domino-desktop:jar:1.0-rc.5-SNAPSHOT
+[INFO] +- org.dominokit.domino.api:domino-api-client:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  +- org.dominokit:jaxrs-super:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  +- org.dominokit:domino-aggregator-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  +- org.dominokit.jackson:jackson-apt:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  +- com.google.elemental2:elemental2-core:jar:1.0.0-RC1:compile
+[INFO] |  |  |  +- com.google.jsinterop:jsinterop-annotations:jar:1.0.2:compile
+[INFO] |  |  |  \- com.google.jsinterop:base:jar:1.0.0-RC1:compile
+[INFO] |  |  +- org.dominokit.jackson:jackson-super:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  +- org.gwtproject.i18n:gwt-cldr:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  \- org.gwtproject.i18n:gwt-datetimeformat:jar:1.0-SNAPSHOT:compile
+[INFO] |  |     +- org.gwtproject.i18n:gwt-cldr:jar:sources:1.0-SNAPSHOT:compile
+[INFO] |  |     \- org.gwtproject.i18n:gwt-i18n:jar:1.0-SNAPSHOT:compile
+[INFO] |  |        \- com.google.elemental2:elemental2-dom:jar:1.0.0-RC1:compile
+[INFO] |  |           \- com.google.elemental2:elemental2-promise:jar:1.0.0-RC1:compile
+[INFO] |  +- org.dominokit:domino-rest-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  |  \- javax.annotation:javax.annotation-api:jar:1.3.2:compile
+[INFO] |  \- org.gwtproject.regexp:gwt-regexp:jar:1.0-SNAPSHOT:compile
+[INFO] +- org.dominokit.domino.api:domino-api-shared:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  \- org.dominokit:domino-history-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] +- org.dominokit.domino.api:domino-api-server:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  +- org.dominokit.domino:domino-service-discovery:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  |  +- io.vertx:vertx-service-discovery:jar:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-web-client:jar:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-service-proxy:jar:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-codegen:jar:3.8.1:compile
+[INFO] |  |  |  +- com.fasterxml.jackson.core:jackson-core:jar:2.9.9:compile
+[INFO] |  |  |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.9.9.1:compile
+[INFO] |  |  |  |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.9.0:compile
+[INFO] |  |  |  \- org.mvel:mvel2:jar:2.3.1.Final:compile
+[INFO] |  |  +- io.vertx:vertx-service-proxy:jar:processor:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-jdbc-client:jar:3.8.1:compile
+[INFO] |  |  |  +- io.vertx:vertx-sql-common:jar:3.8.1:compile
+[INFO] |  |  |  \- com.mchange:c3p0:jar:0.9.5.4:compile
+[INFO] |  |  |     \- com.mchange:mchange-commons-java:jar:0.2.15:compile
+[INFO] |  |  +- io.vertx:vertx-redis-client:jar:3.8.1:compile
+[INFO] |  |  \- io.vertx:vertx-mongo-client:jar:3.8.1:compile
+[INFO] |  |     \- org.mongodb:mongodb-driver-async:jar:3.10.1:compile
+[INFO] |  |        +- org.mongodb:bson:jar:3.10.1:compile
+[INFO] |  |        \- org.mongodb:mongodb-driver-core:jar:3.10.1:compile
+[INFO] |  +- io.vertx:vertx-web:jar:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-web-common:jar:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-auth-common:jar:3.8.1:compile
+[INFO] |  |  +- io.vertx:vertx-bridge-common:jar:3.8.1:compile
+[INFO] |  |  \- io.vertx:vertx-core:jar:3.8.1:compile
+[INFO] |  |     +- io.netty:netty-common:jar:4.1.39.Final:compile
+[INFO] |  |     +- io.netty:netty-buffer:jar:4.1.39.Final:compile
+[INFO] |  |     +- io.netty:netty-transport:jar:4.1.39.Final:compile
+[INFO] |  |     +- io.netty:netty-handler:jar:4.1.39.Final:compile
+[INFO] |  |     |  \- io.netty:netty-codec:jar:4.1.39.Final:compile
+[INFO] |  |     +- io.netty:netty-handler-proxy:jar:4.1.39.Final:compile
+[INFO] |  |     |  \- io.netty:netty-codec-socks:jar:4.1.39.Final:compile
+[INFO] |  |     +- io.netty:netty-codec-http:jar:4.1.39.Final:compile
+[INFO] |  |     +- io.netty:netty-codec-http2:jar:4.1.39.Final:compile
+[INFO] |  |     +- io.netty:netty-resolver:jar:4.1.39.Final:compile
+[INFO] |  |     \- io.netty:netty-resolver-dns:jar:4.1.39.Final:compile
+[INFO] |  |        \- io.netty:netty-codec-dns:jar:4.1.39.Final:compile
+[INFO] |  +- io.vertx:vertx-config:jar:3.8.1:compile
+[INFO] |  +- io.vertx:vertx-rx-java:jar:3.8.1:compile
+[INFO] |  |  +- io.reactivex:rxjava:jar:1.3.8:compile
+[INFO] |  |  \- io.vertx:vertx-rx-gen:jar:3.8.1:compile
+[INFO] |  +- io.vertx:vertx-rx-java2:jar:3.8.1:compile
+[INFO] |  |  +- io.reactivex.rxjava2:rxjava:jar:2.2.4:compile
+[INFO] |  |  \- org.reactivestreams:reactive-streams:jar:1.0.2:compile
+[INFO] |  +- io.vertx:vertx-auth-jwt:jar:3.8.1:compile
+[INFO] |  |  \- io.vertx:vertx-jwt:jar:3.8.1:compile
+[INFO] |  +- io.vertx:vertx-auth-oauth2:jar:3.8.1:compile
+[INFO] |  +- javax.validation:validation-api:jar:2.0.1.Final:compile
+[INFO] |  +- com.google.guava:guava:jar:27.0.1-jre:compile
+[INFO] |  |  +- com.google.guava:failureaccess:jar:1.0.1:compile
+[INFO] |  |  +- com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:compile
+[INFO] |  |  +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO] |  |  +- org.checkerframework:checker-qual:jar:2.5.2:compile
+[INFO] |  |  +- com.google.errorprone:error_prone_annotations:jar:2.2.0:compile
+[INFO] |  |  +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |  |  \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.17:compile
+[INFO] |  +- org.jboss.resteasy:resteasy-vertx:jar:4.0.0.Beta5:compile
+[INFO] |  |  +- org.jboss.resteasy:resteasy-jaxrs:jar:4.0.0.Beta5:compile
+[INFO] |  |  |  +- org.jboss.spec.javax.ws.rs:jboss-jaxrs-api_2.1_spec:jar:1.0.1.Final:compile
+[INFO] |  |  |  +- org.jboss.spec.javax.xml.bind:jboss-jaxb-api_2.3_spec:jar:1.0.0.Final:compile
+[INFO] |  |  |  +- org.jboss.resteasy:resteasy-jaxrs-services:jar:4.0.0.Beta5:compile
+[INFO] |  |  |  +- org.jboss.spec.javax.annotation:jboss-annotations-api_1.2_spec:jar:1.0.0.Final:compile
+[INFO] |  |  |  +- javax.activation:activation:jar:1.1.1:compile
+[INFO] |  |  |  +- org.apache.httpcomponents:httpclient:jar:4.5.4:compile
+[INFO] |  |  |  |  +- org.apache.httpcomponents:httpcore:jar:4.4.7:compile
+[INFO] |  |  |  |  \- commons-codec:commons-codec:jar:1.10:compile
+[INFO] |  |  |  +- commons-io:commons-io:jar:2.4:compile
+[INFO] |  |  |  +- net.jcip:jcip-annotations:jar:1.0:compile
+[INFO] |  |  |  \- javax.json.bind:javax.json.bind-api:jar:1.0:compile
+[INFO] |  |  +- org.jboss.resteasy:resteasy-client:jar:4.0.0.Beta5:compile
+[INFO] |  |  \- org.jboss.logging:jboss-logging:jar:3.3.1.Final:compile
+[INFO] |  +- org.jboss.resteasy:resteasy-jackson-provider:jar:4.0.0.Beta5:compile
+[INFO] |  |  +- org.codehaus.jackson:jackson-core-asl:jar:1.9.13:compile
+[INFO] |  |  +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.13:compile
+[INFO] |  |  +- org.codehaus.jackson:jackson-jaxrs:jar:1.9.13:compile
+[INFO] |  |  \- org.codehaus.jackson:jackson-xc:jar:1.9.13:compile
+[INFO] |  +- org.jboss.resteasy:resteasy-multipart-provider:jar:4.0.0.Beta5:compile
+[INFO] |  |  +- org.jboss.resteasy:resteasy-jaxb-provider:jar:4.0.0.Beta5:compile
+[INFO] |  |  |  +- com.sun.xml.bind:jaxb-core:jar:2.3.0:compile
+[INFO] |  |  |  \- com.sun.xml.bind:jaxb-impl:jar:2.3.0:compile
+[INFO] |  |  +- com.sun.mail:javax.mail:jar:1.5.6:compile
+[INFO] |  |  \- org.apache.james:apache-mime4j:jar:0.6:compile
+[INFO] |  +- com.h2database:h2:jar:1.4.198:compile
+[INFO] |  +- org.dominokit:domino-rest-server:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] +- org.dominokit.domino:domino-client-commons:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] +- commons-beanutils:commons-beanutils:jar:1.7.0:compile
+[INFO] |  \- commons-logging:commons-logging:jar:1.0.3:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] \- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] 
+[INFO] ----------------< org.dominokit.domino:domino-gwt-view >----------------
+[INFO] Building domino-gwt-view 1.0-rc.5-SNAPSHOT                       [23/25]
+[INFO] ------------------------------[ gwt-lib ]-------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-gwt-view ---
+[INFO] org.dominokit.domino:domino-gwt-view:gwt-lib:1.0-rc.5-SNAPSHOT
+[INFO] +- org.dominokit.domino.api:domino-api-client:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  +- org.dominokit.domino.api:domino-api-shared:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  |  \- org.dominokit:domino-history-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  +- org.dominokit:jaxrs-super:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  +- org.dominokit:domino-aggregator-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  +- org.dominokit.jackson:jackson-apt:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  +- org.dominokit.jackson:jackson-super:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  \- org.gwtproject.i18n:gwt-cldr:jar:1.0-SNAPSHOT:compile
+[INFO] |  +- org.dominokit:domino-rest-shared:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  |  \- javax.annotation:javax.annotation-api:jar:1.3.2:compile
+[INFO] |  \- org.gwtproject.regexp:gwt-regexp:jar:1.0-SNAPSHOT:compile
+[INFO] +- org.dominokit.domino.impl:domino-gwt:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  +- org.gwtproject.core:gwt-core:jar:1.0-SNAPSHOT:compile
+[INFO] |  +- org.dominokit.domino.api:domino-api-client:jar:sources:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  +- org.dominokit:domino-slf4j-logger:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  +- org.dominokit.domino:domino-client-commons:jar:1.0-rc.5-SNAPSHOT:compile
+[INFO] |  +- org.dominokit:domino-rest-gwt:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] |  |  +- org.gwtproject.event:gwt-event:jar:HEAD-SNAPSHOT:compile
+[INFO] |  |  +- org.gwtproject.event:gwt-event:jar:sources:HEAD-SNAPSHOT:compile
+[INFO] |  |  \- org.gwtproject.xhr:gwt-xhr:jar:1.0-SNAPSHOT:compile
+[INFO] |  |     \- org.gwtproject:typedarrays:jar:1.0-SNAPSHOT:compile
+[INFO] |  \- org.dominokit:domino-history-gwt:jar:1.0-rc.4-SNAPSHOT:compile
+[INFO] +- com.google.elemental2:elemental2-core:jar:1.0.0-RC1:compile
+[INFO] |  +- com.google.jsinterop:jsinterop-annotations:jar:1.0.2:compile
+[INFO] |  \- com.google.jsinterop:base:jar:1.0.0-RC1:compile
+[INFO] +- com.google.elemental2:elemental2-dom:jar:1.0.0-RC1:compile
+[INFO] |  \- com.google.elemental2:elemental2-promise:jar:1.0.0-RC1:compile
+[INFO] +- org.dominokit:domino-ui:jar:1.0-SNAPSHOT:provided
+[INFO] |  +- org.dominokit:domino-ui-shared:jar:1.0-SNAPSHOT:provided
+[INFO] |  +- org.gwtproject:editors:jar:1.0-SNAPSHOT:provided
+[INFO] |  +- org.gwtproject.timer:gwt-timer:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  \- com.google.elemental2:elemental2-dom:jar:sources:1.0.0-RC1:compile
+[INFO] |  +- org.jboss.elemento:elemento-core:jar:1.0.0-rc3:provided
+[INFO] |  |  +- com.google.elemental2:elemental2-webstorage:jar:1.0.0-RC1:provided
+[INFO] |  |  \- org.gwtproject.safehtml:gwt-safehtml:jar:1.0-SNAPSHOT:provided
+[INFO] |  +- org.gwtproject.i18n:gwt-datetimeformat:jar:1.0-SNAPSHOT:compile
+[INFO] |  |  +- org.gwtproject.i18n:gwt-cldr:jar:sources:1.0-SNAPSHOT:compile
+[INFO] |  |  \- org.gwtproject.i18n:gwt-i18n:jar:1.0-SNAPSHOT:compile
+[INFO] |  +- org.gwtproject.i18n:gwt-numberformat:jar:1.0-SNAPSHOT:provided
+[INFO] |  \- com.google.elemental2:elemental2-svg:jar:1.0.0-RC1:provided
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] \- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] 
+[INFO] ------< org.dominokit.domino.logging:domino-log4j-server-logging >------
+[INFO] Building domino-log4j-server-logging 1.0-rc.5-SNAPSHOT           [24/25]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino-log4j-server-logging ---
+[INFO] org.dominokit.domino.logging:domino-log4j-server-logging:jar:1.0-rc.5-SNAPSHOT
+[INFO] +- org.slf4j:slf4j-log4j12:jar:1.7.25:compile
+[INFO] |  +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] |  \- log4j:log4j:jar:1.2.17:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] \- org.assertj:assertj-core:jar:3.7.0:test
+[INFO] 
+[INFO] --------------------< org.dominokit.domino:domino >---------------------
+[INFO] Building domino 1.0-rc.5-SNAPSHOT                                [25/25]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ domino ---
+[INFO] org.dominokit.domino:domino:pom:1.0-rc.5-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for domino-parent 1.0-rc.5-SNAPSHOT:
+[INFO] 
+[INFO] domino-parent ...................................... SUCCESS [  0.600 s]
+[INFO] domino-api-shared .................................. SUCCESS [  0.051 s]
+[INFO] domino-api-client .................................. SUCCESS [  0.282 s]
+[INFO] domino-client-commons .............................. SUCCESS [  0.023 s]
+[INFO] domino-gwt ......................................... SUCCESS [  0.061 s]
+[INFO] domino-service-discovery ........................... SUCCESS [  0.087 s]
+[INFO] domino-api-server .................................. SUCCESS [  0.236 s]
+[INFO] domino-test ........................................ SUCCESS [  0.017 s]
+[INFO] domino-server-test ................................. SUCCESS [  0.069 s]
+[INFO] domino-client-test ................................. SUCCESS [  0.230 s]
+[INFO] apt-test ........................................... SUCCESS [  0.020 s]
+[INFO] domino-apt ......................................... SUCCESS [  0.014 s]
+[INFO] apt-client ......................................... SUCCESS [  0.057 s]
+[INFO] apt-client-test .................................... SUCCESS [  0.125 s]
+[INFO] apt-server ......................................... SUCCESS [  0.082 s]
+[INFO] archetypes ......................................... SUCCESS [  0.005 s]
+[INFO] domino-gwt-app-archetype ........................... SUCCESS [  0.334 s]
+[INFO] domino-gwt-module-archetype ........................ SUCCESS [  0.007 s]
+[INFO] domino-gwt-single-module-archetype ................. SUCCESS [  0.009 s]
+[INFO] ssl-server-configurator ............................ SUCCESS [  0.066 s]
+[INFO] domino-remote-logging .............................. SUCCESS [  0.069 s]
+[INFO] domino-desktop ..................................... SUCCESS [  0.056 s]
+[INFO] domino-gwt-view .................................... SUCCESS [  0.061 s]
+[INFO] domino-log4j-server-logging ........................ SUCCESS [  0.015 s]
+[INFO] domino ............................................. SUCCESS [  0.217 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  3.986 s
+[INFO] Finished at: 2020-05-30T00:42:10+03:00
+[INFO] ------------------------------------------------------------------------

@@ -51,7 +51,13 @@ public class StaticResourcesConfiguratorPlugin extends BaseDominoLoaderPlugin {
     }
 
     private HttpServerResponse serveIndexPage(RoutingContext routingContext, int statusCode) {
-        return IndexPageContext.INSTANCE.getIndexPageProvider().serveIndexPage(context, routingContext, statusCode);
+        if(context.getConfig().getBoolean("serve.index.page", true)) {
+            return IndexPageContext.INSTANCE.getIndexPageProvider().serveIndexPage(context, routingContext, statusCode);
+        }else{
+            HttpServerResponse httpServerResponse = routingContext.response().setStatusCode(statusCode);
+            httpServerResponse.end();
+            return httpServerResponse;
+        }
     }
 
     @Override

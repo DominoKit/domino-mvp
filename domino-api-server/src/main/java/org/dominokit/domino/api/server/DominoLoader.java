@@ -52,12 +52,12 @@ public class DominoLoader implements IsDominoLoader {
         app.setVertx(rxVertx);
     }
 
-    public void start() {
-        start(httpServer -> {
+    public VertxContext start() {
+        return start(httpServer -> {
         });
     }
 
-    public void start(Consumer<HttpServer> httpServerConsumer) {
+    public VertxContext start(Consumer<HttpServer> httpServerConsumer) {
         ImmutableHttpServerOptions immutableHttpServerOptions = new ImmutableHttpServerOptions();
         VertxContext vertxContext = initializeContext(immutableHttpServerOptions);
 
@@ -66,6 +66,7 @@ public class DominoLoader implements IsDominoLoader {
                 options -> onHttpServerConfigurationCompleted(immutableHttpServerOptions, vertxContext, options, httpServerConsumer));
 
         configureHttpServer(vertxContext, future);
+        return vertxContext;
     }
 
     private VertxContext initializeContext(ImmutableHttpServerOptions immutableHttpServerOptions) {

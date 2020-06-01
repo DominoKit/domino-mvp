@@ -204,6 +204,12 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.dominokit.domino</groupId>
+                <artifactId>domino-gwt-view</artifactId>
+                <version>${project.version}</version>
+                <classifier>sources</classifier>
+            </dependency>
+            <dependency>
                 <groupId>org.dominokit</groupId>
                 <artifactId>jaxrs-super</artifactId>
                 <version>${domino.rest.version}</version>

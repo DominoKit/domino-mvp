@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @AutoService(DominoLoaderPlugin.class)
-public class RestEasyConfigratorPlugin extends BaseDominoLoaderPlugin {
+public class RestEasyConfiguratorPlugin extends BaseDominoLoaderPlugin {
 
     @Override
     public void applyPlugin(CompleteHandler completeHandler) {

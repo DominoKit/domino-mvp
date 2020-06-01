@@ -22,6 +22,8 @@ import static java.util.stream.Collectors.groupingBy;
 
 public class ClientApp implements InitialTaskRegistry, DominoEventsRegistry {
 
+    private String name;
+
     private static final AttributeHolder<RequestRouter<PresenterCommand>> CLIENT_ROUTER_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<EventsBus> EVENTS_BUS_HOLDER = new AttributeHolder<>();
     private static final AttributeHolder<DominoEventsListenersRepository> LISTENERS_REPOSITORY_HOLDER =
@@ -53,6 +55,14 @@ public class ClientApp implements InitialTaskRegistry, DominoEventsRegistry {
         return instance;
     }
 
+    public static ClientApp make(String name) {
+        instance.name = name;
+        return instance;
+    }
+
+    public String getName(){
+        return instance.name;
+    }
 
     public RequestRouter<PresenterCommand> getClientRouter() {
         return CLIENT_ROUTER_HOLDER.attribute;

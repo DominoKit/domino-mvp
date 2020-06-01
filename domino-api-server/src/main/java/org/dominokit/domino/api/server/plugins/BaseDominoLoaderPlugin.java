@@ -2,10 +2,13 @@ package org.dominokit.domino.api.server.plugins;
 
 import org.dominokit.domino.api.server.DominoLoaderPlugin;
 import org.dominokit.domino.api.server.PluginContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static java.util.Objects.nonNull;
 
 public abstract class BaseDominoLoaderPlugin implements DominoLoaderPlugin {
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseDominoLoaderPlugin.class);
     protected PluginContext context;
     protected DominoLoaderPlugin nextPlugin;
 
@@ -22,9 +25,10 @@ public abstract class BaseDominoLoaderPlugin implements DominoLoaderPlugin {
 
     @Override
     public final void apply() {
-        if(isEnabled()) {
+        LOGGER.info("Applying plugin : " + this.getClass().getCanonicalName());
+        if (isEnabled()) {
             applyPlugin(this::applyNext);
-        }else{
+        } else {
             applyNext();
         }
     }

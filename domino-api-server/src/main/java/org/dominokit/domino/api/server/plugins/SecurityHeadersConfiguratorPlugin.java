@@ -7,7 +7,7 @@ import org.dominokit.domino.api.server.PluginContext;
 import org.dominokit.domino.api.server.config.ServerConfigurationLoader;
 
 @AutoService(DominoLoaderPlugin.class)
-public class SecurityHeadersConfigratorPlugin extends BaseDominoLoaderPlugin {
+public class SecurityHeadersConfiguratorPlugin extends BaseDominoLoaderPlugin {
 
     private static final int AROUND_6_MONTHS = 15768000;
 
