@@ -14,7 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <domino.history.version>1.0-rc.4-SNAPSHOT</domino.history.version>
-        <vertx.version>3.8.1</vertx.version>
+        <vertx.version>3.9.0</vertx.version>
         <jackson.version>1.0-SNAPSHOT</jackson.version>
 
     </properties>
