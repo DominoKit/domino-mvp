@@ -19,6 +19,9 @@ import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import static java.util.Objects.nonNull;
+
 public class RouterConfigurator {
 
     private static final int DEFAULT_BODY_LIMIT = 50;
@@ -59,7 +62,11 @@ public class RouterConfigurator {
     }
 
     private void addCorsHandler(Router router) {
-        if (config.getBoolean("cors.enabled", true)) {
+
+        boolean enableCors = (nonNull(System.getenv("cors.enabled")) && Boolean.parseBoolean(System.getenv("cors.enabled")))
+                || (nonNull(System.getProperty("cors.enabled")) && Boolean.parseBoolean(System.getProperty("cors.enabled")))
+                || config.getBoolean("cors.enabled", false);
+        if (enableCors) {
             router.route().handler(CorsHandler.create("*")
                     .allowedHeaders(new HashSet<>(Arrays.asList("Content-Type", "X-HTTP-Method-Override", "X-XSRF-TOKEN")))
                     .allowedMethods(Stream.of(HttpMethod.values()).collect(Collectors.toSet())));

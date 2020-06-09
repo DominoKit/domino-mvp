@@ -22,6 +22,7 @@ public class ServerStartupPlugin extends BaseDominoLoaderPlugin {
 
     private void startHttpServer(AsyncResult<HttpServerOptions> options, Consumer<HttpServer> httpServerConsumer) {
 
+        LOGGER.info("HTTP Server options  : "+options.result().getPort());
         context.getVertx()
                 .createHttpServer(options.result())
                 .requestHandler(context.getRouter())
