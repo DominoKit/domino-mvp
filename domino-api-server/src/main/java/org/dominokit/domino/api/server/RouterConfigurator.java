@@ -12,6 +12,8 @@ import io.vertx.ext.web.sstore.SessionStore;
 import org.dominokit.domino.api.server.logging.DefaultRemoteLogger;
 import org.dominokit.domino.api.server.logging.RemoteLogger;
 import org.dominokit.domino.api.server.logging.RemoteLoggingHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -23,6 +25,8 @@ import java.util.stream.StreamSupport;
 import static java.util.Objects.nonNull;
 
 public class RouterConfigurator {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RouterConfigurator.class);
 
     private static final int DEFAULT_BODY_LIMIT = 50;
     private static final long MB = 1048576L;
@@ -67,8 +71,9 @@ public class RouterConfigurator {
                 || (nonNull(System.getProperty("cors.enabled")) && Boolean.parseBoolean(System.getProperty("cors.enabled")))
                 || config.getBoolean("cors.enabled", false);
         if (enableCors) {
+            LOGGER.info("CORS is enabled > allowed origins:*, Allowed headers:*, Allowed methods: ALL");
             router.route().handler(CorsHandler.create("*")
-                    .allowedHeaders(new HashSet<>(Arrays.asList("Content-Type", "X-HTTP-Method-Override", "X-XSRF-TOKEN")))
+                    .allowedHeaders(new HashSet<>(Arrays.asList("Content-Type", "X-HTTP-Method-Override", "X-XSRF-TOKEN","Accept","cache-control")))
                     .allowedMethods(Stream.of(HttpMethod.values()).collect(Collectors.toSet())));
         }
     }
