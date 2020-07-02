@@ -9,6 +9,7 @@ import org.dominokit.domino.rest.shared.request.DynamicServiceRoot;
 public class FakeDominoOptions implements DominoOptions {
 
     private ApplicationStartHandler applicationStartHandler;
+    private boolean mainApp = false;
 
     @Override
     public void applyOptions() {
@@ -30,5 +31,16 @@ public class FakeDominoOptions implements DominoOptions {
     @Override
     public ApplicationStartHandler getApplicationStartHandler() {
         return applicationStartHandler;
+    }
+
+    @Override
+    public CanSetDominoOptions setMainApp(boolean mainApp) {
+        this.mainApp = mainApp;
+        return this;
+    }
+
+    @Override
+    public boolean isMainApp() {
+        return mainApp;
     }
 }

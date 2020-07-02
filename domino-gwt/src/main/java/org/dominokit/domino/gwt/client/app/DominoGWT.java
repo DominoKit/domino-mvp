@@ -1,6 +1,8 @@
 package org.dominokit.domino.gwt.client.app;
 
 //import com.google.gwt.core.client.GWT;
+
+import elemental2.dom.DomGlobal;
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.extension.InMemoryDominoEventsListenerRepository;
 import org.dominokit.domino.client.commons.request.ClientRouter;
@@ -28,17 +30,24 @@ public class DominoGWT {
 //        GWT.setUncaughtExceptionHandler(throwable -> LOGGER.error("Uncaught Exception", throwable));
         ClientRouter clientRouter = new ClientRouter(new ClientEventFactory());
 
-        ((DominoSimpleEventsBus)DominoSimpleEventsBus.INSTANCE).addEvent(ClientRequestGwtEvent.CLIENT_REQUEST_EVENT_TYPE);
+        ((DominoSimpleEventsBus) DominoSimpleEventsBus.INSTANCE).addEvent(ClientRequestGwtEvent.CLIENT_REQUEST_EVENT_TYPE);
 
         DominoRestConfig.initDefaults();
         ClientApp.ClientAppBuilder
                 .clientRouter(clientRouter)
                 .eventsBus(DominoSimpleEventsBus.INSTANCE)
                 .eventsListenersRepository(new CustomEventsDominoEventsRepository())
-                .history(new StateHistory())
+                .history(new DominoMvpHistory())
                 .asyncRunner(new GwtAsyncRunner())
                 .dominoOptions(new DefaultDominoOptions())
                 .slotsManager(new ElementsSlotsManager())
                 .build();
+    }
+
+    public static class DominoMvpHistory extends StateHistory {
+        @Override
+        public boolean isInformOnPopState() {
+            return ClientApp.make().dominoOptions().isMainApp();
+        }
     }
 }

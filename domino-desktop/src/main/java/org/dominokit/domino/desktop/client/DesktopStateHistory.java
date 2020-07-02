@@ -135,6 +135,81 @@ public class DesktopStateHistory implements AppHistory {
     }
 
     @Override
+    public void fireCurrentStateHistory(String title) {
+
+    }
+
+    @Override
+    public int getHistoryEntriesCount() {
+        return 0;
+    }
+
+    @Override
+    public void pushState(String token, String title) {
+
+    }
+
+    @Override
+    public void fireState(String token, String title) {
+
+    }
+
+    @Override
+    public void pushState(HistoryToken token, String title, String data) {
+
+    }
+
+    @Override
+    public void pushState(HistoryToken token, String title) {
+
+    }
+
+    @Override
+    public void pushState(HistoryToken token, String title, String data, TokenParameter... parameters) {
+
+    }
+
+    @Override
+    public void pushState(HistoryToken token) {
+
+    }
+
+    @Override
+    public void pushState(HistoryToken token, TokenParameter... parameters) {
+
+    }
+
+    @Override
+    public void fireState(HistoryToken token, String title, String data) {
+
+    }
+
+    @Override
+    public void fireState(HistoryToken token, String title) {
+
+    }
+
+    @Override
+    public void fireState(HistoryToken token, String title, String data, TokenParameter... parameters) {
+
+    }
+
+    @Override
+    public void fireState(HistoryToken token) {
+
+    }
+
+    @Override
+    public void fireState(HistoryToken token, TokenParameter... parameters) {
+
+    }
+
+    @Override
+    public void replaceState(HistoryToken token, String title, String data) {
+
+    }
+
+    @Override
     public HistoryToken currentToken() {
         return new StateHistoryToken("");
     }
