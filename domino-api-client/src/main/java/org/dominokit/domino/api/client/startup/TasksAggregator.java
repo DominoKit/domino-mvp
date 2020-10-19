@@ -30,9 +30,7 @@ public class TasksAggregator extends ContextAggregator.ContextWait<Void> impleme
     }
 
     public void execute() {
-        tasks.forEach(asyncClientStartupTask -> {
-            asyncClientStartupTask.execute();
-        });
+        tasks.forEach(ClientStartupTask::execute);
     }
 
     @Override

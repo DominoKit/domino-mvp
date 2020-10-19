@@ -9,8 +9,6 @@ import org.dominokit.domino.api.server.DominoLoaderPlugin;
 import org.dominokit.domino.api.server.PluginContext;
 
 import java.nio.file.Paths;
-import java.util.Iterator;
-import java.util.ServiceLoader;
 
 import static java.util.Objects.nonNull;
 
@@ -19,13 +17,22 @@ public class StaticResourcesConfiguratorPlugin extends BaseDominoLoaderPlugin {
 
     @Override
     public void applyPlugin(CompleteHandler completeHandler) {
-        context.getRouter().route("/").order(Integer.MAX_VALUE - 2)
+        context.getRouter().route("/")
+                .order(Integer.MAX_VALUE - 2)
                 .handler(this::serveIndexPage);
 
+        configureNoCacheStaticRoute();
+        configureCacheStaticRoute();
+
+        completeHandler.onCompleted();
+    }
+
+    private void configureCacheStaticRoute() {
         Route route = context.getRouter()
                 .route("/*")
                 .order(Integer.MAX_VALUE)
-                .handler(StaticHandler.create().setWebRoot(context.getWebRoot()));
+                .handler(StaticHandler.create()
+                        .setWebRoot(context.getWebRoot()));
         if (nonNull(System.getProperty("domino.webroot.location"))) {
             StaticHandler webRootStaticHandler = StaticHandler.create();
             webRootStaticHandler.setAllowRootFileSystemAccess(true);
@@ -35,7 +42,26 @@ public class StaticResourcesConfiguratorPlugin extends BaseDominoLoaderPlugin {
         route
                 .handler(this::resourceNotFound)
                 .failureHandler(this::resourceNotFound);
-        completeHandler.onCompleted();
+    }
+
+    private void configureNoCacheStaticRoute() {
+        Route noCacheHandler = context.getRouter()
+                .routeWithRegex("/.*nocache.*")
+                .order(Integer.MAX_VALUE - 1)
+                .handler(StaticHandler.create()
+                        .setCachingEnabled(false)
+                        .setWebRoot(context.getWebRoot()));
+        if (nonNull(System.getProperty("domino.webroot.location"))) {
+            StaticHandler webRootStaticHandler = StaticHandler.create();
+            webRootStaticHandler.setAllowRootFileSystemAccess(true);
+            webRootStaticHandler.setWebRoot(systemWebRoot());
+            webRootStaticHandler.setCachingEnabled(false);
+            noCacheHandler.handler(webRootStaticHandler);
+        }
+
+        noCacheHandler
+                .handler(this::resourceNotFound)
+                .failureHandler(this::resourceNotFound);
     }
 
     private HttpServerResponse resourceNotFound(RoutingContext routingContext) {
