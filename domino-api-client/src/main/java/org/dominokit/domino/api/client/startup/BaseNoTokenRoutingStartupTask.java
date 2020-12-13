@@ -1,10 +1,8 @@
 package org.dominokit.domino.api.client.startup;
 
-import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.events.BaseRoutingAggregator;
 import org.dominokit.domino.api.client.mvp.presenter.BaseClientPresenter;
-import org.dominokit.domino.history.DominoHistory;
-import org.dominokit.domino.history.TokenFilter;
+import org.dominokit.domino.history.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,24 +11,17 @@ import java.util.logging.Logger;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-public abstract class BaseRoutingStartupTask implements ClientStartupTask, PresenterRoutingTask {
+public abstract class BaseNoTokenRoutingStartupTask implements ClientStartupTask, PresenterRoutingTask  {
 
-    private static final Logger LOGGER = Logger.getLogger(BaseRoutingStartupTask.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(BaseNoTokenRoutingStartupTask.class.getName());
 
     protected List<BaseRoutingAggregator> aggregators = new ArrayList<>();
     protected boolean enabled = true;
     protected BaseClientPresenter presenter;
 
-    public BaseRoutingStartupTask(List<? extends BaseRoutingAggregator> aggregators) {
+    public BaseNoTokenRoutingStartupTask(List<? extends BaseRoutingAggregator> aggregators) {
         this.aggregators.addAll(aggregators);
-        aggregators.forEach(aggregator -> aggregator.init(state -> {
-            onStateReady(state);
-            resetRouting();
-        }));
-    }
-
-    private void resetRouting() {
-        aggregators.forEach(BaseRoutingAggregator::resetRoutingState);
+        aggregators.forEach(aggregator -> aggregator.init(this::onStateReady, false));
     }
 
     protected void bindPresenter(BaseClientPresenter presenter) {
@@ -40,19 +31,13 @@ public abstract class BaseRoutingStartupTask implements ClientStartupTask, Prese
 
     @Override
     public void execute() {
-        ClientApp.make()
-                .getHistory()
-                .listen(getTokenFilter(), state -> {
-                    if (isNull(presenter) || !presenter.isActivated()) {
-                        doRoutingIfEnabled(state);
-                    } else {
-                        if (isReRouteActivated()) {
-                            doRoutingIfEnabled(state);
-                        }
-                    }
-
-                }, isRoutingOnce())
-                .onDirectUrl(getStartupTokenFilter());
+        if (isNull(presenter) || !presenter.isActivated()) {
+            doRoutingIfEnabled(new NullState());
+        } else {
+            if (isReRouteActivated()) {
+                doRoutingIfEnabled(new NullState());
+            }
+        }
     }
 
     protected void doRoutingIfEnabled(DominoHistory.State state) {
@@ -67,32 +52,50 @@ public abstract class BaseRoutingStartupTask implements ClientStartupTask, Prese
 
     protected abstract void onStateReady(DominoHistory.State state);
 
-    protected abstract TokenFilter getTokenFilter();
-
-    protected TokenFilter getStartupTokenFilter() {
-        return getTokenFilter();
-    }
-
     protected boolean isRoutingOnce() {
         return false;
     }
 
-    @Override
     public void disable() {
         this.enabled = false;
     }
 
-    @Override
     public void enable() {
         this.enabled = true;
     }
 
-    @Override
     public boolean isEnabled() {
         return enabled;
     }
 
     protected boolean isReRouteActivated() {
         return false;
+    }
+
+    public static final class NullState implements DominoHistory.State {
+
+        @Override
+        public HistoryToken token() {
+            return new StateHistoryToken("");
+        }
+
+        @Override
+        public String data() {
+            return "{}";
+        }
+
+        @Override
+        public String title() {
+            return "";
+        }
+
+        @Override
+        public NormalizedToken normalizedToken() {
+            return new DefaultNormalizedToken();
+        }
+
+        @Override
+        public void setNormalizedToken(NormalizedToken normalizedToken) {
+        }
     }
 }

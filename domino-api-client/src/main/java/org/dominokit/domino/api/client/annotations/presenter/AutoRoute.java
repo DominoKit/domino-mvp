@@ -18,4 +18,6 @@ public @interface AutoRoute {
 
 //    @NotNull
     boolean reRouteActivated() default false;
+
+    boolean generateTask() default true;
 }

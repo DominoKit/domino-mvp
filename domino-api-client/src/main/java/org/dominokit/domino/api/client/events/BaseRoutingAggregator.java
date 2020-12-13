@@ -16,16 +16,24 @@ public class BaseRoutingAggregator {
     private ContextAggregator.ContextWait<DominoHistory.State> routingEvent = ContextAggregator.ContextWait.create();
 
     private ContextAggregator contextAggregator;
+    private boolean autoResetRoutingEvent = true;
 
     protected BaseRoutingAggregator(List<Class<? extends ActivationEvent>> events) {
-       this.events = events;
+        this.events = events;
+    }
+
+    public void init(Consumer<DominoHistory.State> stateConsumer, boolean autoResetRoutingEvent) {
+        this.autoResetRoutingEvent = autoResetRoutingEvent;
+        init(stateConsumer);
     }
 
     public void init(Consumer<DominoHistory.State> stateConsumer) {
         contextAggregator = ContextAggregator.waitFor(routingEvent)
                 .onReady(() -> {
                     stateConsumer.accept(routingEvent.get());
-                    contextAggregator.resetContext(routingEvent);
+                    if (autoResetRoutingEvent) {
+                        contextAggregator.resetContext(routingEvent);
+                    }
                 });
         events.stream()
                 .map(ActivationEventWait::new)

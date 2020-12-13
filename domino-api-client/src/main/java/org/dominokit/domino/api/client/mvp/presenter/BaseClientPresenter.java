@@ -7,6 +7,7 @@ import org.dominokit.domino.api.client.mvp.IsStore;
 import org.dominokit.domino.api.client.mvp.RegistrationHandler;
 import org.dominokit.domino.api.client.mvp.StoreRegistry;
 import org.dominokit.domino.api.client.startup.BaseRoutingStartupTask;
+import org.dominokit.domino.api.client.startup.PresenterRoutingTask;
 import org.dominokit.domino.api.shared.extension.DominoEvent;
 import org.dominokit.domino.api.shared.extension.DominoEventListener;
 import org.dominokit.domino.api.shared.extension.GlobalDominoEventListener;
@@ -27,7 +28,7 @@ public abstract class BaseClientPresenter extends ClientPresenter implements Pre
     private static final Logger LOGGER = Logger.getLogger(BaseClientPresenter.class.getName());
     private PresenterState state;
     protected boolean activated;
-    private BaseRoutingStartupTask routingTask;
+    private PresenterRoutingTask routingTask;
 
     private final PresenterState initialized = () ->
             LOGGER.info("Presenter " + BaseClientPresenter.this.getClass() + " Have already been initialized.");
@@ -133,7 +134,7 @@ public abstract class BaseClientPresenter extends ClientPresenter implements Pre
 
     }
 
-    public void setRoutingTask(BaseRoutingStartupTask routingTask) {
+    public void setRoutingTask(PresenterRoutingTask routingTask) {
         this.routingTask = routingTask;
     }
 

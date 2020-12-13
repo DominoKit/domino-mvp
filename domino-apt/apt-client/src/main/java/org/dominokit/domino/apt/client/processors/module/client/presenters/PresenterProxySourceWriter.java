@@ -43,10 +43,20 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
                     .addMember("token", "$S", autoRoute.token())
                     .addMember("routeOnce", "$L", autoRoute.routeOnce())
                     .addMember("reRouteActivated", "$L", autoRoute.reRouteActivated())
+                    .addMember("generateTask", "$L", autoRoute.generateTask())
                     .build());
-            proxyType.addAnnotation(AnnotationSpec.builder(RoutingTask.class)
-                    .addMember("value", "$T.class", ClassName.bestGuess(elements.getPackageOf(proxyElement).getQualifiedName().toString().replace("presenters", "routing")+"."+proxyClassName+"HistoryListenerTask"))
-                    .build());
+
+            Optional<TypeMirror> taskClass = processorUtil.getClassValueFromAnnotation(proxyElement, RoutingTask.class, "value");
+            if (taskClass.isPresent()) {
+                TypeMirror taskType = taskClass.get();
+                proxyType.addAnnotation(AnnotationSpec.builder(RoutingTask.class)
+                        .addMember("value", "$T.class", TypeName.get(taskType))
+                        .build());
+            } else if (autoRoute.generateTask()) {
+                proxyType.addAnnotation(AnnotationSpec.builder(RoutingTask.class)
+                        .addMember("value", "$T.class", ClassName.bestGuess(elements.getPackageOf(proxyElement).getQualifiedName().toString().replace("presenters", "routing") + "." + proxyClassName + "HistoryListenerTask"))
+                        .build());
+            }
         }
 
         if (nonNull(processorUtil.findClassAnnotation(proxyElement, AutoReveal.class))) {
@@ -275,7 +285,7 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
                 .forEach(element -> {
                     Optional<TypeMirror> event = processorUtil.getClassValueFromAnnotation(element, ListenTo.class, "event");
                     event.ifPresent(eventType -> {
-                        if(!processorUtil.isAssignableFrom(eventType, GlobalEvent.class)) {
+                        if (!processorUtil.isAssignableFrom(eventType, GlobalEvent.class)) {
                             String listenerName = elements.getPackageOf(proxyElement).getQualifiedName().toString()
                                     .replace(".presenters", ".listeners")
                                     + "." + proxyElement.getSimpleName().toString()
@@ -309,7 +319,7 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
                 .forEach(element -> {
                     Optional<TypeMirror> event = processorUtil.getClassValueFromAnnotation(element, ListenTo.class, "event");
                     event.ifPresent(eventType -> {
-                        if(processorUtil.isAssignableFrom(eventType, GlobalEvent.class)) {
+                        if (processorUtil.isAssignableFrom(eventType, GlobalEvent.class)) {
                             String listenerName = elements.getPackageOf(proxyElement).getQualifiedName().toString()
                                     .replace(".presenters", ".listeners")
                                     + "." + proxyElement.getSimpleName().toString()

@@ -5,6 +5,7 @@ import org.dominokit.domino.api.client.annotations.StartupTask;
 import org.dominokit.domino.api.client.annotations.presenter.*;
 import org.dominokit.domino.api.client.events.BaseRoutingAggregator;
 import org.dominokit.domino.api.client.events.DefaultEventAggregator;
+import org.dominokit.domino.api.client.startup.BaseNoTokenRoutingStartupTask;
 import org.dominokit.domino.api.client.startup.BaseRoutingStartupTask;
 import org.dominokit.domino.apt.client.processors.module.client.presenters.model.DependsOnModel;
 import org.dominokit.domino.apt.client.processors.module.client.presenters.model.EventsGroup;
@@ -40,15 +41,17 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
         String taskClassName = presenterElement.getSimpleName() + "HistoryListenerTask";
         TypeSpec.Builder taskType = DominoTypeBuilder.classBuilder(taskClassName, PresenterProcessor.class);
         taskType.addAnnotation(StartupTask.class)
-                .superclass(TypeName.get(BaseRoutingStartupTask.class))
+                .superclass(TypeName.get(hasToken() ? BaseRoutingStartupTask.class : BaseNoTokenRoutingStartupTask.class))
                 .addMethod(MethodSpec.constructorBuilder()
                         .addModifiers(Modifier.PUBLIC)
                         .addCode(getSuperCall(taskType))
                         .build());
-        taskType
-                .addMethod(getFilterTokenMethod())
-                .addMethod(getStartupFilterTokenMethod())
-                .addMethod(onStateReadyMethod());
+        if (hasToken()) {
+            taskType
+                    .addMethod(getFilterTokenMethod())
+                    .addMethod(getStartupFilterTokenMethod());
+        }
+        taskType.addMethod(onStateReadyMethod());
 
         if (processorUtil.findClassAnnotation(presenterElement, AutoRoute.class).routeOnce()) {
             taskType.addMethod(routOnceMethod());
@@ -59,6 +62,10 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
         }
 
         return Collections.singletonList(taskType);
+    }
+
+    private boolean hasToken() {
+        return nonNull(token) && !token.isEmpty();
     }
 
     private MethodSpec routOnceMethod() {
@@ -228,7 +235,7 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
                                     List<AnnotationValue> eventsGroupsAnnotations = (List<AnnotationValue>) annotationValue.getValue();
                                     eventsGroupsAnnotations.stream()
                                             .forEach(eventGroupAnnotationMirror -> {
-                                                AnnotationMirror eventGroupAnnMirror = (AnnotationMirror)eventGroupAnnotationMirror.getValue();
+                                                AnnotationMirror eventGroupAnnMirror = (AnnotationMirror) eventGroupAnnotationMirror.getValue();
 
                                                 Collection<? extends AnnotationValue> values = eventGroupAnnMirror.getElementValues()
                                                         .values();

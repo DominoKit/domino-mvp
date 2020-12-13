@@ -67,7 +67,7 @@ public class PresenterProcessingStep extends AbstractProcessingStep {
 
     private void generateRouter(Element presenterElement) {
         AutoRoute autoRoute = presenterElement.getAnnotation(AutoRoute.class);
-        if (nonNull(autoRoute)) {
+        if (nonNull(autoRoute) && autoRoute.generateTask()) {
             generateHistoryStartupTask(autoRoute.token(), presenterElement);
         }
     }
