@@ -17,7 +17,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <domino.logger.version>1.0-rc.4-SNAPSHOT</domino.logger.version>
         <domino.aggregator.version>1.0.0</domino.aggregator.version>
-        <domino.history.version>1.0-rc.4-SNAPSHOT</domino.history.version>
+        <domino.history.version>1.0-alpha-gwt2.8.2-SNAPSHOT</domino.history.version>
         <domino.apt.commons.version>0.0.1</domino.apt.commons.version>
         <domino.rest.version>1.0-rc.4-SNAPSHOT</domino.rest.version>
     </properties>

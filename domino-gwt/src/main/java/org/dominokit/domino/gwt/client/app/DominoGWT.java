@@ -2,9 +2,7 @@ package org.dominokit.domino.gwt.client.app;
 
 //import com.google.gwt.core.client.GWT;
 
-import elemental2.dom.DomGlobal;
 import org.dominokit.domino.api.client.ClientApp;
-import org.dominokit.domino.api.client.extension.InMemoryDominoEventsListenerRepository;
 import org.dominokit.domino.client.commons.request.ClientRouter;
 import org.dominokit.domino.gwt.client.async.GwtAsyncRunner;
 import org.dominokit.domino.gwt.client.events.ClientEventFactory;
@@ -22,12 +20,17 @@ public class DominoGWT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DominoGWT.class);
 
+    private static final InitOptions DEFAULT_OPTIONS = new InitOptions("");
+
     private DominoGWT() {
     }
 
     public static void init() {
+        init(DEFAULT_OPTIONS);
+    }
 
-//        GWT.setUncaughtExceptionHandler(throwable -> LOGGER.error("Uncaught Exception", throwable));
+    public static void init(InitOptions initOptions) {
+
         ClientRouter clientRouter = new ClientRouter(new ClientEventFactory());
 
         ((DominoSimpleEventsBus) DominoSimpleEventsBus.INSTANCE).addEvent(ClientRequestGwtEvent.CLIENT_REQUEST_EVENT_TYPE);
@@ -37,7 +40,7 @@ public class DominoGWT {
                 .clientRouter(clientRouter)
                 .eventsBus(DominoSimpleEventsBus.INSTANCE)
                 .eventsListenersRepository(new CustomEventsDominoEventsRepository())
-                .history(new DominoMvpHistory())
+                .history(new DominoMvpHistory(initOptions.getRootPath()))
                 .asyncRunner(new GwtAsyncRunner())
                 .dominoOptions(new DefaultDominoOptions())
                 .slotsManager(new ElementsSlotsManager())
@@ -45,9 +48,26 @@ public class DominoGWT {
     }
 
     public static class DominoMvpHistory extends StateHistory {
+        public DominoMvpHistory(String rootPath) {
+            super(rootPath);
+        }
+
         @Override
         public boolean isInformOnPopState() {
             return ClientApp.make().dominoOptions().isMainApp();
         }
     }
+
+    public static class InitOptions {
+        private final String rootPath;
+
+        public InitOptions(String rootPath) {
+            this.rootPath = rootPath;
+        }
+
+        public String getRootPath() {
+            return rootPath;
+        }
+    }
+
 }

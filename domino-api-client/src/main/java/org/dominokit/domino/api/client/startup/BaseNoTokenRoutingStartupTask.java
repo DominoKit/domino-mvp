@@ -1,11 +1,13 @@
 package org.dominokit.domino.api.client.startup;
 
+import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.events.BaseRoutingAggregator;
 import org.dominokit.domino.api.client.mvp.presenter.BaseClientPresenter;
 import org.dominokit.domino.history.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 import static java.util.Objects.isNull;
@@ -75,13 +77,18 @@ public abstract class BaseNoTokenRoutingStartupTask implements ClientStartupTask
     public static final class NullState implements DominoHistory.State {
 
         @Override
+        public String rootPath() {
+            return ClientApp.make().getHistory().getRootPath();
+        }
+
+        @Override
         public HistoryToken token() {
             return new StateHistoryToken("");
         }
 
         @Override
-        public String data() {
-            return "{}";
+        public Optional<String> data() {
+            return Optional.of("{}");
         }
 
         @Override

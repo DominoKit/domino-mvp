@@ -1,8 +1,10 @@
 package org.dominokit.domino.desktop.client;
 
+import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.history.*;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import static java.util.Objects.isNull;
@@ -10,6 +12,15 @@ import static java.util.Objects.isNull;
 public class DesktopStateHistory implements AppHistory {
 
     private Set<HistoryListener> listeners = new HashSet<>();
+    private final String rootPath;
+
+    public DesktopStateHistory() {
+        this("");
+    }
+
+    public DesktopStateHistory(String rootPath) {
+        this.rootPath = rootPath;
+    }
 
     @Override
     public void fireCurrentStateHistory() {
@@ -49,13 +60,18 @@ public class DesktopStateHistory implements AppHistory {
     private State state() {
         return new State() {
             @Override
+            public String rootPath() {
+                return ClientApp.make().getHistory().getRootPath();
+            }
+
+            @Override
             public HistoryToken token() {
                 return new StateHistoryToken("");
             }
 
             @Override
-            public String data() {
-                return "";
+            public Optional<String> data() {
+                return Optional.of("");
             }
 
             @Override
@@ -76,7 +92,7 @@ public class DesktopStateHistory implements AppHistory {
     }
 
     private String stateData(State state) {
-        return isNull(state) ? "" : state.data();
+        return state.data().isPresent() ? state.data().get() : "";
     }
 
     @Override
@@ -214,6 +230,11 @@ public class DesktopStateHistory implements AppHistory {
         return new StateHistoryToken("");
     }
 
+    @Override
+    public String getRootPath() {
+        return this.rootPath;
+    }
+
     private class HistoryListener {
         private final StateListener listener;
 
@@ -249,13 +270,18 @@ public class DesktopStateHistory implements AppHistory {
         }
 
         @Override
+        public String rootPath() {
+            return DesktopStateHistory.this.rootPath;
+        }
+
+        @Override
         public HistoryToken token() {
             return this.token;
         }
 
         @Override
-        public String data() {
-            return this.data;
+        public Optional<String> data() {
+            return Optional.of(this.data);
         }
 
         @Override

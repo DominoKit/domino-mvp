@@ -13,6 +13,7 @@ import java.util.function.Consumer;
 public class PluginContext {
 
     public final static int MODULES_LOADER_ORDER = 0;
+    public final static int LOG_REQUESTS_ORDER = 10;
     public final static int SECURITY_HEADERS_ORDER = 20;
     public final static int AUTH_ORDER = 30;
     public final static int RESTEASY_ORDER = 40;
