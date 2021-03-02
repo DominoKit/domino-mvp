@@ -233,4 +233,11 @@ public class TestConfiguration implements ServerConfiguration<Object, Object[]> 
     public boolean isEmpty() {
         return config.isEmpty();
     }
+
+    @Override
+    public void mergeIn(Object other) {
+        if(other instanceof Map){
+            config.putAll((Map<? extends String, ?>) other);
+        }
+    }
 }

@@ -215,4 +215,9 @@ public class VertxConfiguration implements ServerConfiguration<JsonObject, JsonA
     public boolean isEmpty() {
         return jsonObject.isEmpty();
     }
+
+    @Override
+    public void mergeIn(JsonObject other) {
+        this.jsonObject.mergeIn(other, true);
+    }
 }

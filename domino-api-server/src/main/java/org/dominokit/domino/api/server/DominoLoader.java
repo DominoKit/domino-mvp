@@ -19,6 +19,8 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ServiceLoader;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -83,38 +85,56 @@ public class DominoLoader implements IsDominoLoader {
                                                     Consumer<HttpServer> httpServerConsumer) {
         immutableHttpServerOptions.init(options.result(), options.result().getPort(), options.result().getHost());
 
-        PluginContext pluginContext = new PluginContext(
-                DominoLoader.this,
-                vertxContext,
-                options,
-                httpServerConsumer);
 
-        ServiceLoader<DominoLoaderPlugin> plugins = ServiceLoader.load(DominoLoaderPlugin.class);
+        CompletableFuture<PluginContext> pluginContextCompletableFuture = applyPlugins(vertxContext, options, httpServerConsumer);
+        try {
+            pluginContextCompletableFuture.get();
+        } catch (InterruptedException | ExecutionException e) {
+            LOGGER.error("Failed to apply domino-mvp plugins : ", e);
+        }
+    }
 
-        Iterator<DominoLoaderPlugin> iterator = plugins.iterator();
-        Iterable<DominoLoaderPlugin> iterable = () -> iterator;
+    private CompletableFuture<PluginContext> applyPlugins(VertxContext vertxContext, AsyncResult<HttpServerOptions> options, Consumer<HttpServer> httpServerConsumer) {
+        CompletableFuture<PluginContext> future = new CompletableFuture<>();
+        vertxContext.configRetriever().getConfig(event -> {
+            JsonObject config = event.result();
+            ((VertxConfiguration) vertxContext.config()).mergeIn(config);
+
+            PluginContext pluginContext = new PluginContext(
+                    DominoLoader.this,
+                    vertxContext,
+                    options,
+                    httpServerConsumer);
+
+            ServiceLoader<DominoLoaderPlugin> plugins = ServiceLoader.load(DominoLoaderPlugin.class);
+
+            Iterator<DominoLoaderPlugin> iterator = plugins.iterator();
+            Iterable<DominoLoaderPlugin> iterable = () -> iterator;
 
 
-        List<DominoLoaderPlugin> pluginsList = StreamSupport.stream(iterable.spliterator(), false)
-                .sorted(Comparator.comparingInt(DominoLoaderPlugin::order))
-                .collect(Collectors.toList());
+            List<DominoLoaderPlugin> pluginsList = StreamSupport.stream(iterable.spliterator(), false)
+                    .sorted(Comparator.comparingInt(DominoLoaderPlugin::order))
+                    .collect(Collectors.toList());
 
-        if (pluginsList.size() > 1) {
+            if (pluginsList.size() > 1) {
 
-            for (int i = 1; i < pluginsList.size(); i++) {
-                DominoLoaderPlugin prevPlugin = pluginsList.get(i - 1);
-                prevPlugin
-                        .init(pluginContext)
-                        .setNext(pluginsList.get(i));
+                for (int i = 1; i < pluginsList.size(); i++) {
+                    DominoLoaderPlugin prevPlugin = pluginsList.get(i - 1);
+                    prevPlugin
+                            .init(pluginContext)
+                            .setNext(pluginsList.get(i));
+                }
+
+                pluginsList.get(pluginsList.size() - 1).init(pluginContext);
+            } else if (pluginsList.size() > 0) {
+                pluginsList.get(0).init(pluginContext);
             }
 
-            pluginsList.get(pluginsList.size() - 1).init(pluginContext);
-        } else if (pluginsList.size() > 0) {
-            pluginsList.get(0).init(pluginContext);
-        }
+            pluginsList.get(0).apply();
+            future.complete(pluginContext);
+        });
 
-        pluginsList.get(0).apply();
-
+        return future;
     }
 
 

@@ -80,4 +80,5 @@ public interface ServerConfiguration<T,A> {
 
     boolean isEmpty();
 
+    void mergeIn(T other);
 }
