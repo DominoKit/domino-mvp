@@ -48,10 +48,9 @@ public class DominoLoader implements IsDominoLoader {
         this.config = config;
         this.webroot = config.getString("webroot", "app");
 
-        AppGlobals app = AppGlobals.init();
-        app.setConfig(config);
-        app.setRouter(rxRouter);
-        app.setVertx(rxVertx);
+        GlobalsProvider.INSTANCE.setConfig(config);
+        GlobalsProvider.INSTANCE.setRouter(rxRouter);
+        GlobalsProvider.INSTANCE.setVertx(rxVertx);
     }
 
     public VertxContext start() {

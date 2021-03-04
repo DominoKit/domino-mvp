@@ -1,6 +1,7 @@
-package org.dominokit.domino.api.server.security;
+package org.dominokit.domino.plugins.resteasy.security;
 
 import com.google.auto.service.AutoService;
+import org.dominokit.domino.api.server.security.AuthenticationException;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;

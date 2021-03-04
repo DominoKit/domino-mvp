@@ -1,4 +1,4 @@
-package org.dominokit.domino.api.server.plugins;
+package org.dominokit.domino.plugins.resteasy;
 
 import io.netty.buffer.ByteBufInputStream;
 import io.vertx.core.Handler;
@@ -8,11 +8,10 @@ import io.vertx.ext.web.RoutingContext;
 import io.vertx.reactivex.core.Context;
 import io.vertx.reactivex.core.Vertx;
 import io.vertx.reactivex.core.http.HttpServerResponse;
-import org.dominokit.domino.api.server.AppGlobals;
 import org.dominokit.domino.api.server.PluginContext;
-import org.dominokit.domino.api.server.resteasy.PluginRequestDispatcher;
-import org.dominokit.domino.api.server.resteasy.VertxHttpResponseWithWorkaround;
-import org.dominokit.domino.api.server.spi.Plugin;
+import org.dominokit.domino.plugins.resteasy.resteasy.PluginRequestDispatcher;
+import org.dominokit.domino.plugins.resteasy.resteasy.VertxHttpResponseWithWorkaround;
+import org.dominokit.domino.plugins.resteasy.spi.Plugin;
 import org.jboss.resteasy.core.SynchronousDispatcher;
 import org.jboss.resteasy.plugins.server.embedded.SecurityDomain;
 import org.jboss.resteasy.plugins.server.vertx.RequestDispatcher;

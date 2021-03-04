@@ -1,4 +1,4 @@
-package org.dominokit.domino.api.server.spi;
+package org.dominokit.domino.plugins.resteasy.spi;
 
 @FunctionalInterface
 public interface RunnableWithException<T extends Throwable> {

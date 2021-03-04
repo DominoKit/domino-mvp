@@ -1,7 +1,9 @@
-package org.dominokit.domino.api.server.security;
+package org.dominokit.domino.plugins.resteasy.security;
 
 import io.reactivex.Single;
 import io.vertx.reactivex.ext.auth.User;
+import org.dominokit.domino.api.server.security.AuthorizationException;
+import org.dominokit.domino.api.server.security.RequiresPermissions;
 
 import java.lang.annotation.Annotation;
 

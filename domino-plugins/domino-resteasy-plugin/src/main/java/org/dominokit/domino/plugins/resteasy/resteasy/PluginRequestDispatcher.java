@@ -1,9 +1,9 @@
-package org.dominokit.domino.api.server.resteasy;
+package org.dominokit.domino.plugins.resteasy.resteasy;
 
 import io.vertx.core.Context;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
-import org.dominokit.domino.api.server.spi.Plugin;
+import org.dominokit.domino.plugins.resteasy.spi.Plugin;
 import org.jboss.resteasy.core.SynchronousDispatcher;
 import org.jboss.resteasy.plugins.server.embedded.SecurityDomain;
 import org.jboss.resteasy.plugins.server.vertx.RequestDispatcher;

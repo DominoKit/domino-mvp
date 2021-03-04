@@ -1,6 +1,9 @@
-package org.dominokit.domino.api.server.security;
+package org.dominokit.domino.plugins.resteasy.security;
 
 import io.reactivex.Single;
+import org.dominokit.domino.api.server.security.AuthorizationException;
+import org.dominokit.domino.api.server.security.RequiresPermissions;
+import org.dominokit.domino.api.server.security.RequiresUser;
 import org.jboss.resteasy.core.interception.jaxrs.PreMatchContainerRequestContext;
 
 import javax.annotation.security.RolesAllowed;

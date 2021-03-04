@@ -1,7 +1,10 @@
-package org.dominokit.domino.api.server.security;
+package org.dominokit.domino.plugins.resteasy.security;
 
 import com.google.auto.service.AutoService;
-import org.dominokit.domino.api.server.AppGlobals;
+import org.dominokit.domino.api.server.security.NoAuthFilter;
+import org.dominokit.domino.api.server.security.RequiresPermissions;
+import org.dominokit.domino.api.server.security.RequiresUser;
+import org.dominokit.domino.plugins.resteasy.AppGlobals;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Priorities;

@@ -1,4 +1,4 @@
-package org.dominokit.domino.api.server.resteasy;
+package org.dominokit.domino.plugins.resteasy.resteasy;
 
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.http.HttpMethod;

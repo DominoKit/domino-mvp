@@ -15,6 +15,7 @@
         <module>domino-gwt</module>
         <module>domino-api-shared</module>
         <module>domino-api-server</module>
+        <module>domino-plugins</module>
         <module>domino-test</module>
         <module>domino-apt</module>
         <module>archetypes</module>

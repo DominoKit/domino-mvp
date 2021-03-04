@@ -70,23 +70,7 @@
             <artifactId>guava</artifactId>
             <version>27.0.1-jre</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.jboss.resteasy/resteasy-vertx -->
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-vertx</artifactId>
-            <version>4.0.0.Beta5</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.jboss.resteasy/resteasy-jackson-provider -->
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-jackson-provider</artifactId>
-            <version>4.0.0.Beta5</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-multipart-provider</artifactId>
-            <version>4.0.0.Beta5</version>
-        </dependency>
+
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>

@@ -1,8 +1,9 @@
-package org.dominokit.domino.api.server;
+package org.dominokit.domino.plugins.resteasy;
 
 import io.vertx.core.json.JsonObject;
 import io.vertx.reactivex.core.Vertx;
 import io.vertx.reactivex.ext.web.Router;
+import org.dominokit.domino.api.server.GlobalsProvider;
 import org.jboss.resteasy.plugins.server.vertx.VertxResteasyDeployment;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
@@ -10,13 +11,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import static java.util.Objects.isNull;
+
 public class AppGlobals {
 	
 	private static ThreadLocal<AppGlobals> global = new ThreadLocal<AppGlobals>();
 
-	private JsonObject config;
-	private Vertx vertx;
-	private Router router;
 	private Map<String, Object> namedGlobals = new HashMap<>();
 	private Map<Class<?>, Object> typedGlobals = new HashMap<>();
 	private VertxResteasyDeployment deployment;
@@ -28,6 +28,9 @@ public class AppGlobals {
 	}
 
 	public static AppGlobals get() {
+		if(isNull(global.get())){
+			init();
+		}
 		return global.get();
 	}
 
@@ -42,28 +45,15 @@ public class AppGlobals {
 	}
 
 	public JsonObject getConfig() {
-		return config;
-	}
-
-	void setConfig(JsonObject config) {
-		this.config = config;
-	}
-
-
-	void setVertx(Vertx vertx) {
-		this.vertx = vertx;
+		return GlobalsProvider.INSTANCE.getConfig();
 	}
 
 	public Vertx getVertx() {
-		return vertx;
+		return GlobalsProvider.INSTANCE.getVertx();
 	}
 
-	void setRouter(Router router) {
-		this.router = router;
-	}
-	
 	public Router getRouter() {
-		return router;
+		return GlobalsProvider.INSTANCE.getRouter();
 	}
 
 

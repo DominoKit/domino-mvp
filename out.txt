@@ -1,0 +1,4 @@
+[INFO] Scanning for projects...
+Downloading from vertispan-snapshots: https://repo.vertispan.com/j2cl/com/google/guava/guava/14.0.1/guava-14.0.1.pom
+Downloading from sonatype-releases-repo: https://oss.sonatype.org/content/repositories/releases/com/google/guava/guava/14.0.1/guava-14.0.1.pom
+Progress (1): 2.7/5.4 kBProgress (1): 5.4 kB    

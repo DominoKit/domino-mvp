@@ -1,4 +1,4 @@
-package org.dominokit.domino.api.server.spi;
+package org.dominokit.domino.plugins.resteasy.spi;
 
 import io.reactivex.Completable;
 import org.jboss.resteasy.plugins.server.vertx.VertxResteasyDeployment;

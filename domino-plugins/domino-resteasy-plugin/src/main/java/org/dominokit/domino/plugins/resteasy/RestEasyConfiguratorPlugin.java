@@ -1,10 +1,11 @@
-package org.dominokit.domino.api.server.plugins;
+package org.dominokit.domino.plugins.resteasy;
 
 import com.google.auto.service.AutoService;
 import io.vertx.reactivex.ext.auth.User;
 import io.vertx.reactivex.ext.web.RoutingContext;
 import io.vertx.reactivex.ext.web.handler.BodyHandler;
 import org.dominokit.domino.api.server.*;
+import org.dominokit.domino.api.server.plugins.BaseDominoLoaderPlugin;
 import org.jboss.resteasy.plugins.server.vertx.VertxResteasyDeployment;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 

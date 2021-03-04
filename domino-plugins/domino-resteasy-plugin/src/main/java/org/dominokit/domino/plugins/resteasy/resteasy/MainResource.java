@@ -1,4 +1,4 @@
-package org.dominokit.domino.api.server.resteasy;
+package org.dominokit.domino.plugins.resteasy.resteasy;
 
 import java.lang.annotation.*;
 

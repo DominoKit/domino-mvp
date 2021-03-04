@@ -1,4 +1,4 @@
-package org.dominokit.domino.api.server;
+package org.dominokit.domino.plugins.resteasy;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
