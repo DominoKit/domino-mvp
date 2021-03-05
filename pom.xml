@@ -5,7 +5,7 @@
 
     <groupId>org.dominokit.domino</groupId>
     <artifactId>domino-parent</artifactId>
-    <version>1.0-rc.5-SNAPSHOT</version>
+    <version>1.0-alpha-gwt2.8.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>domino-parent</name>
@@ -18,7 +18,6 @@
         <module>domino-plugins</module>
         <module>domino-test</module>
         <module>domino-apt</module>
-        <module>archetypes</module>
         <module>ssl-server-configurator</module>
         <module>domino-service-discovery</module>
         <module>domino-remote-logging</module>
@@ -101,8 +100,8 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <vertx.version>3.9.0</vertx.version>
         <elemental.version>1.0.0-RC1</elemental.version>
-        <domino.rest.version>1.0-rc.4-SNAPSHOT</domino.rest.version>
-        <domino.logger.version>1.0-rc.4-SNAPSHOT</domino.logger.version>
+        <domino.rest.version>1.0-alpha-gwt2.8.2-SNAPSHOT</domino.rest.version>
+        <domino.logger.version>1.0.2</domino.logger.version>
         <domino.aggregator.version>1.0.0</domino.aggregator.version>
         <domino.history.version>1.0-alpha-gwt2.8.2-SNAPSHOT</domino.history.version>
         <domino.apt.commons.version>0.0.1</domino.apt.commons.version>

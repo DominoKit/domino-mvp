@@ -5,27 +5,28 @@
     <parent>
         <groupId>org.dominokit.domino.apt</groupId>
         <artifactId>domino-apt</artifactId>
-        <version>1.0-alpha-gwt2.8.2-SNAPSHOT</version>
+        <version>1.0-rc.5-SNAPSHOT</version>
     </parent>
-
     <packaging>jar</packaging>
-    <artifactId>apt-client-test</artifactId>
-    <name>apt-client-test</name>
+    <artifactId>apt-server</artifactId>
+    <name>apt-server</name>
 
     <dependencies>
+        <dependency>
+            <groupId>org.dominokit.domino.api</groupId>
+            <artifactId>domino-api-shared</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.dominokit.domino.api</groupId>
+            <artifactId>domino-api-server</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.dominokit</groupId>
             <artifactId>domino-apt-commons</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.dominokit.domino.api</groupId>
-            <artifactId>domino-api-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.dominokit.domino.test</groupId>
-            <artifactId>domino-client-test</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-web</artifactId>
         </dependency>
     </dependencies>
 </project>

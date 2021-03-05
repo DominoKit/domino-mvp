@@ -1,32 +1,37 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>org.dominokit.domino</groupId>
         <artifactId>domino-parent</artifactId>
-        <version>1.0-alpha-gwt2.8.2-SNAPSHOT</version>
+        <version>1.0-rc.5-SNAPSHOT</version>
     </parent>
 
-    <artifactId>ssl-server-configurator</artifactId>
-    <version>1.0-alpha-gwt2.8.2-SNAPSHOT</version>
+    <groupId>org.dominokit.domino.api</groupId>
+    <artifactId>domino-plugins</artifactId>
+    <packaging>pom</packaging>
 
-    <packaging>jar</packaging>
+    <name>domino-plugins</name>
 
-    <name>ssl-server-configurator</name>
     <url>https://github.com/DominoKit/domino</url>
-    <description>GWT Domino</description>
+    <description>Domino mvp plugins</description>
 
     <dependencies>
-        <dependency>
-            <groupId>org.dominokit.domino.api</groupId>
-            <artifactId>domino-api-server</artifactId>
-            <scope>provided</scope>
-        </dependency>
         <dependency>
             <groupId>com.google.auto.service</groupId>
             <artifactId>auto-service</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.dominokit.domino.api</groupId>
+            <artifactId>domino-api-shared</artifactId>
+        </dependency>
+
     </dependencies>
+
+    <modules>
+        <module>domino-resteasy-plugin</module>
+    </modules>
 </project>
