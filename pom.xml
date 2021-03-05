@@ -101,7 +101,7 @@
         <vertx.version>3.9.0</vertx.version>
         <elemental.version>1.0.0-RC1</elemental.version>
         <domino.rest.version>1.0-alpha-gwt2.8.2-SNAPSHOT</domino.rest.version>
-        <domino.logger.version>1.0.2</domino.logger.version>
+        <domino.logger.version>1.0.2-gwt2.8.2</domino.logger.version>
         <domino.aggregator.version>1.0.0</domino.aggregator.version>
         <domino.history.version>1.0-alpha-gwt2.8.2-SNAPSHOT</domino.history.version>
         <domino.apt.commons.version>0.0.1</domino.apt.commons.version>
