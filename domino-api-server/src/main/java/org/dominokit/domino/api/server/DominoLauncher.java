@@ -1,3 +1,18 @@
+/*
+ * Copyright © ${year} Dominokit
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.dominokit.domino.api.server;
 
 import io.vertx.core.Launcher;
@@ -5,49 +20,48 @@ import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
-
 import java.util.ServiceLoader;
 
 public class DominoLauncher extends Launcher {
 
-    protected static final ConfigHolder configHolder = new ConfigHolder();
-    protected static final RouterHolder routerHolder = new RouterHolder();
+  protected static final ConfigHolder configHolder = new ConfigHolder();
+  protected static final RouterHolder routerHolder = new RouterHolder();
 
+  protected static class ConfigHolder {
+    protected JsonObject config;
+  }
 
-    protected static class ConfigHolder {
-        protected JsonObject config;
-    }
+  protected static class RouterHolder {
+    protected Router router;
+  }
 
-    protected static class RouterHolder {
-        protected Router router;
-    }
+  public static void main(String[] args) {
+    new DominoLauncher().dispatch(args);
+  }
 
-    public static void main(String[] args) {
-        new DominoLauncher().dispatch(args);
-    }
+  @Override
+  public void afterStartingVertx(Vertx vertx) {
 
-    @Override
-    public void afterStartingVertx(Vertx vertx) {
+    RouterConfigurator routerConfigurator =
+        new RouterConfigurator(vertx, configHolder.config, SecretKey.generate());
+    routerHolder.router =
+        PROCESS_ARGS.contains("-cluster")
+            ? routerConfigurator.configuredClusteredRouter()
+            : routerConfigurator.configuredRouter();
+  }
 
-        RouterConfigurator routerConfigurator = new RouterConfigurator(vertx, configHolder.config, SecretKey.generate());
-        routerHolder.router =
-                PROCESS_ARGS.contains("-cluster") ?
-                        routerConfigurator.configuredClusteredRouter() : routerConfigurator.configuredRouter();
+  @Override
+  public void beforeStartingVertx(VertxOptions options) {
+    ServiceLoader.load(VertxOptionsHandler.class)
+        .iterator()
+        .forEachRemaining(
+            vertxOptionsHandler -> {
+              vertxOptionsHandler.onBeforeVertxStart(options, configHolder.config);
+            });
+  }
 
-    }
-
-    @Override
-    public void beforeStartingVertx(VertxOptions options) {
-        ServiceLoader.load(VertxOptionsHandler.class)
-                .iterator()
-                .forEachRemaining(vertxOptionsHandler -> {
-                    vertxOptionsHandler.onBeforeVertxStart(options, configHolder.config);
-                });
-    }
-
-    @Override
-    public void afterConfigParsed(JsonObject config) {
-        configHolder.config = config;
-    }
-
+  @Override
+  public void afterConfigParsed(JsonObject config) {
+    configHolder.config = config;
+  }
 }

@@ -15,51 +15,48 @@
  */
 package org.dominokit.domino.apt.client.processors.module.client.presenters;
 
+import static java.util.Objects.nonNull;
+
+import java.util.Set;
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.Element;
 import org.dominokit.domino.api.client.annotations.presenter.PresenterProxy;
 import org.dominokit.domino.apt.commons.AbstractProcessingStep;
 import org.dominokit.domino.apt.commons.ExceptionUtil;
 import org.dominokit.domino.apt.commons.StepBuilder;
 
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.Element;
-import java.util.Set;
-
-import static java.util.Objects.nonNull;
-
 public class PresenterProxyProcessingStep extends AbstractProcessingStep {
 
+  public PresenterProxyProcessingStep(ProcessingEnvironment processingEnv) {
+    super(processingEnv);
+  }
 
-    public PresenterProxyProcessingStep(ProcessingEnvironment processingEnv) {
-        super(processingEnv);
+  public static class Builder extends StepBuilder<PresenterProxyProcessingStep> {
+
+    public PresenterProxyProcessingStep build() {
+      return new PresenterProxyProcessingStep(processingEnv);
     }
+  }
 
-    public static class Builder extends StepBuilder<PresenterProxyProcessingStep> {
+  @Override
+  public void process(Set<? extends Element> elementsByAnnotation) {
 
-        public PresenterProxyProcessingStep build() {
-            return new PresenterProxyProcessingStep(processingEnv);
-        }
+    for (Element element : elementsByAnnotation) {
+      try {
+        generateProxy(element);
+      } catch (Exception e) {
+        ExceptionUtil.messageStackTrace(messager, e, element);
+      }
     }
+  }
 
+  private void generateProxy(Element presenterElement) {
 
-    @Override
-    public void process(Set<? extends Element> elementsByAnnotation) {
-
-        for (Element element : elementsByAnnotation) {
-            try {
-                generateProxy(element);
-            } catch (Exception e) {
-                ExceptionUtil.messageStackTrace(messager, e, element);
-            }
-        }
+    PresenterProxy presenterProxy = presenterElement.getAnnotation(PresenterProxy.class);
+    if (nonNull(presenterProxy)) {
+      writeSource(
+          new PresenterProxySourceWriter(presenterElement, processingEnv).asTypeBuilder(),
+          elements.getPackageOf(presenterElement).getQualifiedName().toString());
     }
-
-    private void generateProxy(Element presenterElement) {
-
-        PresenterProxy presenterProxy = presenterElement.getAnnotation(PresenterProxy.class);
-        if (nonNull(presenterProxy)) {
-            writeSource(new PresenterProxySourceWriter(presenterElement, processingEnv)
-                    .asTypeBuilder(), elements.getPackageOf(presenterElement).getQualifiedName().toString());
-        }
-    }
-
+  }
 }

@@ -1,3 +1,18 @@
+/*
+ * Copyright © ${year} Dominokit
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.dominokit.domino.api.server;
 
 import io.vertx.config.ConfigRetriever;
@@ -10,11 +25,6 @@ import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
 import io.vertx.reactivex.core.http.HttpServer;
-import org.dominokit.domino.api.server.config.HttpServerConfigurator;
-import org.dominokit.domino.api.server.config.VertxConfiguration;
-import org.dominokit.domino.api.server.entrypoint.VertxContext;
-import org.dominokit.domino.service.discovery.VertxServiceDiscovery;
-
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -24,167 +34,177 @@ import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import org.dominokit.domino.api.server.config.HttpServerConfigurator;
+import org.dominokit.domino.api.server.config.VertxConfiguration;
+import org.dominokit.domino.api.server.entrypoint.VertxContext;
+import org.dominokit.domino.service.discovery.VertxServiceDiscovery;
 
 public class DominoLoader implements IsDominoLoader {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DominoLoader.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(DominoLoader.class);
 
-    public static final int DEFAULT_PORT = 0;
-    public static final String HTTP_PORT_KEY = "http.port";
+  public static final int DEFAULT_PORT = 0;
+  public static final String HTTP_PORT_KEY = "http.port";
 
-    private String webroot;
+  private String webroot;
 
-    private final Vertx vertx;
-    private final Router router;
-    private final JsonObject config;
-    private final io.vertx.reactivex.core.Vertx rxVertx;
-    private final io.vertx.reactivex.ext.web.Router rxRouter;
+  private final Vertx vertx;
+  private final Router router;
+  private final JsonObject config;
+  private final io.vertx.reactivex.core.Vertx rxVertx;
+  private final io.vertx.reactivex.ext.web.Router rxRouter;
 
-    public DominoLoader(Vertx vertx, Router router, JsonObject config) {
-        this.vertx = vertx;
-        this.rxVertx = new io.vertx.reactivex.core.Vertx(vertx);
-        this.router = router;
-        this.rxRouter = new io.vertx.reactivex.ext.web.Router(router);
-        this.config = config;
-        this.webroot = config.getString("webroot", "app");
+  public DominoLoader(Vertx vertx, Router router, JsonObject config) {
+    this.vertx = vertx;
+    this.rxVertx = new io.vertx.reactivex.core.Vertx(vertx);
+    this.router = router;
+    this.rxRouter = new io.vertx.reactivex.ext.web.Router(router);
+    this.config = config;
+    this.webroot = config.getString("webroot", "app");
 
-        GlobalsProvider.INSTANCE.setConfig(config);
-        GlobalsProvider.INSTANCE.setRouter(rxRouter);
-        GlobalsProvider.INSTANCE.setVertx(rxVertx);
+    GlobalsProvider.INSTANCE.setConfig(config);
+    GlobalsProvider.INSTANCE.setRouter(rxRouter);
+    GlobalsProvider.INSTANCE.setVertx(rxVertx);
+  }
+
+  public VertxContext start() {
+    return start(httpServer -> {});
+  }
+
+  public VertxContext start(Consumer<HttpServer> httpServerConsumer) {
+    ImmutableHttpServerOptions immutableHttpServerOptions = new ImmutableHttpServerOptions();
+    VertxContext vertxContext = initializeContext(immutableHttpServerOptions);
+
+    Future<HttpServerOptions> future = Future.future();
+    future.setHandler(
+        options ->
+            onHttpServerConfigurationCompleted(
+                immutableHttpServerOptions, vertxContext, options, httpServerConsumer));
+
+    configureHttpServer(vertxContext, future);
+    return vertxContext;
+  }
+
+  private VertxContext initializeContext(ImmutableHttpServerOptions immutableHttpServerOptions) {
+    return VertxContext.VertxContextBuilder.vertx(vertx)
+        .router(router)
+        .serverConfiguration(new VertxConfiguration(config))
+        .httpServerOptions(immutableHttpServerOptions)
+        .vertxServiceDiscovery(new VertxServiceDiscovery(vertx))
+        .configRetriever(ConfigRetriever.create(vertx))
+        .build();
+  }
+
+  private void onHttpServerConfigurationCompleted(
+      ImmutableHttpServerOptions immutableHttpServerOptions,
+      VertxContext vertxContext,
+      AsyncResult<HttpServerOptions> options,
+      Consumer<HttpServer> httpServerConsumer) {
+    immutableHttpServerOptions.init(
+        options.result(), options.result().getPort(), options.result().getHost());
+
+    CompletableFuture<PluginContext> pluginContextCompletableFuture =
+        applyPlugins(vertxContext, options, httpServerConsumer);
+    try {
+      pluginContextCompletableFuture.get();
+    } catch (InterruptedException | ExecutionException e) {
+      LOGGER.error("Failed to apply domino-mvp plugins : ", e);
     }
+  }
 
-    public VertxContext start() {
-        return start(httpServer -> {
-        });
-    }
+  private CompletableFuture<PluginContext> applyPlugins(
+      VertxContext vertxContext,
+      AsyncResult<HttpServerOptions> options,
+      Consumer<HttpServer> httpServerConsumer) {
+    CompletableFuture<PluginContext> future = new CompletableFuture<>();
+    vertxContext
+        .configRetriever()
+        .getConfig(
+            event -> {
+              JsonObject config = event.result();
+              ((VertxConfiguration) vertxContext.config()).mergeIn(config);
 
-    public VertxContext start(Consumer<HttpServer> httpServerConsumer) {
-        ImmutableHttpServerOptions immutableHttpServerOptions = new ImmutableHttpServerOptions();
-        VertxContext vertxContext = initializeContext(immutableHttpServerOptions);
+              PluginContext pluginContext =
+                  new PluginContext(DominoLoader.this, vertxContext, options, httpServerConsumer);
 
-        Future<HttpServerOptions> future = Future.future();
-        future.setHandler(
-                options -> onHttpServerConfigurationCompleted(immutableHttpServerOptions, vertxContext, options, httpServerConsumer));
+              ServiceLoader<DominoLoaderPlugin> plugins =
+                  ServiceLoader.load(DominoLoaderPlugin.class);
 
-        configureHttpServer(vertxContext, future);
-        return vertxContext;
-    }
+              Iterator<DominoLoaderPlugin> iterator = plugins.iterator();
+              Iterable<DominoLoaderPlugin> iterable = () -> iterator;
 
-    private VertxContext initializeContext(ImmutableHttpServerOptions immutableHttpServerOptions) {
-        return VertxContext.VertxContextBuilder.vertx(vertx)
-                .router(router)
-                .serverConfiguration(new VertxConfiguration(config))
-                .httpServerOptions(immutableHttpServerOptions)
-                .vertxServiceDiscovery(new VertxServiceDiscovery(vertx))
-                .configRetriever(ConfigRetriever.create(vertx)).build();
-    }
+              List<DominoLoaderPlugin> pluginsList =
+                  StreamSupport.stream(iterable.spliterator(), false)
+                      .sorted(Comparator.comparingInt(DominoLoaderPlugin::order))
+                      .collect(Collectors.toList());
 
-    private void onHttpServerConfigurationCompleted(ImmutableHttpServerOptions immutableHttpServerOptions,
-                                                    VertxContext vertxContext, AsyncResult<HttpServerOptions> options,
-                                                    Consumer<HttpServer> httpServerConsumer) {
-        immutableHttpServerOptions.init(options.result(), options.result().getPort(), options.result().getHost());
-
-
-        CompletableFuture<PluginContext> pluginContextCompletableFuture = applyPlugins(vertxContext, options, httpServerConsumer);
-        try {
-            pluginContextCompletableFuture.get();
-        } catch (InterruptedException | ExecutionException e) {
-            LOGGER.error("Failed to apply domino-mvp plugins : ", e);
-        }
-    }
-
-    private CompletableFuture<PluginContext> applyPlugins(VertxContext vertxContext, AsyncResult<HttpServerOptions> options, Consumer<HttpServer> httpServerConsumer) {
-        CompletableFuture<PluginContext> future = new CompletableFuture<>();
-        vertxContext.configRetriever().getConfig(event -> {
-            JsonObject config = event.result();
-            ((VertxConfiguration) vertxContext.config()).mergeIn(config);
-
-            PluginContext pluginContext = new PluginContext(
-                    DominoLoader.this,
-                    vertxContext,
-                    options,
-                    httpServerConsumer);
-
-            ServiceLoader<DominoLoaderPlugin> plugins = ServiceLoader.load(DominoLoaderPlugin.class);
-
-            Iterator<DominoLoaderPlugin> iterator = plugins.iterator();
-            Iterable<DominoLoaderPlugin> iterable = () -> iterator;
-
-
-            List<DominoLoaderPlugin> pluginsList = StreamSupport.stream(iterable.spliterator(), false)
-                    .sorted(Comparator.comparingInt(DominoLoaderPlugin::order))
-                    .collect(Collectors.toList());
-
-            if (pluginsList.size() > 1) {
+              if (pluginsList.size() > 1) {
 
                 for (int i = 1; i < pluginsList.size(); i++) {
-                    DominoLoaderPlugin prevPlugin = pluginsList.get(i - 1);
-                    prevPlugin
-                            .init(pluginContext)
-                            .setNext(pluginsList.get(i));
+                  DominoLoaderPlugin prevPlugin = pluginsList.get(i - 1);
+                  prevPlugin.init(pluginContext).setNext(pluginsList.get(i));
                 }
 
                 pluginsList.get(pluginsList.size() - 1).init(pluginContext);
-            } else if (pluginsList.size() > 0) {
+              } else if (pluginsList.size() > 0) {
                 pluginsList.get(0).init(pluginContext);
-            }
+              }
 
-            pluginsList.get(0).apply();
-            future.complete(pluginContext);
-        });
+              pluginsList.get(0).apply();
+              future.complete(pluginContext);
+            });
 
-        return future;
-    }
+    return future;
+  }
 
+  private void configureHttpServer(VertxContext vertxContext, Future<HttpServerOptions> future) {
+    HttpServerOptions httpServerOptions = new HttpServerOptions();
+    httpServerOptions.setPort(vertxContext.config().getInteger(HTTP_PORT_KEY, DEFAULT_PORT));
+    ServiceLoader<HttpServerConfigurator> configurators =
+        ServiceLoader.load(HttpServerConfigurator.class);
+    configurators.forEach(c -> c.configureHttpServer(vertxContext, httpServerOptions));
+    httpServerOptions.setCompressionSupported(true);
 
-    private void configureHttpServer(VertxContext vertxContext, Future<HttpServerOptions> future) {
-        HttpServerOptions httpServerOptions = new HttpServerOptions();
-        httpServerOptions.setPort(vertxContext.config().getInteger(HTTP_PORT_KEY, DEFAULT_PORT));
-        ServiceLoader<HttpServerConfigurator> configurators = ServiceLoader.load(HttpServerConfigurator.class);
-        configurators.forEach(c -> c.configureHttpServer(vertxContext, httpServerOptions));
-        httpServerOptions.setCompressionSupported(true);
+    future.complete(httpServerOptions);
+  }
 
-        future.complete(httpServerOptions);
-    }
+  @Override
+  public int getDefaultPort() {
+    return DEFAULT_PORT;
+  }
 
-    @Override
-    public int getDefaultPort() {
-        return DEFAULT_PORT;
-    }
+  @Override
+  public String getHttpPortKey() {
+    return HTTP_PORT_KEY;
+  }
 
-    @Override
-    public String getHttpPortKey() {
-        return HTTP_PORT_KEY;
-    }
+  @Override
+  public String getWebroot() {
+    return webroot;
+  }
 
-    @Override
-    public String getWebroot() {
-        return webroot;
-    }
+  @Override
+  public Vertx getVertx() {
+    return vertx;
+  }
 
-    @Override
-    public Vertx getVertx() {
-        return vertx;
-    }
+  @Override
+  public Router getRouter() {
+    return router;
+  }
 
-    @Override
-    public Router getRouter() {
-        return router;
-    }
+  @Override
+  public JsonObject getConfig() {
+    return config;
+  }
 
-    @Override
-    public JsonObject getConfig() {
-        return config;
-    }
+  @Override
+  public io.vertx.reactivex.core.Vertx getRxVertx() {
+    return rxVertx;
+  }
 
-    @Override
-    public io.vertx.reactivex.core.Vertx getRxVertx() {
-        return rxVertx;
-    }
-
-    @Override
-    public io.vertx.reactivex.ext.web.Router getRxRouter() {
-        return rxRouter;
-    }
-
+  @Override
+  public io.vertx.reactivex.ext.web.Router getRxRouter() {
+    return rxRouter;
+  }
 }

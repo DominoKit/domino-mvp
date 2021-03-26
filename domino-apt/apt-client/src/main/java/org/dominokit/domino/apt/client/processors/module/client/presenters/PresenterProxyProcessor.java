@@ -16,15 +16,14 @@
 package org.dominokit.domino.apt.client.processors.module.client.presenters;
 
 import com.google.auto.service.AutoService;
-import org.dominokit.domino.api.client.annotations.presenter.PresenterProxy;
-import org.dominokit.domino.apt.commons.BaseProcessor;
-
+import java.util.HashSet;
+import java.util.Set;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
-import java.util.HashSet;
-import java.util.Set;
+import org.dominokit.domino.api.client.annotations.presenter.PresenterProxy;
+import org.dominokit.domino.apt.commons.BaseProcessor;
 
 @AutoService(Processor.class)
 public class PresenterProxyProcessor extends BaseProcessor {
@@ -49,10 +48,9 @@ public class PresenterProxyProcessor extends BaseProcessor {
   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 
     new PresenterProxyProcessingStep.Builder()
-            .setProcessingEnv(processingEnv)
-            .build()
-            .process(roundEnv.getElementsAnnotatedWith(PresenterProxy.class));
+        .setProcessingEnv(processingEnv)
+        .build()
+        .process(roundEnv.getElementsAnnotatedWith(PresenterProxy.class));
     return false;
   }
-
 }

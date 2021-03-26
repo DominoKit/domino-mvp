@@ -1,4 +1,24 @@
+/*
+ * Copyright © ${year} Dominokit
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.dominokit.domino.http.server.config;
+
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.dominokit.domino.http.server.config.ConfigKies.SSL_JKS_ENABLED;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServerOptions;
@@ -12,124 +32,128 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
-import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.dominokit.domino.http.server.config.ConfigKies.SSL_JKS_ENABLED;
-
 public class JksServerConfiguratorTest {
 
-    private static final String SSL_CONFIGURATION_KEY = "ssl.enabled";
-    private static final String SSL_JKS_PATH = "ssl.jks.path";
-    private static final String SSL_JKS_SECRET = "ssl.jks.password";
-    public static final String TEST_JKS_PATH = "/some/path/to/jks";
-    public static final String TEST_JKS_SECRET = "some.jks.secret";
-    private static final String HTTPS_PORT = "https.port";
-    private static final int DEFAULT_HTTPS_PORT = 443;
-    public static final int DEFAULT_TEST_SSL_PORT = 2443;
-    private Vertx vertx;
+  private static final String SSL_CONFIGURATION_KEY = "ssl.enabled";
+  private static final String SSL_JKS_PATH = "ssl.jks.path";
+  private static final String SSL_JKS_SECRET = "ssl.jks.password";
+  public static final String TEST_JKS_PATH = "/some/path/to/jks";
+  public static final String TEST_JKS_SECRET = "some.jks.secret";
+  private static final String HTTPS_PORT = "https.port";
+  private static final int DEFAULT_HTTPS_PORT = 443;
+  public static final int DEFAULT_TEST_SSL_PORT = 2443;
+  private Vertx vertx;
 
-    private VertxConfiguration configuration;
-    private HttpServerOptions options;
-    private VertxContext context;
+  private VertxConfiguration configuration;
+  private HttpServerOptions options;
+  private VertxContext context;
 
-    @Before
-    public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
 
-        vertx = Vertx.vertx();
-        JsonObject config = vertx.getOrCreateContext().config();
-        Router router = Router.router(vertx);
-        configuration = new VertxConfiguration(config);
-        configuration.put(SSL_JKS_ENABLED, true);
-        configuration.put(SSL_CONFIGURATION_KEY, FALSE);
-        configuration.put(SSL_JKS_PATH, TEST_JKS_PATH);
-        configuration.put(SSL_JKS_SECRET, TEST_JKS_SECRET);
-        configuration.put(HTTPS_PORT, DEFAULT_HTTPS_PORT);
-        options = new HttpServerOptions();
-        context = VertxContext.VertxContextBuilder.vertx(vertx)
-                .router(router)
-                .serverConfiguration(configuration)
-                .vertxServiceDiscovery(new VertxServiceDiscovery(vertx)).build();
-    }
+    vertx = Vertx.vertx();
+    JsonObject config = vertx.getOrCreateContext().config();
+    Router router = Router.router(vertx);
+    configuration = new VertxConfiguration(config);
+    configuration.put(SSL_JKS_ENABLED, true);
+    configuration.put(SSL_CONFIGURATION_KEY, FALSE);
+    configuration.put(SSL_JKS_PATH, TEST_JKS_PATH);
+    configuration.put(SSL_JKS_SECRET, TEST_JKS_SECRET);
+    configuration.put(HTTPS_PORT, DEFAULT_HTTPS_PORT);
+    options = new HttpServerOptions();
+    context =
+        VertxContext.VertxContextBuilder.vertx(vertx)
+            .router(router)
+            .serverConfiguration(configuration)
+            .vertxServiceDiscovery(new VertxServiceDiscovery(vertx))
+            .build();
+  }
 
-    @After
-    public void tearDown() throws Exception {
-        vertx.close();
-    }
+  @After
+  public void tearDown() throws Exception {
+    vertx.close();
+  }
 
-    private void configureServer() {
-        new JksServerConfigurator().configureHttpServer(context,
-                options);
-    }
+  private void configureServer() {
+    new JksServerConfigurator().configureHttpServer(context, options);
+  }
 
-    @Test(expected = JksServerConfigurator.MissingJksPathInConfigurationException.class)
-    public void givenSslEnabledInConfiguration_whenJksPathIsMissingInConfiguration_thenShouldThrowException()
-            throws Exception {
-        configuration.put(SSL_CONFIGURATION_KEY, TRUE);
-        configuration.put(SSL_JKS_PATH, "");
-        configureServer();
-    }
+  @Test(expected = JksServerConfigurator.MissingJksPathInConfigurationException.class)
+  public void
+      givenSslEnabledInConfiguration_whenJksPathIsMissingInConfiguration_thenShouldThrowException()
+          throws Exception {
+    configuration.put(SSL_CONFIGURATION_KEY, TRUE);
+    configuration.put(SSL_JKS_PATH, "");
+    configureServer();
+  }
 
-    @Test(expected = JksServerConfigurator.MissingJksPasswordInConfigurationException.class)
-    public void givenSslEnabledInConfiguration_whenJksPasswordIsMissingInConfiguration_thenShouldThrowException()
-            throws Exception {
-        configuration.put(SSL_CONFIGURATION_KEY, TRUE);
-        configuration.put(SSL_JKS_SECRET, "");
-        configureServer();
-    }
+  @Test(expected = JksServerConfigurator.MissingJksPasswordInConfigurationException.class)
+  public void
+      givenSslEnabledInConfiguration_whenJksPasswordIsMissingInConfiguration_thenShouldThrowException()
+          throws Exception {
+    configuration.put(SSL_CONFIGURATION_KEY, TRUE);
+    configuration.put(SSL_JKS_SECRET, "");
+    configureServer();
+  }
 
-    @Test
-    public void givenSslEnabledInConfiguration_whenHttpsPortIsMissingInConfiguration_thenShouldUseDefaultHttpsPort()
-            throws Exception {
-        configuration.put(SSL_CONFIGURATION_KEY, TRUE);
-        configuration.remove(HTTPS_PORT);
-        configureServer();
-        assertThat(options.getPort()).isEqualTo(DEFAULT_HTTPS_PORT);
-    }
+  @Test
+  public void
+      givenSslEnabledInConfiguration_whenHttpsPortIsMissingInConfiguration_thenShouldUseDefaultHttpsPort()
+          throws Exception {
+    configuration.put(SSL_CONFIGURATION_KEY, TRUE);
+    configuration.remove(HTTPS_PORT);
+    configureServer();
+    assertThat(options.getPort()).isEqualTo(DEFAULT_HTTPS_PORT);
+  }
 
-    @Test
-    public void givenSslEnabledInConfiguration_whenHttpsPortIsSetInConfiguration_thenShouldUsePortFromConfiguration()
-            throws Exception {
-        configuration.put(SSL_CONFIGURATION_KEY, TRUE);
-        configuration.put(HTTPS_PORT, DEFAULT_TEST_SSL_PORT);
-        configureServer();
-        assertThat(options.getPort()).isEqualTo(DEFAULT_TEST_SSL_PORT);
-    }
+  @Test
+  public void
+      givenSslEnabledInConfiguration_whenHttpsPortIsSetInConfiguration_thenShouldUsePortFromConfiguration()
+          throws Exception {
+    configuration.put(SSL_CONFIGURATION_KEY, TRUE);
+    configuration.put(HTTPS_PORT, DEFAULT_TEST_SSL_PORT);
+    configureServer();
+    assertThat(options.getPort()).isEqualTo(DEFAULT_TEST_SSL_PORT);
+  }
 
-    @Test
-    public void givenSslEnabledInConfiguration_whenConfiguringServer_thenHttpOptionSslShouldBeEnabled()
-            throws Exception {
-        configuration.put(SSL_CONFIGURATION_KEY, TRUE);
-        configureServer();
-        assertThat(options.isSsl()).isTrue();
-    }
+  @Test
+  public void
+      givenSslEnabledInConfiguration_whenConfiguringServer_thenHttpOptionSslShouldBeEnabled()
+          throws Exception {
+    configuration.put(SSL_CONFIGURATION_KEY, TRUE);
+    configureServer();
+    assertThat(options.isSsl()).isTrue();
+  }
 
-    @Test
-    public void givenSslDisabledInConfigurationAndHttpOptionsSslIsDisabled_whenConfiguringServer_thenHttpOptionSslShouldRemainDisabled()
-            throws Exception {
-        configuration.put(SSL_CONFIGURATION_KEY, FALSE);
-        options.setSsl(FALSE);
-        configureServer();
-        assertThat(options.isSsl()).isFalse();
-    }
+  @Test
+  public void
+      givenSslDisabledInConfigurationAndHttpOptionsSslIsDisabled_whenConfiguringServer_thenHttpOptionSslShouldRemainDisabled()
+          throws Exception {
+    configuration.put(SSL_CONFIGURATION_KEY, FALSE);
+    options.setSsl(FALSE);
+    configureServer();
+    assertThat(options.isSsl()).isFalse();
+  }
 
-    @Test
-    public void givenSslDisabledInConfigurationAndHttpOptionsSslIsEnabled_whenConfiguringServer_thenHttpOptionSslShouldRemainEnabled()
-            throws Exception {
-        configuration.put(SSL_CONFIGURATION_KEY, FALSE);
-        options.setSsl(TRUE);
-        configureServer();
-        assertThat(options.isSsl()).isTrue();
-    }
+  @Test
+  public void
+      givenSslDisabledInConfigurationAndHttpOptionsSslIsEnabled_whenConfiguringServer_thenHttpOptionSslShouldRemainEnabled()
+          throws Exception {
+    configuration.put(SSL_CONFIGURATION_KEY, FALSE);
+    options.setSsl(TRUE);
+    configureServer();
+    assertThat(options.isSsl()).isTrue();
+  }
 
-    @Test
-    public void givenSslEnabledInConfigurationWithJksPathAndPassword_whenConfiguringServer_thenHttpOptionSslShouldBeEnabledAndConfiguredWithThePathAndPassword()
-            throws Exception {
-        configuration.put(SSL_CONFIGURATION_KEY, TRUE);
-        configureServer();
-        assertThat(options.isSsl()).isTrue();
-        assertThat(options.getKeyStoreOptions() instanceof JksOptions).isTrue();
-        assertThat(options.getKeyStoreOptions().getPath()).isEqualTo(TEST_JKS_PATH);
-        assertThat(options.getKeyStoreOptions().getPassword()).isEqualTo(TEST_JKS_SECRET);
-    }
+  @Test
+  public void
+      givenSslEnabledInConfigurationWithJksPathAndPassword_whenConfiguringServer_thenHttpOptionSslShouldBeEnabledAndConfiguredWithThePathAndPassword()
+          throws Exception {
+    configuration.put(SSL_CONFIGURATION_KEY, TRUE);
+    configureServer();
+    assertThat(options.isSsl()).isTrue();
+    assertThat(options.getKeyStoreOptions() instanceof JksOptions).isTrue();
+    assertThat(options.getKeyStoreOptions().getPath()).isEqualTo(TEST_JKS_PATH);
+    assertThat(options.getKeyStoreOptions().getPassword()).isEqualTo(TEST_JKS_SECRET);
+  }
 }

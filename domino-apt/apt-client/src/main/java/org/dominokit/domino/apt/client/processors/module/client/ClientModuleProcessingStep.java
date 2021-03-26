@@ -15,67 +15,69 @@
  */
 package org.dominokit.domino.apt.client.processors.module.client;
 
+import java.util.Set;
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.Element;
 import org.dominokit.domino.apt.commons.AbstractProcessingStep;
 import org.dominokit.domino.apt.commons.ExceptionUtil;
 import org.dominokit.domino.apt.commons.StepBuilder;
 
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementKind;
-import java.util.Set;
-
 public class ClientModuleProcessingStep extends AbstractProcessingStep {
+
+  private Set<String> presenters;
+  private Set<String> views;
+  private Set<String> initialTasks;
+
+  public ClientModuleProcessingStep(
+      Set<String> presenters,
+      Set<String> views,
+      Set<String> initialTasks,
+      ProcessingEnvironment processingEnvironment) {
+    super(processingEnvironment);
+
+    this.presenters = presenters;
+    this.views = views;
+    this.initialTasks = initialTasks;
+  }
+
+  public static class Builder extends StepBuilder<ClientModuleProcessingStep> {
 
     private Set<String> presenters;
     private Set<String> views;
     private Set<String> initialTasks;
 
-    public ClientModuleProcessingStep(
-            Set<String> presenters, Set<String> views,
-            Set<String> initialTasks,
-            ProcessingEnvironment processingEnvironment) {
-        super(processingEnvironment);
-
-        this.presenters = presenters;
-        this.views = views;
-        this.initialTasks = initialTasks;
+    public Builder setPresenters(Set<String> presenters) {
+      this.presenters = presenters;
+      return this;
     }
 
-    public static class Builder extends StepBuilder<ClientModuleProcessingStep> {
-
-        private Set<String> presenters;
-        private Set<String> views;
-        private Set<String> initialTasks;
-
-        public Builder setPresenters(Set<String> presenters) {
-            this.presenters = presenters;
-            return this;
-        }
-
-        public Builder setViews(Set<String> views) {
-            this.views = views;
-            return this;
-        }
-
-        public Builder setInitialTasks(Set<String> initialTasks) {
-            this.initialTasks = initialTasks;
-            return this;
-        }
-
-        public ClientModuleProcessingStep build() {
-            return new ClientModuleProcessingStep(presenters, views, initialTasks, processingEnv);
-        }
+    public Builder setViews(Set<String> views) {
+      this.views = views;
+      return this;
     }
 
-    public void process(Set<? extends Element> elementsByAnnotation) {
-        elementsByAnnotation
-                .forEach(element -> {
-                    try {
-                        writeSource(new ModuleConfigurationSourceWriter(element, presenters, views, initialTasks, processingEnv)
-                                .asTypeBuilder(), elements.getPackageOf(element).getQualifiedName().toString());
-                    } catch (Exception e) {
-                        ExceptionUtil.messageStackTrace(messager, e, element);
-                    }
-                });
+    public Builder setInitialTasks(Set<String> initialTasks) {
+      this.initialTasks = initialTasks;
+      return this;
     }
+
+    public ClientModuleProcessingStep build() {
+      return new ClientModuleProcessingStep(presenters, views, initialTasks, processingEnv);
+    }
+  }
+
+  public void process(Set<? extends Element> elementsByAnnotation) {
+    elementsByAnnotation.forEach(
+        element -> {
+          try {
+            writeSource(
+                new ModuleConfigurationSourceWriter(
+                        element, presenters, views, initialTasks, processingEnv)
+                    .asTypeBuilder(),
+                elements.getPackageOf(element).getQualifiedName().toString());
+          } catch (Exception e) {
+            ExceptionUtil.messageStackTrace(messager, e, element);
+          }
+        });
+  }
 }

@@ -15,83 +15,90 @@
  */
 package org.dominokit.domino.apt.client.processors.module.client.presenters;
 
+import static java.util.Objects.nonNull;
+
+import java.util.List;
+import java.util.Set;
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.Element;
 import org.dominokit.domino.api.client.annotations.presenter.AutoRoute;
 import org.dominokit.domino.api.client.annotations.presenter.ListenTo;
 import org.dominokit.domino.apt.commons.AbstractProcessingStep;
 import org.dominokit.domino.apt.commons.ExceptionUtil;
 import org.dominokit.domino.apt.commons.StepBuilder;
 
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.Element;
-import java.util.List;
-import java.util.Set;
-
-import static java.util.Objects.nonNull;
-
 public class PresenterProcessingStep extends AbstractProcessingStep {
 
+  public PresenterProcessingStep(ProcessingEnvironment processingEnv) {
+    super(processingEnv);
+  }
 
-    public PresenterProcessingStep(ProcessingEnvironment processingEnv) {
-        super(processingEnv);
+  public static class Builder extends StepBuilder<PresenterProcessingStep> {
+
+    public PresenterProcessingStep build() {
+      return new PresenterProcessingStep(processingEnv);
     }
+  }
 
-    public static class Builder extends StepBuilder<PresenterProcessingStep> {
+  public void process(Set<? extends Element> elementsByAnnotation) {
 
-        public PresenterProcessingStep build() {
-            return new PresenterProcessingStep(processingEnv);
-        }
+    for (Element element : elementsByAnnotation) {
+      try {
+        generateConfig(element);
+        generateCommand(element);
+        generateEventListeners(element);
+        generateRouter(element);
+      } catch (Exception e) {
+        ExceptionUtil.messageStackTrace(messager, e, element);
+      }
     }
+  }
 
+  private void generateConfig(Element presenterElement) {
 
-    public void process(
-            Set<? extends Element> elementsByAnnotation) {
+    writeSource(
+        new PresenterConfigSourceWriter(presenterElement, processingEnv).asTypeBuilder(),
+        elements.getPackageOf(presenterElement).getQualifiedName().toString());
+  }
 
-        for (Element element : elementsByAnnotation) {
-            try {
-                generateConfig(element);
-                generateCommand(element);
-                generateEventListeners(element);
-                generateRouter(element);
-            } catch (Exception e) {
-                ExceptionUtil.messageStackTrace(messager, e, element);
-            }
-        }
-
+  private void generateRouter(Element presenterElement) {
+    AutoRoute autoRoute = presenterElement.getAnnotation(AutoRoute.class);
+    if (nonNull(autoRoute) && autoRoute.generateTask()) {
+      generateHistoryStartupTask(autoRoute.token(), presenterElement);
     }
+  }
 
-    private void generateConfig(Element presenterElement) {
+  private void generateHistoryStartupTask(String token, Element presenterElement) {
+    writeSource(
+        new HistoryStartupTaskSourceWriter(token, presenterElement, processingEnv).asTypeBuilder(),
+        elements
+            .getPackageOf(presenterElement)
+            .getQualifiedName()
+            .toString()
+            .replace("presenters", "routing"));
+  }
 
-        writeSource(new PresenterConfigSourceWriter(presenterElement, processingEnv).asTypeBuilder(), elements.getPackageOf(presenterElement).getQualifiedName().toString());
-    }
+  private void generateEventListeners(Element presenterElement) {
+    List<Element> listeners =
+        processorUtil.getAnnotatedMethods(presenterElement.asType(), ListenTo.class);
 
+    listeners.forEach(listenerElement -> generateEventListener(listenerElement, presenterElement));
+  }
 
-    private void generateRouter(Element presenterElement) {
-        AutoRoute autoRoute = presenterElement.getAnnotation(AutoRoute.class);
-        if (nonNull(autoRoute) && autoRoute.generateTask()) {
-            generateHistoryStartupTask(autoRoute.token(), presenterElement);
-        }
-    }
+  private void generateEventListener(Element listenerElement, Element presenterElement) {
+    writeSource(
+        new DominoEventListenerSourceWriter(presenterElement, listenerElement, processingEnv)
+            .asTypeBuilder(),
+        elements
+            .getPackageOf(presenterElement)
+            .getQualifiedName()
+            .toString()
+            .replace("presenters", "listeners"));
+  }
 
-    private void generateHistoryStartupTask(String token, Element presenterElement) {
-        writeSource(new HistoryStartupTaskSourceWriter(token, presenterElement, processingEnv)
-                .asTypeBuilder(), elements.getPackageOf(presenterElement).getQualifiedName().toString().replace("presenters", "routing"));
-    }
-
-    private void generateEventListeners(Element presenterElement) {
-        List<Element> listeners = processorUtil.getAnnotatedMethods(presenterElement.asType(), ListenTo.class);
-
-        listeners.forEach(listenerElement -> generateEventListener(listenerElement, presenterElement));
-    }
-
-
-    private void generateEventListener(Element listenerElement, Element presenterElement) {
-        writeSource(new DominoEventListenerSourceWriter(presenterElement, listenerElement, processingEnv)
-                .asTypeBuilder(), elements.getPackageOf(presenterElement).getQualifiedName().toString().replace("presenters", "listeners"));
-    }
-
-
-    private void generateCommand(Element presenterElement) {
-        writeSource(new PresenterCommandSourceWriter(presenterElement, processingEnv).asTypeBuilder(), elements.getPackageOf(presenterElement).getQualifiedName().toString());
-    }
-
+  private void generateCommand(Element presenterElement) {
+    writeSource(
+        new PresenterCommandSourceWriter(presenterElement, processingEnv).asTypeBuilder(),
+        elements.getPackageOf(presenterElement).getQualifiedName().toString());
+  }
 }

@@ -9,12 +9,27 @@
     <packaging>pom</packaging>
     <name>domino</name>
 
-
     <properties>
+        <snapshot.version>1.0-alpha-gwt2.8.2-SNAPSHOT</snapshot.version>
+        <next.release.version>1.1-alpha-gwt2.8.2-SNAPSHOT</next.release.version>
+
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <maven.compiler.plugin>3.8.1</maven.compiler.plugin>
+        <maven.jar.plugin>3.2.0</maven.jar.plugin>
+        <maven.source.plugin>3.0.1</maven.source.plugin>
+        <maven.javadoc.plugin>2.10.4</maven.javadoc.plugin>
+        <maven.gpg.plugin>1.6</maven.gpg.plugin>
+        <maven.nexus.staging.plugin>1.6.8</maven.nexus.staging.plugin>
+        <maven.deploy.plugin>3.0.0-M1</maven.deploy.plugin>
+        <maven.fmt.plugin>2.9</maven.fmt.plugin>
+        <maven.install.plugin>3.0.0-M1</maven.install.plugin>
+        <maven.license.plugin>3.0</maven.license.plugin>
+        <maven.surfire.plugin>3.0.0-M1</maven.surfire.plugin>
+        <maven.gwt.plugin>1.0.0</maven.gwt.plugin>
         <domino.logger.version>1.0.2-gwt2.8.2</domino.logger.version>
         <domino.aggregator.version>1.0.0</domino.aggregator.version>
         <domino.history.version>1.0-alpha-gwt2.8.2-SNAPSHOT</domino.history.version>
@@ -233,26 +248,137 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven.jar.plugin}</version>
             </plugin>
             <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <groupId>net.ltgt.gwt.maven</groupId>
+                <artifactId>gwt-maven-plugin</artifactId>
+                <version>${maven.gwt.plugin}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <sourceLevel>1.8</sourceLevel>
+                    <failOnError>true</failOnError>
+                    <moduleName>org.dominokit.domino.logger.Logging</moduleName>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.coveo</groupId>
+                <artifactId>fmt-maven-plugin</artifactId>
+                <version>${maven.fmt.plugin}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>${maven.license.plugin}</version>
+                <configuration>
+                    <header>LICENSE.header</header>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <skipExistingHeaders>true</skipExistingHeaders>
+                    <mapping>
+                        <java>SLASHSTAR_STYLE</java>
+                    </mapping>
+                    <excludes>
+                        <exclude>**/README.md</exclude>
+                        <exclude>**/LICENSE</exclude>
+                        <exclude>**/LICENSE.header</exclude>
+                        <exclude>**/AUTHORS</exclude>
+                        <exclude>**/src/test/resources/**</exclude>
+                        <exclude>**/src/main/resources/**</exclude>
+                        <exclude>**/war</exclude>
+                        <exclude>**/pom.xml</exclude>
+                        <exclude>**/.flattened-pom.xml</exclude>
+                        <exclude>**/gwt-unitcache</exclude>
+                    </excludes>
+                    <properties>
+                        <year>${project.inceptionYear}</year>
+                        <name>${project.organization.name}</name>
+                    </properties>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>${maven.deploy.plugin}</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.dominokit</groupId>
+                <artifactId>gitflow-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <snapshotVersionProperty>snapshot.version</snapshotVersionProperty>
+                    <releaseVersionProperty>next.release.version</releaseVersionProperty>
+                    <!-- Set to true to immediately bump the development version when creating a release branch -->
+                    <commitDevelopmentVersionAtStart>true</commitDevelopmentVersionAtStart>
+
+                    <!-- Which digit to increase in major.minor.patch versioning, the values being 0.1.2 respectively.
+                         By default the rightmost number is increased.
+                         Pass in the number via parameter or profile to allow configuration,
+                         since everything set in the file can't be overwritten via command line -->
+                    <versionDigitToIncrement>${bump.digit}</versionDigitToIncrement>
+
+                    <!-- Execute mvn verify before release -->
+                    <preReleaseGoals>verify</preReleaseGoals>
+                    <preHotfixGoals>verify</preHotfixGoals>
+
+                    <!-- Configure branches -->
+                    <gitFlowConfig>
+                        <productionBranch>master</productionBranch>
+                        <!-- default is develop, but we use development -->
+                        <developmentBranch>development</developmentBranch>
+                    </gitFlowConfig>
+                </configuration>
             </plugin>
         </plugins>
         <pluginManagement>
             <plugins>
+                <!-- We are doing this to avoid issues in projects that allow mixed client and server classpath -->
+                <!-- and we dont have a standard way to load different implementations in a ServiceLoader style for client side -->
+                <!-- check https://github.com/DominoKit/domino-slf4j-logger/issues/2  and https://github.com/foal/gwt-time/discussions/5#discussioncomment-380644 -->
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${maven.jar.plugin}</version>
+                    <configuration>
+                        <excludes>
+                            <exclude>org/slf4j/**/*.class</exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.7.0</version>
+                    <version>${maven.compiler.plugin}</version>
+                    <configuration>
+                        <source>${maven.compiler.source}</source>
+                        <target>${maven.compiler.target}</target>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <artifactId>maven-source-plugin</artifactId>
-                    <version>3.0.1</version>
+                    <version>${maven.source.plugin}</version>
                     <executions>
                         <execution>
                             <id>attach-sources</id>
@@ -266,7 +392,10 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>2.10.4</version>
+                    <version>${maven.javadoc.plugin}</version>
+                    <configuration>
+                        <failOnError>false</failOnError>
+                    </configuration>
                     <executions>
                         <execution>
                             <id>attach-javadocs</id>
@@ -279,7 +408,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-gpg-plugin</artifactId>
-                    <version>1.6</version>
+                    <version>${maven.gpg.plugin}</version>
                     <executions>
                         <execution>
                             <id>sign-artifacts</id>
@@ -287,13 +416,20 @@
                             <goals>
                                 <goal>sign</goal>
                             </goals>
+                            <configuration>
+                                <!-- Prevent `gpg` from using pinentry programs -->
+                                <gpgArguments>
+                                    <arg>--pinentry-mode</arg>
+                                    <arg>loopback</arg>
+                                </gpgArguments>
+                            </configuration>
                         </execution>
                     </executions>
                 </plugin>
                 <plugin>
                     <groupId>org.sonatype.plugins</groupId>
                     <artifactId>nexus-staging-maven-plugin</artifactId>
-                    <version>1.6.8</version>
+                    <version>${maven.nexus.staging.plugin}</version>
                     <extensions>true</extensions>
                     <configuration>
                         <serverId>ossrh</serverId>
@@ -304,6 +440,7 @@
             </plugins>
         </pluginManagement>
     </build>
+
     <profiles>
         <profile>
             <id>dev</id>
@@ -320,19 +457,23 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
                     </plugin>
+                    <plugin>
+                        <groupId>net.ltgt.gwt.maven</groupId>
+                        <artifactId>gwt-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.coveo</groupId>
+                        <artifactId>fmt-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.mycila</groupId>
+                        <artifactId>license-maven-plugin</artifactId>
+                    </plugin>
                 </plugins>
             </build>
         </profile>
         <profile>
             <id>production</id>
-            <properties>
-                <gpg.executable>gpg</gpg.executable>
-                <gpg.keyname>${env.GPG_KEYNAME}</gpg.keyname>
-                <gpg.passphrase>${env.GPG_PASSPHRASE}</gpg.passphrase>
-                <gpg.defaultKeyring>false</gpg.defaultKeyring>
-                <gpg.publicKeyring>${env.GPG_DIR}/pubring.gpg</gpg.publicKeyring>
-                <gpg.secretKeyring>${env.GPG_DIR}/secring.gpg</gpg.secretKeyring>
-            </properties>
             <activation>
                 <property>
                     <name>ci</name>
@@ -352,6 +493,14 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>net.ltgt.gwt.maven</groupId>
+                        <artifactId>gwt-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.coveo</groupId>
+                        <artifactId>fmt-maven-plugin</artifactId>
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>

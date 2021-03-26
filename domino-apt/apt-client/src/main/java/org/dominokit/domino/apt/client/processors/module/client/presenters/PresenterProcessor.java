@@ -16,42 +16,41 @@
 package org.dominokit.domino.apt.client.processors.module.client.presenters;
 
 import com.google.auto.service.AutoService;
-import org.dominokit.domino.api.client.annotations.presenter.Presenter;
-import org.dominokit.domino.apt.commons.BaseProcessor;
-
+import java.util.HashSet;
+import java.util.Set;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
-import java.util.HashSet;
-import java.util.Set;
+import org.dominokit.domino.api.client.annotations.presenter.Presenter;
+import org.dominokit.domino.apt.commons.BaseProcessor;
 
 @AutoService(Processor.class)
 public class PresenterProcessor extends BaseProcessor {
 
-    private final Set<String> supportedAnnotations = new HashSet<>();
+  private final Set<String> supportedAnnotations = new HashSet<>();
 
-    public PresenterProcessor() {
-        supportedAnnotations.add(Presenter.class.getCanonicalName());
-    }
+  public PresenterProcessor() {
+    supportedAnnotations.add(Presenter.class.getCanonicalName());
+  }
 
-    @Override
-    public Set<String> getSupportedAnnotationTypes() {
-        return supportedAnnotations;
-    }
+  @Override
+  public Set<String> getSupportedAnnotationTypes() {
+    return supportedAnnotations;
+  }
 
-    @Override
-    public SourceVersion getSupportedSourceVersion() {
-        return SourceVersion.latestSupported();
-    }
+  @Override
+  public SourceVersion getSupportedSourceVersion() {
+    return SourceVersion.latestSupported();
+  }
 
-    @Override
-    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        new PresenterProcessingStep.Builder()
-                .setProcessingEnv(processingEnv)
-                .build()
-                .process(roundEnv.getElementsAnnotatedWith(Presenter.class));
+  @Override
+  public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+    new PresenterProcessingStep.Builder()
+        .setProcessingEnv(processingEnv)
+        .build()
+        .process(roundEnv.getElementsAnnotatedWith(Presenter.class));
 
-        return false;
-    }
+    return false;
+  }
 }

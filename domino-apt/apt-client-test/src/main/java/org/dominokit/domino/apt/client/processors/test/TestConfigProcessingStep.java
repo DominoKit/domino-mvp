@@ -15,46 +15,46 @@
  */
 package org.dominokit.domino.apt.client.processors.test;
 
+import java.util.Set;
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
 import org.dominokit.domino.apt.commons.AbstractProcessingStep;
 import org.dominokit.domino.apt.commons.ExceptionUtil;
 import org.dominokit.domino.apt.commons.StepBuilder;
 
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementKind;
-import java.util.Set;
-
 public class TestConfigProcessingStep extends AbstractProcessingStep {
 
+  public TestConfigProcessingStep(ProcessingEnvironment processingEnv) {
+    super(processingEnv);
+  }
 
-    public TestConfigProcessingStep(ProcessingEnvironment processingEnv) {
-        super(processingEnv);
+  public static class Builder extends StepBuilder<TestConfigProcessingStep> {
+
+    public TestConfigProcessingStep build() {
+      return new TestConfigProcessingStep(processingEnv);
     }
+  }
 
-    public static class Builder extends StepBuilder<TestConfigProcessingStep> {
+  public void process(Set<? extends Element> elementsByAnnotation) {
 
-        public TestConfigProcessingStep build() {
-            return new TestConfigProcessingStep(processingEnv);
+    for (Element element : elementsByAnnotation) {
+      try {
+        if (element.getKind().equals(ElementKind.CLASS)) {
+          generateTestConfig(element);
         }
+      } catch (Exception e) {
+        ExceptionUtil.messageStackTrace(messager, e, element);
+      }
     }
+  }
 
-    public void process(
-            Set<? extends Element> elementsByAnnotation) {
-
-        for (Element element : elementsByAnnotation) {
-            try {
-                if(element.getKind().equals(ElementKind.CLASS)){
-                    generateTestConfig(element);
-                }
-            } catch (Exception e) {
-                ExceptionUtil.messageStackTrace(messager, e, element);
-            }
-        }
-
-    }
-
-    private void generateTestConfig(Element testClassElement) {
-        writeSource(new TestConfigSourceWriter(testClassElement, processingEnv)
-                .asTypeBuilder(), elements.getPackageOf(testClassElement.getEnclosingElement()).getQualifiedName().toString());
-    }
+  private void generateTestConfig(Element testClassElement) {
+    writeSource(
+        new TestConfigSourceWriter(testClassElement, processingEnv).asTypeBuilder(),
+        elements
+            .getPackageOf(testClassElement.getEnclosingElement())
+            .getQualifiedName()
+            .toString());
+  }
 }
