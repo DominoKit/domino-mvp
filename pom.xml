@@ -3,31 +3,30 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.dominokit.domino</groupId>
-    <artifactId>domino-parent</artifactId>
-    <version>1.0-alpha-gwt2.8.2-SNAPSHOT</version>
+    <groupId>org.dominokit</groupId>
+    <artifactId>domino-mvp</artifactId>
+    <version>HEAD-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>domino-parent</name>
+    <name>domino-mvp</name>
     <url>https://github.com/DominoKit/domino</url>
-    <description>Domino parent</description>
+    <description>Domino MVP parent</description>
 
     <modules>
-        <module>domino-api-client</module>
-        <module>domino-gwt</module>
-        <module>domino-api-shared</module>
-        <module>domino-api-server</module>
-        <module>domino-plugins</module>
-        <module>domino-test</module>
-        <module>domino-apt</module>
-        <module>ssl-server-configurator</module>
-        <module>domino-service-discovery</module>
-        <module>domino-remote-logging</module>
-        <module>domino-desktop</module>
-        <module>domino-client-commons</module>
-        <module>domino-gwt-view</module>
-        <module>domino-log4j-server-logging</module>
-        <module>domino</module>
+        <module>domino-mvp-api-client</module>
+        <module>domino-mvp-gwt</module>
+        <module>domino-mvp-api-shared</module>
+        <module>domino-mvp-api-server</module>
+        <module>domino-mvp-plugins</module>
+        <module>domino-mvp-test</module>
+        <module>domino-mvp-processors</module>
+        <module>domino-mvp-ssl-server-configurator</module>
+        <module>domino-mvp-service-discovery</module>
+        <module>domino-mvp-remote-logging</module>
+        <module>domino-mvp-desktop</module>
+        <module>domino-mvp-client-commons</module>
+        <module>domino-mvp-gwt-view</module>
+        <module>domino-mvp-log4j-server-logging</module>
     </modules>
 
     <organization>
@@ -54,14 +53,14 @@
     </developers>
 
     <issueManagement>
-        <url>https://github.com/DominoKit/domino/issues</url>
+        <url>https://github.com/DominoKit/domino-mvp/issues</url>
         <system>GitHub Issues</system>
     </issueManagement>
 
     <scm>
-        <connection>scm:git:https://github.com/DominoKit/domino.git</connection>
-        <developerConnection>scm:git:git@github.com:DominoKit/domino.git</developerConnection>
-        <url>https://github.com/DominoKit/domino</url>
+        <connection>scm:git:https://github.com/DominoKit/domino-mvp.git</connection>
+        <developerConnection>scm:git:git@github.com:DominoKit/domino-mvp.git</developerConnection>
+        <url>https://github.com/DominoKit/domino-mvp</url>
     </scm>
 
     <distributionManagement>
@@ -71,31 +70,11 @@
         </snapshotRepository>
     </distributionManagement>
 
-    <repositories>
-        <repository>
-            <id>sonatype-snapshots-repo</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-                <checksumPolicy>fail</checksumPolicy>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>vertispan-snapshots</id>
-            <name>Vertispan Snapshots</name>
-            <url>https://repo.vertispan.com/gwt-snapshot/</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-                <checksumPolicy>fail</checksumPolicy>
-            </snapshots>
-        </repository>
-    </repositories>
+    <inceptionYear>2019</inceptionYear>
 
     <properties>
-        <snapshot.version>1.0-alpha-gwt2.8.2-SNAPSHOT</snapshot.version>
-        <next.release.version>1.1-alpha-gwt2.8.2-SNAPSHOT</next.release.version>
+        <snapshot.version>HEAD-SNAPSHOT</snapshot.version>
+        <next.release.version>1.0.0-RC1</next.release.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -113,57 +92,100 @@
         <maven.license.plugin>3.0</maven.license.plugin>
         <maven.surfire.plugin>3.0.0-M1</maven.surfire.plugin>
         <maven.gwt.plugin>1.0.0</maven.gwt.plugin>
+
+        <gwt.version>2.9.0</gwt.version>
+        <gwt.regxp.version>1.0.0-RC1</gwt.regxp.version>
         <vertx.version>3.9.0</vertx.version>
-        <elemental.version>1.0.0-RC1</elemental.version>
-        <domino.rest.version>1.0-alpha-gwt2.8.2-SNAPSHOT</domino.rest.version>
-        <domino.logger.version>1.0.2-gwt2.8.2</domino.logger.version>
-        <domino.aggregator.version>1.0.0</domino.aggregator.version>
-        <domino.history.version>1.0-alpha-gwt2.8.2-SNAPSHOT</domino.history.version>
-        <domino.apt.commons.version>0.0.1</domino.apt.commons.version>
+        <elemental.version>1.1.0</elemental.version>
+        <domino.rest.version>1.0.0-RC1</domino.rest.version>
+        <domino.jackson.version>1.0.0-RC2</domino.jackson.version>
+        <domino.logger.version>1.0.2</domino.logger.version>
+        <domino.aggregator.version>1.0.2</domino.aggregator.version>
+        <domino.history.version>1.0.0-RC2</domino.history.version>
+        <domino.apt.commons.version>1.0.3</domino.apt.commons.version>
+        <domino.ui.version>1.0.0-RC1</domino.ui.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.dominokit.domino.apt</groupId>
-                <artifactId>apt-client</artifactId>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-mvp-resteasy-plugin</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.dominokit.domino.apt</groupId>
-                <artifactId>apt-server</artifactId>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-mvp-remote-logging</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.dominokit.domino.api</groupId>
-                <artifactId>domino-api-client</artifactId>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-mvp-gwt</artifactId>
+                <version>${project.version}</version>
+                <classifier>sources</classifier>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>3.1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-mvp-gwt-view</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.dominokit.domino.api</groupId>
-                <artifactId>domino-api-client</artifactId>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-mvp-gwt-view</artifactId>
+                <version>${project.version}</version>
+                <classifier>sources</classifier>
+            </dependency>
+            <dependency>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-mvp-apt-client-test</artifactId>
+                <version>${project.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-mvp-apt-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-mvp-apt-server</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-mvp-api-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-mvp-api-client</artifactId>
                 <classifier>sources</classifier>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.dominokit.domino.api</groupId>
-                <artifactId>domino-api-server</artifactId>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-mvp-api-server</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.dominokit.domino.api</groupId>
-                <artifactId>domino-api-shared</artifactId>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-mvp-api-shared</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.dominokit.domino.api</groupId>
-                <artifactId>domino-api-shared</artifactId>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-mvp-api-shared</artifactId>
                 <classifier>sources</classifier>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.dominokit.domino</groupId>
-                <artifactId>domino-client-commons</artifactId>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-mvp-client-commons</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -189,7 +211,7 @@
             </dependency>
             <dependency>
                 <groupId>org.dominokit</groupId>
-                <artifactId>domino-history-gwt</artifactId>
+                <artifactId>domino-history-client</artifactId>
                 <version>${domino.history.version}</version>
             </dependency>
             <dependency>
@@ -203,62 +225,83 @@
                 <version>${domino.apt.commons.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.dominokit.domino.logging</groupId>
-                <artifactId>domino-log4j-server-logging</artifactId>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-mvp-log4j-server-logging</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.dominokit.domino</groupId>
-                <artifactId>domino-remote-logging</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.dominokit.domino.test</groupId>
-                <artifactId>domino-client-test</artifactId>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-mvp-client-test</artifactId>
                 <version>${project.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.dominokit</groupId>
-                <artifactId>jaxrs-super</artifactId>
+                <artifactId>domino-rest-jaxrs</artifactId>
                 <version>${domino.rest.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.dominokit</groupId>
-                <artifactId>jaxrs-super</artifactId>
+                <artifactId>domino-rest-jaxrs</artifactId>
                 <version>${domino.rest.version}</version>
                 <classifier>sources</classifier>
             </dependency>
             <dependency>
-                <groupId>org.dominokit.domino</groupId>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-rest-client</artifactId>
+                <version>${domino.rest.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dominokit</groupId>
                 <artifactId>ssl-server-cofigurator</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.dominokit.domino</groupId>
-                <artifactId>domino-service-discovery</artifactId>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-mvp-service-discovery</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.dominokit.domino.test</groupId>
-                <artifactId>domino-server-test</artifactId>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-mvp-server-test</artifactId>
                 <version>${project.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>org.dominokit.domino.impl</groupId>
-                <artifactId>domino-gwt</artifactId>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-mvp-gwt</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.dominokit.domino</groupId>
-                <artifactId>domino-desktop</artifactId>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-mvp-desktop</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-jackson</artifactId>
+                <version>${domino.jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-jackson-processor</artifactId>
+                <version>${domino.jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-rest-shared</artifactId>
+                <version>${domino.rest.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-rest-processor</artifactId>
+                <version>${domino.rest.version}</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>com.google.auto.service</groupId>
                 <artifactId>auto-service</artifactId>
-                <version>1.0-rc6</version>
+                <version>1.0-rc7</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
@@ -273,20 +316,19 @@
             <dependency>
                 <groupId>javax.validation</groupId>
                 <artifactId>validation-api</artifactId>
-                <version>2.0.1.Final</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.validation</groupId>
-                <artifactId>validation-api</artifactId>
-                <version>2.0.1.Final</version>
                 <classifier>sources</classifier>
             </dependency>
             <dependency>
                 <groupId>com.google.gwt</groupId>
                 <artifactId>gwt</artifactId>
-                <version>2.8.2</version>
+                <version>${gwt.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.gwtproject.regexp</groupId>
+                <artifactId>gwt-regexp</artifactId>
+                <version>${gwt.regxp.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.vertx</groupId>
@@ -377,13 +419,69 @@
             <dependency>
                 <groupId>javax.validation</groupId>
                 <artifactId>validation-api</artifactId>
-                <version>2.0.1.Final</version>
+                <version>1.0.0.GA</version>
             </dependency>
             <dependency>
                 <groupId>org.dominokit</groupId>
-                <artifactId>domino-rest-server</artifactId>
+                <artifactId>domino-rest-jvm</artifactId>
                 <version>${domino.rest.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>27.0.1-jre</version>
+            </dependency>
+            <dependency>
+                <groupId>org.reactivestreams</groupId>
+                <artifactId>reactive-streams</artifactId>
+                <version>1.0.3</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>1.2</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.activation</groupId>
+                <artifactId>activation</artifactId>
+                <version>1.1.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.objenesis</groupId>
+                <artifactId>objenesis</artifactId>
+                <version>2.2</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>1.10</version>
+            </dependency>
+            <dependency>
+                <groupId>xml-apis</groupId>
+                <artifactId>xml-apis</artifactId>
+                <version>1.4.01</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.annotation</groupId>
+                <artifactId>javax.annotation-api</artifactId>
+                <version>1.3.2</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.13.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hamcrest</groupId>
+                <artifactId>hamcrest-core</artifactId>
+                <version>1.3</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.11</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
     <dependencies>
@@ -589,6 +687,24 @@
                         <autoReleaseAfterClose>false</autoReleaseAfterClose>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>3.0.0-M3</version>
+                    <executions>
+                        <execution>
+                            <id>enforce</id>
+                            <configuration>
+                                <rules>
+                                    <dependencyConvergence/>
+                                </rules>
+                            </configuration>
+                            <goals>
+                                <goal>enforce</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
@@ -620,6 +736,10 @@
                     <plugin>
                         <groupId>com.mycila</groupId>
                         <artifactId>license-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-enforcer-plugin</artifactId>
                     </plugin>
                 </plugins>
             </build>
@@ -661,6 +781,10 @@
                     <plugin>
                         <groupId>org.sonatype.plugins</groupId>
                         <artifactId>nexus-staging-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-enforcer-plugin</artifactId>
                     </plugin>
                 </plugins>
             </build>
