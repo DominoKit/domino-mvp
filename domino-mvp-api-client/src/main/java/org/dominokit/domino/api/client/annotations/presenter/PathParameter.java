@@ -21,15 +21,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotate a presenter proxy field with this annotation to inject a path expression parameter value from the routing token
+ * Annotate a presenter proxy field with this annotation to inject a path expression parameter value
+ * from the routing token
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface PathParameter {
 
-  /**
-   *
-   * @return String name of the path parameter expression
-   */
+  /** @return String name of the path parameter expression */
   String value() default "";
 }

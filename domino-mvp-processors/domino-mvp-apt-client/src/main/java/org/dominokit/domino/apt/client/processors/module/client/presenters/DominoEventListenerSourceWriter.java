@@ -17,6 +17,12 @@ package org.dominokit.domino.apt.client.processors.module.client.presenters;
 
 import com.google.auto.common.MoreElements;
 import com.squareup.javapoet.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.*;
+import javax.lang.model.type.DeclaredType;
 import org.dominokit.domino.api.client.annotations.presenter.ListenTo;
 import org.dominokit.domino.api.client.annotations.presenter.Listener;
 import org.dominokit.domino.api.shared.extension.DominoEventListener;
@@ -24,13 +30,6 @@ import org.dominokit.domino.api.shared.extension.GlobalDominoEventListener;
 import org.dominokit.domino.api.shared.extension.GlobalEvent;
 import org.dominokit.domino.apt.commons.AbstractSourceBuilder;
 import org.dominokit.domino.apt.commons.DominoTypeBuilder;
-
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.*;
-import javax.lang.model.type.DeclaredType;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 public class DominoEventListenerSourceWriter extends AbstractSourceBuilder {
 

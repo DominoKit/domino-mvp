@@ -21,8 +21,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotate a presenter proxy static method to override the routing filter for the presenter from UI navigation
- * <p>The annotated method should have a single String arg for the url token and should return a {@link org.dominokit.domino.history.TokenFilter}</p>
+ * Annotate a presenter proxy static method to override the routing filter for the presenter from UI
+ * navigation
+ *
+ * <p>The annotated method should have a single String arg for the url token and should return a
+ * {@link org.dominokit.domino.history.TokenFilter}
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

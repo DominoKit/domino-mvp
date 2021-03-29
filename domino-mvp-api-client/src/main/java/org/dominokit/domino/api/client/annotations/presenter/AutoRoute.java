@@ -22,35 +22,33 @@ import java.lang.annotation.Target;
 
 /**
  * Use this annotation to define a route for a presenter proxy
- * <p>
- *     the annotation will generate the required classes to route to the presenter based on specified token
- * </p>
+ *
+ * <p>the annotation will generate the required classes to route to the presenter based on specified
+ * token
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface AutoRoute {
 
-  /**
-   *
-   * @return String url token expression to use as a route for the presenter
-   */
+  /** @return String url token expression to use as a route for the presenter */
   String token() default "";
 
   /**
-   *
-   * @return boolean, if true after routing the presenter the rout will be deleted and wont route again.
+   * @return boolean, if true after routing the presenter the rout will be deleted and wont route
+   *     again.
    */
   boolean routeOnce() default false;
 
   /**
-   *
-   * @return boolean, if true this will restart the presenter life cycle and activate it again if the presenter is already active, otherwise if the presenter is active the routing wont happen
+   * @return boolean, if true this will restart the presenter life cycle and activate it again if
+   *     the presenter is already active, otherwise if the presenter is active the routing wont
+   *     happen
    */
   boolean reRouteActivated() default false;
 
   /**
-   *
-   * @return boolean, true to generate a startup task to register the route, otherwise the route should be registered manually
+   * @return boolean, true to generate a startup task to register the route, otherwise the route
+   *     should be registered manually
    */
   boolean generateTask() default true;
 }

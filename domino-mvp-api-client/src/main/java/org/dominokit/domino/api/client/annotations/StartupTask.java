@@ -21,7 +21,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotate a class that extends from {@link org.dominokit.domino.api.client.startup.ClientStartupTask} to be executed on application start up
+ * Annotate a class that extends from {@link
+ * org.dominokit.domino.api.client.startup.ClientStartupTask} to be executed on application start up
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

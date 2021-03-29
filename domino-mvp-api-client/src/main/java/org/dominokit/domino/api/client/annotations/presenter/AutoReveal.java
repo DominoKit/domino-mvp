@@ -22,7 +22,9 @@ import java.lang.annotation.Target;
 
 /**
  * Use this annotation to annotate a presenter proxy
- * <p>Annotated presenter view will be automatically revealed  in the page when the presenter is activated</p>
+ *
+ * <p>Annotated presenter view will be automatically revealed in the page when the presenter is
+ * activated
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

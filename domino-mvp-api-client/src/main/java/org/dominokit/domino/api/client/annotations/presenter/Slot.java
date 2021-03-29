@@ -20,16 +20,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * Used to define a slot in a view
- */
+/** Used to define a slot in a view */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Slot {
 
-  /**
-   *
-   * @return the String name of the slot
-   */
+  /** @return the String name of the slot */
   String value();
 }

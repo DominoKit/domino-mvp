@@ -21,15 +21,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Use this annotation to inject a query parameter value from the routing token into a presenter proxy field, the field type should be List of String
+ * Use this annotation to inject a query parameter value from the routing token into a presenter
+ * proxy field, the field type should be List of String
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface QueryParameter {
 
-  /**
-   *
-   * @return String query parameter name
-   */
+  /** @return String query parameter name */
   String value() default "";
 }

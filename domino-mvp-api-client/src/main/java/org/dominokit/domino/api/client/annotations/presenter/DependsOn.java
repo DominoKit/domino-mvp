@@ -20,15 +20,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * Defines a set of event groups that the presenter depends on them to be fired to be fired
- */
+/** Defines a set of event groups that the presenter depends on them to be fired to be fired */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface DependsOn {
-  /**
-   *
-   * @return the {@link EventsGroup}[]
-   */
+  /** @return the {@link EventsGroup}[] */
   EventsGroup[] value() default {};
 }

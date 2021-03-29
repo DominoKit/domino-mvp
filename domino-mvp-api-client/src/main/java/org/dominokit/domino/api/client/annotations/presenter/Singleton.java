@@ -21,15 +21,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Use on a presenter proxy so the presenter will only have a single instance, activating/deactivating the presenter multiple times will always use the same instance
+ * Use on a presenter proxy so the presenter will only have a single instance,
+ * activating/deactivating the presenter multiple times will always use the same instance
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Singleton {
 
-  /**
-   *
-   * @return boolean, true if the presenter should be singleton
-   */
+  /** @return boolean, true if the presenter should be singleton */
   boolean value() default true;
 }

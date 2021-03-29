@@ -22,15 +22,13 @@ import java.lang.annotation.Target;
 import org.dominokit.domino.api.shared.extension.ActivationEvent;
 
 /**
- * Use this annotation on a presenter proxy to define an {@link ActivationEvent} to fired based on the presenter state
+ * Use this annotation on a presenter proxy to define an {@link ActivationEvent} to fired based on
+ * the presenter state
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface OnStateChanged {
 
-  /**
-   *
-   * @return an {@link ActivationEvent}
-   */
+  /** @return an {@link ActivationEvent} */
   Class<? extends ActivationEvent> value();
 }
