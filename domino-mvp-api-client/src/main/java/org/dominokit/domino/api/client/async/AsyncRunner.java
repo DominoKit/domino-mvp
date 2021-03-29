@@ -18,6 +18,9 @@ package org.dominokit.domino.api.client.async;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * An interface to provide different implementations for different environment to execute async code
+ */
 @FunctionalInterface
 public interface AsyncRunner {
 

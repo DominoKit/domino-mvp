@@ -20,9 +20,16 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * An annotation to inject a url fragment parameter into the presenter proxy
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface FragmentParameter {
 
+  /**
+   *
+   * @return String name of the fragment parameter
+   */
   String value() default "";
 }

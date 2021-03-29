@@ -21,9 +21,16 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import org.dominokit.domino.api.shared.extension.DominoEvent;
 
+/**
+ * Use this annotation to make a method in a presenter proxy a listener for specific event
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface ListenTo {
 
+  /**
+   *
+   * @return the type of {@link DominoEvent} that method is listening for
+   */
   Class<? extends DominoEvent> event();
 }

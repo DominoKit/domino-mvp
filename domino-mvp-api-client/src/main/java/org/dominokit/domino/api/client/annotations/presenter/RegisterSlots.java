@@ -20,8 +20,15 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * use this annotation on a presenter proxy to define slots to be provided by the presenter view, this will generate an interface that should be implemented by the view
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface RegisterSlots {
+  /**
+   *
+   * @return an Array of String names of the slots
+   */
   String[] value() default {};
 }

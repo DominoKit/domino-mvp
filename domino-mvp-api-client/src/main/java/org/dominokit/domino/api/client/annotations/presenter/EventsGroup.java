@@ -21,8 +21,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import org.dominokit.domino.api.shared.extension.ActivationEvent;
 
+/**
+ * Defines a group of events the presenter depends on them to be all fired to get activated
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.ANNOTATION_TYPE)
 public @interface EventsGroup {
+  /**
+   *
+   * @return an array of {@link ActivationEvent}
+   */
   Class<? extends ActivationEvent>[] value() default {};
 }

@@ -21,9 +21,16 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import org.dominokit.domino.api.client.mvp.presenter.Presentable;
 
+/**
+ * Link a {@link org.dominokit.domino.api.client.mvp.view.View} implementation to its presenters, a view can be linked to one or more presenters but each will has its own instance
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface UiView {
 
+  /**
+   *
+   * @return an Array of presenters/proxies to be linked to this view
+   */
   Class<? extends Presentable>[] presentable();
 }

@@ -20,9 +20,16 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Annotate a class a client module that will generate a configuration for all the presenters in that module
+ */
 @Retention(RetentionPolicy.CLASS)
 @Target({ElementType.TYPE, ElementType.PACKAGE})
 public @interface ClientModule {
 
+  /**
+   *
+   * @return the String module name
+   */
   String name();
 }

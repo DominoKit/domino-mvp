@@ -20,6 +20,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Mark a class as presenter to generate the required wiring with the view, the annotated class should extend from {@link org.dominokit.domino.api.client.mvp.presenter.ClientPresenter}
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Presenter {}

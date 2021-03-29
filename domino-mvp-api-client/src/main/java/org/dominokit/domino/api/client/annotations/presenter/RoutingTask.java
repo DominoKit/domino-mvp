@@ -20,9 +20,15 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Mark the presenter with the routing startup task that registers its routing
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface RoutingTask {
-
+  /**
+   *
+   * @return the Class of the routing task
+   */
   Class<?> value();
 }
