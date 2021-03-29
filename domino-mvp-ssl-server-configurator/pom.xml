@@ -1,0 +1,30 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.dominokit</groupId>
+        <artifactId>domino-mvp</artifactId>
+        <version>1.0.0-RC1</version>
+    </parent>
+
+    <artifactId>domino-mvp-ssl-server-configurator</artifactId>
+    <packaging>jar</packaging>
+
+    <name>domino-mvp-ssl-server-configurator</name>
+    <url>https://github.com/DominoKit/domino-mvp</url>
+    <description>Domino MVP ssl server configurator</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.dominokit</groupId>
+            <artifactId>domino-mvp-api-server</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.auto.service</groupId>
+            <artifactId>auto-service</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+</project>

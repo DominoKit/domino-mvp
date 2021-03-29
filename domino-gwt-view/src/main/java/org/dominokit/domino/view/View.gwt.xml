@@ -1,7 +1,0 @@
-<module>
-
-  <inherits name="org.dominokit.domino.gwt.Core"/>
-  <inherits name="org.dominokit.domino.ui.DominoUI"/>
-  <source path=""/>
-
-</module>

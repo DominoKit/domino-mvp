@@ -1,0 +1,111 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.dominokit</groupId>
+        <artifactId>domino-mvp-processors</artifactId>
+        <version>1.0.0-RC1</version>
+    </parent>
+
+    <packaging>jar</packaging>
+    <artifactId>domino-mvp-apt-client</artifactId>
+
+    <name>domino-mvp-apt-client</name>
+    <url>https://github.com/DominoKit/domino-mvp</url>
+    <description>GWT Domino client annotation processors</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.dominokit</groupId>
+            <artifactId>domino-apt-commons</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.auto.service</groupId>
+            <artifactId>auto-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.dominokit</groupId>
+            <artifactId>domino-mvp-api-client</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.2</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>org.dominokit.domino.api:domino-api-client</exclude>
+                                    <exclude>org.dominokit.domino.api:domino-api-shared</exclude>
+                                    <exclude>javax.annotation:javax.annotation-api</exclude>
+                                    <exclude>org.dominokit:domino-history-shared</exclude>
+                                    <exclude>org.dominokit:domino-history-client</exclude>
+                                    <exclude>com.google.elemental2:*</exclude>
+                                    <exclude>com.google.jsinterop:*</exclude>
+                                    <exclude>org.gwtproject.i18n:*</exclude>
+                                    <exclude>org.dominokit.i18n:*</exclude>
+                                    <exclude>org.gwtproject.regexp:*</exclude>
+                                    <exclude>org.slf4j:*</exclude>
+                                    <exclude>org.dominokit:domino-slf4j-logger</exclude>
+                                    <exclude>org.dominokit:domino-rest-jaxrs</exclude>
+                                    <exclude>org.dominokit:domino-jackson</exclude>
+                                    <exclude>org.dominokit:domino-jackson-super</exclude>
+                                    <exclude>org.dominokit:jackson-jackson-processor</exclude>
+                                    <exclude>org.dominokit:domino-rest-shared</exclude>
+                                    <exclude>org.dominokit:domino-aggregator-shared</exclude>
+                                    <exclude>org.dominokit:domino-aggregator-apt</exclude>
+
+                                    <exclude>javax.validation:validation-api</exclude>
+                                    <exclude>javax.annotation:javax.annotation-api</exclude>
+                                    <exclude>com.google.code.findbugs:jsr305</exclude>
+                                    <exclude>com.google.j2objc:j2objc-annotations</exclude>
+                                    <exclude>com.google.errorprone:error_prone_annotations</exclude>
+                                </excludes>
+                            </artifactSet>
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.google</pattern>
+                                    <shadedPattern>dominomvp.shaded.com.google</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.squareup</pattern>
+                                    <shadedPattern>dominomvp.shaded.com.squareup</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.apache</pattern>
+                                    <shadedPattern>dominomvp.shaded.com.apache</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.codehaus</pattern>
+                                    <shadedPattern>dominomvp.shaded.com.codehaus</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.checkerframework</pattern>
+                                    <shadedPattern>dominomvp.shaded.org.checkerframework</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.dominokit.domino.apt.commons</pattern>
+                                    <shadedPattern>dominomvp.shaded.org.dominokit.domino.apt.commons</shadedPattern>
+                                </relocation>
+                            </relocations>
+                            <transformers>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
