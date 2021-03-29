@@ -1,11 +1,12 @@
-![logoimage](https://raw.githubusercontent.com/DominoKit/DominoKit.github.io/master/domino-logo.png)
-
-## Welcome to Domino-mvp
+![logoimage](https://raw.githubusercontent.com/DominoKit/DominoKit.github.io/master/logo/128.png)
 
 <a title="Gitter" href="https://gitter.im/DominoKit/domino"><img src="https://badges.gitter.im/Join%20Chat.svg"></a>
-[![Build Status](https://travis-ci.org/DominoKit/domino-mvp.svg?branch=master)](https://travis-ci.org/DominoKit/domino-mvp)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/5df3ae073cad41bfad99df6537bc17b6)](https://www.codacy.com/app/akabme/domino?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=GwtDomino/domino&amp;utm_campaign=Badge_Grade)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.dominokit.domino/domino/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.dominokit.domino/domino)
+[![Development Build Status](https://github.com/DominoKit/domino-mvp/actions/workflows/deploy.yaml/badge.svg?branch=development)](https://github.com/DominoKit/domino-mvp/actions/workflows/deploy.yaml/badge.svg?branch=development)
+![Maven Central](https://img.shields.io/badge/Release-1.0.0--RC1-green)
+![Sonatype Nexus (Snapshots)](https://img.shields.io/badge/Snapshot-HEAD--SNAPSHOT-orange)
+![GWT3/J2CL compatible](https://img.shields.io/badge/GWT3/J2CL-compatible-brightgreen.svg)
+
+## Welcome to Domino-mvp
 
 Domino-mvp is a small, simple and a very lightweight framework for building both simple and complex applications using [GWT](http://www.gwtproject.org/), it introduce the concept of routing using both tokens and events, also allows the developers to write a modular application and shared components with any other domino application.
 
