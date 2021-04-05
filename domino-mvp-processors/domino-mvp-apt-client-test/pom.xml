@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.dominokit</groupId>
         <artifactId>domino-mvp-processors</artifactId>
-        <version>1.0.0-RC2</version>
+        <version>HEAD-SNAPSHOT</version>
     </parent>
 
     <packaging>jar</packaging>
