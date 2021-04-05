@@ -5,7 +5,7 @@
 
     <groupId>org.dominokit</groupId>
     <artifactId>domino-mvp</artifactId>
-    <version>1.0.0-RC1</version>
+    <version>1.0.0-RC2</version>
     <packaging>pom</packaging>
 
     <name>domino-mvp</name>
@@ -74,7 +74,7 @@
 
     <properties>
         <snapshot.version>HEAD-SNAPSHOT</snapshot.version>
-        <next.release.version>1.0.0-RC1</next.release.version>
+        <next.release.version>1.0.0-RC2</next.release.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -97,8 +97,8 @@
         <gwt.regxp.version>1.0.0-RC1</gwt.regxp.version>
         <vertx.version>3.9.0</vertx.version>
         <elemental.version>1.1.0</elemental.version>
-        <domino.rest.version>1.0.0-RC1</domino.rest.version>
-        <domino.jackson.version>1.0.0-RC2</domino.jackson.version>
+        <domino.rest.version>1.0.0-RC2</domino.rest.version>
+        <domino.jackson.version>1.0.0-RC3</domino.jackson.version>
         <domino.logger.version>1.0.2</domino.logger.version>
         <domino.aggregator.version>1.0.2</domino.aggregator.version>
         <domino.history.version>1.0.0-RC2</domino.history.version>
@@ -259,6 +259,11 @@
             <dependency>
                 <groupId>org.dominokit</groupId>
                 <artifactId>domino-mvp-service-discovery</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-mvp-ssl-server-configurator</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
