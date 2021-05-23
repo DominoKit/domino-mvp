@@ -97,7 +97,7 @@
         <gwt.regxp.version>1.0.0-RC1</gwt.regxp.version>
         <vertx.version>3.9.0</vertx.version>
         <elemental.version>1.1.0</elemental.version>
-        <domino.rest.version>1.0.0-RC4</domino.rest.version>
+        <domino.rest.version>1.0.0-RC5</domino.rest.version>
         <domino.jackson.version>1.0.0-RC3</domino.jackson.version>
         <domino.logger.version>1.0.2</domino.logger.version>
         <domino.aggregator.version>1.0.2</domino.aggregator.version>
