@@ -23,7 +23,7 @@ import org.dominokit.rest.shared.request.DynamicServiceRoot;
 
 public class DefaultDominoOptions implements DominoOptions {
   private ApplicationStartHandler applicationStartHandler;
-  private boolean mainApp = false;
+  private boolean mainApp = true;
 
   @Override
   public void applyOptions() {

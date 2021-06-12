@@ -101,9 +101,9 @@
         <domino.jackson.version>1.0.0-RC3</domino.jackson.version>
         <domino.logger.version>1.0.2</domino.logger.version>
         <domino.aggregator.version>1.0.2</domino.aggregator.version>
-        <domino.history.version>1.0.0-RC3</domino.history.version>
+        <domino.history.version>1.0.0-RC4</domino.history.version>
         <domino.apt.commons.version>1.0.3</domino.apt.commons.version>
-        <domino.ui.version>1.0.0-RC3</domino.ui.version>
+        <domino.ui.version>1.0.0-RC4</domino.ui.version>
     </properties>
 
     <dependencyManagement>
