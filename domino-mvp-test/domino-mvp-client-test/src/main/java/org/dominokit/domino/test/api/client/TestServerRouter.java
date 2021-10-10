@@ -67,7 +67,7 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
 
   @Override
   public void routeRequest(ServerRequest request) {
-    ResponseBean response;
+    Object response;
     try {
       if (fakeResponses.containsKey(getRequestKey(request))) {
         response = fakeResponses.get(getRequestKey(request)).reply();

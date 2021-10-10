@@ -22,11 +22,14 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import org.dominokit.domino.api.client.InitialTaskRegistry;
 import org.dominokit.domino.api.client.ModuleConfiguration;
@@ -92,6 +95,8 @@ public class ModuleConfigurationSourceWriter extends AbstractSourceBuilder {
             .addAnnotation(Override.class)
             .addModifiers(Modifier.PUBLIC);
 
+    Map<String, Integer> namesCounter = new HashMap<>();
+
     presenters.stream()
         .map(elements::getTypeElement)
         .forEach(
@@ -102,8 +107,8 @@ public class ModuleConfigurationSourceWriter extends AbstractSourceBuilder {
                           + "."
                           + presenter.getSimpleName().toString()
                           + "_Config");
-              String configName =
-                  processorUtil.lowerFirstLetter(presenter.getSimpleName().toString() + "_Config");
+              String configName = getConfigName(presenter, namesCounter);
+
               boolean singleton =
                   nonNull(presenter.getAnnotation(Singleton.class))
                       && presenter.getAnnotation(Singleton.class).value();
@@ -140,13 +145,27 @@ public class ModuleConfigurationSourceWriter extends AbstractSourceBuilder {
     return methodBuilder.build();
   }
 
+  private String getConfigName(TypeElement presenter, Map<String, Integer> namesCounter) {
+    String configName =
+        processorUtil.smallFirstLetter(presenter.getSimpleName().toString() + "_Config");
+
+    if (!namesCounter.containsKey(configName)) {
+      namesCounter.put(configName, 1);
+    } else {
+      Integer counter = namesCounter.get(configName);
+      namesCounter.put(configName, counter + 1);
+      configName = configName + "_" + counter;
+    }
+    return configName;
+  }
+
   private MethodSpec registerViews() {
 
     MethodSpec.Builder methodBuilder =
         MethodSpec.methodBuilder("registerViews")
             .addAnnotation(Override.class)
             .addModifiers(Modifier.PUBLIC);
-
+    Map<String, Integer> namesCounter = new HashMap<>();
     views.stream()
         .map(
             charSequence -> {
@@ -179,8 +198,7 @@ public class ModuleConfigurationSourceWriter extends AbstractSourceBuilder {
                                   + types.asElement(presenter).getSimpleName().toString()
                                   + postfix);
                       String configName =
-                          processorUtil.lowerFirstLetter(
-                              types.asElement(presenter).getSimpleName().toString() + postfix);
+                          getConfigName((TypeElement) types.asElement(presenter), namesCounter);
 
                       methodBuilder.addStatement(
                           "$T $L = new $T()", configClassName, configName, configClassName);
