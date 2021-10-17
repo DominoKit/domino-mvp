@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.dominokit</groupId>
         <artifactId>domino-mvp</artifactId>
-        <version>HEAD-SNAPSHOT</version>
+        <version>1.0.0-RC11</version>
     </parent>
 
     <artifactId>domino-mvp-api-client</artifactId>
