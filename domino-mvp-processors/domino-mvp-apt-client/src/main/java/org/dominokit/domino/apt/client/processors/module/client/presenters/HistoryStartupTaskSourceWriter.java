@@ -66,6 +66,11 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
                 .addModifiers(Modifier.PUBLIC)
                 .addCode(getSuperCall(taskType))
                 .build());
+
+    if (hasParent()) {
+      taskType.addMethod(getParentMethod());
+    }
+
     if (hasToken()) {
       taskType.addMethod(getFilterTokenMethod()).addMethod(getStartupFilterTokenMethod());
     }
@@ -84,6 +89,25 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
 
   private boolean hasToken() {
     return nonNull(token) && !token.isEmpty();
+  }
+
+  private boolean hasParent() {
+    Presenter presenter = presenterElement.getAnnotation(Presenter.class);
+    String parent = presenter.parent();
+    return nonNull(parent) && !parent.trim().isEmpty();
+  }
+
+  private MethodSpec getParentMethod() {
+    MethodSpec.Builder method =
+        MethodSpec.methodBuilder("getParent")
+            .addAnnotation(Override.class)
+            .addModifiers(Modifier.PROTECTED)
+            .returns(ParameterizedTypeName.get(Optional.class, String.class))
+            .addStatement(
+                "return $T.of($S)",
+                Optional.class,
+                presenterElement.getAnnotation(Presenter.class).parent());
+    return method.build();
   }
 
   private MethodSpec routOnceMethod() {

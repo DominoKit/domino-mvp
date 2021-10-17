@@ -5,7 +5,7 @@
 
     <groupId>org.dominokit</groupId>
     <artifactId>domino-mvp</artifactId>
-    <version>1.0.0-RC10</version>
+    <version>1.0.0-RC11</version>
     <packaging>pom</packaging>
 
     <name>domino-mvp</name>
@@ -74,7 +74,7 @@
 
     <properties>
         <snapshot.version>HEAD-SNAPSHOT</snapshot.version>
-        <next.release.version>1.0.0-RC10</next.release.version>
+        <next.release.version>1.0.0-RC11</next.release.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -103,7 +103,7 @@
         <domino.aggregator.version>1.0.2</domino.aggregator.version>
         <domino.history.version>1.0.0-RC4</domino.history.version>
         <domino.apt.commons.version>1.0.3</domino.apt.commons.version>
-        <domino.ui.version>1.0.0-RC8</domino.ui.version>
+        <domino.ui.version>1.0.0-RC10</domino.ui.version>
     </properties>
 
     <dependencyManagement>

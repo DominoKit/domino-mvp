@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Logger;
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.async.AsyncRunner;
@@ -73,7 +74,22 @@ public abstract class BaseClientPresenter extends ClientPresenter implements Pre
   protected void activate() {
     activated = true;
     fireStateEvent(true);
+    registerByName();
     onActivated();
+  }
+
+  protected void registerByName() {
+    getName().ifPresent(NamedPresenters::registerPresenter);
+  }
+
+  @Override
+  public Optional<String> getName() {
+    return Optional.empty();
+  }
+
+  @Override
+  public Optional<String> getParent() {
+    return Optional.empty();
   }
 
   protected void fireStateEvent(boolean state) {
@@ -119,6 +135,7 @@ public abstract class BaseClientPresenter extends ClientPresenter implements Pre
     fireStateEvent(false);
     removeStores();
     onDeactivated();
+    getName().ifPresent(NamedPresenters::removePresenter);
     if (nonNull(routingTask)) {
       routingTask.enable();
     }

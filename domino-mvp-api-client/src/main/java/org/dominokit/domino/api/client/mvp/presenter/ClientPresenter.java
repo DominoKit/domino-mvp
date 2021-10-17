@@ -15,9 +15,14 @@
  */
 package org.dominokit.domino.api.client.mvp.presenter;
 
+import java.util.Optional;
 import org.dominokit.domino.api.client.mvp.view.View;
 
 public abstract class ClientPresenter<V extends View> {
+
+  public abstract Optional<String> getName();
+
+  public abstract Optional<String> getParent();
 
   protected abstract ClientPresenter<V> prepare();
 
