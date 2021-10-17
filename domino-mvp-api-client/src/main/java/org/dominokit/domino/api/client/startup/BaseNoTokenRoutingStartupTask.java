@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.events.BaseRoutingAggregator;
 import org.dominokit.domino.api.client.mvp.presenter.BaseClientPresenter;
+import org.dominokit.domino.api.client.mvp.presenter.NamedPresenters;
 import org.dominokit.domino.history.*;
 
 public abstract class BaseNoTokenRoutingStartupTask
@@ -39,12 +40,26 @@ public abstract class BaseNoTokenRoutingStartupTask
 
   public BaseNoTokenRoutingStartupTask(List<? extends BaseRoutingAggregator> aggregators) {
     this.aggregators.addAll(aggregators);
-    aggregators.forEach(aggregator -> aggregator.init(this::onStateReady, false));
+    aggregators.forEach(
+        aggregator ->
+            aggregator.init(
+                state -> {
+                  if (getParent().isPresent()) {
+                    NamedPresenters.whenPresent(getParent().get(), () -> onStateReady(state));
+                  } else {
+                    onStateReady(state);
+                  }
+                },
+                false));
   }
 
   protected void bindPresenter(BaseClientPresenter presenter) {
     presenter.setRoutingTask(this);
     this.presenter = presenter;
+  }
+
+  protected Optional<String> getParent() {
+    return Optional.empty();
   }
 
   @Override

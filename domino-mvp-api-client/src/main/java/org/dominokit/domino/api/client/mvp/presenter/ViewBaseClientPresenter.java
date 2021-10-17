@@ -17,6 +17,7 @@ package org.dominokit.domino.api.client.mvp.presenter;
 
 import static java.util.Objects.nonNull;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,7 +25,7 @@ import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.mvp.slots.*;
 import org.dominokit.domino.api.client.mvp.view.*;
 
-public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter {
+public abstract class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter {
 
   public static final Logger LOGGER = Logger.getLogger(ViewBaseClientPresenter.class.getName());
 
@@ -85,6 +86,11 @@ public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter
     };
   }
 
+  @Override
+  protected void registerByName() {
+    // do nothing presenter will be registered after slots are registered.
+  }
+
   private void registerSlots() {
     SlotsEntries slotsEntries = getSlots();
     if (nonNull(slotsEntries)) {
@@ -101,6 +107,18 @@ public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter
                 ClientApp.make().slotsManager().registerSlot(key, slot);
               });
     }
+
+    getName().ifPresent(NamedPresenters::registerPresenter);
+  }
+
+  @Override
+  public Optional<String> getName() {
+    return Optional.empty();
+  }
+
+  @Override
+  public Optional<String> getParent() {
+    return Optional.empty();
   }
 
   protected SlotsEntries getSlots() {
@@ -137,6 +155,7 @@ public class ViewBaseClientPresenter<V extends View> extends BaseClientPresenter
         removeHandler.onRemoved();
       }
       deActivate();
+      getName().ifPresent(NamedPresenters::removePresenter);
     };
   }
 

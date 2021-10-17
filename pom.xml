@@ -103,7 +103,7 @@
         <domino.aggregator.version>1.0.2</domino.aggregator.version>
         <domino.history.version>1.0.0-RC4</domino.history.version>
         <domino.apt.commons.version>1.0.3</domino.apt.commons.version>
-        <domino.ui.version>1.0.0-RC8</domino.ui.version>
+        <domino.ui.version>1.0.0-RC10</domino.ui.version>
     </properties>
 
     <dependencyManagement>

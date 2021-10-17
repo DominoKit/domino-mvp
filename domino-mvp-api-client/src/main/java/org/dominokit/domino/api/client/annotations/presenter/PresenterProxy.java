@@ -25,4 +25,8 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface PresenterProxy {}
+public @interface PresenterProxy {
+  String name() default "";
+
+  String parent() default "";
+}

@@ -20,10 +20,12 @@ import static java.util.Objects.nonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.events.BaseRoutingAggregator;
 import org.dominokit.domino.api.client.mvp.presenter.BaseClientPresenter;
+import org.dominokit.domino.api.client.mvp.presenter.NamedPresenters;
 import org.dominokit.domino.history.DominoHistory;
 import org.dominokit.domino.history.TokenFilter;
 
@@ -41,9 +43,17 @@ public abstract class BaseRoutingStartupTask implements ClientStartupTask, Prese
         aggregator ->
             aggregator.init(
                 state -> {
-                  onStateReady(state);
-                  resetRouting();
+                  if (getParent().isPresent()) {
+                    NamedPresenters.whenPresent(getParent().get(), () -> applyState(state));
+                  } else {
+                    applyState(state);
+                  }
                 }));
+  }
+
+  private void applyState(DominoHistory.State state) {
+    onStateReady(state);
+    resetRouting();
   }
 
   private void resetRouting() {
@@ -53,6 +63,10 @@ public abstract class BaseRoutingStartupTask implements ClientStartupTask, Prese
   protected void bindPresenter(BaseClientPresenter presenter) {
     presenter.setRoutingTask(this);
     this.presenter = presenter;
+  }
+
+  protected Optional<String> getParent() {
+    return Optional.empty();
   }
 
   @Override

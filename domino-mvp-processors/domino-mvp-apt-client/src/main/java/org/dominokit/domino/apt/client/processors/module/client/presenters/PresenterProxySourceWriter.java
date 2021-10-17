@@ -46,9 +46,14 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
   @Override
   public List<TypeSpec.Builder> asTypeBuilder() {
     String proxyClassName = proxyElement.getSimpleName() + "_Presenter";
+    PresenterProxy presenterProxy = proxyElement.getAnnotation(PresenterProxy.class);
     TypeSpec.Builder proxyType =
         DominoTypeBuilder.classBuilder(proxyClassName, PresenterProcessor.class)
-            .addAnnotation(Presenter.class)
+            .addAnnotation(
+                AnnotationSpec.builder(Presenter.class)
+                    .addMember("name", "$S", presenterProxy.name())
+                    .addMember("parent", "$S", presenterProxy.parent())
+                    .build())
             .addModifiers(Modifier.PUBLIC)
             .superclass(TypeName.get(proxyElement.asType()));
 
@@ -106,7 +111,7 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
               .addMember("value", "$L", singleton.value())
               .build());
     }
-
+    generateNames(proxyType);
     generateAutoReveal(proxyType);
     generateOnInit(proxyType);
     generateOnReveal(proxyType);
@@ -193,6 +198,32 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
           });
 
       proxyType.addMethod(stateMethod.build());
+    }
+  }
+
+  private void generateNames(TypeSpec.Builder proxyType) {
+    PresenterProxy presenterProxy =
+        processorUtil.findClassAnnotation(proxyElement, PresenterProxy.class);
+    if (nonNull(presenterProxy)) {
+      if (nonNull(presenterProxy.name()) && !presenterProxy.name().trim().isEmpty()) {
+        proxyType.addMethod(
+            MethodSpec.methodBuilder("getName")
+                .addAnnotation(Override.class)
+                .addModifiers(Modifier.PUBLIC)
+                .returns(ParameterizedTypeName.get(Optional.class, String.class))
+                .addStatement("return $T.of($S)", Optional.class, presenterProxy.name())
+                .build());
+      }
+
+      if (nonNull(presenterProxy.parent()) && !presenterProxy.parent().trim().isEmpty()) {
+        proxyType.addMethod(
+            MethodSpec.methodBuilder("getParent")
+                .addAnnotation(Override.class)
+                .addModifiers(Modifier.PUBLIC)
+                .returns(ParameterizedTypeName.get(Optional.class, String.class))
+                .addStatement("return $T.of($S)", Optional.class, presenterProxy.parent())
+                .build());
+      }
     }
   }
 
