@@ -12,54 +12,53 @@ With Domino-mvp you will value the help type-safety provided by the language -Ja
 
 #### Learn more about Domino-mvp
 
-**Have a look!**
 
-* [[Home]]
-* [[Creating a project]]
-* [[The entry point]]
-* [[Module configuration]]
-* [[Startup tasks]]
-    * [[Simple startup task]]
-    * [[Asynchronous startup task]]
-* [[Presenters]]
-    * [[BaseClientPresenter]]
-    * [[ViewClientPresenter]]
-    * [[PresenterProxy]]
-    * [[Presenter revealing]]
-    * [[Slots]]
-    * [[Routing]]
-    * [[Presenter state]]
-    * [[Presenter dependency]]
-* [[Events]]
-* [[Views]]
-    * [[UI handlers]]
-    * [[BaseElementView]]
-    * [[Registering slots]]
-* [[History]]
-* [[Store]]
-* [[Making REST calls]]
-* [[Managing ASYNC callbacks]]
-* [[Back-end]]
-    * [[Backend configuration]]
-    * [[Entry points]]
-    * [[Plugins]]
-    * [[Index page]]
-    * [[REST endpoints]]
-* [[Optional API]]
-* [[Testing]]
-    * [[Modules separation]]
-    * [[Test modules]]
-    * [[Presenter spy]]
-    * [[Fake view]]
-    * [[Async testing]]
-    * [[Mocking REST requests]]
-* [[Tutorial: Book Store]]
-    * [[Create project]]
-    * [[The shell]]
-        * [[Layout]]
-        * [[Menu]]
-    * [[Home]]
-    * [[Book]]
-        * [[Book list]]
-        * [[New book]]
-        * [[Book details]]
+* [Home](home.md)
+* [Getting started](getting_started.md)
+* [The entry point](the_entry_point.md)
+* [Module configuration](module_configuration.md)
+* [Startup tasks](startup_tasks.md)
+    * [Simple startup task](simple_startup_task.md)
+    * [Asynchronous startup task](asynchronous_startup_task.md)
+* [Presenters](presenters.md)
+    * [BaseClientPresenter](base_client_presenter.md)
+    * [ViewClientPresenter](view_client_presenter.md)
+    * [PresenterProxy](presenter_proxy.md)
+    * [Presenter revealing](presenter_revealing.md)
+    * [Slots](slots.md)
+    * [Routing](routing.md)
+    * [Presenter state](presenter_state.md)
+    * [Presenter dependency](presenter_dependency.md)
+* [Events](events.md)
+* [Views](views.md)
+    * [UI handlers](ui_handlers.md)
+    * [BaseElementView](base_element_view.md)
+    * [Registering slots](registering_slots.md)
+* [History](history.md)
+* [Store](store.md)
+* [Making REST calls](making_rest_calls.md)
+* [Managing ASYNC callbacks](managing_async_callbacks.md)
+* [Back-end](backend.md)
+    * [Backend configuration](backend_configuration.md)
+    * [Entry points](entry_point.md)
+    * [Plugins](plugins.md)
+    * [Index page](index_page.md)
+    * [REST endpoints](rest_endpoints.md)
+* [Optional API](optional_api.md)
+* [Testing](testing.md)
+    * [Modules separation](module_separation.md)
+    * [Test modules](test_modules.md)
+    * [Presenter spy](presenter_spy.md)
+    * [Fake view](fake_view.md)
+    * [Async testing](async_testing.md)
+    * [Mocking REST requests](mocking_rest_requests.md)
+* [Tutorial: Book Store](tutorial_book_store.md)
+    * [Create project](tutorial_creating_project.md)
+    * [The shell](the_shell.md)
+        * [Layout](layout.md)
+        * [Menu](menu.md)
+    * [Home](tutorial_home.md)
+    * [Book](book.md)
+        * [Book list](book_list.md)
+        * [New book](new_book.md)
+        * [Book details](book_details.md)
