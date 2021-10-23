@@ -46,9 +46,9 @@ Domino-mvp provide tow main types of presenters, the passive or simple presenter
 8. Later presenter is deactivated.
 9. Call `onDeactivated`
 
-   - #### Viewable presenters
+- #### Viewable presenters
     
-       Viewable presenters are those that are linked with a UI view, both the presenter and the view share the life-cycle, when a presenter is activated the view will be revealed and if the view is removed the presenter will be deactivated,we define such presenter bye extending from the `ViewBaseClientPresenter` and specify the view in the generic type.
+    Viewable presenters are those that are linked with a UI view, both the presenter and the view share the life-cycle, when a presenter is activated the view will be revealed and if the view is removed the presenter will be deactivated,we define such presenter bye extending from the `ViewBaseClientPresenter` and specify the view in the generic type.
 
   ```java
   @Presenter
