@@ -20,6 +20,7 @@ With Domino-mvp you will value the help type-safety provided by the language -Ja
 * [Startup tasks](startup_tasks.md)
     * [Simple startup task](startup_tasks.md#simple-startup-task)
     * [Asynchronous startup task](startup_tasks.md#async-startup-tasks)
+* [Application bootstrap](application_bootstrap.md)
 * [Presenters](presenters.md)
     * [BaseClientPresenter](base_client_presenter.md)
     * [ViewClientPresenter](view_client_presenter.md)
