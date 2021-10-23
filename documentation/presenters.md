@@ -6,8 +6,8 @@ Domino-mvp provide tow main types of presenters, the passive or simple presenter
 
 - #### Passive or Simple presenters
 
-    Those presenters are not linked with a view or any UI elements, they are just classes that can be controlled by routing but, they will work in the background to do some tasks, they do not control any view life-cycle but, they can listen to events, make calls to the server and manipulate the navigation tokens. such presenters are not common, and we can create such a presenter by extending `BaseClientPresenter` and annotate the class with `@Presenter`
-    
+  Those presenters are not linked with a view or any UI elements, they are just classes that can be controlled by routing but, they will work in the background to do some tasks, they do not control any view life-cycle but, they can listen to events, make calls to the server and manipulate the navigation tokens. such presenters are not common, and we can create such a presenter by extending `BaseClientPresenter` and annotate the class with `@Presenter`
+
     ```java
     @Presenter
     public class SimplePresenter extends BaseClientPresenter {
@@ -29,14 +29,14 @@ Domino-mvp provide tow main types of presenters, the passive or simple presenter
     }
     ```
 
-    The only interesting super methods in such a presenter are the `postConstruct` and `onActivated` methods, those methods are coupled to the presenter life-cycle in domino-mvp, for such a presenter the life-cycle is the following :
+The only interesting super methods in such a presenter are the `postConstruct` and `onActivated` methods, those methods are coupled to the presenter life-cycle in domino-mvp, for such a presenter the life-cycle is the following :
 
 1. Some routing happens that requires the presenter to be activated.
-    > We will discuss more about how presenters can be activated later.
-   
+   > We will discuss more about how presenters can be activated later.
+
 2. A new instance of the presenter will be created
-    > Presenters can be marked as singletons, singleton presenters will utilize any already created instance.
-   
+   > Presenters can be marked as singletons, singleton presenters will utilize any already created instance.
+
 3. Call `postConstruct` method. - For singleton presenter this will be called only once when we create the first instance -
 
 4. Register presenter events listeners.
@@ -47,8 +47,8 @@ Domino-mvp provide tow main types of presenters, the passive or simple presenter
 9. Call `onDeactivated`
 
 - #### Viewable presenters
-    
-    Viewable presenters are those that are linked with a UI view, both the presenter and the view share the life-cycle, when a presenter is activated the view will be revealed and if the view is removed the presenter will be deactivated,we define such presenter bye extending from the `ViewBaseClientPresenter` and specify the view in the generic type.
+
+  Viewable presenters are those that are linked with a UI view, both the presenter and the view share the life-cycle, when a presenter is activated the view will be revealed and if the view is removed the presenter will be deactivated,we define such presenter bye extending from the `ViewBaseClientPresenter` and specify the view in the generic type.
 
   ```java
   @Presenter
@@ -95,24 +95,24 @@ Domino-mvp provide tow main types of presenters, the passive or simple presenter
   In a viewable presenter the generic type is the type-of an interface that extends from `View` which represent the contract between the presenter and its view, notice that the presenter does not know about the implementation of view and the framework will inject the view implementation into the presenter at runtime.
   > We will discuss views in details in later parts if the documentation.
 
-  In addition to the change in base class and the generic type we notice that we have few more method that we can override here and those methods are coupled to the life-cycle of the presenter and the view together, and the life-cycle is as the following : 
+  In addition to the change in base class and the generic type we notice that we have few more method that we can override here and those methods are coupled to the life-cycle of the presenter and the view together, and the life-cycle is as the following :
 
-  1. A routing happens that requires the presenter to be activated.
-  2. A new instance of the presenter is created.
-  3. A new instance of the view is created and injected into the presenter.
-  4. Call `postConstruct`
-  5. Register presenter events listeners.
-  6. Fire presenter state event if such event is present. - we can make the presenter fire an event when ever its (de)activated -
-  7. If the presenter has a name we register that presenter name in an internal registry.
-  8. View is about to be revealed.
-     > We will explain more about revealing views as part of this documentation.
-  9. Call `onBeforeReveal`.
-  10. View is revealed.
-  11. Call the `onRevealHandler`.
-  12. Later view is removed.
-  13. Call `onRemoveHandler`
-  14. Call `onDeactivated`
-  
+1. A routing happens that requires the presenter to be activated.
+2. A new instance of the presenter is created.
+3. A new instance of the view is created and injected into the presenter.
+4. Call `postConstruct`
+5. Register presenter events listeners.
+6. Fire presenter state event if such event is present. - we can make the presenter fire an event when ever its (de)activated -
+7. If the presenter has a name we register that presenter name in an internal registry.
+8. View is about to be revealed.
+   > We will explain more about revealing views as part of this documentation.
+9. Call `onBeforeReveal`.
+10. View is revealed.
+11. Call the `onRevealHandler`.
+12. Later view is removed.
+13. Call `onRemoveHandler`
+14. Call `onDeactivated`
+
 #### Presenter command
 
 
@@ -140,8 +140,8 @@ Using a presenter command
 
 ```java
 new SamplePresenterCommand()
-   .onReady(presenter -> //call some presenter api with this instance)
-   .send();
+        .onReady(presenter -> //call some presenter api with this instance)
+        .send();
 ```
 
 this will make sure the presenter is properly initialized before the `onReady` handler is called.
@@ -194,11 +194,11 @@ the generated presenter will look like this :
 ```java
 @Presenter
 public class SampleProxy_Presenter extends SampleProxy {
-  @Override
-  protected void onActivated() {
-    initFoo();
-    initBar();
-  }
+    @Override
+    protected void onActivated() {
+        initFoo();
+        initBar();
+    }
 }
 ```
 
@@ -240,21 +240,21 @@ the generated code will be :
 ```java
 @Presenter
 public class SampleProxy_Presenter extends SampleProxy {
-  @Override
-  public DominoView.RevealedHandler getRevealHandler() {
-    return ()-> {
-      applyFoo();
-      applyBar();
-    } ;
-  }
+    @Override
+    public DominoView.RevealedHandler getRevealHandler() {
+        return ()-> {
+            applyFoo();
+            applyBar();
+        } ;
+    }
 
-  @Override
-  public DominoView.RemovedHandler getRemoveHandler() {
-    return ()-> {
-      cleanUpFoo();
-      cleanUpBar();
-    } ;
-  }
+    @Override
+    public DominoView.RemovedHandler getRemoveHandler() {
+        return ()-> {
+            cleanUpFoo();
+            cleanUpBar();
+        } ;
+    }
 }
 ```
 
@@ -281,10 +281,10 @@ the generated code will be :
 @Presenter
 @Slot("content")
 public class SampleProxy_Presenter extends SampleProxy {
-  @Override
-  public String revealSlot() {
-    return "content";
-  }
+    @Override
+    public String revealSlot() {
+        return "content";
+    }
 }
 ```
 
@@ -310,23 +310,23 @@ this code will generate the following startup task
 ```java
 @StartupTask
 public class SampleProxy_PresenterHistoryListenerTask extends BaseRoutingStartupTask {
-  public SampleProxy_PresenterHistoryListenerTask() {
-    super(Arrays.asList(new DefaultEventAggregator()));
-  }
+    public SampleProxy_PresenterHistoryListenerTask() {
+        super(Arrays.asList(new DefaultEventAggregator()));
+    }
 
-  @Override
-  protected TokenFilter getTokenFilter() {
-    return TokenFilter.exactMatch("watch-list/movies");
-  }
+    @Override
+    protected TokenFilter getTokenFilter() {
+        return TokenFilter.exactMatch("watch-list/movies");
+    }
 
-  @Override
-  protected void onStateReady(DominoHistory.State state) {
-     new SampleProxy_PresenterCommand().onPresenterReady(presenter -> {
-      if(!presenter.isActivated()) {
-        presenter.reveal();
-      }
-    } ).send();
-  }
+    @Override
+    protected void onStateReady(DominoHistory.State state) {
+        new SampleProxy_PresenterCommand().onPresenterReady(presenter -> {
+            if(!presenter.isActivated()) {
+                presenter.reveal();
+            }
+        } ).send();
+    }
 }
 ```
 
@@ -359,25 +359,25 @@ the generated code will be :
 ```java
 @StartupTask
 public class SampleProxy_PresenterHistoryListenerTask extends BaseRoutingStartupTask {
-  public SampleProxy_PresenterHistoryListenerTask() {
-    super(Arrays.asList(new DefaultEventAggregator()));
-  }
+    public SampleProxy_PresenterHistoryListenerTask() {
+        super(Arrays.asList(new DefaultEventAggregator()));
+    }
 
-  @Override
-  protected TokenFilter getTokenFilter() {
-    return TokenFilter.exactMatch("watch-list/movies");
-  }
+    @Override
+    protected TokenFilter getTokenFilter() {
+        return TokenFilter.exactMatch("watch-list/movies");
+    }
 
-  @Override
-  protected void onStateReady(DominoHistory.State state) {
-     new SampleProxy_PresenterCommand().onPresenterReady(presenter -> {
-      if(!presenter.isActivated()) {
-        presenter.doFoo();
-        presenter.doBar();
-        presenter.reveal();
-      }
-    } ).send();
-  }
+    @Override
+    protected void onStateReady(DominoHistory.State state) {
+        new SampleProxy_PresenterCommand().onPresenterReady(presenter -> {
+            if(!presenter.isActivated()) {
+                presenter.doFoo();
+                presenter.doBar();
+                presenter.reveal();
+            }
+        } ).send();
+    }
 }
 ```
 
@@ -404,9 +404,9 @@ the generated startup task will have the following method :
 
 ```java
   @Override
-  protected TokenFilter getTokenFilter() {
-    return TokenFilter.startsWith("watch-list/movies");
-  }
+protected TokenFilter getTokenFilter() {
+        return TokenFilter.startsWith("watch-list/movies");
+        }
 ```
 
 notice how the `exactMatch` now is changed to a call to the annotated method that returns a `startWith`
@@ -450,7 +450,7 @@ when a routing happens you can always obtain an instance of the state token that
 @PresenterProxy
 @AutoRoute(token="watch-list/movies/:movieName")
 public class SamplePresenter extends ViewBaseClientPresenter<ViewInterface> {
-    
+
     @RoutingState
     protected DominoHistory.State state;
 
@@ -506,10 +506,10 @@ in the generate startup task we will have this code :
 ```java
 @Override
 protected void onStateReady(DominoHistory.State state) {
-      new SampleProxy_PresenterCommand().onPresenterReady(presenter -> {
+        new SampleProxy_PresenterCommand().onPresenterReady(presenter -> {
         presenter.reveal();
-      } ).send();
-}
+        } ).send();
+        }
 
 ```
 
