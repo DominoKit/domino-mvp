@@ -1,44 +1,120 @@
 #### Presenter
 
-Presenters are classes that holds the business logic part of a domino-mvp module, it should not hold UI code, in a presenter you can do server calls, implement validation, route from one presenter to another and fire events...etc.
+Presenters are the core of a domino-mvp application, they control the page life-cycle and holds most of our business logic, they control routing and navigation, fire events, make REST calls, do the validation and drive the view.
 
-The simplest presenter in a domino-mvp module should look like this :
+Domino-mvp provide tow main types of presenters, the passive or simple presenters and the viewable presenters.
 
-```java
-@Presenter
-public class SimplePresenter extends BaseClientPresenter {  
-}
-```
+- #### Passive or Simple presenters
 
-To create a presenter extend from `BaseClientPresenter` and add the `@Presenter` annotation, of course such presenter does nothing and it is not even linked with a view, such simple presenters can e useful for adding some logic to control other presenters, but it is not common to use such presenters.
+    Those presenters are not linked with a view or any UI elements, they are just classes that can be controlled by routing but, they will work in the background to do some tasks, they do not control any view life-cycle but, they can listen to events, make calls to the server and manipulate the navigation tokens. such presenters are not common, and we can create such a presenter by extending `BaseClientPresenter` and annotate the class with `@Presenter`
+    
+    ```java
+    @Presenter
+    public class SimplePresenter extends BaseClientPresenter {
+        @Override
+        protected void onActivated() {
+            super.onActivated();
+        }
+  
+        @Override
+        protected void onDeactivated() {
+        
+        }
+    
+        @Override
+        public Optional<String> getName() {
+            return Optional.of("simplePresenter");
+        }
 
-The only interesting super method in such a presenter is the `onActivated` method, presenters in domino-mvp are not singletons by default, and this method will be called after every time a presenter instance created.
+    }
+    ```
 
-a presenter instance will be created when a routing happens to that presenter or when a presenter command is sent the designated presenter.
+    The only interesting super methods in such a presenter are the `postConstruct` and `onActivated` methods, those methods are coupled to the presenter life-cycle in domino-mvp, for such a presenter the life-cycle is the following :
 
-You can make a presenter more interesting by linking a presenter to a view, a sample presenter linked to a view should like this :
+1. Some routing happens that requires the presenter to be activated.
+    > We will discuss more about how presenters can be activated later.
+   
+2. A new instance of the presenter will be created
+    > Presenters can be marked as singletons, singleton presenters will utilize any already created instance.
+   
+3. Call `postConstruct` method. - For singleton presenter this will be called only once when we create the first instance -
 
-```java
-@Presenter
-public class SamplePresenter extends ViewBaseClientPresenter<ViewInterface> {
-}
-```
-this time we extend from `ViewBaseClientPresenter` with a generic type, the generic type is an interface that represent the contract between the presenter and the view implementation, the presenter itself has no direct link to the view implementation, it is the responsibility of the domino-mvp framework to inject a view implementation instance into the presenter, but the presenter will always deal with the view through the view interface, more about the views when we reach that part.
+4. Register presenter events listeners.
+5. Fire presenter state event if such event is present. - we can make the presenter fire an event when ever its (de)activated -
+6. If the presenter has a name we register that presenter name in an internal registry.
+7. Call `onActivated` method.
+8. Later presenter is deactivated.
+9. Call `onDeactivated`
 
-Now in addition to the `onActivated` super method we have few more :
+   - #### Viewable presenters
+    
+       Viewable presenters are those that are linked with a UI view, both the presenter and the view share the life-cycle, when a presenter is activated the view will be revealed and if the view is removed the presenter will be deactivated,we define such presenter bye extending from the `ViewBaseClientPresenter` and specify the view in the generic type.
 
-`revealSlot` : should return a string represent the key of the slot where the content of this presenter view will be added in the page, think of a slot as a named area in the page that can accept other content. - left empty in the super class -
+  ```java
+  @Presenter
+  public class SimpleViewPresenter extends ViewBaseClientPresenter<SimpleView> {
+    @Override
+    protected void postConstruct() {
+    }
+  
+    @Override
+    protected void onActivated() {
+    }
 
-`reveal` : calling this method will reveal the content of the view in the slot defined by `revealSlot` method. - implemented in the super class -
+    @Override
+    protected void onDeactivated() {
 
-`getRevealHandler` : returns a handler that will be called when the view content is attached to the dom. - returns null in super class -
+    }
+  
+    @Override
+    protected void onBeforeReveal() {
+    }
+  
+    @Override
+    protected RevealedHandler getRevealHandler() {
+      return () -> {
+        //do something when view revealed
+      };
+    }
+  
+    @Override
+    protected RemovedHandler getRemoveHandler() {
+      return () -> {
+        //do something when view is removed
+      };
+    }
 
-`getRemoveHandler` : returns a handler that will be called when the view content is detached from the dom. - returns null in super class - good for clean-up tasks.
+    @Override
+    public Optional<String> getName() {
+      return Optional.of("simpleViewPresenter");
+    }
 
-> for using these method the view interface should extend from `ContentView` more about this when we talk about the views.
+  }
+  ```
 
+  In a viewable presenter the generic type is the type-of an interface that extends from `View` which represent the contract between the presenter and its view, notice that the presenter does not know about the implementation of view and the framework will inject the view implementation into the presenter at runtime.
+  > We will discuss views in details in later parts if the documentation.
 
+  In addition to the change in base class and the generic type we notice that we have few more method that we can override here and those methods are coupled to the life-cycle of the presenter and the view together, and the life-cycle is as the following : 
+
+  1. A routing happens that requires the presenter to be activated.
+  2. A new instance of the presenter is created.
+  3. A new instance of the view is created and injected into the presenter.
+  4. Call `postConstruct`
+  5. Register presenter events listeners.
+  6. Fire presenter state event if such event is present. - we can make the presenter fire an event when ever its (de)activated -
+  7. If the presenter has a name we register that presenter name in an internal registry.
+  8. View is about to be revealed.
+     > We will explain more about revealing views as part of this documentation.
+  9. Call `onBeforeReveal`.
+  10. View is revealed.
+  11. Call the `onRevealHandler`.
+  12. Later view is removed.
+  13. Call `onRemoveHandler`
+  14. Call `onDeactivated`
+  
 #### Presenter command
+
 
 Since manually creating an instance of a presenter using the `new` keyword will not initialize the presenter properly, and will not inject the view into the presenter we need a way to obtain an instance of a presenter to call any of its public API, presenter commands does this, each presenter comes associated with a presenter command, a presenter command will be auto generated and will have the name that is same as the presenter with the `Command` postfix, sending a command to a non-singleton presenter will always create a new instance of that presenter.
 
