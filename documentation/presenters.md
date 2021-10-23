@@ -1,4 +1,4 @@
-#### Presenter
+### Presenters
 
 Presenters are the core of a domino-mvp application, they control the page life-cycle and holds most of our business logic, they control routing and navigation, fire events, make REST calls, do the validation and drive the view.
 
