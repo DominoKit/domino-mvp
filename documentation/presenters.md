@@ -4,30 +4,30 @@ Presenters are the core of a domino-mvp application, they control the page life-
 
 Domino-mvp provide tow main types of presenters, the passive or simple presenters and the viewable presenters.
 
-- #### Passive or Simple presenters
+#### Passive or Simple presenters
 
-  Those presenters are not linked with a view or any UI elements, they are just classes that can be controlled by routing but, they will work in the background to do some tasks, they do not control any view life-cycle but, they can listen to events, make calls to the server and manipulate the navigation tokens. such presenters are not common, and we can create such a presenter by extending `BaseClientPresenter` and annotate the class with `@Presenter`
+Those presenters are not linked with a view or any UI elements, they are just classes that can be controlled by routing but, they will work in the background to do some tasks, they do not control any view life-cycle but, they can listen to events, make calls to the server and manipulate the navigation tokens. such presenters are not common, and we can create such a presenter by extending `BaseClientPresenter` and annotate the class with `@Presenter`
 
-    ```java
-    @Presenter
-    public class SimplePresenter extends BaseClientPresenter {
-        @Override
-        protected void onActivated() {
-            super.onActivated();
-        }
-  
-        @Override
-        protected void onDeactivated() {
-        
-        }
-    
-        @Override
-        public Optional<String> getName() {
-            return Optional.of("simplePresenter");
-        }
+```java
+@Presenter
+public class SimplePresenter extends BaseClientPresenter {
+  @Override
+  protected void onActivated() {
+    super.onActivated();
+  }
 
-    }
-    ```
+  @Override
+  protected void onDeactivated() {
+
+  }
+
+  @Override
+  public Optional<String> getName() {
+    return Optional.of("simplePresenter");
+  }
+
+}
+```
 
 The only interesting super methods in such a presenter are the `postConstruct` and `onActivated` methods, those methods are coupled to the presenter life-cycle in domino-mvp, for such a presenter the life-cycle is the following :
 
@@ -46,56 +46,57 @@ The only interesting super methods in such a presenter are the `postConstruct` a
 8. Later presenter is deactivated.
 9. Call `onDeactivated`
 
-- #### Viewable presenters
+#### Viewable presenters
 
-  Viewable presenters are those that are linked with a UI view, both the presenter and the view share the life-cycle, when a presenter is activated the view will be revealed and if the view is removed the presenter will be deactivated,we define such presenter bye extending from the `ViewBaseClientPresenter` and specify the view in the generic type.
+Viewable presenters are those that are linked with a UI view, both the presenter and the view share the life-cycle, when a presenter is activated the view will be revealed and if the view is removed the presenter will be deactivated,we define such presenter bye extending from the `ViewBaseClientPresenter` and specify the view in the generic type.
 
-  ```java
-  @Presenter
-  public class SimpleViewPresenter extends ViewBaseClientPresenter<SimpleView> {
-    @Override
-    protected void postConstruct() {
-    }
-  
-    @Override
-    protected void onActivated() {
-    }
+```java
+@Presenter
+public class SimpleViewPresenter extends ViewBaseClientPresenter<SimpleView> {
+@Override
+protected void postConstruct() {
+}
 
-    @Override
-    protected void onDeactivated() {
+@Override
+protected void onActivated() {
+}
 
-    }
-  
-    @Override
-    protected void onBeforeReveal() {
-    }
-  
-    @Override
-    protected RevealedHandler getRevealHandler() {
-      return () -> {
-        //do something when view revealed
-      };
-    }
-  
-    @Override
-    protected RemovedHandler getRemoveHandler() {
-      return () -> {
-        //do something when view is removed
-      };
-    }
+@Override
+protected void onDeactivated() {
 
-    @Override
-    public Optional<String> getName() {
-      return Optional.of("simpleViewPresenter");
-    }
+}
 
-  }
-  ```
+@Override
+protected void onBeforeReveal() {
+}
 
-  In a viewable presenter the generic type is the type-of an interface that extends from `View` which represent the contract between the presenter and its view, notice that the presenter does not know about the implementation of view and the framework will inject the view implementation into the presenter at runtime.
-  > We will discuss views in details in later parts if the documentation.
+@Override
+protected RevealedHandler getRevealHandler() {
+  return () -> {
+    //do something when view revealed
+  };
+}
 
-  In addition to the change in base class and the generic type we notice that we have few more method that we can override here and those methods are coupled to the life-cycle of the presenter and the view together, and the life-cycle is as the following :
+@Override
+protected RemovedHandler getRemoveHandler() {
+  return () -> {
+    //do something when view is removed
+  };
+}
+
+@Override
+public Optional<String> getName() {
+  return Optional.of("simpleViewPresenter");
+}
+
+}
+```
+
+In a viewable presenter the generic type is the type-of an interface that extends from `View` which represent the contract between the presenter and its view, notice that the presenter does not know about the implementation of view and the framework will inject the view implementation into the presenter at runtime.
+
+     We will discuss views in details in later parts if the documentation.
+
+In addition to the change in base class and the generic type we notice that we have few more method that we can override here and those methods are coupled to the life-cycle of the presenter and the view together, and the life-cycle is as the following :
 
 1. A routing happens that requires the presenter to be activated.
 2. A new instance of the presenter is created.
@@ -113,442 +114,657 @@ The only interesting super methods in such a presenter are the `postConstruct` a
 13. Call `onRemoveHandler`
 14. Call `onDeactivated`
 
-#### Presenter command
-
-
-Since manually creating an instance of a presenter using the `new` keyword will not initialize the presenter properly, and will not inject the view into the presenter we need a way to obtain an instance of a presenter to call any of its public API, presenter commands does this, each presenter comes associated with a presenter command, a presenter command will be auto generated and will have the name that is same as the presenter with the `Command` postfix, sending a command to a non-singleton presenter will always create a new instance of that presenter.
-
-example
-
-for presenter :
-
-```java
-@Presenter
-public class SamplePresenter extends ViewBaseClientPresenter<ViewInterface> {
-}
-```
-
-the generated command will be :
-
-```java
-@Command
-public class SamplePresenterCommand extends PresenterCommand<SamplePresenter> {
-}
-```
-
-Using a presenter command
-
-```java
-new SamplePresenterCommand()
-        .onReady(presenter -> //call some presenter api with this instance)
-        .send();
-```
-
-this will make sure the presenter is properly initialized before the `onReady` handler is called.
-
-domino-mvp internally depends on presenter commands in many of its parts.
-
 #### Presenter proxy
 
-Even though we can always override the presenter super class method to work with presenters, there is a declarative way to deal with presenters that makes working with them easier and adds some interesting features, this is called a presenter proxy, presenter proxy works as a super class for the actual presenter which will be automatically generated from the presenter proxy.
+Meanwhile manually overriding the presenters methods works and flixable yet it is has boilerplate code and requires a lot of knowledge about the super classes and how they work, to overcome that Domino-mvp provide what is called a presenter proxy, which a class that extends from the base presenters but instead of annotating the class with `@Presenter` with annotate if with `@PressenterProxy`, once we have this annotation on the class we can use a declarative annotations to inject our code inside an auto generated presenter, this will reduce the code we need to write and also makes our presenters code more readable, but also add some interesting feature as a built-in part of the framework that we would have implement manually without the proxy.
 
-the simplest presenter proxy looks like a normal presenter :
+Following is a simple persenter proxy :
 
 ```java
+
 @PresenterProxy
-public class SampleProxy extends ViewBaseClientPresenter<ViewInterface> {
+public class SimpleViewPresenter extends ViewBaseClientPresenter<SimpleView> {
+
 }
-```
-this looks like a normal presenter, which is true. the generated presenter will almost look the same, this will generate the following presenter :
 
-```java
-@Presenter
-public class SampleProxy_Presenter extends SampleProxy {
-}
-```
-lets spice things a little bit using some annotations :
-
-
-##### @OnInit
-
-lets add 2 methods in the proxy and annotate them with `@OnInit`
-
-```java
-@PresenterProxy
-public class SampleProxy extends ViewBaseClientPresenter<ViewInterface> {
-
-    @OnInit
-    public void initFoo(){
-        //do some initialization here
-    }
-
-    @OnInit
-    public void initBar(){
-        //do some initialization here
-    }
-}
 ```
 
-the generated presenter will look like this :
+This looks very similar to a normal presenter, and if we look at the generated code we wont see lots of differences between the proxy and the presenter:
 
 ```java
-@Presenter
-public class SampleProxy_Presenter extends SampleProxy {
-    @Override
-    protected void onActivated() {
-        initFoo();
-        initBar();
-    }
+/**
+ * This is a generated class, please don't modify
+ */
+@Presenter(
+    name = "",
+    parent = ""
+)
+public class SimpleViewPresenter_Presenter extends SimpleViewPresenter {
+
 }
+
 ```
 
-the `onActivated` now is implemented and calls both annotated methods in the order of deceleration on the class, you annotate as many as you wish init methods in the proxy.
-
-> Annotated methods in super classes will be also included.
-
-##### @OnReveal , @OnRemove
-
-these tow annotations allows you to add any number of methods to be called by the `revealHandler`/`removeHandler`, sample :
+Notice that the generated presenter is extending from the proxy, but then if we modify the proxy by setting the `name` and `parent` values like this :
 
 ```java
-@PresenterProxy
-public class SampleProxy extends ViewBaseClientPresenter<ViewInterface> {
-    @OnReveal
-    public void applyFoo(){
-        //view is revealed, apply something
-    }
+@PresenterProxy(name = "simpleViewPresenter", parent = "shell")
+public class SimpleViewPresenter extends ViewBaseClientPresenter<SimpleView> {
 
-    @OnReveal
-    public void applyBar(){
-        //view is revealed, apply something
-    }
-
-    @OnRemove
-    public void cleanUpFoo(){
-        //view is removed, cleanup something
-    }
-
-    @OnRemove
-    public void cleanUpBar(){
-        //view is removed, cleanup something
-    }
 }
 ```
-
-the generated code will be :
-
-```java
-@Presenter
-public class SampleProxy_Presenter extends SampleProxy {
-    @Override
-    public DominoView.RevealedHandler getRevealHandler() {
-        return ()-> {
-            applyFoo();
-            applyBar();
-        } ;
-    }
-
-    @Override
-    public DominoView.RemovedHandler getRemoveHandler() {
-        return ()-> {
-            cleanUpFoo();
-            cleanUpBar();
-        } ;
-    }
-}
-```
-
-now the methods are called inside the correct handler in the order of deceleration.
-
-> Annotated methods in super classes will be also included.
-
-#### @Slot
-
-This annotation on class level will define the reveal slot for the presenter
-
-Sample
+Then the generated presenter will look like this :
 
 ```java
-@PresenterProxy
-@Slot("content")
-public class SampleProxy extends ViewBaseClientPresenter<ViewInterface> {
-}
-```
 
-the generated code will be :
-
-```java
-@Presenter
-@Slot("content")
-public class SampleProxy_Presenter extends SampleProxy {
-    @Override
-    public String revealSlot() {
-        return "content";
-    }
-}
-```
-
-Notice how the annotation is being copied to the generated class to be picked up by other processors.
-
-### Routing presenters
-
-By default in domino-mvp you can activate presenters by firing/listning on domino-events, using presenters commands, or registering a listener for the url changes in a startup task, but with the presenter proxy you dont need to write this routing code, instead you can use the declarative annotations :
-
-#### @AutoRoute
-
-this annotation will generate the required code to listen on the url changes and and activate the presenter based on a token and a token filter, Sample :
-
-```java
-@PresenterProxy
-@AutoRoute(token="watch-list/movies")
-public class SampleProxy extends ViewBaseClientPresenter<ViewInterface> {
-}
-```
-
-this code will generate the following startup task
-
-```java
-@StartupTask
-public class SampleProxy_PresenterHistoryListenerTask extends BaseRoutingStartupTask {
-    public SampleProxy_PresenterHistoryListenerTask() {
-        super(Arrays.asList(new DefaultEventAggregator()));
-    }
-
-    @Override
-    protected TokenFilter getTokenFilter() {
-        return TokenFilter.exactMatch("watch-list/movies");
-    }
-
-    @Override
-    protected void onStateReady(DominoHistory.State state) {
-        new SampleProxy_PresenterCommand().onPresenterReady(presenter -> {
-            if(!presenter.isActivated()) {
-                presenter.reveal();
-            }
-        } ).send();
-    }
-}
-```
-
-this code will listen for the browser url, and only when it is exactly matches the token specified it will activate the presenter by sending a command.
-
-The annotation also has a Boolean parameter that indicate if we need to route to this presenter only once, this means after the routing happens it will never happen again, this useful for cases like the layout where you only want to route for any token at application start then no more routing is needed.
-
-#### @OnRouting
-
-If you wish to do some work when ever a routing to the presenter happens you can add any number of methods annotated with this annotation, Sample :
-
-```java
-@PresenterProxy
-@AutoRoute(token="watch-list/movies")
-public class SampleProxy extends ViewBaseClientPresenter<ViewInterface> {
-    @OnRouting
-    public void doFoo(){
-        //do something here
-    }
-
-    @OnRouting
-    public void doBar(){
-        //do something here
-    }
-}
-```
-
-the generated code will be :
-
-```java
-@StartupTask
-public class SampleProxy_PresenterHistoryListenerTask extends BaseRoutingStartupTask {
-    public SampleProxy_PresenterHistoryListenerTask() {
-        super(Arrays.asList(new DefaultEventAggregator()));
-    }
-
-    @Override
-    protected TokenFilter getTokenFilter() {
-        return TokenFilter.exactMatch("watch-list/movies");
-    }
-
-    @Override
-    protected void onStateReady(DominoHistory.State state) {
-        new SampleProxy_PresenterCommand().onPresenterReady(presenter -> {
-            if(!presenter.isActivated()) {
-                presenter.doFoo();
-                presenter.doBar();
-                presenter.reveal();
-            }
-        } ).send();
-    }
-}
-```
-
-the methods will be called when ever the routing happens in the order of deceleration.
-
-> Annotated methods in super classes will be also included.
-
-#### @RoutingTokenFilter
-
-by default all routing happens with exact match of token, but this can be customized using this annotation on a `static` method that returns a different TokenFilter, this needs to be static since it will be called before the presenter is actually activated or created. Sample :
-
-```java
-@PresenterProxy
-@AutoRoute(token="watch-list/movies")
-public class SampleProxy extends ViewBaseClientPresenter<ViewInterface> {
-    @RoutingTokenFilter
-    public static TokenFilter filter(String token){
-        return TokenFilter.startsWith(token);
-    }
-}
-```
-
-the generated startup task will have the following method :
-
-```java
+/**
+ * This is a generated class, please don't modify
+ */
+@Presenter(
+    name = "simpleViewPresenter",
+    parent = "shell"
+)
+public class SimpleViewPresenter_Presenter extends SimpleViewPresenter {
   @Override
-protected TokenFilter getTokenFilter() {
-        return TokenFilter.startsWith("watch-list/movies");
-        }
+  public Optional<String> getName() {
+    return Optional.of("simpleViewPresenter");
+  }
+
+  @Override
+  public Optional<String> getParent() {
+    return Optional.of("shell");
+  }
+}
 ```
 
-notice how the `exactMatch` now is changed to a call to the annotated method that returns a `startWith`
+Now you can see the `getName` and `getParent` methods are both auto generated, And next we will show how we can define method and bind them to the presenter life-cycle using proxy declarative style :
 
-> the processor will recursively look for a static method annotated as `@FilterToken` starting from the class annotated with `@PresenterProxy` down into the super classes until it find the first match.
 
-#### @StartupTokenFilter
-This is just like the RoutingTokenFilter but will be only applied when we use a direct link to open the application or refresh the page.
+- #### **@PostConstruct**
 
-##### Passing path parameters
+  In a presenter proxy we can annotate as many methods with `@PostConstruct` and they will be called during the presenter post construct life cycle stage.
 
-The token can accept variable parameters values for paths part, query parameters part, and fragments part
+  Example :
 
-example token `/path1/:pathParameter/path3?param1=value1&param2=:value2Param&param3=value3#fargment1/:fragmentParam/fragment3`
+     ```java
+     import javax.annotation.PostConstruct;
 
-in the above token all parts starts with `:` means that the token can accept any value as a substitute for these parameters
+     @PresenterProxy()
+     public class SimpleViewPresenter extends ViewBaseClientPresenter<SimpleView> {
 
-example :
+         @PostConstruct
+         public void doSomething(){
+             //Do something here
+         }
 
-`@AutoRoute(token = "watch-list/movies/:movieName")`
+         @PostConstruct
+         public void doSomethingElse(){
+             //Do another thing here
+         }
+     }
 
-an exact match will accept any value for the `movieName`
-so all the following will actually route to the presenter :
+     ```
 
-`watch-list/movies/alians`
+  Will generate :
 
-`watch-list/movies/titanic`
+     ```java
+     /**
+      * This is a generated class, please don't modify
+      */
+     @Presenter(
+         name = "",
+         parent = ""
+     )
+     public class SimpleViewPresenter_Presenter extends SimpleViewPresenter {
+       @Override
+       protected void postConstruct() {
+         doSomething();
+         doSomethingElse();
+       }
+     }
+     ```
 
-`watch-list/movies/galdiator`
+  Notice how the annotated methods are being called, and the order of the methods calls is the same as hiw they appear in the proxy, also in those methods the view instance will be already created and can be accessed even though it is not yet revealed, for example you can call a method in the view `view.doSomeUiStuff()`.
 
-`watch-list/movies/xyz`
 
-> Most of the token filters will accept and will work with variable parameters in the token, but some will not, like `TokenFilter.containsPaths` which cant determine which part of the token to be normalized with parameter as it takes a set of paths as an argument.
 
-#### Obtaining path parameters and fragment parameters
-#### @RoutingState
+- #### **@OnInit**
 
-when a routing happens you can always obtain an instance of the state token that was responsible of the routing, by obtaining this state you can read the passed variable parameters and query parameters from the token, use the `@RoutingState` annotation on a protected field of type `DominoHistory.State`. Sample
+  In a presenter proxy we can annotate as many methods with `@OnInit` and they will be called during the presenter activation life cycle stage.
+
+  Example :
+
+     ```java
+     import org.dominokit.domino.api.client.annotations.presenter.OnInit;
+
+     @PresenterProxy()
+     public class SimpleViewPresenter extends ViewBaseClientPresenter<SimpleView> {
+
+         @OnInit
+         public void doSomething(){
+             //Do something here
+         }
+
+         @OnInit
+         public void doSomethingElse(){
+             //Do another thing here
+         }
+     }
+     ```
+
+  Will generate :
+
+     ```java
+     /**
+      * This is a generated class, please don't modify
+      */
+     @Presenter(
+         name = "",
+         parent = ""
+     )
+     public class SimpleViewPresenter_Presenter extends SimpleViewPresenter {
+       @Override
+       protected void onActivated() {
+         doSomething();
+         doSomethingElse();
+       }
+     }
+     ```
+
+  Notice how the annotated methods are being called, and the order of the methods calls is the same as hiw they appear in the proxy, also in those methods the view instance will be already created and can be accessed even though it is not yet revealed, for example you can call a method in the view `view.doSomeUiStuff()`.
+
+
+- #### **OnBeforeReveal**
+
+  In a presenter proxy we can annotate as many methods with `@OnBeforeReveal` and they will be called during the presenter before reveal life cycle stage.
+
+  Example :
+
+     ```java
+     import org.dominokit.domino.api.client.annotations.presenter.OnBeforeReveal;
+
+     @PresenterProxy()
+     public class SimpleViewPresenter extends ViewBaseClientPresenter<SimpleView> {
+
+         @OnBeforeReveal
+         public void doSomething(){
+             //Do something here
+         }
+
+         @OnBeforeReveal
+         public void doSomethingElse(){
+             //Do another thing here
+         }
+     }
+
+     ```
+
+  Will generate :
+
+     ```java
+     /**
+      * This is a generated class, please don't modify
+      */
+     @Presenter(
+         name = "",
+         parent = ""
+     )
+     public class SimpleViewPresenter_Presenter extends SimpleViewPresenter {
+       @Override
+       protected void onBeforeReveal() {
+         doSomething();
+         doSomethingElse();
+       }
+     }
+     ```
+
+  Notice how the annotated methods are being called, and the order of the methods calls is the same as hiw they appear in the proxy, also in those methods the view instance will be already created and can be accessed even though it is not yet revealed, for example you can call a method in the view `view.doSomeUiStuff()`.
+
+
+- #### **OnReveal**
+
+  In a presenter proxy we can annotate as many methods with `@OnReveal` and they will be called during the presenter reveal life cycle stage.
+
+  Example :
+
+     ```java
+     import org.dominokit.domino.api.client.annotations.presenter.OnReveal;
+
+     @PresenterProxy()
+     public class SimpleViewPresenter extends ViewBaseClientPresenter<SimpleView> {
+
+         @OnReveal
+         public void doSomething(){
+             //Do something here
+         }
+
+         @OnReveal
+         public void doSomethingElse(){
+             //Do another thing here
+         }
+     }
+
+     ```
+
+  Will generate :
+
+     ```java
+     /**
+      * This is a generated class, please don't modify
+      */
+     @Presenter(
+         name = "",
+         parent = ""
+     )
+     public class SimpleViewPresenter_Presenter extends SimpleViewPresenter {
+       @Override
+       public ViewBaseClientPresenter.RevealedHandler getRevealHandler() {
+         return ()-> {
+           doSomething();
+           doSomethingElse();
+         } ;
+       }
+     }
+     ```
+
+  Notice how the annotated methods are being called, and the order of the methods calls is the same as hiw they appear in the proxy, also in those methods the view instance will be already created and revealed and can be accessed, for example you can call a method in the view `view.doSomeUiStuff()`.
+
+
+- #### **OnRemove**
+
+  In a presenter proxy we can annotate as many methods with `@OnRemove` and they will be called during the presenter remove life cycle stage.
+
+  Example :
+
+     ```java
+     import org.dominokit.domino.api.client.annotations.presenter.OnRemove;
+
+     @PresenterProxy()
+     public class SimpleViewPresenter extends ViewBaseClientPresenter<SimpleView> {
+
+         @OnRemove
+         public void doSomething(){
+             //Do something here
+         }
+
+         @OnRemove
+         public void doSomethingElse(){
+             //Do another thing here
+         }
+     }
+
+     ```
+
+  Will generate :
+
+     ```java
+     /**
+      * This is a generated class, please don't modify
+      */
+     @Presenter(
+         name = "",
+         parent = ""
+     )
+     public class SimpleViewPresenter_Presenter extends SimpleViewPresenter {
+       @Override
+       public ViewBaseClientPresenter.RemovedHandler getRemoveHandler() {
+         return ()-> {
+           doSomething();
+           doSomethingElse();
+         } ;
+       }
+     }
+     ```
+
+  Notice how the annotated methods are being called, and the order of the methods calls is the same as hiw they appear in the proxy, we use the remove methods to do any needed clean-up when the presenter get deactivated.
+
+
+#### Routing
+
+Routing is the process of navigating from one presenter/view to another, but before we discuss routing in domino-mvp we need to understand how presenters are actually being activated.
+
+First we need to know that simply creating a new instance of a presenter will not initialize it correctly, it will not make it go into the life-cycle stages, instead we need to create and initialize the presenter through the domino-mvp framework, which provide a simple mechanism to do so using what is called a **presenter command**, from the name we create and send a command to the framework asking it to activate a presenter for us, each presenter will have its own auto generated command, for example, for the following presenter called `SimplePresenter` there will an auto generated command named `SimplePresenterCommand` and we can use the command to obtain a fully initialized presenter instance like this :
 
 ```java
-@PresenterProxy
-@AutoRoute(token="watch-list/movies/:movieName")
-public class SamplePresenter extends ViewBaseClientPresenter<ViewInterface> {
+new SimplePresenterCommand().onPresenterReady(presenter -> {
+    //Do something with the initialized presenter instance
+}).send();
 
-    @RoutingState
-    protected DominoHistory.State state;
+```
 
-    @OnRouting
-    public void doSomethingWithTheState(){
-        state.normalizedToken().getPathParameter("movieName");
+We send the command and receives an initialized presenter instance in the `onPresenterReady` method, but with this we will need handle the presenter life-cycle manually, so eventhough we can do this its mainly for the framework internal usage.
+
+Routing in domino-mvp is all about sending the presenter command and handling the life-cycle of the presenter.
+
+In Domino-mvp we control the presenter routing through three different mechanisms, **URL Token based routing**, **Events dependency**, and **Parent/Child relation** or a combination of any of the three.
+
+
+- #### **URL Token routing**
+
+  In URL token routing we control the activation of a presenter based on the token presented in the URL bar in the browser -for web implementation-, when a the URL is changed we check if the new URL matchs a token assigned to our presenter and if so we activate it, but before we go into more details lets understand the URL Token:
+
+
+      ###### URL Token
+      
+      The URL token is the string in the URL bar of the browser except the base URL, for example if the URL bar has the string 
+      `http://localhost:8080/path1/path2?query1=value1&query2=value2#fargment1/fragnment2`
+      then the URL token that we will be using is 
+      `/path1/path2?query1=value1&query2=value2#fargment1/fragnment2`
+      
+      and this token devided into 3 different parts : 
+       
+       - The path : `/path1/path2`.
+       - The query : `query1=value1&query2=value2`.
+       - The fragments : `fargment1/fragnment2`.
+
+
+      and we can do routing based on any or a combo of the three parts
+    
+
+    To do a URL token routing we will nill need to listen to the browser URL changes and check if the new URL is a match to what we need to activate the presenter, we assign a token to a presenter using the annotation `@AutoRoute` on a presenter proxy, like the following example : 
+    
+    for the proxy 
+    
+    ```java
+    import org.dominokit.domino.api.client.annotations.presenter.AutoRoute;
+
+    @PresenterProxy
+    @AutoRoute
+    public class SimpleViewPresenter extends ViewBaseClientPresenter<SimpleView> {
     }
-}
-```
+    ```
+    
+    The following presnter will be generated : 
+    
+    ```java
+    /**
+     * This is a generated class, please don't modify
+     */
+    @Presenter(
+        name = "",
+        parent = ""
+    )
+    @AutoRoute(
+        token = "",
+        routeOnce = false,
+        reRouteActivated = false,
+        generateTask = true
+    )
+    @RoutingTask(SimpleViewPresenter_PresenterHistoryListenerTask.class)
+    public class SimpleViewPresenter_Presenter extends SimpleViewPresenter {
+    }
+    ```
+    
+    Notice the defaults in the auto generated proxy, the default token is an empty token, and notice that now we have something called `RotingTask`, the `AutoRoute` annotation will also generate a startup task that registers a listner for the URL changes to activated the presenter when it should be.
+    
+    and the generated task should like the following : 
+    
+    ```java
+    /**
+     * This is a generated class, please don't modify
+     */
+    @StartupTask
+    public class SimpleViewPresenter_PresenterHistoryListenerTask extends BaseNoTokenRoutingStartupTask {
+      public SimpleViewPresenter_PresenterHistoryListenerTask() {
+        super(Arrays.asList(new DefaultEventAggregator()));
+      }
 
-with this you will obtain an instance of the state, the `State` has lots of useful methods to deal with history, we will talk more about this when we talk about dealing with history api in domino-mvp, but now we are interested in the `NormalizedToken` from the state, this contains normalized token and all path and fragment parameters obtained from the URL token, see how we were able to get the movie name from the normalize token.
-
-to get a fragment parameter use `state.normalizedToken().getFragmentParameter("paramName");`
-
-Query parameters are accessible from the actual token so just use `state.token().getQueryParameter("paramName")`
-
-#### Shortcut annotations :
-
-In addition to obtaining routing state, you can use shortcut method to obtain path, fragments or query parameters from the routing state.
-
-`@PathParameter` : use on a protected `String` field to obtain the value of a path parameter.
-`@FragmentParameter` : use on a protected `String` field to obtain the value of a fragment parameter.
-`@QueryParameter` : use on a protected `String` field to obtain the value of a query parameter.
-
-for all three annotation the name of the parameter is the name of field by default, a custom name can be provided in the annotation value if want to use a name different than the field name.
-
-#### @Singleton
-
-adding this annotation on a presenter proxy will make the presenter singleton, which means for the first routing or command to the presenter a new instance will be created, and any later consequent routing or command will use the same instance.
-
-#### Revealing the view
-
-The routing we did before did not attempt to reveal the presenter view content in the page, this because we didnt direct the presenter to do so, we can manually reveal the content using the `reveal()` or `revealInSlot` methods.
-
-the `reveal` method will reveal the view in the slot defined by the `revealSlot` method, while `revealInSlot` will allow you to dynamically pick the slot in which the view will be revealed.
-
-we can enable auto revealing of a view in a declarative way.
-
-#### @AutoRveal
-
-using this annotation will require the `@Slot` annotation to be added on the class or the method `revealSlot` to be implemented, when we add this annotation on the class then when the routing happens the view will be automatically revealed in the designated slot. Sample
-
-```java
-@AutoRoute(token="watch-list/movies/:movieName")
-@AutoReveal
-@Slot("content")
-public class SampleProxy extends ViewBaseClientPresenter<ViewInterface> {
-}
-```
-
-in the generate startup task we will have this code :
-
-```java
-@Override
-protected void onStateReady(DominoHistory.State state) {
-        new SampleProxy_PresenterCommand().onPresenterReady(presenter -> {
-        presenter.reveal();
+      @Override
+      protected void onStateReady(DominoHistory.State state) {
+         new SimpleViewPresenter_PresenterCommand().onPresenterReady(presenter -> {
+          bindPresenter(presenter);
         } ).send();
+      }
+    }
+    ```
+    
+    The generated task in this case will register a listener that listen to any url change and will send the presenter command to activate it, this is because we left the token empty and empty token in domino-mvp means any token, so what ever the URL in the browser such a presenter will always get activated.
+    
+    But if we change the proxy like this : 
+    
+    ```java
+    import org.dominokit.domino.api.client.annotations.presenter.AutoRoute;
+
+    @PresenterProxy
+    @AutoRoute(token = "path1/path2")
+    public class SimpleViewPresenter extends ViewBaseClientPresenter<SimpleView> {
+    }
+    ```
+    
+    The generated task will be like this : 
+    
+    ```java
+    /**
+     * This is a generated class, please don't modify
+     */
+    @StartupTask
+    public class SimpleViewPresenter_PresenterHistoryListenerTask extends BaseRoutingStartupTask {
+      public SimpleViewPresenter_PresenterHistoryListenerTask() {
+        super(Arrays.asList(new DefaultEventAggregator()));
+      }
+
+      @Override
+      protected TokenFilter getTokenFilter() {
+        return TokenFilter.endsWithPathFilter("path1/path2");
+      }
+
+      @Override
+      protected TokenFilter getStartupTokenFilter() {
+        return TokenFilter.startsWithPathFilter("path1/path2");
+      }
+
+      @Override
+      protected void onStateReady(DominoHistory.State state) {
+         new SimpleViewPresenter_PresenterCommand().onPresenterReady(presenter -> {
+          bindPresenter(presenter);
+        } ).send();
+      }
+    }
+    ```
+    
+    Now we have tow token filters being assigned in this task, one of them is for on application start-up (when first time open the applicaton or when we hit the refresh button) and the other is when we do an in application routing, in common cases what is generated is enough but all of this is controled as we will see later.
+    
+    To explain why we have 2 different filters for start-up and in application navigation lets take and example : 
+    
+    Assume we start with an empty token so the url is `http://localhost:8080` and we have 2 presenters **A** and **B**, presenter **A** will be activate by the token `pathA` ans so in our home page we have a link or a button that changes the URL to `http://localhost:8080/pathA` once it does so presenter **A** will be activated and its view should be revealed in the page, now inside **A** view will want to reveal presenter **B** view so we have a link or a button that adds the path `pathB` to the URL making it like this `http://localhost:8080/pathA/pathB` then presenter **B** will be activated and its view will be revealed, now when we added `pathB` we changes the URL and that will also trigger tehe listener for presenter **A** but we dont want to reactivte presnter **A** because it is already active, thats why we say `token ends with pathA`., But what if we hit the refresh button on the browser? `ends with pathA` will not be true and presenter **A** wont be activated, so instead on a refresh we say `token starts with pathA` instead. The idea here is to give you full control over when and how you activated the presenters in different scenarioes.
+    
+    lets focus on the `getTokeFilter` which return a fiter that says the `path ends with` which means the presenter can only be activated if the path part of the URL token ends with the specified token, we can always specify different token filters for our presenter in the proxy using both `@RoutingTokenFilter` and `@StartupTokenFilter` annoations, We add those annotation in the proxy to static methods that take a string token and return a `TokenFilter`
+    
+    For example the proxy below : 
+    
+    ```java
+    import org.dominokit.domino.api.client.annotations.presenter.AutoRoute;
+    import org.dominokit.domino.api.client.annotations.presenter.StartupTokenFilter;
+    import org.dominokit.domino.api.client.annotations.presenter.RoutingTokenFilter;
+
+    @PresenterProxy
+    @AutoRoute(token = "path1/path2")
+    public class SimpleViewPresenter extends ViewBaseClientPresenter<SimpleView> {
+
+        @RoutingTokenFilter
+        public static TokenFilter onRoutingFilter(String token){
+            return TokenFilter.contains(token);
         }
 
-```
-
-notice the call to the reveal method of the presenter.
-
-#### @RevealCondition
-
-Sometimes we need some control over the auto reveal, this is what the `@RevealCondition` annotation is used for, when this annotation is added on a method that returns a `boolean` it will be evaluated before revealing the view if it returns `true` the reveal will happens, otherwise the view will not be revealed. Sample
-
-```java
-@PresenterProxy
-@AutoRoute(token="watch-list/movies/:movieName")
-@AutoReveal
-@Slot("content")
-public class SampleProxy extends ViewBaseClientPresenter<ViewInterface> {
-
-    @RevealCondition
-    public boolean validateOnReveal(){
-        // true  : will reveal the view.
-        // false : view will not be automatically revealed
-        return true;
+        @StartupTokenFilter
+        public static TokenFilter onStartupFilter(String token){
+            return TokenFilter.exactPathFilter(token);
+        }
     }
-}
-```
+    ```
+    
+    Will generate the following task
+    
+    ```java
+    /**
+     * This is a generated class, please don't modify
+     */
+    @StartupTask
+    public class SimpleViewPresenter_PresenterHistoryListenerTask extends BaseRoutingStartupTask {
+      public SimpleViewPresenter_PresenterHistoryListenerTask() {
+        super(Arrays.asList(new DefaultEventAggregator()));
+      }
 
-#### OnBeforeReveal
-Use this annotation on a method to be called right before the view is revealed.
+      @Override
+      protected TokenFilter getTokenFilter() {
+        return SimpleViewPresenter_Presenter.onRoutingFilter("path1/path2");
+      }
 
-#### @PostConstruct
-Use this annotation on any method to be called right after the creation of the presenter and the view but before any reveal or activation events.
+      @Override
+      protected TokenFilter getStartupTokenFilter() {
+        return SimpleViewPresenter_Presenter.onStartupFilter("path1/path2");
+      }
 
-#### @OnStateChange
+      @Override
+      protected void onStateReady(DominoHistory.State state) {
+         new SimpleViewPresenter_PresenterCommand().onPresenterReady(presenter -> {
+          bindPresenter(presenter);
+        } ).send();
+      }
+    }
+    ```
+    
+    Notice how the task is now referencing the annotated methods in the proxy.
+    
+    > The methods must be public static as they will be referenced before an instance of the presenter is actually created.
 
-This annotation allows us to define an event class that extends `ActivationEvent`, when the presenter is activated or deactivated this event will be fired, this is an important feature that allows other parts of the application and the framework to track the presenter state, this feature is used by the framework to satisfy the presenters dependencies on each other. the event will fired automatically.
+    > To learn more about how we listen to URL changes and what kind of token filters we can use, please refer the [Domino-history](https://github.com/DominoKit/domino-history) project.
 
-@DependsOn and @EventsGroup
+    The `@AutoRoute` also has some other parameters to find control the routing behavior : 
+        
+    - **generateTask** : Default is `true`, when it is set to `false` not startup task will be generated so that we can manually write our own customized task.
+    - **routeOnce** : Default is `false`, when set to `true` the URL change listener registered by the routing task will be removed once a routing is completed preventing the routing from happening again, this is usefull for cases where the UI component does not change an remains on the screen all time in regards of how we navigate in the application, example is the application layout.
+    - **reRouteActivated** : Default value is `false`, when set to true even if the presenter is currently active it will deactivated and activated agian.
 
-This annotation allows us to define a dependency for a presenter activation when a routing happen, the `DependsOn` annotation take an array of `EventsGroup` annotations, when ever a routing happens and only when all events in a group are satisfied the presenter will be activated.
 
-Sample :
+     So far we learned how we can assign tokens and token filters to our presenters, next we will learn about how we change the token and how we can have variable tokens, and how we can read information from the token.
+     
+     - ##### Firing token
 
-Assume we have PresenterB that requires PresenterA to run first, then PresenterA will define an `@OnStateChange` event, while PresenterB will depends on that event, then even of the routing to PresenterB happens before presenterA is activated, activation of presenterB will wait until presenterA is activated.
+        In Domino-mvp the URL changes are like the navigation history for our application and therefor we call the navigation as `history` we can obtain an instance of our application navigation history by calling the method `history()` in any presenter/proxy, The history api will allow us to manipulate the URL and will also parse the URL for us.
+        
+        To change the URL we have two options `history().fireState(..)` and `history().pushState(...)` , the fireState will change the URL and publish the events to all listeners including the current active presenter history listener while the pushState will change the URL without firing an event.
+        
+        To change the URL anywhere in the presenter/proxy use `history().fireState(new URL token)` : 
+        
+        ```java
+        public void onNavigationButton(){
+            history().fireState("path1/path2");
+        }
+        ```
+        
+        If the URL had `http://localhost:8080` after that call it will become `http://localhost:8080/path1/paht2`, firing or pushing a new token will always update the whole token, if you want to change the current token you can always obtain the current token in the URL using `history().currentToken()` and do the modification then fire it again, for example if the current token is `http://localhost:8080/path1/paht2` and we want to add `path3` to it we can do it like this : 
+        
+        ```java
+        history().fireState(history().currentToken().appendPath("path3"));
+        ```
+        
+        > To learn the full history api please refere the [Domino-history](https://github.com/DominoKit/domino-history) project.
+
+        
+     - ##### Tokens variables
+
+        Token in general are not just a way to activate the presenters but they also can contains valuable information needed by our presenter to do its job, they are the best way to keep track of the application state between refreshes or restarts, for example assume we have page that show a book details, a URL that might represent this specific book might look like this `http://localhost:8080/books/1234` where `1234` is the ID or a unique identifire, then we take this URL and paste in the browser tab or window URL bar we should endup viewing the same book details.
+        
+        But, it does not make sense to fix the ID in the presenter token as we dont write a presenter for each specific book, instead we need the ID to be a variable and we need to fetch the ID value from the URL so our presnter can tell which book it needs to dispplay.
+        
+        In Domino-mvp we can always fetch all kind of information from the token parts - Path, query or fragments - and use it in the presenter, and we can do routing based on token with wildcards or variables, for example a book details proxy can define the token like the following : 
+        
+        ```java
+        @PresenterProxy
+        @AutoRoute(token = "books/:bookId")
+        public class BookDetailsProxy extends ViewBaseClientPresenter<BookDetailsView> implements     BookDetailsView.BookDetailsUiHandlers {
+        }
+        ```
+        
+        Now as `bookId` is a variable any token that can make up for the variable will activate the presenter, for example : `books/1234`, `books/4356`, `books/someId`, `books/blahblah` are all valid tokens that ill activate that presenter.
+        
+        In a proxy we can obtain the actual value of token variable using annotations for each part of the token :
+        
+        - `@PathParameter` : We use this method to annotate a field in the proxy to hold the actual value of the a path variable, exmple : 
+
+        ```java
+        import org.dominokit.domino.api.client.annotations.presenter.PathParameter;
+
+        @PresenterProxy
+        @AutoRoute(token = "books/:bookId")
+        public class BookProxy extends ViewBaseClientPresenter<BookView> {
+
+            @PathParameter
+            protected String bookId;
+        }
+        ```
+        
+        When the presenter is activated it will assign the actual value of the `:bookId` from the URL token to the annotated field, the name of the field should match the variable name or if we want to use a different name in the field we specify the variable name in the annotation, example : 
+        
+        ```java
+        import org.dominokit.domino.api.client.annotations.presenter.PathParameter;
+
+        @PresenterProxy
+        @AutoRoute(token = "books/:bookId")
+        public class BookProxy extends ViewBaseClientPresenter<BookView> {
+
+            @PathParameter("bookId")
+            protected String id;
+        }
+        ```
+        
+        We can have as many path variables in the token as long as the names of thoses variable does not collide, and we can obtain each path variable in the same way, for example if our book has a composite ID : 
+ 
+        ```java
+        import org.dominokit.domino.api.client.annotations.presenter.PathParameter;
+
+        @PresenterProxy
+        @AutoRoute(token = "books/:bookId/:year")
+        public class BookProxy extends ViewBaseClientPresenter<BookView> {
+
+            @PathParameter
+            protected String bookId;
+            
+            @PathParameter
+            protected String year;
+        }
+        ```
+        
+        
+        - `@QueryParameter` : We use this method to annotate a field in the proxy to hold the actual value of the a query parameters.
+
+        Unlike the path, the query part of the URL may or may not exist in presenter token, for example a presenter with the token `book/:bookId` can be activated by tokens like this `book/:bookId` or like this `book/:bookId?year=2021?author=dominokit`,  In this case the query part of the URL can also have some information the presenter can make use of it, for example for a search, but also unlike the path parameters query paramters does not need to be specified with a variable in the token as they already a pair of key and value by design, in a proxy we can obtain the value of a query parameter like the following :  
+
+        ```java
+        import org.dominokit.domino.api.client.annotations.presenter.PathParameter;
+
+        @PresenterProxy
+        @AutoRoute(token = "books/:bookId")
+        public class BookProxy extends ViewBaseClientPresenter<BookView> {
+
+            @QueryParameter
+            protected List<String> search;
+        }
+        ```
+        
+        Notice that we dont have `search`  in the token but we still can get the value of it if it is present in the URL, also notice that we are using a list here insted of a single string, that is because a query parameter can have multiple values, example `books/123?author=dominokit&author=vegegoku` and therefor we have a list.
+        
+        And same as the path variables, we can have as many query parameters and we can specify the name in the annotation.
+        
+
+         
+        - `@FragmentParameter` : We use this method to annotate a field in the proxy to hold the actual value of the a fragment variable, exmple : 
+
+        ```java
+        import org.dominokit.domino.api.client.annotations.presenter.PathParameter;
+
+        @PresenterProxy
+        @AutoRoute(token = "books/:bookId#:activeTab")
+        public class BookProxy extends ViewBaseClientPresenter<BookView> {
+
+            @FragmentParameter
+            protected String activeTab;
+        }
+        ```
+        
+        Fragment parameters works exactly like the path parameters, but it asign values from the part after the `#` in the url, fragments can be a good choice to implement navigation to a specific section in the page.
+       
+       
+     > In Domino-mvp routing can be achived all parts of the token, but in general we assume that we will use the path for routing from presenter to another, and we use query to hold more information for our presenter that can even be passed to the server, while we expect the fragment to be used for inside same page navigation, but we dont restric using them in anyway you desire.
+

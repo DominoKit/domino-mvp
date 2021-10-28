@@ -48,4 +48,9 @@ public class SingleElementSlot extends ElementSlot {
   public void updateContent(HTMLElement view) {
     element.clearElement().appendChild(view);
   }
+
+  @Override
+  protected HTMLElement getElement() {
+    return element.element();
+  }
 }

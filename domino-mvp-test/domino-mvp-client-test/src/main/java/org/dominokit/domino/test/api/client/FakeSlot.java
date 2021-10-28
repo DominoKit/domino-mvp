@@ -23,27 +23,33 @@ import org.dominokit.domino.api.shared.extension.Content;
 
 public class FakeSlot implements ContentSlot {
 
-  private boolean revealed;
-  private Content<FakeElement> old;
+    private boolean revealed;
+    private Content<FakeElement> old;
+    private String name;
 
-  @Override
-  public void updateContent(HasContent view, HasContent.CreateHandler createHandler) {
-    updateContent(view.getContent(createHandler));
-  }
-
-  @Override
-  public void updateContent(Content view) {
-    if (view.get() instanceof FakeElement) {
-      if (nonNull(old)) {
-        old.get().remove();
-      }
-      this.old = view;
-      ((FakeElement) view.get()).append();
+    @Override
+    public void updateContent(HasContent view, HasContent.CreateHandler createHandler) {
+        updateContent(view.getContent(createHandler));
     }
-    revealed = true;
-  }
 
-  public boolean isRevealed() {
-    return revealed;
-  }
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public void updateContent(Content view) {
+        if (view.get() instanceof FakeElement) {
+            if (nonNull(old)) {
+                old.get().remove();
+            }
+            this.old = view;
+            ((FakeElement) view.get()).append();
+        }
+        revealed = true;
+    }
+
+    public boolean isRevealed() {
+        return revealed;
+    }
 }
