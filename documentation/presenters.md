@@ -442,7 +442,9 @@ Routing in domino-mvp is all about sending the presenter command and handling th
   In URL token routing we control the activation of a presenter based on the token presented in the URL bar in the browser -for web implementation-, when a the URL is changed we check if the new URL matchs a token assigned to our presenter and if so we activate it, but before we go into more details lets understand the URL Token:
 
 
+
       ###### URL Token
+      
       
       The URL token is the string in the URL bar of the browser except the base URL, for example if the URL bar has the string 
       `http://localhost:8080/path1/path2?query1=value1&query2=value2#fargment1/fragnment2`
@@ -993,29 +995,30 @@ Later when we discuss Events we will see how we can listen to and use such event
     When we define a presenter/proxy we can give it a name, then we can use that name to define another presenter/proxy parent, when a presenter has a parent it will not be activated unless its parent is activated, and same as slots presenters that has the same name will be registered in a stack style, meaning a child presenter does not care which presenter is actually activated as long as it has the same name.
 
 
-        Example : 
-        
-        ```java
-        @PresenterProxy(name = "shell")
-        @AutoRoute()
-        @Slot(PredefinedSlots.BODY_SLOT)
-        @AutoReveal
-        @RegisterSlots({Slots.LEFT_PANEL, Slots.CONTENT})
-        public class ShellProxy extends ViewBaseClientPresenter<ShellView> {
+    Example : 
 
-        }
-        ```
-        
-        ```java
-        @PresenterProxy(parent = "shell")
-        @AutoRoute(token = "home")
-        @Slot(Slots.CONTENT)
-        @AutoReveal
-        @OnStateChanged(HomeActivationEvent.class)
-        public class HomeProxy extends ViewBaseClientPresenter<HomeView> implements HomeView.HomeUiHandlers {
+    ```java
+    @PresenterProxy(name = "shell")
+    @AutoRoute()
+    @Slot(PredefinedSlots.BODY_SLOT)
+    @AutoReveal
+    @RegisterSlots({Slots.LEFT_PANEL, Slots.CONTENT})
+    public class ShellProxy extends ViewBaseClientPresenter<ShellView> {
 
-        }
-        ```
+    }
+    ```
+        
+        
+    ```java
+    @PresenterProxy(parent = "shell")
+    @AutoRoute(token = "home")
+    @Slot(Slots.CONTENT)
+    @AutoReveal
+    @OnStateChanged(HomeActivationEvent.class)
+    public class HomeProxy extends ViewBaseClientPresenter<HomeView> implements HomeView.HomeUiHandlers {
+
+    }
+    ```
         
         In this example the home proxy will not be activated until the shell proxy is activated.
         
