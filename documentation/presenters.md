@@ -53,41 +53,41 @@ Viewable presenters are those that are linked with a UI view, both the presenter
 ```java
 @Presenter
 public class SimpleViewPresenter extends ViewBaseClientPresenter<SimpleView> {
-@Override
-protected void postConstruct() {
-}
+  @Override
+  protected void postConstruct() {
+  }
 
-@Override
-protected void onActivated() {
-}
+  @Override
+  protected void onActivated() {
+  }
 
-@Override
-protected void onDeactivated() {
+  @Override
+  protected void onDeactivated() {
 
-}
+  }
 
-@Override
-protected void onBeforeReveal() {
-}
+  @Override
+  protected void onBeforeReveal() {
+  }
 
-@Override
-protected RevealedHandler getRevealHandler() {
-  return () -> {
-    //do something when view revealed
-  };
-}
+  @Override
+  protected RevealedHandler getRevealHandler() {
+    return () -> {
+      //do something when view revealed
+    };
+  }
 
-@Override
-protected RemovedHandler getRemoveHandler() {
-  return () -> {
-    //do something when view is removed
-  };
-}
+  @Override
+  protected RemovedHandler getRemoveHandler() {
+    return () -> {
+      //do something when view is removed
+    };
+  }
 
-@Override
-public Optional<String> getName() {
-  return Optional.of("simpleViewPresenter");
-}
+  @Override
+  public Optional<String> getName() {
+    return Optional.of("simpleViewPresenter");
+  }
 
 }
 ```
@@ -136,8 +136,8 @@ This looks very similar to a normal presenter, and if we look at the generated c
  * This is a generated class, please don't modify
  */
 @Presenter(
-    name = "",
-    parent = ""
+        name = "",
+        parent = ""
 )
 public class SimpleViewPresenter_Presenter extends SimpleViewPresenter {
 
@@ -161,8 +161,8 @@ Then the generated presenter will look like this :
  * This is a generated class, please don't modify
  */
 @Presenter(
-    name = "simpleViewPresenter",
-    parent = "shell"
+        name = "simpleViewPresenter",
+        parent = "shell"
 )
 public class SimpleViewPresenter_Presenter extends SimpleViewPresenter {
   @Override
@@ -427,8 +427,8 @@ First we need to know that simply creating a new instance of a presenter will no
 
 ```java
 new SimplePresenterCommand().onPresenterReady(presenter -> {
-    //Do something with the initialized presenter instance
-}).send();
+        //Do something with the initialized presenter instance
+        }).send();
 
 ```
 
@@ -446,19 +446,19 @@ Routing in domino-mvp is all about sending the presenter command and handling th
      ###### URL Token
       
       
-      The URL token is the string in the URL bar of the browser except the base URL, for example if the URL bar has the string 
+     The URL token is the string in the URL bar of the browser except the base URL, for example if the URL bar has the string 
       `http://localhost:8080/path1/path2?query1=value1&query2=value2#fargment1/fragnment2`
-      then the URL token that we will be using is 
+     then the URL token that we will be using is 
       `/path1/path2?query1=value1&query2=value2#fargment1/fragnment2`
       
-      and this token devided into 3 different parts : 
+     and this token devided into 3 different parts : 
        
-       - The path : `/path1/path2`.
-       - The query : `query1=value1&query2=value2`.
-       - The fragments : `fargment1/fragnment2`.
+     - The path : `/path1/path2`.
+     - The query : `query1=value1&query2=value2`.
+     - The fragments : `fargment1/fragnment2`.
 
 
-      and we can do routing based on any or a combo of the three parts
+     and we can do routing based on any or a combo of the three parts
     
 
     To do a URL token routing we will nill need to listen to the browser URL changes and check if the new URL is a match to what we need to activate the presenter, we assign a token to a presenter using the annotation `@AutoRoute` on a presenter proxy, like the following example : 
@@ -875,14 +875,14 @@ In the above example the layoutProxy is registering two slots `leftPanel` and `m
  * This is a generated class, please don't modify
  */
 @Presenter(
-    name = "",
-    parent = ""
+        name = "",
+        parent = ""
 )
 @AutoRoute(
-    token = "",
-    routeOnce = false,
-    reRouteActivated = false,
-    generateTask = true
+        token = "",
+        routeOnce = false,
+        reRouteActivated = false,
+        generateTask = true
 )
 @RoutingTask(LayoutProxy_PresenterHistoryListenerTask.class)
 @AutoReveal
