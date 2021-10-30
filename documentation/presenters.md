@@ -436,8 +436,6 @@ We send the command and receives an initialized presenter instance in the `onPre
 
 Routing in domino-mvp is all about sending the presenter command and handling the life-cycle of the presenter.
 
-In Domino-mvp we control the presenter routing through three different mechanisms, **URL Token based routing**, **Events dependency**, and **Parent/Child relation** or a combination of any of the three.
-
 
 - #### **URL Token routing**
 
@@ -768,3 +766,281 @@ In Domino-mvp we control the presenter routing through three different mechanism
        
      > In Domino-mvp routing can be achived all parts of the token, but in general we assume that we will use the path for routing from presenter to another, and we use query to hold more information for our presenter that can even be passed to the server, while we expect the fragment to be used for inside same page navigation, but we dont restric using them in anyway you desire.
 
+        
+    In some cases we might need to access the token and the state that was responsible for the presenter activation and read whatever information it has manually, in such we can use `@RoutingState`, example
+    
+    ```java
+    import org.dominokit.domino.api.client.annotations.presenter.RoutingState;
+
+    @PresenterProxy
+    @AutoRoute(token = "books/:bookId")
+    public class BookProxy extends ViewBaseClientPresenter<BookView> {
+
+        @RoutingState
+        protected DominoHistory.State state;
+    }
+    ```
+    
+    We can also use `@OnRouting` to do some logic right after a sucess routinig and before the vie is revealed, example : 
+    
+    ```java
+    import org.dominokit.domino.api.client.annotations.presenter.OnRouting;
+
+    @PresenterProxy
+    @AutoRoute(token = "books/:bookId")
+    public class BookProxy extends ViewBaseClientPresenter<BookView> {
+
+        @RoutingState
+        protected DominoHistory.State state;
+
+        @OnRouting
+        public void doSomething(){
+            //do something after success routing and before view reveal
+        }
+    }
+    ```
+
+
+#### Revealing presenters
+
+Revealing is the process of showing up the view in the application UI, it is normally when the view is attached to the application UI, the revealing is not affected by view visibility as we can reveal views in hidden state, but as long as the view become part of the applicaion UI it is considered revealed - In browser this means the view elements are attached to the DOM -.
+
+The revealing is only for preseneters that inherits from the `ViewBaseClientPresenter`, and revealing a view is part the presenter life cycle as we discussed before, In Domino-mvp we have two options to reveal a presenter view, Auto and Manual, Auto revealing means the view will be revealed as soon as the presenter is activated, while manual means its our job to decide when to reveal the view after the presenter is activated, for example the presenter is activated but then we wait for an event to reveal the view, or we might be waiting for response from the server.
+
+For automatic revealing we use the annotation `@AutoReveal` on the proxy, like the following :
+
+```java
+import org.dominokit.domino.api.client.annotations.presenter.AutoReveal;
+
+@PresenterProxy
+@AutoRoute(token = "books/:bookId")
+@AutoReveal
+public class BookProxy extends ViewBaseClientPresenter<BookView> {
+
+}
+```
+
+- ##### Reveal condition :
+
+  We can use the `@RevealCondition` to conditionally control auto revealing of a presenter, we annotate a method that returns a boolean and it will be evaluated before revealing the view if it returns true the auto reveal happens, otherwise the view will not, example :
+
+    ```java
+    import org.dominokit.domino.api.client.annotations.presenter.RevealCondition;
+    import org.dominokit.domino.api.client.annotations.presenter.AutoReveal;
+
+    @PresenterProxy
+    @AutoRoute(token = "books/:bookId")
+    @AutoReveal
+    public class BookProxy extends ViewBaseClientPresenter<BookView> {
+
+        @RevealCondition
+        public boolean shouldReveal() {
+            // true  : will reveal the view.
+            // false : view will not be automatically revealed
+            return true;
+        }
+    }
+
+    ```
+- ##### Manual revealing :
+
+  To manually revealing a presenter we will just need to call its public method `reveal()`.
+
+
+#### Slots
+
+While reveal is about when to reveal the presenter view, slots are about where to reveal it, a slot in Domino-mvp is a named part of the current view of the application, which can hold one or more other elements, presenters can do two things with slots, they can register slots or they can be revealed in a slot, first we will see how we can register slots using the `@RegisterSlots` annotation :
+
+
+- ##### Registering slots
+
+
+```java
+@PresenterProxy
+@AutoRoute
+@AutoReveal
+@RegisterSlots({"leftPanel", "mainPanel"})
+public class LayoutProxy extends ViewBaseClientPresenter<BookView> {
+
+}
+```
+
+In the above example the layoutProxy is registering two slots `leftPanel` and `mainPanel` and now it is the job of the presenter view to implement the methods that will create the slots and the presenter will assign those names to the created slots, you can see how we do this if we check on the generated code from such a presenter :
+
+```java
+
+/**
+ * This is a generated class, please don't modify
+ */
+@Presenter(
+    name = "",
+    parent = ""
+)
+@AutoRoute(
+    token = "",
+    routeOnce = false,
+    reRouteActivated = false,
+    generateTask = true
+)
+@RoutingTask(LayoutProxy_PresenterHistoryListenerTask.class)
+@AutoReveal
+public class LayoutProxy_Presenter extends LayoutProxy {
+  @Override
+  protected SlotsEntries getSlots() {
+    SlotsEntries slotsEntries = SlotsEntries.create();
+    slotsEntries.add("leftPanel", view.getLeftPanelSlot());
+    slotsEntries.add("mainPanel", view.getMainPanelSlot());
+    return slotsEntries;
+  }
+}
+```
+
+Notice the calls to the view that each should return a slot, and in order to avoid any type errors in case we change our registered slots name we also generate an interface that can be extended by the presenter view interface, so will get a compile error if such change happens without changing the implementation :
+
+```java
+import org.dominokit.domino.api.client.mvp.slots.IsSlot;
+
+public interface LayoutProxySlots {
+  IsSlot<?> getLeftPanelSlot();
+
+  IsSlot<?> getMainPanelSlot();
+}
+
+```
+
+What kind of slot we are registering and element is assigned to that slot is up to the view to decide, since the presenter dont need to know about UI details, but we need to knoRegistering slotsRegistering slotsw that slots can have different types andRRegRegistering slotsistering slotsegistering slots behaviors.
+
+Slots registered by a presenter can be overrided by another presenter, but this does not mean the original one is actually removed from the slot registery, slots with the same name will be registered in stack and the next presenter that should be revealed on that slot name will pop the the slot from the top of the stack, for example, presebter A registered a slot named `content` then preseneter B got activated and should be revealed in slot `content` so it will use the slot to reveal the its view, now presenter C which should be revealed in `content` got activated and also registered two new slots , `leftPanel` and `content` again, now presenter B got activated again wihtout deactivating presenter C, this time presenter B will be revealed in the `content` slot defined by C instead of `content` slot registered by A. this give us a lot of flexibility with layouts.
+
+
+- ##### Slot type
+
+A slot evantually will be registered with a specific name, but slots are actual classes that can have different behaviors, all slots are implementation os the `IsSlot` interface, which has one mandatory method to implement `updateContent` and an optional method `cleanUp`, the first will be called when the view is being revealed to update the slot content, while the other is called when the presnter is deactivated.
+
+Some of the pre-defined slots in Domino-mvp that are all related to web browser environment are :
+
+
+- ###### SingleElementSlot :
+  Extends from the base class `ElementSlot` and allow only one root element in it, updating the content of this slot with a new element will automatically remove the old content.
+- ###### AppendElementSlot :
+  Extends from base class `ElementSlot` and allows maulitple root elements to added to it, updating the content of such slot will keep the old content and will append the new content after the old content, the clear the slot or to remove and element from it we need to explicitily remove them manually.
+
+In addition to those types there is also another slot types that will have an entry registered for them by default :
+
+- ###### BodyElementSlot :
+  Implements the `ContentSlot` interface and is assigned to the document body element, and cant be assinged to other elements, this slot will allow only one root element in it just like the SingleElementSlot, a slot of this type will be registerd by default on application startup under the name `body-slot` the name of the slot can be accessed as constant through `org.dominokit.domino.api.shared.extension.PredefinedSlots#BODY_SLOT`.
+
+
+- ###### ModalSlot :
+  Implements the `ContentSlot` interface and is not assigned to any element nor it can be assigned to a specific element, the same slot can be used to show as many pop-ups or modals as we want, a slot of this type will be registerd by default on application startup under the name `modal-slot` the name of the slot can be accessed as constant through `org.dominokit.domino.api.shared.extension.PredefinedSlots#MODAL_SLOT`.
+
+
+- ###### FakeSlot :
+  Implements the `ContentSlot` interface and is only used in testing, we will discuss this slot more when we talk about testing.
+
+
+    Despite the fact that those slots type are sufficient to implement most of the use cases, the users of Domino-mvp can implement any kind of slot with thier custom logic, for example, a slot that allows N elements to be appended before it starts recycle from the first appended element.
+    
+    
+    So far we talked about registering slots and slot types, next is how we tell a presenter in which slot it will be revealed.
+
+
+- ##### Revealing in slots :
+
+  To reveal a presenter in a specific slot we use the `@Slot` annotation, this annotation take one mandatory argument which is the slot name :
+
+    ```java
+    import org.dominokit.domino.api.client.annotations.presenter.Slot;
+
+    @PresenterProxy
+    @AutoRoute(token = "home")
+    @Slot("content")
+    @AutoReveal
+    public class HomeProxy extends ViewBaseClientPresenter<HomeView> implements HomeView.HomeUiHandlers {
+
+    }
+    ```
+
+  When this presenter is activated it will try to reveal its view in a slot name `content`, if such slot is not found we will get a runtime error.
+
+
+- #### Presenter state events
+
+We can make a presenter to fire an event when ever it is activated/deactivated to track it is state from other parts of the application, we do this using the `@OnStateChange` annotation which takes a single argument that represent the event class that extends from `ActivationEvent`, if we add such annoation to the presenter, the even will be auto fired when the presenter is activated/deactivated.
+
+```java
+
+import org.dominokit.domino.api.client.annotations.presenter.OnStateChanged;
+
+@PresenterProxy
+@AutoRoute(token = "home")
+@Slot("content")
+@AutoReveal
+@OnStateChanged(HomeActivationEvent.class)
+public class HomeProxy extends ViewBaseClientPresenter<HomeView> implements HomeView.HomeUiHandlers {
+
+}
+```
+
+Later when we discuss Events we will see how we can listen to and use such events.
+
+
+- #### Presenter dependency
+
+  In an actual application we will have more than just a single presenter, and those presenters sometime needs to depend on each other, for example items list presenter will need the layout to be already active and revealed so it can reveal its view in the layout content panel, or a presenter needs to wait for another to be activated and update some context, when we have such case we use different approaches to make such dependency work :
+
+  - ##### Parent/child dependency
+    When we define a presenter/proxy we can give it a name, then we can use that name to define another presenter/proxy parent, when a presenter has a parent it will not be activated unless its parent is activated, and same as slots presenters that has the same name will be registered in a stack style, meaning a child presenter does not care which presenter is actually activated as long as it has the same name.
+
+
+        Example : 
+        
+        ```java
+        @PresenterProxy(name = "shell")
+        @AutoRoute()
+        @Slot(PredefinedSlots.BODY_SLOT)
+        @AutoReveal
+        @RegisterSlots({Slots.LEFT_PANEL, Slots.CONTENT})
+        public class ShellProxy extends ViewBaseClientPresenter<ShellView> {
+
+        }
+        ```
+        
+        ```java
+        @PresenterProxy(parent = "shell")
+        @AutoRoute(token = "home")
+        @Slot(Slots.CONTENT)
+        @AutoReveal
+        @OnStateChanged(HomeActivationEvent.class)
+        public class HomeProxy extends ViewBaseClientPresenter<HomeView> implements HomeView.HomeUiHandlers {
+
+        }
+        ```
+        
+        In this example the home proxy will not be activated until the shell proxy is activated.
+        
+    - ##### Event dependency
+        The activation of a presenter can be made so it depends on events being fired, all such events needs to extend from `ActivationEvent` and the presenter can depend on one or more events to fired, we define such dependency using the `@DependsOn` and `@EventsGroup` annotations : 
+        
+        ```java
+        import org.dominokit.domino.api.client.annotations.presenter.DependsOn;
+        import org.dominokit.domino.api.client.annotations.presenter.EventsGroup;
+
+        @PresenterProxy(parent = "shell")
+        @AutoRoute
+        @Slot(Slots.CONTENT)
+        @AutoReveal
+        @DependsOn({
+                @EventsGroup({UserLoggedInEvent.class, AuthenticationEvent.class}),
+                @EventsGroup(UserLoggedOutEvent.class)
+        })
+        public class NotificationProxy extends ViewBaseClientPresenter<HomeView> implements HomeView.HomeUiHandlers {
+
+        }
+        ```
+        
+        In this example the presenter will not be activated unless either both of `UserLoggedInEvent` and `AuthenticationEvent` are fired or `UserLoggedOutEvent` is fired, the events in the same group will must all be fired but at least only one events group needs to be fired to activate the presenter, - events in same group uses `AND` while between groups it is `OR` -
+        And as we discussed in presenter state events, presenter can auto fire presenter state events, and we make other presenters depends on those events we actually make them depend on those presenters.
+        
+    - ##### Manual dependency
+        Knowing the life-cycle of presenters and knowing how we can actuall do routing for presenters , we can always make presenters depends on other presenters by manually firing events, change the URL token or even manually trigger other presenters commands.
