@@ -1026,22 +1026,22 @@ Later when we discuss Events we will see how we can listen to and use such event
 - ##### Event dependency
   The activation of a presenter can be made so it depends on events being fired, all such events needs to extend from `ActivationEvent` and the presenter can depend on one or more events to fired, we define such dependency using the `@DependsOn` and `@EventsGroup` annotations :
 
-      ```java
-      import org.dominokit.domino.api.client.annotations.presenter.DependsOn;
-      import org.dominokit.domino.api.client.annotations.presenter.EventsGroup;
+  ```java
+  import org.dominokit.domino.api.client.annotations.presenter.DependsOn;
+  import org.dominokit.domino.api.client.annotations.presenter.EventsGroup;
 
-      @PresenterProxy(parent = "shell")
-      @AutoRoute
-      @Slot(Slots.CONTENT)
-      @AutoReveal
-      @DependsOn({
-              @EventsGroup({UserLoggedInEvent.class, AuthenticationEvent.class}),
-              @EventsGroup(UserLoggedOutEvent.class)
-      })
-      public class NotificationProxy extends ViewBaseClientPresenter<HomeView> implements HomeView.HomeUiHandlers {
+  @PresenterProxy(parent = "shell")
+  @AutoRoute
+  @Slot(Slots.CONTENT)
+  @AutoReveal
+  @DependsOn({
+          @EventsGroup({UserLoggedInEvent.class, AuthenticationEvent.class}),
+          @EventsGroup(UserLoggedOutEvent.class)
+  })
+  public class NotificationProxy extends ViewBaseClientPresenter<HomeView> implements HomeView.HomeUiHandlers {
 
-      }
-      ```
+  }
+  ```
 
   In this example the presenter will not be activated unless either both of `UserLoggedInEvent` and `AuthenticationEvent` are fired or `UserLoggedOutEvent` is fired, the events in the same group will must all be fired but at least only one events group needs to be fired to activate the presenter, - events in same group uses `AND` while between groups it is `OR` -
   And as we discussed in presenter state events, presenter can auto fire presenter state events, and we make other presenters depends on those events we actually make them depend on those presenters.
