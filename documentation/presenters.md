@@ -1021,84 +1021,85 @@ Later when we discuss Events we will see how we can listen to and use such event
     ```
         
         In this example the home proxy will not be activated until the shell proxy is activated.
-        
-    - ##### Event dependency
-        The activation of a presenter can be made so it depends on events being fired, all such events needs to extend from `ActivationEvent` and the presenter can depend on one or more events to fired, we define such dependency using the `@DependsOn` and `@EventsGroup` annotations : 
-        
-        ```java
-        import org.dominokit.domino.api.client.annotations.presenter.DependsOn;
-        import org.dominokit.domino.api.client.annotations.presenter.EventsGroup;
 
-        @PresenterProxy(parent = "shell")
-        @AutoRoute
-        @Slot(Slots.CONTENT)
-        @AutoReveal
-        @DependsOn({
-                @EventsGroup({UserLoggedInEvent.class, AuthenticationEvent.class}),
-                @EventsGroup(UserLoggedOutEvent.class)
-        })
-        public class NotificationProxy extends ViewBaseClientPresenter<HomeView> implements HomeView.HomeUiHandlers {
 
-        }
-        ```
-        
-        In this example the presenter will not be activated unless either both of `UserLoggedInEvent` and `AuthenticationEvent` are fired or `UserLoggedOutEvent` is fired, the events in the same group will must all be fired but at least only one events group needs to be fired to activate the presenter, - events in same group uses `AND` while between groups it is `OR` -
-        And as we discussed in presenter state events, presenter can auto fire presenter state events, and we make other presenters depends on those events we actually make them depend on those presenters.
-        
-    - ##### Manual dependency
-        Knowing the life-cycle of presenters and knowing how we can actuall do routing for presenters , we can always make presenters depends on other presenters by manually firing events, change the URL token or even manually trigger other presenters commands.
+- ##### Event dependency
+  The activation of a presenter can be made so it depends on events being fired, all such events needs to extend from `ActivationEvent` and the presenter can depend on one or more events to fired, we define such dependency using the `@DependsOn` and `@EventsGroup` annotations :
+
+      ```java
+      import org.dominokit.domino.api.client.annotations.presenter.DependsOn;
+      import org.dominokit.domino.api.client.annotations.presenter.EventsGroup;
+
+      @PresenterProxy(parent = "shell")
+      @AutoRoute
+      @Slot(Slots.CONTENT)
+      @AutoReveal
+      @DependsOn({
+              @EventsGroup({UserLoggedInEvent.class, AuthenticationEvent.class}),
+              @EventsGroup(UserLoggedOutEvent.class)
+      })
+      public class NotificationProxy extends ViewBaseClientPresenter<HomeView> implements HomeView.HomeUiHandlers {
+
+      }
+      ```
+
+  In this example the presenter will not be activated unless either both of `UserLoggedInEvent` and `AuthenticationEvent` are fired or `UserLoggedOutEvent` is fired, the events in the same group will must all be fired but at least only one events group needs to be fired to activate the presenter, - events in same group uses `AND` while between groups it is `OR` -
+  And as we discussed in presenter state events, presenter can auto fire presenter state events, and we make other presenters depends on those events we actually make them depend on those presenters.
+
+- ##### Manual dependency
+  Knowing the life-cycle of presenters and knowing how we can actuall do routing for presenters , we can always make presenters depends on other presenters by manually firing events, change the URL token or even manually trigger other presenters commands.
 
 
 - #### Singleton presenters
 
-In some cases we might need to cache the presenter/view instances, because we dont want re-render the view every time the presenter got activated or there is a state in our presenter that we need to preserve, in such cases we can mark the presenter as a singleton presenter using `@Singleton(true)`, for a singleton presenter the same instance of the presenter and the view will be used and wont create a new instance with every activation.
+  In some cases we might need to cache the presenter/view instances, because we dont want re-render the view every time the presenter got activated or there is a state in our presenter that we need to preserve, in such cases we can mark the presenter as a singleton presenter using `@Singleton(true)`, for a singleton presenter the same instance of the presenter and the view will be used and wont create a new instance with every activation.
 
 
 - #### Presenters inheritance
 
-One of the things that we might have noticed that we are using different annotations for different settings on a proxy instead of using a single annotation with more arguments, this is because those settings can be inherited from base proxy classes, Domino-mvp will look for the annotations in the whole class tree, for example you can make a base proxy class and annotate it with `@AutoReveal` then for all proxy classes that inherits from that class will be AutoReveal even if you dont specify the annotation directly on them, same for all other annotations, except the `@PresenterProxy` since it is what actually make the class a proxy.
+  One of the things that we might have noticed that we are using different annotations for different settings on a proxy instead of using a single annotation with more arguments, this is because those settings can be inherited from base proxy classes, Domino-mvp will look for the annotations in the whole class tree, for example you can make a base proxy class and annotate it with `@AutoReveal` then for all proxy classes that inherits from that class will be AutoReveal even if you dont specify the annotation directly on them, same for all other annotations, except the `@PresenterProxy` since it is what actually make the class a proxy.
 
-And this is not only for the class level annotations, but also for all annotations that goes into the class methods, so `@PostConstruct`, `@OnInit`, `@OnBeforeReveal`, `@OnReveal`, `@OnRemove`, `@RevealCondition` ...etc and all annotations that we will study as we go with this documentation works on base classes unless we specify that they dont, this will give you a lot of power when you want to implement common behaviors in your application.
+  And this is not only for the class level annotations, but also for all annotations that goes into the class methods, so `@PostConstruct`, `@OnInit`, `@OnBeforeReveal`, `@OnReveal`, `@OnRemove`, `@RevealCondition` ...etc and all annotations that we will study as we go with this documentation works on base classes unless we specify that they dont, this will give you a lot of power when you want to implement common behaviors in your application.
 
-For example, what if I want to register some audit log when ever a user navigated to a view that should be logged, it would be a too much to implement this behavior in every view, so instead we can do something like this :
+  For example, what if I want to register some audit log when ever a user navigated to a view that should be logged, it would be a too much to implement this behavior in every view, so instead we can do something like this :
 
-The base class
+  The base class
 
-```java
-@Slot("content")
-@AutoReveal
-public abstract class AuditLogProxy<V extends View> extends ViewBaseClientPresenter<V> {
+    ```java
+    @Slot("content")
+    @AutoReveal
+    public abstract class AuditLogProxy<V extends View> extends ViewBaseClientPresenter<V> {
 
-    @PathParameter
-    String viewName;
+        @PathParameter
+        String viewName;
 
-    @OnReveal
-    public void auditLog(){
-        //send audit log to the server
+        @OnReveal
+        public void auditLog(){
+            //send audit log to the server
+        }
     }
-}
 
-```
+    ```
 
-Then child classes could be something like this :
+  Then child classes could be something like this :
 
-```java
-@PresenterProxy
-@AutoRoute(token = "app/foo/:viewName")
-public class ScreenFooProxy extends AuditLogProxy<ScreenFooView> {
+    ```java
+    @PresenterProxy
+    @AutoRoute(token = "app/foo/:viewName")
+    public class ScreenFooProxy extends AuditLogProxy<ScreenFooView> {
 
-}
+    }
 
-```
+    ```
 
 
-```java
-@PresenterProxy
-@AutoRoute(token = "app/bar/:viewName")
-public class ScreenBarProxy extends AuditLogProxy<ScreenBarView> {
+    ```java
+    @PresenterProxy
+    @AutoRoute(token = "app/bar/:viewName")
+    public class ScreenBarProxy extends AuditLogProxy<ScreenBarView> {
 
-}
+    }
 
-```
+    ```
 
 and they will inherits what ever settings from the parent class annotations.
