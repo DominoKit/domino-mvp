@@ -1102,4 +1102,4 @@ Later when we discuss Events we will see how we can listen to and use such event
 
     ```
 
-and they will inherits what ever settings from the parent class annotations.
+and they will inherit what ever settings from the parent class annotations.
