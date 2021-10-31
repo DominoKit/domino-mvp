@@ -73,7 +73,7 @@ The prerequisites for working with Domino-mvp are `Maven` and `Java 8 or 11` onc
 
 
 - ##### Running the API server
-  **In case an api module was generated you can run it by following below instructions :
+  **In case an api module was generated you can run it by following below instructions** :
 
     - In a separate terminal `cd {appname}-api` and from there follow the readme file inside `{appname}-api` module
 
