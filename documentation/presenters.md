@@ -136,8 +136,8 @@ This looks very similar to a normal presenter, and if we look at the generated c
  * This is a generated class, please don't modify
  */
 @Presenter(
-        name = "",
-        parent = ""
+    name = "",
+    parent = ""
 )
 public class SimpleViewPresenter_Presenter extends SimpleViewPresenter {
 
@@ -161,8 +161,8 @@ Then the generated presenter will look like this :
  * This is a generated class, please don't modify
  */
 @Presenter(
-        name = "simpleViewPresenter",
-        parent = "shell"
+    name = "simpleViewPresenter",
+    parent = "shell"
 )
 public class SimpleViewPresenter_Presenter extends SimpleViewPresenter {
   @Override
@@ -427,8 +427,8 @@ First we need to know that simply creating a new instance of a presenter will no
 
 ```java
 new SimplePresenterCommand().onPresenterReady(presenter -> {
-        //Do something with the initialized presenter instance
-        }).send();
+    //Do something with the initialized presenter instance
+}).send();
 
 ```
 
@@ -875,14 +875,14 @@ In the above example the layoutProxy is registering two slots `leftPanel` and `m
  * This is a generated class, please don't modify
  */
 @Presenter(
-        name = "",
-        parent = ""
+    name = "",
+    parent = ""
 )
 @AutoRoute(
-        token = "",
-        routeOnce = false,
-        reRouteActivated = false,
-        generateTask = true
+    token = "",
+    routeOnce = false,
+    reRouteActivated = false,
+    generateTask = true
 )
 @RoutingTask(LayoutProxy_PresenterHistoryListenerTask.class)
 @AutoReveal
@@ -1047,3 +1047,58 @@ Later when we discuss Events we will see how we can listen to and use such event
         
     - ##### Manual dependency
         Knowing the life-cycle of presenters and knowing how we can actuall do routing for presenters , we can always make presenters depends on other presenters by manually firing events, change the URL token or even manually trigger other presenters commands.
+
+
+- #### Singleton presenters
+
+In some cases we might need to cache the presenter/view instances, because we dont want re-render the view every time the presenter got activated or there is a state in our presenter that we need to preserve, in such cases we can mark the presenter as a singleton presenter using `@Singleton(true)`, for a singleton presenter the same instance of the presenter and the view will be used and wont create a new instance with every activation.
+
+
+- #### Presenters inheritance
+
+One of the things that we might have noticed that we are using different annotations for different settings on a proxy instead of using a single annotation with more arguments, this is because those settings can be inherited from base proxy classes, Domino-mvp will look for the annotations in the whole class tree, for example you can make a base proxy class and annotate it with `@AutoReveal` then for all proxy classes that inherits from that class will be AutoReveal even if you dont specify the annotation directly on them, same for all other annotations, except the `@PresenterProxy` since it is what actually make the class a proxy.
+
+And this is not only for the class level annotations, but also for all annotations that goes into the class methods, so `@PostConstruct`, `@OnInit`, `@OnBeforeReveal`, `@OnReveal`, `@OnRemove`, `@RevealCondition` ...etc and all annotations that we will study as we go with this documentation works on base classes unless we specify that they dont, this will give you a lot of power when you want to implement common behaviors in your application.
+
+For example, what if I want to register some audit log when ever a user navigated to a view that should be logged, it would be a too much to implement this behavior in every view, so instead we can do something like this :
+
+The base class
+
+```java
+@Slot("content")
+@AutoReveal
+public abstract class AuditLogProxy<V extends View> extends ViewBaseClientPresenter<V> {
+
+    @PathParameter
+    String viewName;
+
+    @OnReveal
+    public void auditLog(){
+        //send audit log to the server
+    }
+}
+
+```
+
+Then child classes could be something like this :
+
+```java
+@PresenterProxy
+@AutoRoute(token = "app/foo/:viewName")
+public class ScreenFooProxy extends AuditLogProxy<ScreenFooView> {
+
+}
+
+```
+
+
+```java
+@PresenterProxy
+@AutoRoute(token = "app/bar/:viewName")
+public class ScreenBarProxy extends AuditLogProxy<ScreenBarView> {
+
+}
+
+```
+
+and they will inherits what ever settings from the parent class annotations.

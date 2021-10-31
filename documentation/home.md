@@ -30,6 +30,8 @@ With Domino-mvp you will value the help type-safety provided by the language -Ja
     * [Slots](presenters.md#slots)
     * [Presenter state](presenters.md#Presenter-state-events)
     * [Presenter dependency](presenters.md#presenter-dependency)
+    * [Singleton presenters](presenters.md#singleton-presenters)
+    * [Presenters inheritance](presenters.md#presenters-inheritance)
 * [Events](events.md)
 * [Views](views.md)
     * [UI handlers](ui_handlers.md)
