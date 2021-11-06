@@ -18,7 +18,7 @@ The prerequisites for working with Domino-mvp are `Maven` and `Java 8 or 11` onc
     
     - **{appname}-backend** : This is the default server-side of the application that is responsible for serving static resources including the JavaScript generated from the front-end module. 
     
-    - **{appname}-api** : This is another optional server-side module that is responsible about handling REST calls and other server-side business logic, Having such module can useful in cases we want to separate our UI from the API so we can deploy them to different servers and scale them separately, you skip the generation of such module by passing the flag `--api false` in the above command.
+    - **{appname}-api** : This is another optional server-side module that is responsible for handling REST calls and other server-side business logic, Having such module can useful in cases we want to separate our UI from the API so we can deploy them to different servers and scale them separately, you skip the generation of such module by passing the flag `--api false` in the above command.
 
     > To learn more about the options provided in the command line, checkout domino-cli [readme file](https://github.com/DominoKit/domino-cli/blob/master/README.md)
 
