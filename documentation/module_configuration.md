@@ -24,6 +24,7 @@ public class ShellClientModule implements EntryPoint {
 }
 
 ```
+> The `@ClientModule` annotation works on other classes or package-info, so in case we don't want to use modules entry-points, we still can auto generate the code and manually call it in the main entry-point of the application.
 
 > You will hardly need to learn about the generated code but, you can take a look to understand more, mostly it is some calls to internal apis to register and setup things.
  

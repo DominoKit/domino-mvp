@@ -18,12 +18,11 @@ The prerequisites for working with Domino-mvp are `Maven` and `Java 8 or 11` onc
     
     - **{appname}-backend** : This is the default server-side of the application that is responsible for serving static resources including the JavaScript generated from the front-end module. 
     
-    - **{appname}-api** : This is another optional server-side module that is responsible about handling REST calls and other server-side business logic, Having such module can useful in cases we want to separate our UI from the API so we can deploy them to different servers and scale them separately, you skip the generation of such module by passing the flag `--api false` in the above command.
+    - **{appname}-api** : This is another optional server-side module that is responsible about handling REST calls and other server-side business logic, Having such module can be useful in cases we want to separate our UI from the API, as we can deploy them to different servers and scale them separately, you can skip the generation of such module by passing the flag `--api false` in the above command.
 
-    > To learn more about the options provided in the command line, checkout domino-cli [readme file](https://github.com/DominoKit/domino-cli/blob/master/README.md)
+    > To learn more about the options provided by the command line, checkout domino-cli [readme file](https://github.com/DominoKit/domino-cli/blob/master/README.md)
 
-  The generated application so far is just a skeleton and does not include any pages, we will need to create a domino-mvp module to building a page in our new application.
-
+  The generated application so far is just a skeleton and does not include any screens, we will need to create a domino-mvp module to add a screen to the application.
 
 - Inside the project root folder execute the following command to create a new module :
   ```bash
@@ -31,15 +30,15 @@ The prerequisites for working with Domino-mvp are `Maven` and `Java 8 or 11` onc
   ```
   > Replace the `[module name]` with your desired module name, this will be also used as the artifactId in the generated module, and replace `[sub-package]` with your desired package, this package will be appended to the project groupId.
 
-  The command above will generate a maven module inside the project and generated module will have 3 sub-modules inside :
+  The command above will generate a maven module inside the project, the generated module will have 3 sub-modules inside :
 
-  - **{module-name}-forntend**: In this module we will be adding our presenters, handle the routing logic, make REST calls, add startup tasks, and respond to view events, but we will not add nay UI code here.
+  - **{module-name}-forntend**: In this module we will be adding our presenters, handle the routing logic, make REST calls, add startup tasks, and respond to view events, but we will not add any UI code here.
 
   - **{module-name}-frontend-ui**: In this module we implement the views and UI components, we will also send UI events to the presenters, we will avoid having business logic in this part. 
 
   - **{module-name}-shared**: In this module will add out POJOs/DTOs and there JSON mappers, Jax-rs interfaces, events classes.
     
-    > If you are not familiar with maven multi-modules we also have another option to merge and combine all above modules in a single one, we will cover this in another part of the documentation, but multi-modules is the recommended way to work with domino-mvp.
+    > If you are not familiar with maven multi-modules we also have another option to merge and combine all above modules in a single one.
    
     > The domino-cli module command have another option to generate a 4th module `[app-name]-backend` that we can use to write module specific backend code/configurations. 
 
@@ -77,4 +76,4 @@ The prerequisites for working with Domino-mvp are `Maven` and `Java 8 or 11` onc
 
     - In a separate terminal `cd {appname}-api` and from there follow the readme file inside `{appname}-api` module
 
-    > IDEA Intellij users once import the project into the IDE will find a pre-generated run-configurations and can just select the `Development` run-configuration and hit the run button.
+    > IDEA Intellij users after importing the project into the IDE will find a pre-generated run-configurations and can just select the `Development` run-configuration and hit the run button.

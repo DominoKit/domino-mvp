@@ -1,11 +1,13 @@
 ## Startup tasks
 
-In a Domino-mvp application we can create a register as many startup tasks as we want, after we call `ClientApp.mak().run()` in the main entry point and after we configure all application module only all startup tasks will be executed before any presenter can be activated.
+In a Domino-mvp application we can create and register as many startup tasks as we want, after we call `ClientApp.mak().run()` in the main entry point, and after we configure all application module only, all startup tasks will be executed before any presenter can be activated.
 
-Startup tasks are useful for doing application specific configuration or loading lookups for example and we have 2 types of startup tasks, `ClientStartupTask` -simple startup task- and `AsyncClientStartupTask` :
+Startup tasks are useful for doing application specific configuration or loading lookups for example.
+
+There is rwo types of startup tasks, `ClientStartupTask` -simple startup task- and `AsyncClientStartupTask` :
 
 - #### Simple startup task
-    We can add a startup task to our application implementing `ClientStartupTask` and annotate the class with `@StartupTask` then we add our task logic in the execute method, there is nothing special here and such task will be just executed during our application bootstrap :
+    We can add a startup task to our application by implementing `ClientStartupTask` and annotate the class with `@StartupTask`, then we add our task logic in the execute method, there is nothing special here, such task will be executed during our application bootstrap :
 
     ```java
     @StartupTask
@@ -18,9 +20,9 @@ Startup tasks are useful for doing application specific configuration or loading
     ```
 
 - #### Async startup tasks
-  Sometimes we might need to do some async work inside a startup task, like doing a REST request to the server to fetch some data, in this case we might be interested in blocking the bootstrapping of the application until the data request is succeeded and data is processed in this case we create an Async startup task by extending from the `AsyncClientStartupTask` and annotate the class with `@StartupTask`, then in the execute method we add our logic, but for Async tasks we must call the `complete` method to mark the task as completed, and until we do so the task will block the application bootstrapping.
+  Sometimes we might need to do some async work inside a startup task, like doing a REST request to the server to fetch some data, in this case we might be interested in blocking the bootstrapping of the application until the data request is succeeded and data is processed, in this case we create an Async startup task by extending from the `AsyncClientStartupTask` and annotate the class with `@StartupTask`, then in the execute method we add our logic, but for Async tasks we must call the `complete` method to mark the task as completed, and until we do so the task will block the application bootstrapping.
 
-  Async Tasks are ordered and grouped, you can change the order and group of a async task by overriding the `order` method, all Async task with a specific order should be completed be fore any startup task with the next order can be executed. 
+  Async Tasks are ordered and grouped, you can change the order and group of an async task by overriding the `order` method, all Async task with a specific order should be completed be fore any startup task with the next order can be executed. 
 
   Async task look like the following 
 
@@ -47,4 +49,4 @@ Startup tasks are useful for doing application specific configuration or loading
     }
     ```
   
-    > For Async tasks you need to make sure that always call the `complete` method or otherwise the application will be blocked and will not start.
+    > For Async tasks you need to make sure to call the `complete` method or otherwise the application will be blocked and will not start.
