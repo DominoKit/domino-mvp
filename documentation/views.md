@@ -238,5 +238,5 @@ public class ShellViewImpl extends BaseElementView<HTMLDivElement> implements Sh
 }
 ```
 
-And this complete the cycle of slots registeration
+And this complete the cycle of slots registration
 

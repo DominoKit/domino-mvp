@@ -68,7 +68,7 @@ The prerequisites for working with Domino-mvp are `Maven` and `Java 8 or 11` onc
     - ##### For production mode
 
         - `cd {appname}-backend`
-        - execute `java -jar target/{appname}-backend-1.0-SNAPSHOT-fat.jar`
+        - execute `java -jar target/{appname}-backend-HEAD-SNAPSHOT-fat.jar`
         - the server port will be printed in the logs access the application on `http://localhost:[port]`
 
 

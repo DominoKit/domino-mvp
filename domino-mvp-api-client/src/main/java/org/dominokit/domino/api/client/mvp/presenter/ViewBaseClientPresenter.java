@@ -70,7 +70,7 @@ public abstract class ViewBaseClientPresenter<V extends View> extends BaseClient
   }
 
   public void reveal() {
-    if(!revealed) {
+    if (!revealed) {
       if (nonNull(revealSlot()) && !revealSlot().trim().isEmpty()) {
         revealInSlot(revealSlot());
       }
@@ -94,7 +94,7 @@ public abstract class ViewBaseClientPresenter<V extends View> extends BaseClient
     // do nothing presenter will be registered after slots are registered.
   }
 
-  private void onRevealedInSlot(){
+  private void onRevealedInSlot() {
     this.revealed = true;
     registerSlots();
   }
