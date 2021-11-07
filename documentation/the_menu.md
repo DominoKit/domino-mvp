@@ -1,6 +1,6 @@
 # Creating the menu
 
-We will again use Domino-cli to add a new proxy to our previously created shell module, the menu will add entries to the shell left panel, when we click on one of the entries we update the URL to entry token.
+We will again use Domino-cli to add a new proxy to our previously created shell module, the menu will add entries to the shell left panel, when we click on one of the entries we update the URL with the entry token.
 
 - In the root folder of the project open a terminal and execute the following command
     

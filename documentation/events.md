@@ -1,11 +1,11 @@
 # Events
 
-Events are a core part of Domino-mvp and they play an important role in both navigation and communication between presenters, yet they are simple, so lets define an event and see how we can use it, how we can fire and listen to events, and understand the different types of events :
+Events are a core part of Domino-mvp, they play an important role in both navigation and communication between presenters, yet they are simple, so let's define an event and see how we can use it, how we can fire and listen to events, and understand the different types of events :
 
 
 ### Define events :
 
-In Domino-mvp an event is a class that implements the interface `DominoEvent` which is a generic interface that take one generic argument that is for a class that implement `EventContex` each even has a context, the context is the class that holds the data that the even is supposed to hold, example :
+In Domino-mvp an event is a class that implements the interface `DominoEvent` which is a generic interface that take one generic argument, which is a type that implement `EventContex` each event has a context, the context is the object that holds the data the even is supposed to provide, example :
 
 ```java
 import org.dominokit.domino.api.shared.extension.DominoEvent;
@@ -42,7 +42,7 @@ In the above code we defined an event context `MessageContext` and then we used 
 
 ### Firing events :
 
-To fire an event in Domino-mvp we usethe `DominoEvents` class static method `fire` passing the even class type and a new instance of the event or a subtype of the event, for example in a proxy we can do this :
+To fire an event in Domino-mvp we use the `DominoEvents` class static method `fire` passing the even class type and a new instance of the event or a subtype of the event, for example in a proxy we can do this :
 
 ```java
 import org.dominokit.domino.api.client.extension.DominoEvents;
@@ -59,15 +59,15 @@ public class NotificationProxy extends ViewBaseClientPresenter<HomeView> impleme
 }
 ```
 
-We can fire events from any class in our application not just presenters, the only codition here is that the Domino-mvp application should be initialized and running  - ClientApp.make().run() is already called -
+We can fire events from any class in our application not just presenters, the only condition here is that the Domino-mvp application should be initialized and running  - ClientApp.make().run() is already called -
 
-Presenter has special methods to fire events without directly referencing the `DominoEvents` class, we can directly call either `fireEvent` of `publishEvent` methods, the `fireEvent` method will fire the event to all active listeners including the presenter firing the event, and `publishEvent` will fire the event for all active listeners except the presenter firing the event.
+Presenter has special methods to fire events without directly referencing the `DominoEvents` class, we can directly call either `fireEvent` of `publishEvent` methods, the `fireEvent` method will fire the event to all active listeners including the presenter firing the event, and `publishEvent` will fire the event to all active listeners except the presenter firing the event.
 
 ### Listening to events :
 
 We can manually register and remove event listeners from anywhere in the application using the `ClientApp` `registerEventListener` and `removeEventListener` , example :
 
-Registering event lsitener
+Registering event listener
 
 ```java
 ClientApp.make().registerEventListener(MessageReceivedEvent.class, (DominoEventListener<MessageReceivedEvent>) dominoEvent -> {
@@ -78,7 +78,7 @@ ClientApp.make().registerEventListener(MessageReceivedEvent.class, (DominoEventL
 
 Removing an event will require that we keep an instance of the registered event, once we have the instance we can manually remove it like the following example :
 
-Removing event lsitener
+Removing event listener
 
 ```java
 DominoEventListener<MessageReceivedEvent> eventReference = dominoEvent -> {
@@ -88,7 +88,7 @@ DominoEventListener<MessageReceivedEvent> eventReference = dominoEvent -> {
 ClientApp.make().removeEventListener(MessageReceivedEvent.class, eventReference);
 ```
 
-But when we are working with presenter there is an declarative way to register events in a proxy using the annotation `@ListenTo`, the event listeners registered in a presenter will be coupled to the presenter life-cycle, so when the presener is activated they will be automatically registered and when the presenter is deactivated then they will be removed, **this means only active presenters can listen to events**, to automatically register/remove events, you create a method annotated with `@ListenTo` passing the event type as an argument to the annotation, the method will take one argument which the event context, example :
+But when we are working with presenters there is a declarative way to register events in a proxy using the annotation `@ListenTo`, the event listeners registered in a presenter will be coupled to the presenter life-cycle, so when the presenter is activated they will be automatically registered and when the presenter is deactivated then they will be removed, **this means only active presenters can listen to events**, to automatically register/remove events, you create a method annotated with `@ListenTo` passing the event type as an argument to the annotation, the method will take one argument which the event context, example :
 
 ```java
 import org.dominokit.domino.api.client.annotations.presenter.ListenTo;
@@ -109,7 +109,7 @@ public class NotificationProxy extends ViewBaseClientPresenter<HomeView> impleme
 
 ### Global events :
 
-Global events are events that can be fired and received through different Domino-mvp applications, the context of those events should be something that we can convert from/to strings, they are very useful when for example we include 2 or more Domino-mvp applications in the same web page and we wanted to share some events between them, example :
+Global events are events that can be fired and received through different Domino-mvp applications, the context of those events should be something that we can be converted from/to strings, they are very useful when for example we include two or more Domino-mvp applications in the same web page, and we wanted to share some events between them, example :
 
 ```java
 import org.dominokit.domino.api.shared.extension.EventContext;

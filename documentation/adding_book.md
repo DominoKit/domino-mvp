@@ -1,6 +1,6 @@
 # Adding new book
 
-To add a new book, we add a button in the book list, when the button is clicked we show up qa dialog to fill in the book information, we start by adding the button to the book list view
+To add a new book, we add a button in the book list, when the button is clicked we show up a dialog to fill in the book information, we start by adding the button to the book list view
 
 - In `BooksViewImple` edit the view to add a button that makes a call to the `BookUiHandlers` indicating that we want to add a book, the view should look like this after the change :
 
@@ -139,7 +139,7 @@ To add a new book, we add a button in the book list, when the button is clicked 
 - Set the token to `new-book`
 - Set the Slot to `PredefinedSlots.MODAL_SLOT`
 - Remove `onNewBookInit` method
-- Rename `onNewBookRevealed` to `initBook` and change the body to the following so we initialize the view with an new book instance
+- Rename `onNewBookRevealed` to `initBook` and change the body to the following, to initialize the view with a new book instance
   
   ```java
       @OnReveal

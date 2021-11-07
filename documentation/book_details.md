@@ -1,6 +1,6 @@
 # View book details
 
-To view book details in order to edit it, we will first update the book list so that when we click on a book in the list it will change the token in the URL, the new token will activate the book details proxy, we will initially open the book in read only mode, then when we click edit button we will turn it into editable view, we will preserve the edit mode between refreshes using a query parameter in the URL.
+To view/edit book details, we will first update the book list so that when we click on a book in the list it will change the token in the URL, the new token will activate the book details proxy, we will initially open the book in read only mode, then when we click edit button we will turn it into editable mode, we will preserve the edit mode between refreshes using a query parameter in the URL.
 
 - Open `BooksViewImpl` and add a `RowClickPlugin` to the table config, which will make the clicking on a row in the table calls `uiHandlers.onBookSelected(book)`
 
@@ -127,6 +127,7 @@ To view book details in order to edit it, we will first update the book list so 
       }
   ```
 - Use Domino-cli to create a new proxy `BookDetailsProxy` by executing the following command
+
   `dominokit gen module -n library -p bookDetails -sp library`
 - In the `library-shared` module delete the `BookDetailsService`, we will be using the `BooksService` instead.
 - In the `BookDetailsProxy` remove the `BookDetailsService` import.
@@ -155,7 +156,7 @@ To view book details in order to edit it, we will first update the book list so 
           return nonNull(editable) && !editable.isEmpty() && Boolean.parseBoolean(editable.get(0));
       }
   ```
-- Implement the `editBook` method to keep a reference to the book, edit the book in ht view, and change the edit state based on the editableState flag.
+- Implement the `editBook` method to keep a reference to the book, edit the book in the view, and change the edit state based on the editableState flag.
   
   ```java
       private void editBook(Book book, boolean editableState) {
@@ -190,7 +191,7 @@ In next steps we will implement the UI for books details, we will implement the 
   </dependency>
   ```
 
-- Without digging deep in the details o the `BookComponent`, here is how it should look like
+- Without digging deep in the details of the `BookComponent`, here is how it should look like
 
   ```java
   package org.dominokit.samples.library.client.views.ui;
@@ -319,7 +320,7 @@ In next steps we will implement the UI for books details, we will implement the 
   ```
   We will be delegating calls from the view to this component.
 
-- In the `BookDetailsViewImpl` We add a field of type `BookComponent` and init the view with a layout that adds `edit`, `save`, `cancel` and `backToList` buttons, then we implement the `edit` and `save` methods to delegate to the `BookComponent`, we implement the `showError` method to show an error notification, and finally implement the `setEditable` to toggle the buttons state.
+- In the `BookDetailsViewImpl` We add a field of type `BookComponent` and init the view with a layout that adds `edit`, `save`, `cancel` and `backToList` buttons, then we implement the `edit` and `save` methods to delegate to the `BookComponent`, we implement the `showError` method to show an error notification, and finally implement the `setEditable` to toggle the buttons visibility.
 
   ```java
   package org.dominokit.samples.library.client.views.ui;

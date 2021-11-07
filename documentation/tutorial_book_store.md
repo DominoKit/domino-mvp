@@ -12,7 +12,7 @@ The application will use a standard simple layout with the following :
 
 ![layout](../documents/home-screen.png)
 
-When we click on home on the side menu the application should take us to the home screen, and we click on Books it should take us to the books list screen, the url should point to `books` **(1)**, and from the screen we can view books in a grid **(2)**, when the plus sign **+** **(3)** is clicked we will open a dialog to add a new book, and when we click the delete button in the grid **(4)** we will confirm the delete operation before executing it.
+When we click on home on the side menu the application should take us to the home screen, and when we click on Books it should take us to the books list screen, the url should point to `books` **(1)**, books will show up in a grid **(2)**, when the plus sign **+** **(3)** is clicked we will open a dialog to add a new book, and when we click the delete button in the grid **(4)** we will confirm the delete operation before executing it.
 
 ![Books list](../documents/books-screen.png)
 

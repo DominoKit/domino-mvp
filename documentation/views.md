@@ -1,8 +1,8 @@
 # Views
 
-Views in domino-mvp are the UI part of the module, a view defines what kind of content we need to render in the application, we have seen that `ViewBaseClientPresenter` sub-classesany will define a generic type that is of type `? extends View`, all views in Domino-mvp must extends from the interface `View`, presenters should never know about the view implementation details and for that views from the presenter perspective are just interfaces that play the role of a contract between the presenter and the view actual implementation, the presenter will call methods defined in the interface to manipulate the view without understanding what kind of UI components or how the view will handle those calls, the framework during the presenter life-cycle will create a view instance from its implementation and inject it into the presenter.
+Views in domino-mvp are the UI part of the module, a view defines what kind of content we need to render in the application, we have seen that `ViewBaseClientPresenter` sub-classes will define a generic type that is of type `? extends View`, all views in Domino-mvp must extend from the interface `View`, presenters should never know about the view implementation details and for that views from the presenter perspective are just interfaces that play the role of a contract between the presenter and the view actual implementation, the presenter will call methods defined in the interface to manipulate the view without understanding what kind of UI components or how the view will handle those calls, the framework during the presenter life-cycle will create a view instance from its implementation and inject it into the presenter.
 
-The `View` interface itself in Domino-mvp is just a marker interface and does not specify any methods, a more useful interface is is `ContentView` which from the name provide a content, most of the time this is the interface we will be using, the `Content` view proides a single element that represent the root element of the view which will be the element that we attach to the application UI when the view is revealed, example :
+The `View` interface itself in Domino-mvp is just a marker interface and does not specify any methods, a more useful interface is `ContentView` which from the name provide a content, most of the time this is the interface we will be using, the `ContentView` provides a single element that represent the root element of the view which will be the element that we attach to the application UI when the view is revealed, example :
 
 ```java
 import org.dominokit.domino.api.client.mvp.view.ContentView;
@@ -12,7 +12,7 @@ public interface BookView extends ContentView {
 }
 ```
 
-an implementation of this interface should be annotated with `@UiView` and specifying to which presenter it belongs. example :
+an implementation of this interface should be annotated with `@UiView` specifying to which presenter it belongs. example :
 
 ```java
 import elemental2.dom.HTMLDivElement;
@@ -56,11 +56,14 @@ public class BookProxy extends ViewBaseClientPresenter<BookView> {
 }
 ```
 
+> `@UiView` presentable argument takes one or more presenters, as we can link the same view with more than one presenter, each presenter will have its own instance of the view
+
+
 #### UI handlers
 
-The view interface is how presenter interact with view without having access to its implementation, Views interact with presenters in the same way, views does not know about presenters implementations and details, therefore we use what is called `UiHandlers` which an interface implemented by the presenter and used by the view.
+The view interface is how presenter interact with view without having access to its implementation, Views interact with presenters in the same way, views does not know about presenters implementations and details, therefore we use what is called `UiHandlers` which is an interface implemented by the presenter and used by the view.
 
-the `UiHandlers` is a marker interface, to implement UI handlers create an interface that extends the `UiHandlers` interface and add what ever methods in it. then make your view interface extends from `HasUiHandlers` inreface passing your created UiHandlers interface as a generic type, this will add the method `setUihandlers` to your view, then the presenter implements the created UiHandlers interface.
+the `UiHandlers` is a marker interface, to implement UI handlers create an interface that extends the `UiHandlers` interface, then make your view interface extends from `HasUiHandlers` interface passing your created UiHandlers interface as a generic type, this will add the method `setUihandlers` to your view, then the presenter implements the created UiHandlers interface.
 
 When framework creates the presenter instance it will inject the presenter as a UiHandlers in the view using the `setUiHandlers` method.
 
@@ -140,9 +143,7 @@ public class BookViewImpl implements BookView {
 }
 ```
 
-> In `@UiView` the presentable argument can take one or more presenters, In case we have presenters that uses the same view but apply some different logic, this way we wont need to duplicate the view for each presenter.
-
-> In `@UiView` the presentable argument can referece presenters or proxies or a mix.
+> In `@UiView` the presentable argument can reference presenters or proxies or a mix.
 
 
 #### BaseElementView
@@ -174,7 +175,7 @@ public class BookViewImpl extends BaseElementView<HTMLDivElement> implements Boo
 
 This view will automatically inform the presenter when ever its root element is attached/detached from the DOM, and will automatically re-drawn when it is requested to be revealed again.
 
-there is only few cases when you cant extends from `BaseElementView` such as when the view does not have a single root element, like layout that consist of several sections appended to the page body.
+there is only few cases when you can't extend from `BaseElementView` such as when the view does not have a single root element, like layout that consist of several sections appended to the page body, or for modal views as they should extend from `ModalView`.
 
 #### Slots
 
@@ -238,5 +239,5 @@ public class ShellViewImpl extends BaseElementView<HTMLDivElement> implements Sh
 }
 ```
 
-And this complete the cycle of slots registration
+And this completes the cycle of slots registration
 
