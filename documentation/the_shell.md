@@ -1,6 +1,6 @@
 # Creating the shell
 
-To creat the shell of the application we will also use Domino-cli. the shell will be activated in regard of the token, and should be a singleton, with only route once, and should register two slots `left-panel` and `content`. 
+To create the shell of the application we will also use Domino-cli. the shell will be activated in regard of the token, and should be a singleton, with only route once, and should register two slots `left-panel` and `content`. 
 
 - In the root folder of the project open a terminal and execute the following command
     
