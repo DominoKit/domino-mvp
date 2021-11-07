@@ -50,6 +50,11 @@ public class BodyElementSlot implements ContentSlot {
   }
 
   @Override
+  public void setName(String name) {
+    body.setAttribute(DOMINO_SLOT_NAME, name);
+  }
+
+  @Override
   public void updateContent(HasContent view, HasContent.CreateHandler createHandler) {
     updateContent(view.getContent(createHandler));
   }

@@ -24,6 +24,13 @@ import org.dominokit.domino.api.client.mvp.slots.IsSlot;
 
 public abstract class ElementSlot implements IsSlot<HTMLElement>, EventListener {
 
+  protected abstract HTMLElement getElement();
+
+  @Override
+  public void setName(String name) {
+    getElement().setAttribute(DOMINO_SLOT_NAME, name);
+  }
+
   @Override
   public void handleEvent(Event evt) {
     CustomEvent slotEvent = Js.uncheckedCast(evt);

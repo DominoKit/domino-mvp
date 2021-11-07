@@ -380,6 +380,21 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
 
   private void generateListenersMethod(TypeSpec.Builder proxyType) {
 
+    List<Element> nonGlobalListenerMethods =
+        processorUtil.getAnnotatedMethods(proxyElement.asType(), ListenTo.class).stream()
+            .filter(
+                element -> {
+                  Optional<TypeMirror> event =
+                      processorUtil.getClassValueFromAnnotation(element, ListenTo.class, "event");
+                  return event.isPresent()
+                      && !processorUtil.isAssignableFrom(event.get(), GlobalEvent.class);
+                })
+            .collect(Collectors.toList());
+
+    if (nonGlobalListenerMethods.isEmpty()) {
+      return;
+    }
+
     TypeVariableName dominoEventTypeName =
         TypeVariableName.get("? extends DominoEvent", TypeName.get(DominoEvent.class));
     ParameterizedTypeName keyType =
@@ -401,41 +416,25 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
                 valueType,
                 TypeName.get(HashMap.class));
 
-    List<Element> listenToMethods =
-        processorUtil.getAnnotatedMethods(proxyElement.asType(), ListenTo.class);
-
-    listenToMethods.stream()
-        .forEach(
-            element -> {
-              Optional<TypeMirror> event =
-                  processorUtil.getClassValueFromAnnotation(element, ListenTo.class, "event");
-              event.ifPresent(
-                  eventType -> {
-                    if (!processorUtil.isAssignableFrom(eventType, GlobalEvent.class)) {
-                      String listenerName =
-                          elements
-                                  .getPackageOf(proxyElement)
-                                  .getQualifiedName()
-                                  .toString()
-                                  .replace(".presenters", ".listeners")
-                              + "."
-                              + proxyElement.getSimpleName().toString()
-                              + "_PresenterListenFor"
-                              + types.asElement(eventType).getSimpleName().toString();
-                      listenersMethod.addStatement(
-                          "listenersMap.put($T.class, new $L(this))",
-                          TypeName.get(eventType),
-                          ClassName.bestGuess(listenerName));
-                    }
-                  });
-            });
-
-    listenersMethod.addStatement("return listenersMap");
-
-    proxyType.addMethod(listenersMethod.build());
+    addListeners(proxyType, nonGlobalListenerMethods, listenersMethod);
   }
 
   private void generateGlobalListenersMethod(TypeSpec.Builder proxyType) {
+
+    List<Element> globalListenerMethods =
+        processorUtil.getAnnotatedMethods(proxyElement.asType(), ListenTo.class).stream()
+            .filter(
+                element -> {
+                  Optional<TypeMirror> event =
+                      processorUtil.getClassValueFromAnnotation(element, ListenTo.class, "event");
+                  return event.isPresent()
+                      && processorUtil.isAssignableFrom(event.get(), GlobalEvent.class);
+                })
+            .collect(Collectors.toList());
+
+    if (globalListenerMethods.isEmpty()) {
+      return;
+    }
 
     TypeVariableName dominoEventTypeName =
         TypeVariableName.get("? extends DominoEvent", TypeName.get(DominoEvent.class));
@@ -458,34 +457,32 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
                 valueType,
                 TypeName.get(HashMap.class));
 
-    List<Element> listenToMethods =
-        processorUtil.getAnnotatedMethods(proxyElement.asType(), ListenTo.class);
+    addListeners(proxyType, globalListenerMethods, listenersMethod);
+  }
 
-    listenToMethods.stream()
-        .forEach(
-            element -> {
-              Optional<TypeMirror> event =
-                  processorUtil.getClassValueFromAnnotation(element, ListenTo.class, "event");
-              event.ifPresent(
-                  eventType -> {
-                    if (processorUtil.isAssignableFrom(eventType, GlobalEvent.class)) {
-                      String listenerName =
-                          elements
-                                  .getPackageOf(proxyElement)
-                                  .getQualifiedName()
-                                  .toString()
-                                  .replace(".presenters", ".listeners")
-                              + "."
-                              + proxyElement.getSimpleName().toString()
-                              + "_PresenterListenFor"
-                              + types.asElement(eventType).getSimpleName().toString();
-                      listenersMethod.addStatement(
-                          "listenersMap.put($T.class, new $L(this))",
-                          TypeName.get(eventType),
-                          ClassName.bestGuess(listenerName));
-                    }
-                  });
-            });
+  private void addListeners(
+      TypeSpec.Builder proxyType,
+      List<Element> nonGlobalListenerMethods,
+      MethodSpec.Builder listenersMethod) {
+    nonGlobalListenerMethods.forEach(
+        element -> {
+          TypeMirror eventType =
+              processorUtil.getClassValueFromAnnotation(element, ListenTo.class, "event").get();
+          String listenerName =
+              elements
+                      .getPackageOf(proxyElement)
+                      .getQualifiedName()
+                      .toString()
+                      .replace(".presenters", ".listeners")
+                  + "."
+                  + proxyElement.getSimpleName().toString()
+                  + "_PresenterListenFor"
+                  + types.asElement(eventType).getSimpleName().toString();
+          listenersMethod.addStatement(
+              "listenersMap.put($T.class, new $L(this))",
+              TypeName.get(eventType),
+              ClassName.bestGuess(listenerName));
+        });
 
     listenersMethod.addStatement("return listenersMap");
 

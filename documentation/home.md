@@ -1,0 +1,50 @@
+## ![Dominokit](logo_48.png)
+
+<a title="Gitter" href="https://gitter.im/DominoKit/domino"><img src="https://badges.gitter.im/Join%20Chat.svg"></a>
+[![Development Build Status](https://github.com/DominoKit/domino-mvp/actions/workflows/deploy.yaml/badge.svg?branch=development)](https://github.com/DominoKit/domino-mvp/actions/workflows/deploy.yaml/badge.svg?branch=development)
+![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.dominokit/domino-mvp/badge.svg)
+![Sonatype Nexus (Snapshots)](https://img.shields.io/badge/Snapshot-HEAD--SNAPSHOT-orange)
+![GWT3/J2CL compatible](https://img.shields.io/badge/GWT3/J2CL-compatible-brightgreen.svg)
+
+Domino-mvp is simple and lightweight framework for building web applications in Java, the framework provides a large set of tool to help you build your next web application covering concepts like page life cycle, routing, events, start-up tasks, REST clients, manage async calls and testing.
+
+With Domino-mvp you will value the help type-safety provided by the language -Java- and will help you avoid writing boilerplate code by generating code for you.
+
+#### Learn more about Domino-mvp
+
+* [Home](home.md)
+* [Getting started](getting_started.md)
+* [The entry point](the_entry_point.md)
+* [Module configuration](module_configuration.md)
+* [Startup tasks](startup_tasks.md)
+    * [Simple startup task](startup_tasks.md#simple-startup-task)
+    * [Asynchronous startup task](startup_tasks.md#async-startup-tasks)
+* [Application bootstrap](application_bootstrap.md)
+* [Presenters](presenters.md)
+    * [BaseClientPresenter](presenters.md#passive-or-simple-presenters)
+    * [ViewClientPresenter](presenters.md#viewable-presenters)
+    * [PresenterProxy](presenters.md#presenter-proxy)
+    * [Routing](presenters.md#routing)
+    * [Presenter revealing](presenters.md#revealing-presenters)
+    * [Slots](presenters.md#slots)
+    * [Presenter state](presenters.md#Presenter-state-events)
+    * [Presenter dependency](presenters.md#presenter-dependency)
+    * [Singleton presenters](presenters.md#singleton-presenters)
+    * [Presenters inheritance](presenters.md#presenters-inheritance)
+* [Events](events.md)
+* [Views](views.md)
+    * [UI handlers](views.md#ui-handlers)
+    * [BaseElementView](views.md#BaseElementView)
+    * [Registering slots](views.md#slots)
+* [History](history.md)
+* [Making REST calls](making_rest_calls.md)
+* [Managing ASYNC callbacks](managing_async_callbacks.md)
+* [Tutorial: Book Store](tutorial_book_store.md)
+    * [Create project](tutorial_creating_project.md)
+    * [The shell](the_shell.md)
+    * [Menu](the_menu.md)
+    * [Home](the_home_screen.md)
+    * [Book list](book_list.md)
+    * [Delete book](delete_book.md)
+    * [Book details](book_details.md)
+    * [New book](adding_book.md)
