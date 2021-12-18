@@ -31,6 +31,7 @@ public abstract class ViewBaseClientPresenter<V extends View> extends BaseClient
 
   protected V view;
   private Supplier<V> viewSupplier;
+  private boolean revealed = false;
 
   @Override
   protected void initialize() {
@@ -45,11 +46,11 @@ public abstract class ViewBaseClientPresenter<V extends View> extends BaseClient
     super.initialize();
   }
 
-  public String revealSlot() {
+  protected String revealSlot() {
     return null;
   }
 
-  public void revealInSlot(String key) {
+  private void revealInSlot(String key) {
     try {
       if (view instanceof HasContent) {
         onBeforeReveal();
@@ -69,8 +70,10 @@ public abstract class ViewBaseClientPresenter<V extends View> extends BaseClient
   }
 
   public void reveal() {
-    if (nonNull(revealSlot()) && !revealSlot().trim().isEmpty()) {
-      revealInSlot(revealSlot());
+    if (!revealed) {
+      if (nonNull(revealSlot()) && !revealSlot().trim().isEmpty()) {
+        revealInSlot(revealSlot());
+      }
     }
   }
 
@@ -89,6 +92,11 @@ public abstract class ViewBaseClientPresenter<V extends View> extends BaseClient
   @Override
   protected void registerByName() {
     // do nothing presenter will be registered after slots are registered.
+  }
+
+  private void onRevealedInSlot() {
+    this.revealed = true;
+    registerSlots();
   }
 
   private void registerSlots() {

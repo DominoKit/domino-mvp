@@ -28,6 +28,7 @@ public class SlotsEntries {
 
   public SlotsEntries add(String key, IsSlot slot) {
     slots.put(key, slot);
+    slot.setName(key);
     return this;
   }
 
