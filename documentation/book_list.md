@@ -260,7 +260,7 @@ The books proxy will show up in the content panel, will use the `books` token, a
   }
   ```
 - In `library-frontend-ui` module, edit the `BooksViewImpl` class and remove the `welcomeMessage` method.
-- Implement the `init`,`listBooks`, and `showError` methods like the following :
+- Implement the `init`,`setBooks`, and `showError` methods like the following :
 
   ```java
   package org.dominokit.samples.library.client.views.ui;
