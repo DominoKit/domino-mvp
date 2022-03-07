@@ -55,6 +55,11 @@ public class BodyElementSlot implements ContentSlot {
   }
 
   @Override
+  public void setType() {
+    body.setAttribute(DOMINO_SLOT_TYPE, "body-element-slot");
+  }
+
+  @Override
   public void updateContent(HasContent view, HasContent.CreateHandler createHandler) {
     updateContent(view.getContent(createHandler));
   }

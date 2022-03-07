@@ -27,7 +27,7 @@ The menu is just like the shell, will be active regards of the token in the url,
   import org.dominokit.domino.api.client.annotations.presenter.PresenterProxy;
   import org.dominokit.domino.api.client.annotations.presenter.Singleton;
   import org.dominokit.domino.api.client.annotations.presenter.Slot;
-  import org.dominokit.domino.api.client.mvp.presenter.ViewBaseClientPresenter;
+  import org.dominokit.domino.api.client.mvp.presenter.ViewablePresenter;
   import org.dominokit.samples.shell.client.views.MenuView;
   import org.dominokit.samples.shell.shared.Slots;
   import org.slf4j.Logger;
@@ -113,7 +113,7 @@ The menu is just like the shell, will be active regards of the token in the url,
   import org.dominokit.domino.api.client.annotations.presenter.PresenterProxy;
   import org.dominokit.domino.api.client.annotations.presenter.Singleton;
   import org.dominokit.domino.api.client.annotations.presenter.Slot;
-  import org.dominokit.domino.api.client.mvp.presenter.ViewBaseClientPresenter;
+  import org.dominokit.domino.api.client.mvp.presenter.ViewablePresenter;
   import org.dominokit.samples.shell.client.views.MenuView;
   import org.dominokit.samples.shell.shared.Slots;
   import org.slf4j.Logger;

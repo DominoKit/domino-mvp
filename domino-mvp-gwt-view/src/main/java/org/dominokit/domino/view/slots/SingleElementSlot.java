@@ -16,12 +16,14 @@
 package org.dominokit.domino.view.slots;
 
 import elemental2.dom.HTMLElement;
+import org.dominokit.domino.api.client.mvp.slots.IsSlot;
 import org.dominokit.domino.gwt.client.slots.ElementSlot;
 import org.dominokit.domino.ui.utils.DominoElement;
 import org.jboss.elemento.IsElement;
 
 public class SingleElementSlot extends ElementSlot {
 
+  public static final String SINGLE_ELEMENT_SLOT = "single-element-slot";
   private DominoElement<HTMLElement> element;
 
   public static SingleElementSlot of(HTMLElement element) {
@@ -47,6 +49,17 @@ public class SingleElementSlot extends ElementSlot {
   @Override
   public void updateContent(HTMLElement view) {
     element.clearElement().appendChild(view);
+  }
+
+  @Override
+  public void setType() {
+    this.element.setAttribute(IsSlot.DOMINO_SLOT_TYPE, SINGLE_ELEMENT_SLOT);
+  }
+
+  @Override
+  public void cleanUp() {
+    this.element.removeAttribute(IsSlot.DOMINO_SLOT_NAME);
+    this.element.removeAttribute(IsSlot.DOMINO_SLOT_TYPE);
   }
 
   @Override

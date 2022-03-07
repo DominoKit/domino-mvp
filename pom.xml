@@ -26,7 +26,7 @@
         <module>domino-mvp-desktop</module>
         <module>domino-mvp-client-commons</module>
         <module>domino-mvp-gwt-view</module>
-        <module>domino-mvp-log4j-server-logging</module>
+        <module>domino-mvp-server-logging</module>
     </modules>
 
     <organization>
@@ -98,7 +98,7 @@
         <vertx.version>3.9.0</vertx.version>
         <elemental.version>1.1.0</elemental.version>
         <domino.rest.version>1.0.0-RC6</domino.rest.version>
-        <domino.jackson.version>1.0.0-RC3</domino.jackson.version>
+        <domino.jackson.version>HEAD-SNAPSHOT</domino.jackson.version>
         <domino.logger.version>1.0.2</domino.logger.version>
         <domino.aggregator.version>1.0.2</domino.aggregator.version>
         <domino.history.version>1.0.0-RC4</domino.history.version>
@@ -149,6 +149,11 @@
             <dependency>
                 <groupId>org.dominokit</groupId>
                 <artifactId>domino-mvp-apt-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dominokit</groupId>
+                <artifactId>domino-mvp-apt-shared</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -226,7 +231,7 @@
             </dependency>
             <dependency>
                 <groupId>org.dominokit</groupId>
-                <artifactId>domino-mvp-log4j-server-logging</artifactId>
+                <artifactId>domino-mvp-server-logging</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -307,16 +312,6 @@
                 <groupId>com.google.auto.service</groupId>
                 <artifactId>auto-service</artifactId>
                 <version>1.0-rc7</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-api</artifactId>
-                <version>2.8.2</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-core</artifactId>
-                <version>2.17.0</version>
             </dependency>
             <dependency>
                 <groupId>javax.validation</groupId>
@@ -485,6 +480,24 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>3.11</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.36</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-core -->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>1.2.10</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>1.2.10</version>
             </dependency>
 
         </dependencies>

@@ -132,9 +132,9 @@ public class CustomEventsDominoEventsRepository implements DominoEventsListeners
 
   public static class DominoCustomEventListener implements EventListener {
 
-    private final DominoEventListener dominoEventListener;
+    private final DominoEventListener<DominoEvent> dominoEventListener;
 
-    public DominoCustomEventListener(DominoEventListener dominoEventListener) {
+    public DominoCustomEventListener(DominoEventListener<DominoEvent> dominoEventListener) {
       this.dominoEventListener = dominoEventListener;
     }
 
@@ -143,27 +143,27 @@ public class CustomEventsDominoEventsRepository implements DominoEventsListeners
       CustomEvent customEvent = Js.uncheckedCast(evt);
       if (dominoEventListener instanceof GlobalDominoEventListener) {
         DominoEvent event =
-            ((GlobalDominoEventListener) dominoEventListener)
+            ((GlobalDominoEventListener<?>) dominoEventListener)
                 .deserializeEvent((String) customEvent.detail);
         dominoEventListener.onEventReceived(event);
       }
     }
   }
 
-  private class GlobalListenerWrapper extends ListenerWrapper {
+  private static class GlobalListenerWrapper extends ListenerWrapper {
     private final DominoCustomEventListener dominoCustomEventListener;
 
-    public GlobalListenerWrapper(DominoEventListener dominoEventListener) {
+    public GlobalListenerWrapper(DominoEventListener<DominoEvent> dominoEventListener) {
       super(dominoEventListener);
       this.dominoCustomEventListener = new DominoCustomEventListener(dominoEventListener);
     }
   }
 
-  private class ListenerWrapper {
+  private static class ListenerWrapper {
 
-    private final DominoEventListener dominoEventListener;
+    private final DominoEventListener<DominoEvent> dominoEventListener;
 
-    public ListenerWrapper(DominoEventListener dominoEventListener) {
+    public ListenerWrapper(DominoEventListener<DominoEvent> dominoEventListener) {
       this.dominoEventListener = dominoEventListener;
     }
 

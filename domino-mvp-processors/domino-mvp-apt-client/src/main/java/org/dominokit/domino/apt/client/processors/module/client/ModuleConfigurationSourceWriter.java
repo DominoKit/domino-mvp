@@ -38,7 +38,7 @@ import org.dominokit.domino.api.client.annotations.UiView;
 import org.dominokit.domino.api.client.annotations.presenter.PresenterProxy;
 import org.dominokit.domino.api.client.annotations.presenter.Singleton;
 import org.dominokit.domino.api.client.mvp.presenter.PresenterSupplier;
-import org.dominokit.domino.api.client.mvp.presenter.ViewBaseClientPresenter;
+import org.dominokit.domino.api.client.mvp.presenter.ViewablePresenter;
 import org.dominokit.domino.api.client.mvp.presenter.ViewablePresenterSupplier;
 import org.dominokit.domino.api.client.mvp.view.View;
 import org.dominokit.domino.apt.commons.AbstractSourceBuilder;
@@ -115,7 +115,7 @@ public class ModuleConfigurationSourceWriter extends AbstractSourceBuilder {
 
               methodBuilder.addStatement(
                   "$T $L = new $T()", configClassName, configName, configClassName);
-              if (processorUtil.isAssignableFrom(presenter, ViewBaseClientPresenter.class)) {
+              if (processorUtil.isAssignableFrom(presenter, ViewablePresenter.class)) {
                 processorUtil
                     .findTypeArgument(presenter.asType(), View.class)
                     .ifPresent(

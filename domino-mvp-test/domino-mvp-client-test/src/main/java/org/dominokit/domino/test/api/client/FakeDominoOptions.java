@@ -18,6 +18,7 @@ package org.dominokit.domino.test.api.client;
 import org.dominokit.domino.api.client.ApplicationStartHandler;
 import org.dominokit.domino.api.client.CanSetDominoOptions;
 import org.dominokit.domino.api.client.DominoOptions;
+import org.dominokit.domino.history.TokenFilter;
 import org.dominokit.rest.DominoRestConfig;
 import org.dominokit.rest.shared.request.DynamicServiceRoot;
 
@@ -25,6 +26,8 @@ public class FakeDominoOptions implements DominoOptions {
 
   private ApplicationStartHandler applicationStartHandler;
   private boolean mainApp = true;
+  private TokenFilterSupplier tokenFilter = TokenFilter::endsWithPathFilter;
+  private TokenFilterSupplier startUpTokenFilter = TokenFilter::startsWithPathFilter;
 
   @Override
   public void applyOptions() {
@@ -58,5 +61,25 @@ public class FakeDominoOptions implements DominoOptions {
   @Override
   public boolean isMainApp() {
     return mainApp;
+  }
+
+  @Override
+  public TokenFilter getTokenFilter(String token) {
+    return tokenFilter.get(token);
+  }
+
+  @Override
+  public TokenFilter getStartupTokenFilter(String token) {
+    return startUpTokenFilter.get(token);
+  }
+
+  public CanSetDominoOptions setTokenFilter(TokenFilterSupplier tokenFilter) {
+    this.tokenFilter = tokenFilter;
+    return this;
+  }
+
+  public CanSetDominoOptions setStartUpTokenFilter(TokenFilterSupplier startUpTokenFilter) {
+    this.startUpTokenFilter = startUpTokenFilter;
+    return this;
   }
 }

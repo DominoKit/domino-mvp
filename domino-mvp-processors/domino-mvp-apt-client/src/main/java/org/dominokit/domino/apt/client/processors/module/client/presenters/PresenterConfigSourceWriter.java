@@ -25,7 +25,7 @@ import javax.lang.model.element.Modifier;
 import org.dominokit.domino.api.client.mvp.PresenterConfig;
 import org.dominokit.domino.api.client.mvp.ViewablePresenterConfig;
 import org.dominokit.domino.api.client.mvp.presenter.PresenterSupplier;
-import org.dominokit.domino.api.client.mvp.presenter.ViewBaseClientPresenter;
+import org.dominokit.domino.api.client.mvp.presenter.ViewablePresenter;
 import org.dominokit.domino.api.client.mvp.presenter.ViewablePresenterSupplier;
 import org.dominokit.domino.api.client.mvp.view.View;
 import org.dominokit.domino.apt.commons.AbstractSourceBuilder;
@@ -52,7 +52,7 @@ public class PresenterConfigSourceWriter extends AbstractSourceBuilder {
                 + presenterElement.getSimpleName().toString()
                 + "_Config");
 
-    if (processorUtil.isAssignableFrom(presenterElement, ViewBaseClientPresenter.class)) {
+    if (processorUtil.isAssignableFrom(presenterElement, ViewablePresenter.class)) {
       processorUtil
           .findTypeArgument(presenterElement.asType(), View.class)
           .ifPresent(

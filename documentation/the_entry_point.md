@@ -10,7 +10,7 @@ package org.dominokit.samples;
 import com.google.gwt.core.client.EntryPoint;
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.gwt.client.app.DominoGWT;
-import org.dominokit.domino.view.GwtView;
+import org.dominokit.domino.view.DominoViewOptions;
 import org.dominokit.rest.DominoRestConfig;
 
 import java.util.logging.Logger;

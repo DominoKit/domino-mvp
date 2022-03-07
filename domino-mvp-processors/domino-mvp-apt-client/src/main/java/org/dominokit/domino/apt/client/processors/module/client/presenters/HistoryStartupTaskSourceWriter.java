@@ -25,6 +25,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
+import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.annotations.StartupTask;
 import org.dominokit.domino.api.client.annotations.presenter.*;
 import org.dominokit.domino.api.client.events.BaseRoutingAggregator;
@@ -145,10 +146,12 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
           "return $T." + tokenFilterMethodName.get() + "(\"" + token + "\")",
           TypeName.get(presenterElement.asType()));
     } else {
-      method.addStatement(
-          "return $T."
-              + (token.trim().isEmpty() ? "any()" : "startsWithPathFilter(\"" + token + "\")"),
-          TypeName.get(TokenFilter.class));
+      if (token.trim().isEmpty()) {
+        method.addStatement("return $T.any()", TypeName.get(TokenFilter.class));
+      } else {
+        method.addStatement(
+            "return $T.make().dominoOptions().getStartupTokenFilter($S)", ClientApp.class, token);
+      }
     }
 
     return method.build();
@@ -169,10 +172,12 @@ public class HistoryStartupTaskSourceWriter extends AbstractSourceBuilder {
           "return $T." + tokenFilterMethodName.get() + "(\"" + token + "\")",
           TypeName.get(presenterElement.asType()));
     } else {
-      method.addStatement(
-          "return $T."
-              + (token.trim().isEmpty() ? "any()" : "endsWithPathFilter(\"" + token + "\")"),
-          TypeName.get(TokenFilter.class));
+      if (token.trim().isEmpty()) {
+        method.addStatement("return $T.any()", TypeName.get(TokenFilter.class));
+      } else {
+        method.addStatement(
+            "return $T.make().dominoOptions().getTokenFilter($S)", ClientApp.class, token);
+      }
     }
 
     return method.build();

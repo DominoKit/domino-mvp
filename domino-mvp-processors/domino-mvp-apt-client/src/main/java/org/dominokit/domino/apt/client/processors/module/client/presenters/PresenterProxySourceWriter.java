@@ -23,12 +23,14 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.type.TypeMirror;
 import org.dominokit.domino.api.client.annotations.presenter.*;
-import org.dominokit.domino.api.client.mvp.presenter.ViewBaseClientPresenter;
+import org.dominokit.domino.api.client.mvp.presenter.ViewablePresenter;
 import org.dominokit.domino.api.client.mvp.slots.IsSlot;
 import org.dominokit.domino.api.client.mvp.slots.SlotsEntries;
+import org.dominokit.domino.api.client.mvp.view.UiHandlers;
 import org.dominokit.domino.api.shared.extension.*;
 import org.dominokit.domino.apt.commons.AbstractSourceBuilder;
 import org.dominokit.domino.apt.commons.DominoTypeBuilder;
@@ -118,6 +120,7 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
     generateOnRemove(proxyType);
     generateOnBeforeReveal(proxyType);
     generateOnPostConstruct(proxyType);
+    generateOnTokenChanged(proxyType);
     generateListenersMethod(proxyType);
     generateGlobalListenersMethod(proxyType);
     generateSetState(proxyType);
@@ -129,6 +132,8 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
     if (nonNull(processorUtil.findClassAnnotation(proxyElement, RegisterSlots.class))) {
       types.add(generateSlotsInterface(proxyType));
     }
+
+    generateUiHandlersInterface(proxyType).ifPresent(types::add);
     return types;
   }
 
@@ -243,7 +248,7 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
   private void generateOnInit(TypeSpec.Builder proxyType) {
 
     List<Element> initMethods =
-        processorUtil.getAnnotatedMethods(proxyElement.asType(), OnInit.class);
+        processorUtil.getAnnotatedMethods(proxyElement.asType(), OnActivated.class);
 
     CodeBlock.Builder methodsCall = CodeBlock.builder();
     boolean generateMethod = false;
@@ -269,16 +274,52 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
     List<Element> revealMethods =
         processorUtil.getAnnotatedMethods(proxyElement.asType(), OnReveal.class);
     if (nonNull(revealMethods) && !revealMethods.isEmpty()) {
-      CodeBlock.Builder methodsCall = generateMethodsCall(revealMethods);
+      CodeBlock.Builder methodsCall = generateMethodsCallSupplier(revealMethods);
 
       proxyType.addMethod(
           MethodSpec.methodBuilder("getRevealHandler")
               .addAnnotation(Override.class)
               .addModifiers(Modifier.PUBLIC)
-              .returns(ViewBaseClientPresenter.RevealedHandler.class)
+              .returns(ViewablePresenter.RevealedHandler.class)
               .addCode(methodsCall.build())
               .build());
     }
+  }
+
+  private Optional<TypeSpec.Builder> generateUiHandlersInterface(TypeSpec.Builder proxyType) {
+
+    List<Element> uiHandlersMethods =
+        processorUtil.getAnnotatedMethods(proxyElement.asType(), UiHandler.class);
+    if (nonNull(uiHandlersMethods) && !uiHandlersMethods.isEmpty()) {
+
+      TypeSpec.Builder uiHandlersInterface =
+          TypeSpec.interfaceBuilder(proxyElement.getSimpleName().toString() + "UiHandlers")
+              .addModifiers(Modifier.PUBLIC)
+              .addSuperinterface(TypeName.get(UiHandlers.class));
+
+      uiHandlersMethods.stream()
+          .map(element -> (ExecutableElement) element)
+          .forEach(
+              method -> {
+                MethodSpec.Builder methodSpec =
+                    MethodSpec.methodBuilder(method.getSimpleName().toString())
+                        .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
+                        .returns(TypeName.get(method.getReturnType()));
+
+                method
+                    .getParameters()
+                    .forEach(
+                        variableElement -> {
+                          methodSpec.addParameter(
+                              TypeName.get(variableElement.asType()),
+                              variableElement.getSimpleName().toString());
+                        });
+
+                uiHandlersInterface.addMethod(methodSpec.build());
+              });
+      return Optional.of(uiHandlersInterface);
+    }
+    return Optional.empty();
   }
 
   private void generateOnBeforeReveal(TypeSpec.Builder proxyType) {
@@ -354,19 +395,19 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
     List<Element> removeMethods =
         processorUtil.getAnnotatedMethods(proxyElement.asType(), OnRemove.class);
     if (nonNull(removeMethods) && !removeMethods.isEmpty()) {
-      CodeBlock.Builder methodsCall = generateMethodsCall(removeMethods);
+      CodeBlock.Builder methodsCall = generateMethodsCallSupplier(removeMethods);
 
       proxyType.addMethod(
           MethodSpec.methodBuilder("getRemoveHandler")
               .addAnnotation(Override.class)
               .addModifiers(Modifier.PUBLIC)
-              .returns(ViewBaseClientPresenter.RemovedHandler.class)
+              .returns(ViewablePresenter.RemovedHandler.class)
               .addCode(methodsCall.build())
               .build());
     }
   }
 
-  private CodeBlock.Builder generateMethodsCall(List<Element> revealMethods) {
+  private CodeBlock.Builder generateMethodsCallSupplier(List<Element> revealMethods) {
     CodeBlock.Builder methodsCall = CodeBlock.builder().beginControlFlow("return ()->");
     revealMethods.forEach(
         element -> {
@@ -376,6 +417,39 @@ public class PresenterProxySourceWriter extends AbstractSourceBuilder {
     methodsCall.endControlFlow("");
 
     return methodsCall;
+  }
+
+  private CodeBlock.Builder generateMethodsCall(List<Element> revealMethods) {
+    CodeBlock.Builder methodsCall = CodeBlock.builder();
+    revealMethods.forEach(
+        element -> {
+          ExecutableElement method = (ExecutableElement) element;
+          String arguments =
+              method.getParameters().stream()
+                  .map(variableElement -> variableElement.getSimpleName().toString())
+                  .collect(Collectors.joining(","));
+          methodsCall.addStatement(element.getSimpleName().toString() + "($L)", arguments);
+        });
+
+    return methodsCall;
+  }
+
+  private void generateOnTokenChanged(TypeSpec.Builder proxyType) {
+
+    List<Element> tokenChangedMethods =
+        processorUtil.getAnnotatedMethods(proxyElement.asType(), OnTokenChanged.class);
+    if (nonNull(tokenChangedMethods) && !tokenChangedMethods.isEmpty()) {
+      CodeBlock.Builder methodsCall = generateMethodsCall(tokenChangedMethods);
+
+      proxyType.addMethod(
+          MethodSpec.methodBuilder("onTokenChanged")
+              .addAnnotation(Override.class)
+              .addModifiers(Modifier.PUBLIC)
+              .returns(void.class)
+              .addParameter(TypeName.get(DominoHistory.State.class), "state")
+              .addCode(methodsCall.build())
+              .build());
+    }
   }
 
   private void generateListenersMethod(TypeSpec.Builder proxyType) {

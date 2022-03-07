@@ -28,6 +28,10 @@
             <groupId>org.dominokit</groupId>
             <artifactId>domino-mvp-api-client</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.squareup</groupId>
+            <artifactId>javapoet</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

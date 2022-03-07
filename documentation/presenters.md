@@ -230,24 +230,24 @@ Next we will show how we can define method and bind them to the presenter life-c
   Notice how the annotated methods are being called, and the order of the methods calls is the same as how they appear in the proxy, also in those methods the view instance will be already created and can be accessed even though it is not yet revealed, for example you can call a method in the view `view.doSomeUiStuff()`.
 
 
-- #### **@OnInit**
+- #### **@OnActivated**
 
-  In a presenter proxy we can annotate as many methods with `@OnInit` and they will be called during the presenter activation life cycle stage.
+  In a presenter proxy we can annotate as many methods with `@OnActivated` and they will be called during the presenter activation life cycle stage.
 
   Example :
 
      ```java
-     import org.dominokit.domino.api.client.annotations.presenter.OnInit;
+     import org.dominokit.domino.api.client.annotations.presenter.OnActivated;
 
      @PresenterProxy()
      public class SimpleViewPresenter extends ViewBaseClientPresenter<SimpleView> {
 
-         @OnInit
+         @OnActivated
          public void doSomething(){
              //Do something here
          }
 
-         @OnInit
+         @OnActivated
          public void doSomethingElse(){
              //Do another thing here
          }
@@ -1058,7 +1058,7 @@ In some cases we might need to cache the presenter/view instances, because we do
 
 One of the things that we might have noticed that we are using different annotations for different settings on a proxy instead of using a single annotation with more arguments, this is because those settings can be inherited from base proxy classes, Domino-mvp will look for the annotations in the whole class tree, for example you can make a base proxy class and annotate it with `@AutoReveal` then for all proxy classes that inherits from that class will be AutoReveal even if you don't specify the annotation directly on them, same for all other annotations, except the `@PresenterProxy` since it is what actually make the class a proxy.
 
-And this is not only for the class level annotations, but also for all annotations that goes into the class methods, so `@PostConstruct`, `@OnInit`, `@OnBeforeReveal`, `@OnReveal`, `@OnRemove`, `@RevealCondition` ...etc. and all annotations that we will study as we go with this documentation works on base classes unless we specify that they don't, this will give you a lot of power when you want to implement common behaviors in your application.
+And this is not only for the class level annotations, but also for all annotations that goes into the class methods, so `@PostConstruct`, `@OnActivated`, `@OnBeforeReveal`, `@OnReveal`, `@OnRemove`, `@RevealCondition` ...etc. and all annotations that we will study as we go with this documentation works on base classes unless we specify that they don't, this will give you a lot of power when you want to implement common behaviors in your application.
 
 For example, what if I want to register some audits log when ever a user navigated to a view that should be logged, it would be a too much to implement this behavior in every view, so instead we can do something like this :
 

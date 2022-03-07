@@ -41,7 +41,7 @@ Now we will edit the shell module before test and run our application :
   import org.dominokit.domino.api.client.annotations.presenter.RegisterSlots;
   import org.dominokit.domino.api.client.annotations.presenter.Singleton;
   import org.dominokit.domino.api.client.annotations.presenter.Slot;
-  import org.dominokit.domino.api.client.mvp.presenter.ViewBaseClientPresenter;
+  import org.dominokit.domino.api.client.mvp.presenter.ViewablePresenter;
   import org.dominokit.domino.api.shared.extension.PredefinedSlots;
   import org.dominokit.samples.shell.client.views.ShellView;
   import org.dominokit.samples.shell.shared.Slots;

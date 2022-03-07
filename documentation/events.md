@@ -70,8 +70,8 @@ We can manually register and remove event listeners from anywhere in the applica
 Registering event listener
 
 ```java
-ClientApp.make().registerEventListener(MessageReceivedEvent.class, (DominoEventListener<MessageReceivedEvent>) dominoEvent -> {
-            var eventMessage =dominoEvent.context().getMessage();
+ClientApp.make().registerEventListener(MessageReceivedEvent.class, (DominoEventListener<MessageReceivedEvent>) event -> {
+            var eventMessage =event.context().getMessage();
             //do something with the message
         });
 ```
@@ -81,8 +81,8 @@ Removing an event will require that we keep an instance of the registered event,
 Removing event listener
 
 ```java
-DominoEventListener<MessageReceivedEvent> eventReference = dominoEvent -> {
-            var eventMessage = dominoEvent.context().getMessage();
+DominoEventListener<MessageReceivedEvent> eventReference = event -> {
+            var eventMessage = event.context().getMessage();
             //do something with the message
         };
 ClientApp.make().removeEventListener(MessageReceivedEvent.class, eventReference);

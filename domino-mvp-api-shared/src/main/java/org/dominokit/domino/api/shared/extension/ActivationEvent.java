@@ -15,25 +15,24 @@
  */
 package org.dominokit.domino.api.shared.extension;
 
-public abstract class ActivationEvent extends GlobalEvent<ActivationEventContext> {
+public class ActivationEvent implements GlobalEvent {
 
-  private final ActivationEventContext context;
+  private final boolean activated;
 
   public ActivationEvent(boolean active) {
-    this.context = new ActivationEventContext(active);
+    this.activated = active;
   }
 
-  public ActivationEvent(String serializedEvent) {
-    this.context = new ActivationEventContext(Boolean.parseBoolean(serializedEvent));
+  public static boolean deserialize(String data) {
+    return Boolean.parseBoolean(data);
   }
 
   @Override
   public String serialize() {
-    return Boolean.toString(context.isActivated());
+    return Boolean.toString(activated);
   }
 
-  @Override
-  public ActivationEventContext context() {
-    return context;
+  public boolean isActivated() {
+    return activated;
   }
 }

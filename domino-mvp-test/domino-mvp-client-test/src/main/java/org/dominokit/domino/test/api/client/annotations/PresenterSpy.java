@@ -17,9 +17,9 @@ package org.dominokit.domino.test.api.client.annotations;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import org.dominokit.domino.api.client.mvp.presenter.BaseClientPresenter;
+import org.dominokit.domino.api.client.mvp.presenter.AbstractPresenter;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PresenterSpy {
-  Class<? extends BaseClientPresenter> value();
+  Class<? extends AbstractPresenter> value();
 }

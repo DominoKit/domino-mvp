@@ -24,8 +24,7 @@ import java.util.Optional;
 import java.util.logging.Logger;
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.events.BaseRoutingAggregator;
-import org.dominokit.domino.api.client.mvp.presenter.BaseClientPresenter;
-import org.dominokit.domino.api.client.mvp.presenter.NamedPresenters;
+import org.dominokit.domino.api.client.mvp.presenter.AbstractPresenter;
 import org.dominokit.domino.history.DominoHistory;
 import org.dominokit.domino.history.TokenFilter;
 
@@ -35,7 +34,7 @@ public abstract class BaseRoutingStartupTask implements ClientStartupTask, Prese
 
   protected List<BaseRoutingAggregator> aggregators = new ArrayList<>();
   protected boolean enabled = true;
-  protected BaseClientPresenter presenter;
+  protected AbstractPresenter presenter;
 
   public BaseRoutingStartupTask(List<? extends BaseRoutingAggregator> aggregators) {
     this.aggregators.addAll(aggregators);
@@ -43,8 +42,14 @@ public abstract class BaseRoutingStartupTask implements ClientStartupTask, Prese
         aggregator ->
             aggregator.init(
                 state -> {
-                  if (getParent().isPresent()) {
-                    NamedPresenters.whenPresent(getParent().get(), () -> applyState(state));
+                  boolean present = getParent().isPresent();
+                  LOGGER.info(
+                      "Presenter parent info : "
+                          + (present ? (present + " : " + getParent().get()) : present));
+                  if (present) {
+                    ClientApp.make()
+                        .namedPresenters()
+                        .whenPresent(getParent().get(), () -> applyState(state));
                   } else {
                     applyState(state);
                   }
@@ -60,7 +65,7 @@ public abstract class BaseRoutingStartupTask implements ClientStartupTask, Prese
     aggregators.forEach(BaseRoutingAggregator::resetRoutingState);
   }
 
-  protected void bindPresenter(BaseClientPresenter presenter) {
+  protected void bindPresenter(AbstractPresenter presenter) {
     presenter.setRoutingTask(this);
     this.presenter = presenter;
   }
@@ -81,6 +86,9 @@ public abstract class BaseRoutingStartupTask implements ClientStartupTask, Prese
               } else {
                 if (isReRouteActivated()) {
                   doRoutingIfEnabled(state);
+                } else {
+                  presenter.setState(state);
+                  presenter.onTokenChanged(state);
                 }
               }
             },

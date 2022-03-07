@@ -28,14 +28,17 @@ import io.vertx.ext.unit.Async;
 import io.vertx.ext.unit.TestContext;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.logging.Logger;
 import org.dominokit.domino.api.client.ApplicationStartHandler;
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.ModuleConfiguration;
 import org.dominokit.domino.api.client.ModuleConfigurator;
-import org.dominokit.domino.api.client.mvp.Store;
-import org.dominokit.domino.api.client.mvp.StoreRegistry;
 import org.dominokit.domino.api.server.ServerApp;
 import org.dominokit.domino.api.server.config.ServerConfiguration;
 import org.dominokit.domino.api.server.config.ServerConfigurationLoader;
@@ -323,11 +326,6 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient, Cli
   @Override
   public FakeDominoOptions getDominoOptions() {
     return TestClientAppFactory.dominoOptions;
-  }
-
-  @Override
-  public void registerStore(String key, Object data) {
-    StoreRegistry.INSTANCE.registerStore(key, new Store<>(data));
   }
 
   public void setTestContext(TestContext testContext) {
