@@ -15,6 +15,7 @@
  */
 package org.dominokit.domino.apt.client.processors.module.client.events;
 
+import com.google.common.base.Strings;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
@@ -24,7 +25,6 @@ import java.util.List;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
-import jdk.internal.joptsimple.internal.Strings;
 import org.dominokit.domino.api.shared.annotations.events.EventContext;
 import org.dominokit.domino.api.shared.extension.DominoEvent;
 import org.dominokit.domino.apt.client.processors.module.client.presenters.PresenterProcessor;
