@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.dominokit</groupId>
         <artifactId>domino-mvp</artifactId>
-        <version>HEAD-SNAPSHOT</version>
+        <version>MF-HEAD-SNAPSHOT</version>
     </parent>
 
     <artifactId>domino-mvp-server-logging</artifactId>
