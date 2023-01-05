@@ -69,7 +69,7 @@ public class DominoEventSourceWriter extends AbstractSourceBuilder {
     List<TypeSpec.Builder> types = new ArrayList<>();
     EventContext eventContext = eventElement.getAnnotation(EventContext.class);
 
-    boolean markerInterface = eventElement.getKind().isInterface();
+    boolean markerInterface = processorUtil.isAssignableFrom(eventElement, IsDominoEvent.class);
     TypeSpec.Builder eventType;
     if (markerInterface) {
       generateMarkerInterfaceEvent(eventContext).ifPresent(types::add);

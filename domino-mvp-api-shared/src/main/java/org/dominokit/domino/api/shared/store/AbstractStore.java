@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.dominokit.domino.api.client.mvp.presenter;
+package org.dominokit.domino.api.shared.store;
 
 import java.util.Optional;
 
@@ -26,8 +26,14 @@ public abstract class AbstractStore<T> {
 
   public void setData(T data) {
     this.data = data;
-    fireEvent();
   }
 
-  protected void fireEvent() {}
+  public void setData(T data, DataHandler<T> onUpdate) {
+    this.data = data;
+    onUpdate.onDataUpdated(this.data);
+  }
+
+  public interface DataHandler<T> {
+    void onDataUpdated(T data);
+  }
 }

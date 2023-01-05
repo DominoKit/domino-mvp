@@ -13,17 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.dominokit.domino.apt.client.processors.module.client.presenters.store;
+package org.dominokit.domino.apt.client.processors.module.client.store;
 
 import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 
-import com.squareup.javapoet.ClassName;
-import com.squareup.javapoet.FieldSpec;
-import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.ParameterizedTypeName;
-import com.squareup.javapoet.TypeName;
-import com.squareup.javapoet.TypeSpec;
+import com.squareup.javapoet.*;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -31,11 +25,9 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
-import org.dominokit.domino.api.client.ClientApp;
-import org.dominokit.domino.api.client.annotations.store.Store;
-import org.dominokit.domino.api.client.mvp.presenter.AbstractStore;
-import org.dominokit.domino.api.client.mvp.presenter.DominoStore;
-import org.dominokit.domino.api.shared.annotations.events.EventContext;
+import org.dominokit.domino.api.shared.annotations.store.Store;
+import org.dominokit.domino.api.shared.store.AbstractStore;
+import org.dominokit.domino.api.shared.store.DominoStore;
 import org.dominokit.domino.apt.client.processors.module.client.events.DominoEventsProcessor;
 import org.dominokit.domino.apt.commons.AbstractSourceBuilder;
 import org.dominokit.domino.apt.commons.DominoTypeBuilder;
@@ -98,29 +90,6 @@ public class DominoStoreSourceWriter extends AbstractSourceBuilder {
     storeType
         .addSuperinterface(storeElement.asType())
         .addMethod(MethodSpec.constructorBuilder().addModifiers(Modifier.PRIVATE).build());
-
-    EventContext eventContext = types.asElement(storeDataType).getAnnotation(EventContext.class);
-    if (nonNull(eventContext)) {
-
-      String eventName =
-          processorUtil.capitalizeFirstLetter(
-              isNullOrEmpty(eventContext.value())
-                  ? types.asElement(storeDataType).getSimpleName() + "Event"
-                  : eventContext.value());
-      String eventPackage =
-          elements.getPackageOf(types.asElement(storeDataType)).getQualifiedName().toString();
-      storeType.addMethod(
-          MethodSpec.methodBuilder("fireEvent")
-              .addAnnotation(Override.class)
-              .addModifiers(Modifier.PROTECTED)
-              .returns(TypeName.get(void.class))
-              .addStatement(
-                  "$T.make().fireEvent($T.class, new $T(getData().get()))",
-                  ClientApp.class,
-                  ClassName.bestGuess(eventPackage + "." + eventName),
-                  ClassName.bestGuess(eventPackage + "." + eventName))
-              .build());
-    }
 
     return storeType;
   }

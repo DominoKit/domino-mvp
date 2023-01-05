@@ -17,10 +17,10 @@ package org.dominokit.domino.view;
 
 import elemental2.dom.HTMLDivElement;
 import org.dominokit.domino.api.client.mvp.view.ModalView;
-import org.dominokit.domino.ui.modals.BaseModal;
+import org.dominokit.domino.ui.dialogs.AbstractDialog;
 
-public abstract class BaseModalView<T extends BaseModal<T>> extends BaseElementView<HTMLDivElement>
-    implements ModalView {
+public abstract class BaseModalView<T extends AbstractDialog<T>>
+    extends BaseElementView<HTMLDivElement> implements ModalView {
 
   public abstract T getModal();
 

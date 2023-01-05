@@ -17,6 +17,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.dominokit</groupId>
+            <artifactId>domino-apt-commons</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.google.auto.service</groupId>
             <artifactId>auto-service</artifactId>
         </dependency>

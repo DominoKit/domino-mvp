@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.dominokit.domino.apt.client.processors.module.client.presenters.store;
+package org.dominokit.domino.apt.client.processors.module.client.store;
 
 import com.google.auto.service.AutoService;
 import java.util.HashSet;
@@ -22,7 +22,7 @@ import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
-import org.dominokit.domino.api.client.annotations.store.Store;
+import org.dominokit.domino.api.shared.annotations.store.Store;
 import org.dominokit.domino.apt.commons.BaseProcessor;
 
 @AutoService(Processor.class)

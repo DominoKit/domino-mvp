@@ -13,6 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.dominokit.domino.api.client.mvp.presenter;
+package org.dominokit.domino.api.shared.annotations.store;
 
-public interface DominoStore<T> {}
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Store {
+
+  String value() default "";
+
+  boolean isAbstract() default false;
+}

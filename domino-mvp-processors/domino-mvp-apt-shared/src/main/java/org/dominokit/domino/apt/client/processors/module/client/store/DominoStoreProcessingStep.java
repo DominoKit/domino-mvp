@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.dominokit.domino.apt.client.processors.module.client.presenters.store;
+package org.dominokit.domino.apt.client.processors.module.client.store;
 
 import static java.util.Objects.nonNull;
 
 import java.util.Set;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
-import org.dominokit.domino.api.client.annotations.store.Store;
+import org.dominokit.domino.api.shared.annotations.store.Store;
 import org.dominokit.domino.apt.commons.AbstractProcessingStep;
 import org.dominokit.domino.apt.commons.ExceptionUtil;
 import org.dominokit.domino.apt.commons.StepBuilder;
