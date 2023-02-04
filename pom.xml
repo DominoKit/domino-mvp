@@ -103,7 +103,7 @@
         <domino.aggregator.version>1.0.2</domino.aggregator.version>
         <domino.history.version>1.0.0-RC4</domino.history.version>
         <domino.apt.commons.version>1.0.3</domino.apt.commons.version>
-        <domino.ui.version>HEAD-SNAPSHOT</domino.ui.version>
+        <domino.ui.version>THEME-SNAPSHOT</domino.ui.version>
     </properties>
 
     <dependencyManagement>
@@ -329,6 +329,16 @@
                 <groupId>org.gwtproject.regexp</groupId>
                 <artifactId>gwt-regexp</artifactId>
                 <version>${gwt.regxp.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dominokit.i18n</groupId>
+                <artifactId>gwt-datetimeformat</artifactId>
+                <version>1.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dominokit.i18n</groupId>
+                <artifactId>gwt-i18n</artifactId>
+                <version>1.0.1</version>
             </dependency>
             <dependency>
                 <groupId>io.vertx</groupId>
