@@ -5,29 +5,26 @@
     <parent>
         <groupId>org.dominokit</groupId>
         <artifactId>domino-mvp</artifactId>
-        <version>FEATURE-SET</version>
+        <version>HEAD-SNAPSHOT</version>
     </parent>
 
-    <artifactId>domino-mvp-server-logging</artifactId>
+    <artifactId>domino-mvp-ssl-server-configurator</artifactId>
     <packaging>jar</packaging>
 
-    <name>domino-mvp-server-logging</name>
+    <name>domino-mvp-ssl-server-configurator</name>
     <url>https://github.com/DominoKit/domino-mvp</url>
-    <description>GWT Domino server logging implementation</description>
+    <description>Domino MVP ssl server configurator</description>
 
     <dependencies>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
+            <groupId>org.dominokit</groupId>
+            <artifactId>domino-mvp-api-server</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
+            <groupId>com.google.auto.service</groupId>
+            <artifactId>auto-service</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
-
 </project>

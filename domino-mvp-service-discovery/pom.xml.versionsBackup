@@ -4,29 +4,26 @@
 
     <parent>
         <groupId>org.dominokit</groupId>
-        <artifactId>domino-mvp-test</artifactId>
-        <version>FEATURE-SET</version>
+        <artifactId>domino-mvp</artifactId>
+        <version>HEAD-SNAPSHOT</version>
     </parent>
 
-    <artifactId>domino-mvp-server-test</artifactId>
+    <artifactId>domino-mvp-service-discovery</artifactId>
     <packaging>jar</packaging>
 
-    <name>domino-mvp-server-test</name>
+    <name>domino-mvp-service-discovery</name>
     <url>https://github.com/DominoKit/domino-mvp</url>
-    <description>Domino MVP server annotation processor testing</description>
+    <description>Domino MVP Service Discovery</description>
 
     <dependencies>
         <dependency>
-            <groupId>org.dominokit</groupId>
-            <artifactId>domino-mvp-api-shared</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.dominokit</groupId>
-            <artifactId>domino-mvp-api-server</artifactId>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-service-discovery</artifactId>
         </dependency>
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-unit</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.vertx</groupId>
@@ -34,22 +31,28 @@
         </dependency>
         <dependency>
             <groupId>io.vertx</groupId>
-            <artifactId>vertx-web</artifactId>
+            <artifactId>vertx-service-proxy</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-codegen</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-service-proxy</artifactId>
+            <classifier>processor</classifier>
         </dependency>
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-jdbc-client</artifactId>
         </dependency>
-
         <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <version>2.4.0</version>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-redis-client</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.google.auto.service</groupId>
-            <artifactId>auto-service</artifactId>
-            <scope>provided</scope>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-mongo-client</artifactId>
         </dependency>
     </dependencies>
 

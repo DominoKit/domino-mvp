@@ -5,13 +5,13 @@
     <parent>
         <groupId>org.dominokit</groupId>
         <artifactId>domino-mvp-processors</artifactId>
-        <version>FEATURE-SET</version>
+        <version>HEAD-SNAPSHOT</version>
     </parent>
 
     <packaging>jar</packaging>
-    <artifactId>domino-mvp-apt-client</artifactId>
+    <artifactId>domino-mvp-apt-shared</artifactId>
 
-    <name>domino-mvp-apt-client</name>
+    <name>domino-mvp-apt-shared</name>
     <url>https://github.com/DominoKit/domino-mvp</url>
     <description>GWT Domino client annotation processors</description>
 
@@ -26,11 +26,15 @@
         </dependency>
         <dependency>
             <groupId>org.dominokit</groupId>
-            <artifactId>domino-mvp-api-client</artifactId>
+            <artifactId>domino-mvp-api-shared</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.squareup</groupId>
-            <artifactId>javapoet</artifactId>
+            <groupId>org.dominokit</groupId>
+            <artifactId>domino-jackson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.dominokit</groupId>
+            <artifactId>domino-jackson-processor</artifactId>
         </dependency>
     </dependencies>
 

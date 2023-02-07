@@ -1,29 +1,42 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>org.dominokit</groupId>
         <artifactId>domino-mvp</artifactId>
-        <version>FEATURE-SET</version>
+        <version>HEAD-SNAPSHOT</version>
     </parent>
 
-    <artifactId>domino-mvp-client-commons</artifactId>
+    <artifactId>domino-mvp-gwt-view</artifactId>
     <packaging>gwt-lib</packaging>
 
-    <name>domino-mvp-client-commons</name>
+    <name>domino-mvp-gwt-view</name>
     <url>https://github.com/DominoKit/domino-mvp</url>
-    <description>GWT Domino client commons</description>
+    <description>GWT Domino view domino-ui implementation</description>
 
     <dependencies>
         <dependency>
             <groupId>org.dominokit</groupId>
-            <artifactId>domino-mvp-api-shared</artifactId>
+            <artifactId>domino-mvp-api-client</artifactId>
         </dependency>
         <dependency>
             <groupId>org.dominokit</groupId>
-            <artifactId>domino-mvp-api-client</artifactId>
+            <artifactId>domino-mvp-gwt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.elemental2</groupId>
+            <artifactId>elemental2-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.elemental2</groupId>
+            <artifactId>elemental2-dom</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.dominokit</groupId>
+            <artifactId>domino-ui</artifactId>
+            <version>${domino.ui.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -34,7 +47,7 @@
                 <artifactId>gwt-maven-plugin</artifactId>
                 <extensions>true</extensions>
                 <configuration>
-                    <moduleName>org.dominokit.domino.Common</moduleName>
+                    <moduleName>org.dominokit.domino.view.View</moduleName>
                 </configuration>
             </plugin>
         </plugins>

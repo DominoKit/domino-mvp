@@ -1,18 +1,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.dominokit</groupId>
-        <artifactId>domino-mvp-processors</artifactId>
-        <version>FEATURE-SET</version>
+        <artifactId>domino-mvp-test</artifactId>
+        <version>HEAD-SNAPSHOT</version>
     </parent>
-    <packaging>jar</packaging>
-    <artifactId>domino-mvp-apt-server</artifactId>
 
-    <name>domino-mvp-apt-server</name>
+    <artifactId>domino-mvp-server-test</artifactId>
+    <packaging>jar</packaging>
+
+    <name>domino-mvp-server-test</name>
     <url>https://github.com/DominoKit/domino-mvp</url>
-    <description>GWT Domino server annotation processors</description>
+    <description>Domino MVP server annotation processor testing</description>
 
     <dependencies>
         <dependency>
@@ -24,16 +25,32 @@
             <artifactId>domino-mvp-api-server</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.dominokit</groupId>
-            <artifactId>domino-apt-commons</artifactId>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-unit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-web-client</artifactId>
         </dependency>
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.squareup</groupId>
-            <artifactId>javapoet</artifactId>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-jdbc-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>2.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.auto.service</groupId>
+            <artifactId>auto-service</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
+
 </project>

@@ -5,15 +5,20 @@
     <parent>
         <groupId>org.dominokit</groupId>
         <artifactId>domino-mvp</artifactId>
-        <version>FEATURE-SET</version>
+        <version>HEAD-SNAPSHOT</version>
     </parent>
 
-    <artifactId>domino-mvp-server-logging</artifactId>
-    <packaging>jar</packaging>
+    <artifactId>domino-mvp-test</artifactId>
+    <packaging>pom</packaging>
 
-    <name>domino-mvp-server-logging</name>
+    <name>domino-mvp-test</name>
     <url>https://github.com/DominoKit/domino-mvp</url>
-    <description>GWT Domino server logging implementation</description>
+    <description>Domino MVP test dependencies</description>
+
+    <modules>
+        <module>domino-mvp-client-test</module>
+        <module>domino-mvp-server-test</module>
+    </modules>
 
     <dependencies>
         <dependency>
