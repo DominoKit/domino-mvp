@@ -15,12 +15,12 @@
  */
 package org.dominokit.domino.gwt.client.slots;
 
-import elemental2.dom.HTMLElement;
+import elemental2.dom.Element;
 import org.dominokit.domino.api.client.mvp.slots.IsSlot;
 
-public abstract class ElementSlot implements IsSlot<HTMLElement> {
+public abstract class ElementSlot implements IsSlot<Element> {
 
-  protected abstract HTMLElement getElement();
+  protected abstract Element getElement();
 
   @Override
   public void setName(String name) {

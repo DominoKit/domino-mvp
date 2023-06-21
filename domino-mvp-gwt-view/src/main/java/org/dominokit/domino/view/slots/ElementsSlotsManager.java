@@ -35,9 +35,9 @@ import org.dominokit.domino.api.client.mvp.slots.IsSlot;
 import org.dominokit.domino.api.client.mvp.slots.SlotsManager;
 import org.dominokit.domino.api.client.mvp.view.HasContent;
 import org.dominokit.domino.gwt.client.slots.ElementSlot;
-import org.dominokit.domino.ui.utils.DominoElement;
+import org.dominokit.domino.ui.utils.ElementsFactory;
 
-public class ElementsSlotsManager implements SlotsManager {
+public class ElementsSlotsManager implements SlotsManager, ElementsFactory {
 
   public static final Logger LOGGER = Logger.getLogger(ElementsSlotsManager.class.getName());
 
@@ -87,7 +87,7 @@ public class ElementsSlotsManager implements SlotsManager {
   }
 
   private String getSlotType(HTMLElement element) {
-    return DominoElement.of(element).getAttribute(IsSlot.DOMINO_SLOT_TYPE);
+    return elementOf(element).getAttribute(IsSlot.DOMINO_SLOT_TYPE);
   }
 
   @Override

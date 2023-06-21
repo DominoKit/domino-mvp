@@ -5,7 +5,7 @@
 
     <groupId>org.dominokit</groupId>
     <artifactId>domino-mvp</artifactId>
-    <version>FEATURE-SET</version>
+    <version>2.0-snapshot</version>
     <packaging>pom</packaging>
 
     <name>domino-mvp</name>
@@ -98,12 +98,12 @@
         <vertx.version>3.9.0</vertx.version>
         <elemental.version>1.1.0</elemental.version>
         <domino.rest.version>1.0.0-RC6</domino.rest.version>
-        <domino.jackson.version>HEAD-SNAPSHOT</domino.jackson.version>
+        <domino.jackson.version>1.0.0-RC6</domino.jackson.version>
         <domino.logger.version>1.0.2</domino.logger.version>
         <domino.aggregator.version>1.0.2</domino.aggregator.version>
         <domino.history.version>1.0.0-RC4</domino.history.version>
         <domino.apt.commons.version>1.0.3</domino.apt.commons.version>
-        <domino.ui.version>THEME-SNAPSHOT</domino.ui.version>
+        <domino.ui.version>2.0-SNAPSHOT</domino.ui.version>
     </properties>
 
     <dependencyManagement>
@@ -575,6 +575,7 @@
                         <exclude>**/AUTHORS</exclude>
                         <exclude>**/src/test/resources/**</exclude>
                         <exclude>**/src/main/resources/**</exclude>
+                        <exclude>**/.mvn/**</exclude>
                         <exclude>**/war</exclude>
                         <exclude>**/pom.xml</exclude>
                         <exclude>**/.flattened-pom.xml</exclude>
