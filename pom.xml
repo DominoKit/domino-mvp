@@ -5,7 +5,7 @@
 
     <groupId>org.dominokit</groupId>
     <artifactId>domino-mvp</artifactId>
-    <version>1.0.0-RC11</version>
+    <version>1.0.0-RC12</version>
     <packaging>pom</packaging>
 
     <name>domino-mvp</name>
@@ -74,7 +74,7 @@
 
     <properties>
         <snapshot.version>HEAD-SNAPSHOT</snapshot.version>
-        <next.release.version>1.0.0-RC11</next.release.version>
+        <next.release.version>1.0.0-RC12</next.release.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -93,17 +93,17 @@
         <maven.surfire.plugin>3.0.0-M1</maven.surfire.plugin>
         <maven.gwt.plugin>1.0.0</maven.gwt.plugin>
 
-        <gwt.version>2.9.0</gwt.version>
+        <gwt.version>2.10.0</gwt.version>
         <gwt.regxp.version>1.0.0-RC1</gwt.regxp.version>
         <vertx.version>3.9.0</vertx.version>
         <elemental.version>1.1.0</elemental.version>
-        <domino.rest.version>1.0.0-RC6</domino.rest.version>
-        <domino.jackson.version>1.0.0-RC3</domino.jackson.version>
+        <domino.rest.version>1.0.0-RC7</domino.rest.version>
+        <domino.jackson.version>1.0.0-RC4</domino.jackson.version>
         <domino.logger.version>1.0.2</domino.logger.version>
         <domino.aggregator.version>1.0.2</domino.aggregator.version>
-        <domino.history.version>1.0.0-RC4</domino.history.version>
+        <domino.history.version>1.0.0-RC5</domino.history.version>
         <domino.apt.commons.version>1.0.3</domino.apt.commons.version>
-        <domino.ui.version>1.0.0-RC10</domino.ui.version>
+        <domino.ui.version>1.0.0-RC19</domino.ui.version>
     </properties>
 
     <dependencyManagement>
@@ -316,7 +316,7 @@
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-core</artifactId>
-                <version>2.13.2</version>
+                <version>2.17.0</version>
             </dependency>
             <dependency>
                 <groupId>javax.validation</groupId>

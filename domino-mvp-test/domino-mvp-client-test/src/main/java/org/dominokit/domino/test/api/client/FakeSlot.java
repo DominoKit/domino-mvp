@@ -25,10 +25,16 @@ public class FakeSlot implements ContentSlot {
 
   private boolean revealed;
   private Content<FakeElement> old;
+  private String name;
 
   @Override
   public void updateContent(HasContent view, HasContent.CreateHandler createHandler) {
     updateContent(view.getContent(createHandler));
+  }
+
+  @Override
+  public void setName(String name) {
+    this.name = name;
   }
 
   @Override

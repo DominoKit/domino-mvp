@@ -48,4 +48,9 @@ public class AppendElementSlot extends ElementSlot {
   public void updateContent(HTMLElement view) {
     DominoElement.of(element).appendChild(view);
   }
+
+  @Override
+  protected HTMLElement getElement() {
+    return element.element();
+  }
 }

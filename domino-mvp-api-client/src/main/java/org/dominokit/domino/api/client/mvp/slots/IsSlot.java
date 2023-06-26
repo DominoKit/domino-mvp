@@ -16,6 +16,10 @@
 package org.dominokit.domino.api.client.mvp.slots;
 
 public interface IsSlot<T> {
+  String DOMINO_SLOT_NAME = "domino-slot-name";
+
+  default void setName(String name) {}
+
   void updateContent(T view);
 
   default void cleanUp() {}
