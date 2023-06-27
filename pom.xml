@@ -5,7 +5,7 @@
 
     <groupId>org.dominokit</groupId>
     <artifactId>domino-mvp</artifactId>
-    <version>2.0-snapshot</version>
+    <version>2.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>domino-mvp</name>
@@ -73,8 +73,8 @@
     <inceptionYear>2019</inceptionYear>
 
     <properties>
-        <snapshot.version>HEAD-SNAPSHOT</snapshot.version>
-        <next.release.version>1.0.0-RC12</next.release.version>
+        <snapshot.version>2.0-SNAPSHOT</snapshot.version>
+        <next.release.version>2.0.0-RC1</next.release.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
