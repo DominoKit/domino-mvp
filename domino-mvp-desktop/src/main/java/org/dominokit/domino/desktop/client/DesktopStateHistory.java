@@ -117,39 +117,6 @@ public class DesktopStateHistory implements AppHistory {
   }
 
   @Override
-  public void pushState(String token, String title, String data) {
-    // not implemented for desktop
-  }
-
-  @Override
-  public void pushState(String token) {
-    // not implemented for desktop
-  }
-
-  @Override
-  public void replaceState(String token, String title, String data) {
-    // not implemented for desktop
-  }
-
-  @Override
-  public void fireState(String token, String title, String data) {}
-
-  @Override
-  public void fireState(String token) {}
-
-  @Override
-  public void pushState(String token, String title, String data, TokenParameter... parameters) {}
-
-  @Override
-  public void pushState(String token, TokenParameter... parameters) {}
-
-  @Override
-  public void fireState(String token, String title, String data, TokenParameter... parameters) {}
-
-  @Override
-  public void fireState(String token, TokenParameter... parameters) {}
-
-  @Override
   public void fireCurrentStateHistory(String title) {}
 
   @Override
@@ -158,45 +125,19 @@ public class DesktopStateHistory implements AppHistory {
   }
 
   @Override
-  public void pushState(String token, String title) {}
+  public void pushState(StateToken stateToken) {}
 
   @Override
-  public void fireState(String token, String title) {}
+  public void pushState(StateToken stateToken, TokenParameter... parameters) {}
 
   @Override
-  public void pushState(HistoryToken token, String title, String data) {}
+  public void fireState(StateToken stateToken) {}
 
   @Override
-  public void pushState(HistoryToken token, String title) {}
+  public void fireState(StateToken stateToken, TokenParameter... parameters) {}
 
   @Override
-  public void pushState(
-      HistoryToken token, String title, String data, TokenParameter... parameters) {}
-
-  @Override
-  public void pushState(HistoryToken token) {}
-
-  @Override
-  public void pushState(HistoryToken token, TokenParameter... parameters) {}
-
-  @Override
-  public void fireState(HistoryToken token, String title, String data) {}
-
-  @Override
-  public void fireState(HistoryToken token, String title) {}
-
-  @Override
-  public void fireState(
-      HistoryToken token, String title, String data, TokenParameter... parameters) {}
-
-  @Override
-  public void fireState(HistoryToken token) {}
-
-  @Override
-  public void fireState(HistoryToken token, TokenParameter... parameters) {}
-
-  @Override
-  public void replaceState(HistoryToken token, String title, String data) {}
+  public void replaceState(StateToken stateToken) {}
 
   @Override
   public HistoryToken currentToken() {
@@ -207,6 +148,12 @@ public class DesktopStateHistory implements AppHistory {
   public String getRootPath() {
     return this.rootPath;
   }
+
+  @Override
+  public void addInterceptor(HistoryInterceptor interceptor) {}
+
+  @Override
+  public void removeInterceptor(HistoryInterceptor interceptor) {}
 
   private class HistoryListener {
     private final StateListener listener;

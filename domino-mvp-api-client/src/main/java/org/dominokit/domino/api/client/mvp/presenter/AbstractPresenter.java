@@ -33,6 +33,7 @@ import org.dominokit.domino.api.shared.extension.DominoEventListener;
 import org.dominokit.domino.api.shared.extension.GlobalDominoEventListener;
 import org.dominokit.domino.history.AppHistory;
 import org.dominokit.domino.history.DominoHistory;
+import org.dominokit.domino.history.StateToken;
 import org.dominokit.domino.history.TokenParameter;
 
 public abstract class AbstractPresenter extends DominoPresenter implements Presentable {
@@ -164,23 +165,23 @@ public abstract class AbstractPresenter extends DominoPresenter implements Prese
 
   protected void publishState(String token, String title, String data) {
     routingTask.disable();
-    history().fireState(token, title, data);
+    history().fireState(StateToken.of(token).title(title).data(data));
   }
 
   protected void publishState(
       String token, String title, String data, TokenParameter... parameters) {
     routingTask.disable();
-    history().fireState(token, title, data, parameters);
+    history().fireState(StateToken.of(token).title(title).data(data), parameters);
   }
 
   protected void publishState(String token) {
     routingTask.disable();
-    history().fireState(token);
+    history().fireState(StateToken.of(token));
   }
 
   protected void publishState(String token, TokenParameter... parameters) {
     routingTask.disable();
-    history().fireState(token, parameters);
+    history().fireState(StateToken.of(token), parameters);
   }
 
   protected boolean isAutoActivate() {
