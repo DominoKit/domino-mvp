@@ -5,7 +5,7 @@
 
     <groupId>org.dominokit</groupId>
     <artifactId>domino-mvp</artifactId>
-    <version>2.0-SNAPSHOT</version>
+    <version>HEAD-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>domino-mvp</name>
@@ -73,7 +73,7 @@
     <inceptionYear>2019</inceptionYear>
 
     <properties>
-        <snapshot.version>2.0-SNAPSHOT</snapshot.version>
+        <snapshot.version>HEAD-SNAPSHOT</snapshot.version>
         <next.release.version>2.0.0-RC1</next.release.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -97,13 +97,13 @@
         <gwt.regxp.version>1.0.0-RC1</gwt.regxp.version>
         <vertx.version>3.9.0</vertx.version>
         <elemental.version>1.1.0</elemental.version>
-        <domino.rest.version>1.0.0-RC8</domino.rest.version>
-        <domino.jackson.version>1.0.0-RC6</domino.jackson.version>
+        <domino.rest.version>1.0.0</domino.rest.version>
+        <domino.jackson.version>1.0.0</domino.jackson.version>
         <domino.logger.version>1.0.2</domino.logger.version>
         <domino.aggregator.version>1.0.2</domino.aggregator.version>
-        <domino.history.version>1.0.0-RC5</domino.history.version>
+        <domino.history.version>1.0.0</domino.history.version>
         <domino.apt.commons.version>1.0.3</domino.apt.commons.version>
-        <domino.ui.version>2.0-SNAPSHOT</domino.ui.version>
+        <domino.ui.version>HEAD-SNAPSHOT</domino.ui.version>
     </properties>
 
     <dependencyManagement>
