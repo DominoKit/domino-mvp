@@ -44,7 +44,7 @@ public class ActivationEventWait {
   }
 
   protected void updateContext(DominoEvent event) {
-    ActivationEventContext eventContext = (ActivationEventContext) event.context();
+    ActivationEvent eventContext = (ActivationEvent) event;
     if (eventContext.isActivated()) {
       contextWait.complete(true);
     } else {
@@ -57,18 +57,7 @@ public class ActivationEventWait {
 
     @Override
     public ActivationEvent deserializeEvent(String serializedEvent) {
-      return new ActivationEventImpl(serializedEvent);
-    }
-  }
-
-  private static class ActivationEventImpl extends ActivationEvent {
-
-    public ActivationEventImpl(boolean active) {
-      super(active);
-    }
-
-    public ActivationEventImpl(String serializedEvent) {
-      super(serializedEvent);
+      return new ActivationEvent(ActivationEvent.deserialize(serializedEvent));
     }
   }
 }

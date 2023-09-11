@@ -19,9 +19,12 @@ import static java.util.Objects.nonNull;
 
 import elemental2.dom.HTMLElement;
 import org.dominokit.domino.api.client.mvp.view.BaseDominoView;
+import org.dominokit.domino.ui.style.DominoCss;
 import org.dominokit.domino.ui.utils.ElementUtil;
+import org.dominokit.domino.ui.utils.ElementsFactory;
 
-public abstract class BaseElementView<T extends HTMLElement> extends BaseDominoView<T> {
+public abstract class BaseElementView<T extends HTMLElement> extends BaseDominoView<T>
+    implements DominoCss, ElementsFactory {
   @Override
   protected final void initRoot(T root) {
     if (nonNull(root)) {

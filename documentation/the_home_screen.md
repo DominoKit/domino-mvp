@@ -25,7 +25,7 @@ The home screen well depend on the shell and will show up in the content panel :
   import org.dominokit.domino.api.client.annotations.presenter.AutoRoute;
   import org.dominokit.domino.api.client.annotations.presenter.PresenterProxy;
   import org.dominokit.domino.api.client.annotations.presenter.Slot;
-  import org.dominokit.domino.api.client.mvp.presenter.ViewBaseClientPresenter;
+  import org.dominokit.domino.api.client.mvp.presenter.ViewablePresenter;
   import org.dominokit.samples.shell.client.views.HomeView;
   import org.dominokit.samples.shell.shared.Slots;
   import org.slf4j.Logger;
@@ -111,7 +111,7 @@ The home screen well depend on the shell and will show up in the content panel :
   import org.dominokit.domino.api.client.annotations.presenter.RegisterSlots;
   import org.dominokit.domino.api.client.annotations.presenter.Singleton;
   import org.dominokit.domino.api.client.annotations.presenter.Slot;
-  import org.dominokit.domino.api.client.mvp.presenter.ViewBaseClientPresenter;
+  import org.dominokit.domino.api.client.mvp.presenter.ViewablePresenter;
   import org.dominokit.domino.api.shared.extension.PredefinedSlots;
   import org.dominokit.samples.shell.client.views.ShellView;
   import org.dominokit.samples.shell.shared.Slots;

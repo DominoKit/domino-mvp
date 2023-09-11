@@ -15,10 +15,19 @@
  */
 package org.dominokit.domino.api.client;
 
+import org.dominokit.domino.history.TokenFilter;
 import org.dominokit.rest.shared.request.DynamicServiceRoot;
 
 public interface DominoOptions extends HasDominoOptions, CanSetDominoOptions {
   void applyOptions();
 
   DominoOptions addDynamicServiceRoot(DynamicServiceRoot dynamicServiceRoot);
+
+  default TokenFilter getTokenFilter(String token) {
+    return TokenFilter.endsWithPathFilter(token);
+  }
+
+  default TokenFilter getStartupTokenFilter(String token) {
+    return TokenFilter.startsWithPathFilter(token);
+  }
 }

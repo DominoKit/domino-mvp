@@ -15,42 +15,56 @@
  */
 package org.dominokit.domino.view.slots;
 
-import elemental2.dom.HTMLElement;
+import elemental2.dom.Element;
+import org.dominokit.domino.api.client.mvp.slots.IsSlot;
 import org.dominokit.domino.gwt.client.slots.ElementSlot;
+import org.dominokit.domino.ui.IsElement;
 import org.dominokit.domino.ui.utils.DominoElement;
-import org.jboss.elemento.IsElement;
+import org.dominokit.domino.ui.utils.ElementsFactory;
 
-public class SingleElementSlot extends ElementSlot {
+public class SingleElementSlot extends ElementSlot implements ElementsFactory {
 
-  private DominoElement<HTMLElement> element;
+  public static final String SINGLE_ELEMENT_SLOT = "single-element-slot";
+  private DominoElement<Element> element;
 
-  public static SingleElementSlot of(HTMLElement element) {
+  public static SingleElementSlot of(Element element) {
     return new SingleElementSlot(element);
   }
 
-  public static SingleElementSlot of(IsElement element) {
-    return new SingleElementSlot(element);
+  public static SingleElementSlot of(IsElement<? extends Element> element) {
+    return new SingleElementSlot(element.element());
   }
 
-  public SingleElementSlot(HTMLElement element) {
-    this.element = DominoElement.of(element);
+  public SingleElementSlot(Element element) {
+    this.element = elementOf(element);
   }
 
-  public SingleElementSlot(DominoElement<HTMLElement> element) {
+  public SingleElementSlot(DominoElement<Element> element) {
     this.element = element;
   }
 
-  public SingleElementSlot(IsElement<HTMLElement> element) {
-    this.element = DominoElement.of(element);
+  public SingleElementSlot(IsElement<Element> element) {
+    this.element = elementOf(element);
   }
 
   @Override
-  public void updateContent(HTMLElement view) {
+  public void updateContent(Element view) {
     element.clearElement().appendChild(view);
   }
 
   @Override
-  protected HTMLElement getElement() {
+  public void setType() {
+    this.element.setAttribute(IsSlot.DOMINO_SLOT_TYPE, SINGLE_ELEMENT_SLOT);
+  }
+
+  @Override
+  public void cleanUp() {
+    this.element.removeAttribute(IsSlot.DOMINO_SLOT_NAME);
+    this.element.removeAttribute(IsSlot.DOMINO_SLOT_TYPE);
+  }
+
+  @Override
+  protected Element getElement() {
     return element.element();
   }
 }

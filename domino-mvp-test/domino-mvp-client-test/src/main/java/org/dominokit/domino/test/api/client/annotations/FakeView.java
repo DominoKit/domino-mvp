@@ -17,10 +17,10 @@ package org.dominokit.domino.test.api.client.annotations;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import org.dominokit.domino.api.client.mvp.presenter.ViewBaseClientPresenter;
+import org.dominokit.domino.api.client.mvp.presenter.ViewablePresenter;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface FakeView {
 
-  Class<? extends ViewBaseClientPresenter> value();
+  Class<? extends ViewablePresenter> value();
 }

@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.dominokit</groupId>
         <artifactId>domino-mvp-processors</artifactId>
-        <version>1.0.0</version>
+        <version>2.0.0-RC1</version>
     </parent>
     <packaging>jar</packaging>
     <artifactId>domino-mvp-apt-server</artifactId>
@@ -30,6 +30,10 @@
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup</groupId>
+            <artifactId>javapoet</artifactId>
         </dependency>
     </dependencies>
 </project>

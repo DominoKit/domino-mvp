@@ -29,7 +29,7 @@ import org.dominokit.domino.api.client.annotations.ClientModule;
 import org.dominokit.domino.api.client.annotations.presenter.PresenterProxy;
 import org.dominokit.domino.api.client.annotations.presenter.Singleton;
 import org.dominokit.domino.api.client.mvp.presenter.PresenterSupplier;
-import org.dominokit.domino.api.client.mvp.presenter.ViewBaseClientPresenter;
+import org.dominokit.domino.api.client.mvp.presenter.ViewablePresenter;
 import org.dominokit.domino.api.client.mvp.presenter.ViewablePresenterSupplier;
 import org.dominokit.domino.apt.commons.AbstractSourceBuilder;
 import org.dominokit.domino.apt.commons.DominoTypeBuilder;
@@ -242,7 +242,7 @@ public class TestConfigSourceWriter extends AbstractSourceBuilder {
       String configName = getBindingConfigName(presenterTypeElement);
 
       boolean isViewable =
-          processorUtil.isAssignableFrom(presenterTypeElement, ViewBaseClientPresenter.class);
+          processorUtil.isAssignableFrom(presenterTypeElement, ViewablePresenter.class);
 
       TypeName supplierType;
       if (isViewable) {

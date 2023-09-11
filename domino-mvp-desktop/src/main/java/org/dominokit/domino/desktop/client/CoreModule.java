@@ -35,6 +35,7 @@ public class CoreModule {
         .asyncRunner(AsyncRunner.AsyncTask::onSuccess)
         .dominoOptions(new DesktopDominoOptions())
         .slotsManager(new DesktopSlotsManager())
+        .presentersNamesRegistry(new DesktopNamedPresenters())
         .build();
   }
 }

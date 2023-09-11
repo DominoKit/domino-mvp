@@ -53,6 +53,7 @@ public class TestClientAppFactory {
             .asyncRunner(new TestAsyncRunner())
             .dominoOptions(dominoOptions)
             .slotsManager(new TestSlotsManager())
+            .presentersNamesRegistry(new TestNamedPresenters())
             .build();
 
     return clientApp;

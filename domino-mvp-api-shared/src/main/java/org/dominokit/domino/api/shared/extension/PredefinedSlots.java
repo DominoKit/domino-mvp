@@ -19,4 +19,5 @@ public class PredefinedSlots {
 
   public static final String BODY_SLOT = "body-slot";
   public static final String MODAL_SLOT = "modal-slot";
+  public static final String NO_CONTENT_SLOT = "no-content-slot";
 }

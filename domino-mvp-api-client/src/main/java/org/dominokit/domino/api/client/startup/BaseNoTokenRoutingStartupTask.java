@@ -24,8 +24,7 @@ import java.util.Optional;
 import java.util.logging.Logger;
 import org.dominokit.domino.api.client.ClientApp;
 import org.dominokit.domino.api.client.events.BaseRoutingAggregator;
-import org.dominokit.domino.api.client.mvp.presenter.BaseClientPresenter;
-import org.dominokit.domino.api.client.mvp.presenter.NamedPresenters;
+import org.dominokit.domino.api.client.mvp.presenter.AbstractPresenter;
 import org.dominokit.domino.history.*;
 
 public abstract class BaseNoTokenRoutingStartupTask
@@ -36,7 +35,7 @@ public abstract class BaseNoTokenRoutingStartupTask
 
   protected List<BaseRoutingAggregator> aggregators = new ArrayList<>();
   protected boolean enabled = true;
-  protected BaseClientPresenter presenter;
+  protected AbstractPresenter presenter;
 
   public BaseNoTokenRoutingStartupTask(List<? extends BaseRoutingAggregator> aggregators) {
     this.aggregators.addAll(aggregators);
@@ -45,7 +44,9 @@ public abstract class BaseNoTokenRoutingStartupTask
             aggregator.init(
                 state -> {
                   if (getParent().isPresent()) {
-                    NamedPresenters.whenPresent(getParent().get(), () -> onStateReady(state));
+                    ClientApp.make()
+                        .namedPresenters()
+                        .whenPresent(getParent().get(), () -> onStateReady(state));
                   } else {
                     onStateReady(state);
                   }
@@ -53,7 +54,7 @@ public abstract class BaseNoTokenRoutingStartupTask
                 false));
   }
 
-  protected void bindPresenter(BaseClientPresenter presenter) {
+  protected void bindPresenter(AbstractPresenter presenter) {
     presenter.setRoutingTask(this);
     this.presenter = presenter;
   }

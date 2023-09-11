@@ -18,14 +18,17 @@ package org.dominokit.domino.gwt.client.app;
 // import com.google.gwt.core.client.GWT;
 
 import org.dominokit.domino.api.client.ClientApp;
+import org.dominokit.domino.api.client.InitOptions;
+import org.dominokit.domino.api.client.mvp.slots.SlotsManager;
 import org.dominokit.domino.client.commons.request.ClientRouter;
 import org.dominokit.domino.client.history.StateHistory;
 import org.dominokit.domino.gwt.client.async.GwtAsyncRunner;
 import org.dominokit.domino.gwt.client.events.ClientEventFactory;
 import org.dominokit.domino.gwt.client.events.ClientRequestGwtEvent;
 import org.dominokit.domino.gwt.client.extensions.CustomEventsDominoEventsRepository;
+import org.dominokit.domino.gwt.client.extensions.WebNamedPresenters;
 import org.dominokit.domino.gwt.client.options.DefaultDominoOptions;
-import org.dominokit.domino.gwt.client.slots.ElementsSlotsManager;
+import org.dominokit.domino.gwt.client.slots.DefaultSlotManager;
 import org.dominokit.rest.DominoRestConfig;
 import org.dominokit.rest.js.DominoSimpleEventsBus;
 import org.slf4j.Logger;
@@ -35,12 +38,10 @@ public class DominoGWT {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DominoGWT.class);
 
-  private static final InitOptions DEFAULT_OPTIONS = new InitOptions("");
-
   private DominoGWT() {}
 
   public static void init() {
-    init(DEFAULT_OPTIONS);
+    init(new DefaultInitOptions());
   }
 
   public static void init(InitOptions initOptions) {
@@ -57,7 +58,8 @@ public class DominoGWT {
         .history(new DominoMvpHistory(initOptions.getRootPath()))
         .asyncRunner(new GwtAsyncRunner())
         .dominoOptions(new DefaultDominoOptions())
-        .slotsManager(new ElementsSlotsManager())
+        .slotsManager(initOptions.getSlotsManager())
+        .presentersNamesRegistry(new WebNamedPresenters())
         .build();
   }
 
@@ -72,15 +74,15 @@ public class DominoGWT {
     }
   }
 
-  public static class InitOptions {
-    private final String rootPath;
-
-    public InitOptions(String rootPath) {
-      this.rootPath = rootPath;
+  public static class DefaultInitOptions implements InitOptions {
+    @Override
+    public String getRootPath() {
+      return "";
     }
 
-    public String getRootPath() {
-      return rootPath;
+    @Override
+    public SlotsManager getSlotsManager() {
+      return new DefaultSlotManager();
     }
   }
 }

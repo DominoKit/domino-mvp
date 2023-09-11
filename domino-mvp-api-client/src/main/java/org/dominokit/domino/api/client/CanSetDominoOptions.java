@@ -15,8 +15,19 @@
  */
 package org.dominokit.domino.api.client;
 
+import org.dominokit.domino.history.TokenFilter;
+
 public interface CanSetDominoOptions {
   CanSetDominoOptions setApplicationStartHandler(ApplicationStartHandler applicationStartHandler);
 
   CanSetDominoOptions setMainApp(boolean mainApp);
+
+  CanSetDominoOptions setTokenFilter(TokenFilterSupplier tokenFilter);
+
+  CanSetDominoOptions setStartUpTokenFilter(TokenFilterSupplier startUpTokenFilter);
+
+  @FunctionalInterface
+  interface TokenFilterSupplier {
+    TokenFilter get(String token);
+  }
 }

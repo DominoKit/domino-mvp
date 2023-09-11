@@ -38,6 +38,4 @@ public interface ClientContext {
   VertxEntryPointContext vertxEntryPointContext();
 
   FakeDominoOptions getDominoOptions();
-
-  void registerStore(String key, Object data);
 }

@@ -18,7 +18,7 @@ package org.dominokit.domino.api.client.mvp.presenter;
 import java.util.function.Supplier;
 import org.dominokit.domino.api.client.mvp.view.View;
 
-public class ViewablePresenterSupplier<P extends ViewBaseClientPresenter<V>, V extends View>
+public class ViewablePresenterSupplier<P extends ViewablePresenter<V>, V extends View>
     extends PresenterSupplier<P> {
 
   private Supplier<V> viewSupplier;

@@ -1,0 +1,41 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.dominokit</groupId>
+        <artifactId>domino-mvp</artifactId>
+        <version>HEAD-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>domino-mvp-processors</artifactId>
+    <packaging>pom</packaging>
+
+    <name>domino-mvp-processors</name>
+    <url>https://github.com/DominoKit/domino-mvp</url>
+    <description>GWT Domino annotation processors</description>
+
+    <modules>
+        <module>domino-mvp-apt-client</module>
+        <module>domino-mvp-apt-shared</module>
+        <module>domino-mvp-apt-client-test</module>
+        <module>domino-mvp-apt-server</module>
+    </modules>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.squareup</groupId>
+                <artifactId>javapoet</artifactId>
+                <version>1.13.0</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

@@ -117,31 +117,27 @@ public class DesktopStateHistory implements AppHistory {
   }
 
   @Override
-  public void pushState(StateToken token) {
-    // not implemented for desktop
-  }
-
-  @Override
-  public void replaceState(StateToken token) {
-    // not implemented for desktop
-  }
-
-  @Override
-  public void fireState(StateToken token) {}
-
-  @Override
-  public void pushState(StateToken token, TokenParameter... parameters) {}
-
-  @Override
-  public void fireState(StateToken token, TokenParameter... parameters) {}
-
-  @Override
   public void fireCurrentStateHistory(String title) {}
 
   @Override
   public int getHistoryEntriesCount() {
     return 0;
   }
+
+  @Override
+  public void pushState(StateToken stateToken) {}
+
+  @Override
+  public void pushState(StateToken stateToken, TokenParameter... parameters) {}
+
+  @Override
+  public void fireState(StateToken stateToken) {}
+
+  @Override
+  public void fireState(StateToken stateToken, TokenParameter... parameters) {}
+
+  @Override
+  public void replaceState(StateToken stateToken) {}
 
   @Override
   public HistoryToken currentToken() {

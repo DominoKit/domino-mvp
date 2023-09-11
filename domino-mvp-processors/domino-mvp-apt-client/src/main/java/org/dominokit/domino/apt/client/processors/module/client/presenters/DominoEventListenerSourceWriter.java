@@ -104,7 +104,7 @@ public class DominoEventListenerSourceWriter extends AbstractSourceBuilder {
         .addAnnotation(Override.class)
         .addModifiers(Modifier.PUBLIC)
         .addParameter(TypeName.get(eventType.asType()), "event")
-        .addStatement("this.presenter.$L(event.context())", root.getSimpleName().toString())
+        .addStatement("this.presenter.$L(event)", root.getSimpleName().toString())
         .build();
   }
 
@@ -114,7 +114,10 @@ public class DominoEventListenerSourceWriter extends AbstractSourceBuilder {
         .addModifiers(Modifier.PUBLIC)
         .returns(TypeName.get(eventType.asType()))
         .addParameter(TypeName.get(String.class), "serializedEvent")
-        .addStatement("return new $T(serializedEvent)", TypeName.get(eventType.asType()))
+        .addStatement(
+            "return new $T($T.deserialize(serializedEvent))",
+            TypeName.get(eventType.asType()),
+            TypeName.get(eventType.asType()))
         .build();
   }
 }
