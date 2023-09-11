@@ -21,6 +21,7 @@ import org.dominokit.domino.api.shared.extension.PredefinedSlots;
 import org.dominokit.domino.view.slots.BodyElementSlot;
 import org.dominokit.domino.view.slots.ElementsSlotsManager;
 import org.dominokit.domino.view.slots.ModalSlot;
+import org.dominokit.domino.view.slots.NoContentSlot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +40,8 @@ public class DominoViewOptions implements InitOptions {
     LOGGER.info("[" + PredefinedSlots.BODY_SLOT + "] slot registered");
     this.slotsManager.registerSlot(PredefinedSlots.MODAL_SLOT, ModalSlot.create());
     LOGGER.info("[" + PredefinedSlots.MODAL_SLOT + "] slot registered");
+    this.slotsManager.registerSlot(PredefinedSlots.NO_CONTENT_SLOT, NoContentSlot.create());
+    LOGGER.info("[" + PredefinedSlots.NO_CONTENT_SLOT + "] slot registered");
   }
 
   public DominoViewOptions setRootPath(String rootPath) {

@@ -13,11 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.dominokit.domino.api.shared.extension;
+package org.dominokit.domino.view;
 
-public class PredefinedSlots {
+import org.dominokit.domino.api.client.mvp.view.BaseDominoView;
+import org.dominokit.domino.ui.style.DominoCss;
+import org.dominokit.domino.ui.utils.ElementsFactory;
 
-  public static final String BODY_SLOT = "body-slot";
-  public static final String MODAL_SLOT = "modal-slot";
-  public static final String NO_CONTENT_SLOT = "no-content-slot";
+public abstract class BaseNoContentView extends BaseDominoView<Void>
+    implements DominoCss, ElementsFactory {
+  @Override
+  protected final void initRoot(Void root) {}
+
+  public void reveal() {
+    revealHandler.onRevealed();
+  }
+
+  public void remove() {
+    removeHandler.onRemoved();
+    clear();
+  }
+
+  @Override
+  protected Void init() {
+    return null;
+  }
 }
