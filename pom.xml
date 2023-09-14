@@ -5,7 +5,7 @@
 
     <groupId>org.dominokit</groupId>
     <artifactId>domino-mvp</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>pom</packaging>
 
     <name>domino-mvp</name>
@@ -73,8 +73,8 @@
     <inceptionYear>2019</inceptionYear>
 
     <properties>
-        <snapshot.version>HEAD-SNAPSHOT</snapshot.version>
-        <next.release.version>1.0.0</next.release.version>
+        <snapshot.version>1.0.1-SNAPSHOT</snapshot.version>
+        <next.release.version>1.0.1</next.release.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -95,7 +95,7 @@
 
         <gwt.version>2.10.0</gwt.version>
         <gwt.regxp.version>1.0.0-RC1</gwt.regxp.version>
-        <vertx.version>3.9.0</vertx.version>
+        <vertx.version>3.9.16</vertx.version>
         <elemental.version>1.1.0</elemental.version>
         <domino.rest.version>1.0.0</domino.rest.version>
         <domino.jackson.version>1.0.0</domino.jackson.version>
@@ -103,7 +103,7 @@
         <domino.aggregator.version>1.0.2</domino.aggregator.version>
         <domino.history.version>1.0.0</domino.history.version>
         <domino.apt.commons.version>1.0.3</domino.apt.commons.version>
-        <domino.ui.version>1.0.0</domino.ui.version>
+        <domino.ui.version>1.0.3</domino.ui.version>
     </properties>
 
     <dependencyManagement>
@@ -594,15 +594,11 @@
                          since everything set in the file can't be overwritten via command line -->
                     <versionDigitToIncrement>${bump.digit}</versionDigitToIncrement>
 
-                    <!-- Execute mvn verify before release -->
-                    <preReleaseGoals>verify</preReleaseGoals>
-                    <preHotfixGoals>verify</preHotfixGoals>
-
                     <!-- Configure branches -->
                     <gitFlowConfig>
-                        <productionBranch>master</productionBranch>
+                        <productionBranch>1.x.x</productionBranch>
                         <!-- default is develop, but we use development -->
-                        <developmentBranch>development</developmentBranch>
+                        <developmentBranch>1.x.x-development</developmentBranch>
                     </gitFlowConfig>
                 </configuration>
             </plugin>

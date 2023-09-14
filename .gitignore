@@ -52,3 +52,4 @@ src/main/webapp/gwt_bree/
 **/*.log
 
 **/bin/
+**/pom.xml.versionsBackup
