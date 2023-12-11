@@ -17,7 +17,7 @@
         <module>domino-mvp-gwt</module>
         <module>domino-mvp-api-shared</module>
         <module>domino-mvp-api-server</module>
-        <module>domino-mvp-plugins</module>
+<!--        <module>domino-mvp-plugins</module>-->
         <module>domino-mvp-test</module>
         <module>domino-mvp-processors</module>
         <module>domino-mvp-ssl-server-configurator</module>
@@ -75,12 +75,12 @@
     <properties>
         <snapshot.version>HEAD-SNAPSHOT</snapshot.version>
         <next.release.version>2.0.0-RC3</next.release.version>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <maven.compiler.plugin>3.8.1</maven.compiler.plugin>
+        <maven.compiler.plugin>3.11.0</maven.compiler.plugin>
         <maven.jar.plugin>3.2.0</maven.jar.plugin>
         <maven.source.plugin>3.0.1</maven.source.plugin>
         <maven.javadoc.plugin>2.10.4</maven.javadoc.plugin>
@@ -91,19 +91,19 @@
         <maven.install.plugin>3.0.0-M1</maven.install.plugin>
         <maven.license.plugin>3.0</maven.license.plugin>
         <maven.surfire.plugin>3.0.0-M1</maven.surfire.plugin>
-        <maven.gwt.plugin>1.0.0</maven.gwt.plugin>
+        <maven.gwt.plugin>1.1.0</maven.gwt.plugin>
 
         <gwt.version>2.10.0</gwt.version>
         <gwt.regxp.version>1.0.0-RC1</gwt.regxp.version>
         <vertx.version>3.9.16</vertx.version>
-        <elemental.version>1.1.0</elemental.version>
-        <domino.rest.version>1.0.0</domino.rest.version>
-        <domino.jackson.version>1.0.0</domino.jackson.version>
+        <elemental.version>1.2.1</elemental.version>
+        <domino.rest.version>1.0.2</domino.rest.version>
+        <domino.jackson.version>1.0.4</domino.jackson.version>
         <domino.logger.version>1.0.2</domino.logger.version>
-        <domino.aggregator.version>1.0.2</domino.aggregator.version>
-        <domino.history.version>1.0.0</domino.history.version>
-        <domino.apt.commons.version>1.0.3</domino.apt.commons.version>
-        <domino.ui.version>2.0.0-RC3</domino.ui.version>
+        <domino.aggregator.version>1.0.3</domino.aggregator.version>
+        <domino.history.version>1.0.1</domino.history.version>
+        <domino.apt.commons.version>1.0.5</domino.apt.commons.version>
+        <domino.ui.version>2.0.0-RC5</domino.ui.version>
     </properties>
 
     <dependencyManagement>
@@ -311,7 +311,7 @@
             <dependency>
                 <groupId>com.google.auto.service</groupId>
                 <artifactId>auto-service</artifactId>
-                <version>1.0-rc7</version>
+                <version>1.1.1</version>
             </dependency>
             <dependency>
                 <groupId>javax.validation</groupId>
@@ -509,7 +509,31 @@
                 <artifactId>logback-classic</artifactId>
                 <version>1.2.10</version>
             </dependency>
-
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>2.16.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>2.16.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>2.16.0</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.15.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dominokit.i18n</groupId>
+                <artifactId>gwt-cldr</artifactId>
+                <version>1.0.1</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <dependencies>
@@ -540,7 +564,7 @@
                 <version>${maven.gwt.plugin}</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <sourceLevel>1.8</sourceLevel>
+                    <sourceLevel>11</sourceLevel>
                     <failOnError>true</failOnError>
                     <moduleName>org.dominokit.domino.logger.Logging</moduleName>
                 </configuration>
@@ -647,8 +671,7 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${maven.compiler.plugin}</version>
                     <configuration>
-                        <source>${maven.compiler.source}</source>
-                        <target>${maven.compiler.target}</target>
+                        <release>11</release>
                     </configuration>
                 </plugin>
                 <plugin>
