@@ -93,17 +93,17 @@
         <maven.surfire.plugin>3.0.0-M1</maven.surfire.plugin>
         <maven.gwt.plugin>1.1.0</maven.gwt.plugin>
 
-        <gwt.version>2.10.0</gwt.version>
+        <gwt.version>2.12.2</gwt.version>
         <gwt.regxp.version>1.0.0-RC1</gwt.regxp.version>
         <vertx.version>3.9.16</vertx.version>
-        <elemental.version>1.2.1</elemental.version>
+        <elemental.version>1.2.3</elemental.version>
         <domino.rest.version>1.0.2</domino.rest.version>
-        <domino.jackson.version>1.0.4</domino.jackson.version>
-        <domino.logger.version>1.0.2</domino.logger.version>
+        <domino.jackson.version>1.0.5</domino.jackson.version>
+        <domino.logger.version>1.0.3</domino.logger.version>
         <domino.aggregator.version>1.0.3</domino.aggregator.version>
-        <domino.history.version>1.0.1</domino.history.version>
+        <domino.history.version>1.0.4</domino.history.version>
         <domino.apt.commons.version>1.0.5</domino.apt.commons.version>
-        <domino.ui.version>2.0.0-RC5</domino.ui.version>
+        <domino.ui.version>2.0.4</domino.ui.version>
     </properties>
 
     <dependencyManagement>
@@ -319,7 +319,7 @@
                 <classifier>sources</classifier>
             </dependency>
             <dependency>
-                <groupId>com.google.gwt</groupId>
+                <groupId>org.gwtproject</groupId>
                 <artifactId>gwt</artifactId>
                 <version>${gwt.version}</version>
                 <type>pom</type>
@@ -424,6 +424,11 @@
             <dependency>
                 <groupId>com.google.elemental2</groupId>
                 <artifactId>elemental2-dom</artifactId>
+                <version>${elemental.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.elemental2</groupId>
+                <artifactId>elemental2-promise</artifactId>
                 <version>${elemental.version}</version>
             </dependency>
             <dependency>
