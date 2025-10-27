@@ -95,7 +95,7 @@
 
         <gwt.version>2.10.0</gwt.version>
         <gwt.regxp.version>1.0.0-RC1</gwt.regxp.version>
-        <vertx.version>3.9.16</vertx.version>
+        <vertx.version>4.5.22</vertx.version>
         <elemental.version>1.1.0</elemental.version>
         <domino.rest.version>1.0.0</domino.rest.version>
         <domino.jackson.version>1.0.0</domino.jackson.version>
@@ -372,12 +372,6 @@
             </dependency>
             <dependency>
                 <groupId>io.vertx</groupId>
-                <artifactId>vertx-service-proxy</artifactId>
-                <version>${vertx.version}</version>
-                <classifier>processor</classifier>
-            </dependency>
-            <dependency>
-                <groupId>io.vertx</groupId>
                 <artifactId>vertx-jdbc-client</artifactId>
                 <version>${vertx.version}</version>
             </dependency>
@@ -622,11 +616,51 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${maven.compiler.plugin}</version>
+
+                    <!-- main compile -->
                     <configuration>
                         <source>${maven.compiler.source}</source>
                         <target>${maven.compiler.target}</target>
+
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>io.vertx</groupId>
+                                <artifactId>vertx-codegen</artifactId>
+                                <version>${vertx.version}</version>
+                            </path>
+                            <path>
+                                <groupId>io.vertx</groupId>
+                                <artifactId>vertx-service-proxy</artifactId>
+                                <version>${vertx.version}</version>
+                            </path>
+                        </annotationProcessorPaths>
                     </configuration>
+
+                    <executions>
+                        <!-- ensure processors also run for tests -->
+                        <execution>
+                            <id>proc-test</id>
+                            <goals>
+                                <goal>testCompile</goal>
+                            </goals>
+                            <configuration>
+                                <annotationProcessorPaths>
+                                    <path>
+                                        <groupId>io.vertx</groupId>
+                                        <artifactId>vertx-codegen</artifactId>
+                                        <version>${vertx.version}</version>
+                                    </path>
+                                    <path>
+                                        <groupId>io.vertx</groupId>
+                                        <artifactId>vertx-service-proxy</artifactId>
+                                        <version>${vertx.version}</version>
+                                    </path>
+                                </annotationProcessorPaths>
+                            </configuration>
+                        </execution>
+                    </executions>
                 </plugin>
+
                 <plugin>
                     <artifactId>maven-source-plugin</artifactId>
                     <version>${maven.source.plugin}</version>

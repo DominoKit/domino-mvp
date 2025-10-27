@@ -18,7 +18,7 @@ package org.dominokit.domino.service.discovery.type;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
-import io.vertx.redis.RedisClient;
+import io.vertx.redis.client.Redis;
 import io.vertx.servicediscovery.Record;
 import io.vertx.servicediscovery.ServiceDiscovery;
 import io.vertx.servicediscovery.types.RedisDataSource;
@@ -42,24 +42,23 @@ public class RedisServiceDiscovery {
         configuration.getName(), configuration.getLocation(), configuration.getMetadata());
   }
 
-  public void getClient(
-      Function<Record, Boolean> filter, Handler<AsyncResult<RedisClient>> handler) {
+  public void getClient(Function<Record, Boolean> filter, Handler<AsyncResult<Redis>> handler) {
     RedisDataSource.getRedisClient(serviceDiscovery, filter, handler);
   }
 
   public void getClient(
       Function<Record, Boolean> filter,
       JsonObject configuration,
-      Handler<AsyncResult<RedisClient>> handler) {
+      Handler<AsyncResult<Redis>> handler) {
     RedisDataSource.getRedisClient(serviceDiscovery, filter, configuration, handler);
   }
 
-  public void getClient(JsonObject jsonFilter, Handler<AsyncResult<RedisClient>> handler) {
+  public void getClient(JsonObject jsonFilter, Handler<AsyncResult<Redis>> handler) {
     RedisDataSource.getRedisClient(serviceDiscovery, jsonFilter, handler);
   }
 
   public void getClient(
-      JsonObject jsonFilter, JsonObject configuration, Handler<AsyncResult<RedisClient>> handler) {
+      JsonObject jsonFilter, JsonObject configuration, Handler<AsyncResult<Redis>> handler) {
     RedisDataSource.getRedisClient(serviceDiscovery, jsonFilter, configuration, handler);
   }
 }

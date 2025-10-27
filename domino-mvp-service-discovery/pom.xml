@@ -39,11 +39,6 @@
         </dependency>
         <dependency>
             <groupId>io.vertx</groupId>
-            <artifactId>vertx-service-proxy</artifactId>
-            <classifier>processor</classifier>
-        </dependency>
-        <dependency>
-            <groupId>io.vertx</groupId>
             <artifactId>vertx-jdbc-client</artifactId>
         </dependency>
         <dependency>
@@ -55,5 +50,58 @@
             <artifactId>vertx-mongo-client</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin}</version>
+
+                <!-- main compile -->
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>io.vertx</groupId>
+                            <artifactId>vertx-codegen</artifactId>
+                            <version>${vertx.version}</version>
+                        </path>
+                        <path>
+                            <groupId>io.vertx</groupId>
+                            <artifactId>vertx-service-proxy</artifactId>
+                            <version>${vertx.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+
+                <executions>
+                    <!-- ensure processors also run for tests -->
+                    <execution>
+                        <id>proc-test</id>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                        <configuration>
+                            <annotationProcessorPaths>
+                                <path>
+                                    <groupId>io.vertx</groupId>
+                                    <artifactId>vertx-codegen</artifactId>
+                                    <version>${vertx.version}</version>
+                                </path>
+                                <path>
+                                    <groupId>io.vertx</groupId>
+                                    <artifactId>vertx-service-proxy</artifactId>
+                                    <version>${vertx.version}</version>
+                                </path>
+                            </annotationProcessorPaths>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
