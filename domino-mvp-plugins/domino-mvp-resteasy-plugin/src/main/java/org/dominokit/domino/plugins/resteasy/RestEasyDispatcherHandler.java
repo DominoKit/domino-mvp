@@ -100,7 +100,7 @@ public class RestEasyDispatcherHandler implements Handler<RoutingContext> {
             ctx.getDelegate(),
             headers,
             uriInfo,
-            request.rawMethod(),
+            request.method().name(),
             dispatcher.getDispatcher(),
             vertxResponse,
             false);

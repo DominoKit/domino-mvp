@@ -23,7 +23,6 @@
         <module>domino-mvp-ssl-server-configurator</module>
         <module>domino-mvp-service-discovery</module>
         <module>domino-mvp-remote-logging</module>
-        <module>domino-mvp-desktop</module>
         <module>domino-mvp-client-commons</module>
         <module>domino-mvp-gwt-view</module>
         <module>domino-mvp-log4j-server-logging</module>
@@ -68,8 +67,8 @@
     <properties>
         <snapshot.version>1.0.2-SNAPSHOT</snapshot.version>
         <next.release.version>1.0.2</next.release.version>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
@@ -268,11 +267,6 @@
             <dependency>
                 <groupId>org.dominokit</groupId>
                 <artifactId>domino-mvp-gwt</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.dominokit</groupId>
-                <artifactId>domino-mvp-desktop</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

@@ -15,6 +15,8 @@
  */
 package org.dominokit.domino.api.server.plugins;
 
+import io.vertx.core.Future;
+import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.RoutingContext;
 import org.dominokit.domino.api.server.PluginContext;
@@ -27,14 +29,25 @@ public class DefaultIndexPageProvider implements IndexPageProvider {
 
   public static final IndexPageProvider INSTANCE = new DefaultIndexPageProvider();
 
-  @Override
   public HttpServerResponse serveIndexPage(
       PluginContext context, RoutingContext routingContext, int statusCode) {
-    LOGGER.info("Loading index page using Default provider...");
-    return routingContext
-        .response()
-        .setStatusCode(statusCode)
-        .putHeader("Content-type", "text/html")
-        .sendFile(context.getWebRoot() + "/index.html");
+
+    HttpServerResponse resp =
+        routingContext
+            .response()
+            .setStatusCode(statusCode)
+            .putHeader(HttpHeaders.CONTENT_TYPE, "text/html; charset=UTF-8");
+
+    Future<Void> f = resp.sendFile(context.getWebRoot() + "/index.html");
+
+    // optional error handling
+    f.onFailure(
+        err -> {
+          if (!resp.ended()) {
+            resp.setStatusCode(500).end("Failed to load index.html");
+          }
+        });
+
+    return resp; // we just ignore the Future result
   }
 }
