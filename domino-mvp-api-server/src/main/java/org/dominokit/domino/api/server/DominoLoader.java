@@ -30,14 +30,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ServiceLoader;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import org.dominokit.domino.api.server.config.HttpServerConfigurator;
 import org.dominokit.domino.api.server.config.VertxConfiguration;
 import org.dominokit.domino.api.server.entrypoint.VertxContext;
-import org.dominokit.domino.service.discovery.VertxServiceDiscovery;
 
 public class DominoLoader implements IsDominoLoader {
 
@@ -75,13 +73,12 @@ public class DominoLoader implements IsDominoLoader {
     ImmutableHttpServerOptions immutableHttpServerOptions = new ImmutableHttpServerOptions();
     VertxContext vertxContext = initializeContext(immutableHttpServerOptions);
 
-    Future<HttpServerOptions> future = Future.future();
-    future.setHandler(
-        options ->
-            onHttpServerConfigurationCompleted(
-                immutableHttpServerOptions, vertxContext, options, httpServerConsumer));
+    configureHttpServer(vertxContext)
+        .onComplete(
+            optionsAr ->
+                onHttpServerConfigurationCompleted(
+                    immutableHttpServerOptions, vertxContext, optionsAr, httpServerConsumer));
 
-    configureHttpServer(vertxContext, future);
     return vertxContext;
   }
 
@@ -90,7 +87,6 @@ public class DominoLoader implements IsDominoLoader {
         .router(router)
         .serverConfiguration(new VertxConfiguration(config))
         .httpServerOptions(immutableHttpServerOptions)
-        .vertxServiceDiscovery(new VertxServiceDiscovery(vertx))
         .configRetriever(ConfigRetriever.create(vertx))
         .build();
   }
@@ -100,16 +96,36 @@ public class DominoLoader implements IsDominoLoader {
       VertxContext vertxContext,
       AsyncResult<HttpServerOptions> options,
       Consumer<HttpServer> httpServerConsumer) {
+    if (options.failed()) {
+      return;
+    }
+
     immutableHttpServerOptions.init(
         options.result(), options.result().getPort(), options.result().getHost());
 
-    CompletableFuture<PluginContext> pluginContextCompletableFuture =
-        applyPlugins(vertxContext, options, httpServerConsumer);
-    try {
-      pluginContextCompletableFuture.get();
-    } catch (InterruptedException | ExecutionException e) {
-      LOGGER.error("Failed to apply domino-mvp plugins : ", e);
-    }
+    applyPlugins(vertxContext, options, httpServerConsumer)
+        .thenCompose(
+            pc ->
+                vertxContext
+                    .vertx()
+                    .createHttpServer(options.result())
+                    .requestHandler(
+                        req -> {
+                          /*...*/
+                        })
+                    .listen()
+                    .toCompletionStage())
+        .whenComplete(
+            (server, err) -> {
+              if (err != null) {
+                LOGGER.error("Failed to start", err);
+              } else {
+                io.vertx.reactivex.core.http.HttpServer rxServer =
+                    new io.vertx.reactivex.core.http.HttpServer(server);
+                if (httpServerConsumer != null) httpServerConsumer.accept(rxServer);
+                LOGGER.info("HTTP server on {}", server.actualPort());
+              }
+            });
   }
 
   private CompletableFuture<PluginContext> applyPlugins(
@@ -157,15 +173,17 @@ public class DominoLoader implements IsDominoLoader {
     return future;
   }
 
-  private void configureHttpServer(VertxContext vertxContext, Future<HttpServerOptions> future) {
-    HttpServerOptions httpServerOptions = new HttpServerOptions();
-    httpServerOptions.setPort(vertxContext.config().getInteger(HTTP_PORT_KEY, DEFAULT_PORT));
+  private Future<HttpServerOptions> configureHttpServer(VertxContext vertxContext) {
+    HttpServerOptions httpServerOptions =
+        new HttpServerOptions()
+            .setPort(vertxContext.config().getInteger(HTTP_PORT_KEY, DEFAULT_PORT))
+            .setCompressionSupported(true);
+
     ServiceLoader<HttpServerConfigurator> configurators =
         ServiceLoader.load(HttpServerConfigurator.class);
     configurators.forEach(c -> c.configureHttpServer(vertxContext, httpServerOptions));
-    httpServerOptions.setCompressionSupported(true);
 
-    future.complete(httpServerOptions);
+    return Future.succeededFuture(httpServerOptions);
   }
 
   @Override

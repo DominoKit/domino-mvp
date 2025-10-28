@@ -15,6 +15,12 @@
  */
 package org.dominokit.domino.api.server;
 
+import static io.vertx.core.http.HttpMethod.DELETE;
+import static io.vertx.core.http.HttpMethod.PATCH;
+import static io.vertx.core.http.HttpMethod.POST;
+import static io.vertx.core.http.HttpMethod.PUT;
+
+import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
@@ -28,8 +34,8 @@ public class DominoCSRFHandler extends CSRFHandlerImpl {
   private final JsonObject config;
   private Set<CSRFWhiteListHandler> whiteListHandlers;
 
-  DominoCSRFHandler(String secret, JsonObject config) {
-    super(secret);
+  DominoCSRFHandler(Vertx vertx, String secret, JsonObject config) {
+    super(vertx, secret);
     this.config = config;
     this.whiteListHandlers = new LinkedHashSet<>();
     ServiceLoader.load(CSRFWhiteListHandler.class).forEach(h -> whiteListHandlers.add(h));
@@ -40,21 +46,18 @@ public class DominoCSRFHandler extends CSRFHandlerImpl {
 
     HttpMethod method = ctx.request().method();
 
-    switch (method) {
-      case POST:
-      case PUT:
-      case DELETE:
-      case PATCH:
-        final Set<CSRFWhiteListHandler> blackList =
-            whiteListHandlers.stream()
-                .filter(w -> w.match(ctx, config) && !w.whiteList(ctx, config))
-                .collect(Collectors.toSet());
-        if (blackList.isEmpty()) ctx.next();
-        else super.handle(ctx);
-        break;
-      default:
-        super.handle(ctx);
-        break;
+    if (method.equals(POST)
+        || method.equals(PUT)
+        || method.equals(DELETE)
+        || method.equals(PATCH)) {
+      final Set<CSRFWhiteListHandler> blackList =
+          whiteListHandlers.stream()
+              .filter(w -> w.match(ctx, config) && !w.whiteList(ctx, config))
+              .collect(Collectors.toSet());
+      if (blackList.isEmpty()) ctx.next();
+      else super.handle(ctx);
+    } else {
+      super.handle(ctx);
     }
   }
 }

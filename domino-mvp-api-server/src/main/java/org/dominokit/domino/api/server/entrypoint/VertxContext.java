@@ -25,14 +25,12 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import org.dominokit.domino.api.server.config.ServerConfiguration;
-import org.dominokit.domino.service.discovery.VertxServiceDiscovery;
 
 public class VertxContext implements ServerContext {
 
   private final Router router;
   private final ServerConfiguration config;
   private final Vertx vertx;
-  private final VertxServiceDiscovery serviceDiscovery;
   private final DominoHttpServerOptions httpServerOptions;
   private final ConfigRetriever configRetriever;
   private final io.vertx.reactivex.core.Vertx rxVertx;
@@ -42,14 +40,12 @@ public class VertxContext implements ServerContext {
       Vertx vertx,
       Router router,
       ServerConfiguration config,
-      VertxServiceDiscovery serviceDiscovery,
       DominoHttpServerOptions httpServerOptions,
       ConfigRetriever configRetriever) {
     this.router = router;
     this.config = config;
     this.vertx = vertx;
     this.rxVertx = new io.vertx.reactivex.core.Vertx(vertx);
-    this.serviceDiscovery = serviceDiscovery;
     this.httpServerOptions = httpServerOptions;
     this.configRetriever = configRetriever;
   }
@@ -81,10 +77,6 @@ public class VertxContext implements ServerContext {
     return rxVertx;
   }
 
-  public VertxServiceDiscovery serviceDiscovery() {
-    return this.serviceDiscovery;
-  }
-
   public DominoHttpServerOptions httpServerOptions() {
     return this.httpServerOptions;
   }
@@ -106,7 +98,6 @@ public class VertxContext implements ServerContext {
     private Router router;
     private ServerConfiguration config;
     private Vertx vertx;
-    private VertxServiceDiscovery serviceDiscovery;
     private DominoHttpServerOptions httpServerOptions;
     private ConfigRetriever configRetriever;
 
@@ -128,11 +119,6 @@ public class VertxContext implements ServerContext {
       return new VertxContextBuilder(vertx);
     }
 
-    public VertxContextBuilder vertxServiceDiscovery(VertxServiceDiscovery serviceDiscovery) {
-      this.serviceDiscovery = serviceDiscovery;
-      return this;
-    }
-
     public VertxContextBuilder httpServerOptions(DominoHttpServerOptions DominoHttpServerOptions) {
       this.httpServerOptions = DominoHttpServerOptions;
       return this;
@@ -144,8 +130,7 @@ public class VertxContext implements ServerContext {
     }
 
     public VertxContext build() {
-      return new VertxContext(
-          vertx, router, config, serviceDiscovery, httpServerOptions, configRetriever);
+      return new VertxContext(vertx, router, config, httpServerOptions, configRetriever);
     }
   }
 }

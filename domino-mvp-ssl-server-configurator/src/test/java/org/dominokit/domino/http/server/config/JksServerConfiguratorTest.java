@@ -27,7 +27,6 @@ import io.vertx.core.net.JksOptions;
 import io.vertx.ext.web.Router;
 import org.dominokit.domino.api.server.config.VertxConfiguration;
 import org.dominokit.domino.api.server.entrypoint.VertxContext;
-import org.dominokit.domino.service.discovery.VertxServiceDiscovery;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -65,7 +64,6 @@ public class JksServerConfiguratorTest {
         VertxContext.VertxContextBuilder.vertx(vertx)
             .router(router)
             .serverConfiguration(configuration)
-            .vertxServiceDiscovery(new VertxServiceDiscovery(vertx))
             .build();
   }
 

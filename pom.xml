@@ -21,9 +21,8 @@
         <module>domino-mvp-test</module>
         <module>domino-mvp-processors</module>
         <module>domino-mvp-ssl-server-configurator</module>
-        <module>domino-mvp-service-discovery</module>
         <module>domino-mvp-remote-logging</module>
-        <module>domino-mvp-desktop</module>
+<!--        <module>domino-mvp-desktop</module>-->
         <module>domino-mvp-client-commons</module>
         <module>domino-mvp-gwt-view</module>
         <module>domino-mvp-server-logging</module>
@@ -95,15 +94,15 @@
 
         <gwt.version>2.12.2</gwt.version>
         <gwt.regxp.version>1.0.0-RC1</gwt.regxp.version>
-        <vertx.version>3.9.16</vertx.version>
-        <elemental.version>1.2.3</elemental.version>
+        <vertx.version>4.5.22</vertx.version>
+        <elemental.version>1.1.0</elemental.version>
         <domino.rest.version>1.0.2</domino.rest.version>
         <domino.jackson.version>1.0.5</domino.jackson.version>
         <domino.logger.version>1.0.3</domino.logger.version>
         <domino.aggregator.version>1.0.3</domino.aggregator.version>
-        <domino.history.version>1.0.4</domino.history.version>
+        <domino.history.version>1.0.5</domino.history.version>
         <domino.apt.commons.version>1.0.5</domino.apt.commons.version>
-        <domino.ui.version>2.0.4</domino.ui.version>
+        <domino.ui.version>1.0.6</domino.ui.version>
     </properties>
 
     <dependencyManagement>
@@ -263,11 +262,6 @@
             </dependency>
             <dependency>
                 <groupId>org.dominokit</groupId>
-                <artifactId>domino-mvp-service-discovery</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.dominokit</groupId>
                 <artifactId>domino-mvp-ssl-server-configurator</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -282,11 +276,11 @@
                 <artifactId>domino-mvp-gwt</artifactId>
                 <version>${project.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.dominokit</groupId>
-                <artifactId>domino-mvp-desktop</artifactId>
-                <version>${project.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.dominokit</groupId>-->
+<!--                <artifactId>domino-mvp-desktop</artifactId>-->
+<!--                <version>${project.version}</version>-->
+<!--            </dependency>-->
             <dependency>
                 <groupId>org.dominokit</groupId>
                 <artifactId>domino-jackson</artifactId>
@@ -353,11 +347,6 @@
             <dependency>
                 <groupId>io.vertx</groupId>
                 <artifactId>vertx-config</artifactId>
-                <version>${vertx.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.vertx</groupId>
-                <artifactId>vertx-service-discovery</artifactId>
                 <version>${vertx.version}</version>
             </dependency>
             <dependency>
