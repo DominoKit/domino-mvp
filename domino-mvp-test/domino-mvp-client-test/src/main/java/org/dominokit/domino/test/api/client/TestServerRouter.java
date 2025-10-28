@@ -15,7 +15,7 @@
  */
 package org.dominokit.domino.test.api.client;
 
-import io.vertx.core.Future;
+import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +33,7 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
   private static final Logger LOGGER = LoggerFactory.getLogger(TestServerRouter.class);
 
   private Map<String, ResponseReply> fakeResponses = new HashMap<>();
-  private Map<String, Future<ResponseReply>> requestCompleteHandlers = new HashMap<>();
+  private Map<String, Promise<ResponseReply>> requestCompleteHandlers = new HashMap<>();
   private final RequestAsyncSender requestAsyncRunner;
   private TestRoutingListener defaultListener = new TestRoutingListener();
   private RoutingListener listener = defaultListener;
@@ -108,7 +108,7 @@ public class TestServerRouter implements RequestRouter<ServerRequest> {
   }
 
   public void onRequestCompleted(
-      Class<? extends ServerRequest> request, Future<ResponseReply> completeHandler) {
+      Class<? extends ServerRequest> request, Promise<ResponseReply> completeHandler) {
     requestCompleteHandlers.put(getRequestKey(request), completeHandler);
   }
 

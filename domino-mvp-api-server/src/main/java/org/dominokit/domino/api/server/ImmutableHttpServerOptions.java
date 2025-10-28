@@ -70,17 +70,17 @@ class ImmutableHttpServerOptions implements DominoHttpServerOptions {
 
   @Override
   public int getMaxWebsocketFrameSize() {
-    return options.getMaxWebsocketFrameSize();
+    return options.getMaxWebSocketFrameSize();
   }
 
   @Override
   public int getMaxWebsocketMessageSize() {
-    return options.getMaxWebsocketMessageSize();
+    return options.getMaxWebSocketMessageSize();
   }
 
   @Override
-  public String getWebsocketSubProtocols() {
-    return options.getWebsocketSubProtocols();
+  public List<String> getWebsocketSubProtocols() {
+    return options.getWebSocketSubProtocols();
   }
 
   @Override

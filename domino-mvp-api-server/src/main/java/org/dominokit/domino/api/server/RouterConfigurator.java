@@ -29,8 +29,6 @@ import io.vertx.ext.web.sstore.SessionStore;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.ServiceLoader;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import org.dominokit.domino.api.server.logging.DefaultRemoteLogger;
 import org.dominokit.domino.api.server.logging.RemoteLogger;
@@ -101,7 +99,7 @@ public class RouterConfigurator {
                               "X-XSRF-TOKEN",
                               "Accept",
                               "cache-control")))
-                  .allowedMethods(Stream.of(HttpMethod.values()).collect(Collectors.toSet())));
+                  .allowedMethods(new HashSet<>(HttpMethod.values())));
     }
   }
 
@@ -118,7 +116,7 @@ public class RouterConfigurator {
 
   private void addCSRFHandler(Router router) {
     if (config.getBoolean("csrf.enabled", true)) {
-      router.route().handler(new DominoCSRFHandler(secret, config));
+      router.route().handler(new DominoCSRFHandler(vertx, secret, config));
     }
   }
 

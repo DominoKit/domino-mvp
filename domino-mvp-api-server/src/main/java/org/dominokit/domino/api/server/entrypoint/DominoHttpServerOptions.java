@@ -40,7 +40,7 @@ public interface DominoHttpServerOptions {
 
   int getMaxWebsocketMessageSize();
 
-  String getWebsocketSubProtocols();
+  List<String> getWebsocketSubProtocols();
 
   boolean isHandle100ContinueAutomatically();
 

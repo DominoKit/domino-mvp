@@ -16,11 +16,8 @@
 package org.dominokit.domino.view;
 
 import org.dominokit.domino.api.client.mvp.view.BaseDominoView;
-import org.dominokit.domino.ui.style.DominoCss;
-import org.dominokit.domino.ui.utils.ElementsFactory;
 
-public abstract class BaseNoContentView extends BaseDominoView<Void>
-    implements DominoCss, ElementsFactory {
+public abstract class BaseNoContentView extends BaseDominoView<Void> {
   @Override
   protected final void initRoot(Void root) {}
 

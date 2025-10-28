@@ -20,14 +20,12 @@ import elemental2.dom.HTMLElement;
 import jsinterop.base.Js;
 import org.dominokit.domino.api.client.mvp.slots.IsSlot;
 import org.dominokit.domino.gwt.client.slots.ElementSlot;
-import org.dominokit.domino.ui.IsElement;
-import org.dominokit.domino.ui.utils.DominoElement;
-import org.dominokit.domino.ui.utils.ElementsFactory;
+import org.jboss.elemento.IsElement;
 
-public class AppendElementSlot extends ElementSlot implements ElementsFactory {
+public class AppendElementSlot extends ElementSlot {
 
   public static final String APPEND_ELEMENT_SLOT = "append-element-slot";
-  private DominoElement<Element> element;
+  private Element element;
 
   public static AppendElementSlot of(Element element) {
     return new AppendElementSlot(element);
@@ -38,15 +36,11 @@ public class AppendElementSlot extends ElementSlot implements ElementsFactory {
   }
 
   public AppendElementSlot(Element element) {
-    this.element = elementOf(element);
-  }
-
-  public AppendElementSlot(DominoElement<Element> element) {
     this.element = element;
   }
 
-  public AppendElementSlot(IsElement<Element> element) {
-    this.element = elementOf(Js.<HTMLElement>uncheckedCast(element.element()));
+  public AppendElementSlot(IsElement<HTMLElement> element) {
+    this.element = Js.<HTMLElement>uncheckedCast(element.element());
   }
 
   @Override
@@ -62,11 +56,11 @@ public class AppendElementSlot extends ElementSlot implements ElementsFactory {
 
   @Override
   public void updateContent(Element view) {
-    elementOf(element).appendChild(view);
+    element.appendChild(view);
   }
 
   @Override
   protected Element getElement() {
-    return element.element();
+    return element;
   }
 }

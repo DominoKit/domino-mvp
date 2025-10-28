@@ -16,16 +16,16 @@
 package org.dominokit.domino.view.slots;
 
 import elemental2.dom.Element;
+import elemental2.dom.HTMLElement;
 import org.dominokit.domino.api.client.mvp.slots.IsSlot;
 import org.dominokit.domino.gwt.client.slots.ElementSlot;
-import org.dominokit.domino.ui.IsElement;
-import org.dominokit.domino.ui.utils.DominoElement;
-import org.dominokit.domino.ui.utils.ElementsFactory;
+import org.dominokit.domino.ui.utils.ElementUtil;
+import org.jboss.elemento.IsElement;
 
-public class SingleElementSlot extends ElementSlot implements ElementsFactory {
+public class SingleElementSlot extends ElementSlot {
 
   public static final String SINGLE_ELEMENT_SLOT = "single-element-slot";
-  private DominoElement<Element> element;
+  private Element element;
 
   public static SingleElementSlot of(Element element) {
     return new SingleElementSlot(element);
@@ -36,20 +36,17 @@ public class SingleElementSlot extends ElementSlot implements ElementsFactory {
   }
 
   public SingleElementSlot(Element element) {
-    this.element = elementOf(element);
-  }
-
-  public SingleElementSlot(DominoElement<Element> element) {
     this.element = element;
   }
 
-  public SingleElementSlot(IsElement<Element> element) {
-    this.element = elementOf(element);
+  public SingleElementSlot(IsElement<HTMLElement> element) {
+    this.element = element.element();
   }
 
   @Override
   public void updateContent(Element view) {
-    element.clearElement().appendChild(view);
+    ElementUtil.clear(element);
+    element.appendChild(view);
   }
 
   @Override
@@ -65,6 +62,6 @@ public class SingleElementSlot extends ElementSlot implements ElementsFactory {
 
   @Override
   protected Element getElement() {
-    return element.element();
+    return element;
   }
 }

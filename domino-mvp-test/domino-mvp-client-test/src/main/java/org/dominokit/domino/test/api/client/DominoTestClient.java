@@ -21,6 +21,7 @@ import static org.easymock.EasyMock.createMock;
 import io.vertx.config.ConfigRetriever;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
+import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.json.JsonObject;
@@ -47,7 +48,6 @@ import org.dominokit.domino.api.server.entrypoint.VertxContext;
 import org.dominokit.domino.api.server.entrypoint.VertxEntryPointContext;
 import org.dominokit.domino.api.shared.extension.DominoEventListener;
 import org.dominokit.domino.api.shared.extension.PredefinedSlots;
-import org.dominokit.domino.service.discovery.VertxServiceDiscovery;
 import org.dominokit.domino.test.api.DominoTestServer;
 import org.dominokit.domino.test.api.TestConfigReader;
 import org.dominokit.domino.test.api.client.TestServerRouter.FailedReply;
@@ -159,7 +159,6 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient, Cli
         VertxContext.VertxContextBuilder.vertx(vertx)
             .router(Router.router(vertx))
             .serverConfiguration(testServerConfiguration)
-            .vertxServiceDiscovery(new VertxServiceDiscovery(vertx))
             .configRetriever(ConfigRetriever.create(vertx))
             .build();
     new ServerConfigurationLoader(vertxContext).loadModules();
@@ -300,17 +299,30 @@ public class DominoTestClient implements CanCustomizeClient, CanStartClient, Cli
   }
 
   public Future<ResponseReply> onRequestCompleted(Class<? extends ServerRequest> request) {
-    Future<ResponseReply> completeFuture = Future.future();
-    TestClientAppFactory.serverRouter.onRequestCompleted(request, completeFuture);
-    return completeFuture;
+    Promise<ResponseReply> promise = Promise.promise();
+
+    // You can pass the promise directly:
+    // - if the method takes Promise<ResponseReply>, pass `promise`
+    // - if it takes Handler<AsyncResult<ResponseReply>>, also pass `promise` (it implements
+    // Handler)
+    TestClientAppFactory.serverRouter.onRequestCompleted(request, promise);
+
+    return promise.future();
   }
 
   public Future<ResponseReply> onRequestCompleted(
       Class<? extends ServerRequest> request, RequestCompleteHandler completeHandler) {
-    Future<ResponseReply> completeFuture = Future.future();
-    completeFuture.setHandler(completeHandler::onCompleted);
-    TestClientAppFactory.serverRouter.onRequestCompleted(request, completeFuture);
-    return completeFuture;
+
+    Promise<ResponseReply> promise = Promise.promise();
+
+    // notify your callback when the future completes
+    promise.future().onComplete(completeHandler::onCompleted);
+
+    // hand something *completable* to whoever will finish the work
+    // (see the note below about the callee's signature)
+    TestClientAppFactory.serverRouter.onRequestCompleted(request, promise);
+
+    return promise.future();
   }
 
   @Override

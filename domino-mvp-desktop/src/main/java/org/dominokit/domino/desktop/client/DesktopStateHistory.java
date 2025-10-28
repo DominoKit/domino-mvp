@@ -40,6 +40,17 @@ public class DesktopStateHistory implements AppHistory {
   }
 
   @Override
+  public void reload() {
+    // not implemented for desktop
+  }
+
+  @Override
+  public void invoke() {}
+
+  @Override
+  public void setRootPath(String path) {}
+
+  @Override
   public DirectState listen(StateListener listener) {
     return listen(TokenFilter.any(), listener, false);
   }

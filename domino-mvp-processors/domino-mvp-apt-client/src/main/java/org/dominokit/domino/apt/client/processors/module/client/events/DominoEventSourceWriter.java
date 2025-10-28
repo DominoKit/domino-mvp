@@ -15,6 +15,8 @@
  */
 package org.dominokit.domino.apt.client.processors.module.client.events;
 
+import static java.util.Objects.isNull;
+
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
@@ -24,7 +26,6 @@ import java.util.List;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
-import jdk.internal.joptsimple.internal.Strings;
 import org.dominokit.domino.api.shared.annotations.events.EventContext;
 import org.dominokit.domino.api.shared.extension.DominoEvent;
 import org.dominokit.domino.apt.client.processors.module.client.presenters.PresenterProcessor;
@@ -45,7 +46,7 @@ public class DominoEventSourceWriter extends AbstractSourceBuilder {
     EventContext eventContext = eventElement.getAnnotation(EventContext.class);
     String eventName =
         processorUtil.capitalizeFirstLetter(
-            Strings.isNullOrEmpty(eventContext.value())
+            isNullOrEmpty(eventContext.value())
                 ? eventElement.getSimpleName() + "Event"
                 : eventContext.value());
 
@@ -77,5 +78,9 @@ public class DominoEventSourceWriter extends AbstractSourceBuilder {
     List<TypeSpec.Builder> types = new ArrayList<>();
     types.add(eventType);
     return types;
+  }
+
+  private boolean isNullOrEmpty(String value) {
+    return isNull(value) || value.isEmpty();
   }
 }

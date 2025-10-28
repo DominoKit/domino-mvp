@@ -19,9 +19,9 @@ import elemental2.dom.DomGlobal;
 import elemental2.dom.Element;
 import org.dominokit.domino.api.client.mvp.slots.IsSlot;
 import org.dominokit.domino.gwt.client.slots.ElementSlot;
-import org.dominokit.domino.ui.utils.ElementsFactory;
+import org.dominokit.domino.ui.utils.ElementUtil;
 
-public class ElementIdSlot extends ElementSlot implements ElementsFactory {
+public class ElementIdSlot extends ElementSlot {
 
   public static final String ELEMENT_ID_SLOT = "single-element-slot";
   private final String id;
@@ -37,19 +37,22 @@ public class ElementIdSlot extends ElementSlot implements ElementsFactory {
 
   @Override
   public void updateContent(Element view) {
-    elementOf(DomGlobal.document.getElementById(id)).clearElement().appendChild(view);
+    Element elementById = DomGlobal.document.getElementById(id);
+    ElementUtil.clear(elementById);
+    elementById.appendChild(view);
   }
 
   @Override
   public void setType() {
-    elementOf(DomGlobal.document.getElementById(id))
-        .setAttribute(IsSlot.DOMINO_SLOT_TYPE, ELEMENT_ID_SLOT);
+    Element elementById = DomGlobal.document.getElementById(id);
+    elementById.setAttribute(IsSlot.DOMINO_SLOT_TYPE, ELEMENT_ID_SLOT);
   }
 
   @Override
   public void cleanUp() {
-    elementOf(DomGlobal.document.getElementById(id)).removeAttribute(IsSlot.DOMINO_SLOT_NAME);
-    elementOf(DomGlobal.document.getElementById(id)).removeAttribute(IsSlot.DOMINO_SLOT_TYPE);
+    Element elementById = DomGlobal.document.getElementById(id);
+    elementById.removeAttribute(IsSlot.DOMINO_SLOT_NAME);
+    elementById.removeAttribute(IsSlot.DOMINO_SLOT_TYPE);
   }
 
   @Override

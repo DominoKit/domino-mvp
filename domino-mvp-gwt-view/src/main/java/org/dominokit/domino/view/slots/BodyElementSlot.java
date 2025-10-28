@@ -17,17 +17,17 @@ package org.dominokit.domino.view.slots;
 
 import static java.util.Objects.nonNull;
 
+import elemental2.dom.DomGlobal;
+import elemental2.dom.HTMLBodyElement;
 import elemental2.dom.HTMLElement;
 import jsinterop.base.Js;
 import org.dominokit.domino.api.client.mvp.slots.ContentSlot;
 import org.dominokit.domino.api.client.mvp.view.HasContent;
 import org.dominokit.domino.api.shared.extension.Content;
-import org.dominokit.domino.ui.elements.BodyElement;
-import org.dominokit.domino.ui.utils.ElementsFactory;
 
-public class BodyElementSlot implements ContentSlot, ElementsFactory {
+public class BodyElementSlot implements ContentSlot {
 
-  private BodyElement body = body();
+  private HTMLBodyElement body = DomGlobal.document.body;
 
   private static final BodyElementSlot INSTANCE = new BodyElementSlot();
 
@@ -43,7 +43,7 @@ public class BodyElementSlot implements ContentSlot, ElementsFactory {
   public void updateContent(Content view) {
     if (nonNull(currentContent)) {
       HTMLElement contentElement = Js.uncheckedCast(currentContent.get());
-      elementOf(contentElement).remove();
+      contentElement.remove();
     }
     body.appendChild(Js.<HTMLElement>uncheckedCast(view.get()));
     currentContent = view;
